@@ -12,4 +12,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c71d0eeab21846dc9406a61006d7a617, type: 3}
   m_Name: HeroConfig
   m_EditorClassIdentifier: 
-  <WalkSpeed>k__BackingField: 4
+  <WalkSpeed>k__BackingField: 0.7
+  <Sequences>k__BackingField:
+  - HeroAnimationState: 0
+    Sprites:
+    - {fileID: 21300000, guid: 436866a74707a46c1a2714b47c6fb0e5, type: 3}
+    Speed: 1
+  - HeroAnimationState: 1
+    Sprites:
+    - {fileID: 1299985238, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: 188186241, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -1565948325, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -1614686040, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -789156546, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -121232240, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -1375521131, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -156978192, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -571708799, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: 810563720, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: 368757856, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: -2095683767, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    - {fileID: 897720930, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+    Speed: 11
+  - HeroAnimationState: 2
+    Sprites:
+    - {fileID: 1451083518, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1042587633, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -1055131393, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1389674412, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 312036052, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1588190187, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1512886826, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 219400182, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1413006260, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -1514548142, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 2070168630, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1999619155, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 798578740, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -1131049509, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1466311851, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -465534343, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -411571294, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 862324245, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 778836020, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -208782914, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -1799302932, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1713590656, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1304506995, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 655169256, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 116890560, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 1407125598, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -911847954, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -2088403843, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: -1805652408, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    - {fileID: 772051951, guid: 52886323637c84902ab5af5512decf75, type: 3}
+    Speed: 5
+  - HeroAnimationState: 3
+    Sprites:
+    - {fileID: 21300000, guid: 710df3daef69c455fb41523230338846, type: 3}
+    Speed: 5
+  - HeroAnimationState: 4
+    Sprites:
+    - {fileID: 21300000, guid: 710df3daef69c455fb41523230338846, type: 3}
+    Speed: 5
+  - HeroAnimationState: 5
+    Sprites:
+    - {fileID: 21300000, guid: 710df3daef69c455fb41523230338846, type: 3}
+    Speed: 5

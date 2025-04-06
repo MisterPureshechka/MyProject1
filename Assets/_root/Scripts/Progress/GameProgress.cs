@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.Progress
@@ -14,7 +15,9 @@ namespace Scripts.Progress
 
             PlayerPrefs.SetString(ProgressKey, json);
             PlayerPrefs.Save();
-            Debug.Log("Progress saved: " + json);
+            
+            //что бы не потерять
+            Tools.SaveToJson(progress, Application.dataPath + Consts.BASE_PATH );
         }
 
         public ProgressData LoadProgress()

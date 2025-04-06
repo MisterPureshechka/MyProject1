@@ -38,18 +38,15 @@ namespace Scripts.GlobalStateMachine
                 progress = NewProgress();
                 _gameProgress.SaveProgress(progress);
             }
+            
+            Tools.SaveToJson(progress,Application.dataPath + "/metaconfig.json");
         }
 
         private ProgressData NewProgress()
         {
             var config = _gameData.MetadataConfig;
-            var progress = new ProgressData();
-            Debug.Log($"Before init \n Food = {progress.Metadata[Consts.Food].Value}\n Energy = {progress.Metadata[Consts.Energy].Value}");
-            progress.Metadata[Consts.Energy].Init(config.StartEnergy);
-            progress.Metadata[Consts.Food].Init(config.StartFood);
-
-            Debug.Log($"New progress \n Food = {config.StartFood}\n Energy = {config.StartEnergy}");
-            Debug.Log($"After init \n Food = {progress.Metadata[Consts.Food]}\n Energy = {progress.Metadata[Consts.Energy]}");
+            var progress = new ProgressData(config.MetaFields);
+            
             return progress;
         }
     }

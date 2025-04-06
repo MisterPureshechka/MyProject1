@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
 using Core;
 using DG.Tweening;
+using NUnit.Framework;
+using Scripts.Animator;
 using Scripts.Data;
+using Scripts.Meta;
 using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Utils;
@@ -10,6 +15,9 @@ namespace Scripts.Hero
 {
     public class HeroLogic : IExecute, ICleanUp
     {
+        public Action OnDevActiveStat;
+        public Action OnChillActiveStat;
+        
         private readonly HeroStateMachine _heroStateMachine;
         
         public HeroIdleState IdleState { get; private set; }
@@ -18,37 +26,51 @@ namespace Scripts.Hero
         public HeroDevState DevState { get; private set; }
         public HeroSleepState SleepState { get; private set; }
         public HeroEatState EatState { get; private set; }
+        public HeroPlayState PlayState { get; private set; }
+        public HeroReadState ReadState { get; private set; }
+        public HeroChillState ChillState { get; private set; }
 
         private readonly HeroConfig _heroConfig;
         private readonly HeroMovementLogic _heroMovementLogic;
         private readonly HeroView _heroView;
         private readonly SpriteRenderer _heroSprite;
+        private readonly SpriteAnimator _spriteAnimator;
+        private readonly ProgressDataAdapter _progressData;
+        private readonly GameProgress _gameProgress;
+        
         private readonly float _roomSize;
-        private readonly ProgressData _progressData;
         private readonly float _yPos;
+        
         private const float Offset = 1f;
         
         private Vector3 _targetPosition;
         private IInteractiveObject _targetIO;
         private Sequence _sequence;
 
-        public HeroLogic(HeroConfig heroConfig, HeroMovementLogic heroMovementLogic, HeroView heroView, Vector3 initialPosition, float roomSize, ProgressData progressData)
+        public HeroLogic(HeroConfig heroConfig, HeroMovementLogic heroMovementLogic, HeroView heroView,
+            Vector3 initialPosition, float roomSize, SpriteAnimator spriteAnimator, ProgressDataAdapter progressData,
+            GameProgress gameProgress)
         {
             _heroConfig = heroConfig;
             _heroMovementLogic = heroMovementLogic;
             _heroView = heroView;
             _roomSize = roomSize;
+            _spriteAnimator = spriteAnimator;
             _progressData = progressData;
+            _gameProgress = gameProgress;
             _yPos = initialPosition.y;
             _heroSprite = heroView.HeroSprite;
             
             _heroStateMachine = new HeroStateMachine();
             IdleState = new HeroIdleState(this);
             WalkState = new HeroWalkState(this);
-            DevState = new HeroDevState(this);
-            EatState = new HeroEatState(this);
-            SleepState = new HeroSleepState(this);
+            DevState = new HeroDevState(this, _progressData);
+            EatState = new HeroEatState(this, _progressData);
+            SleepState = new HeroSleepState(this, _progressData);
             WalkToIOState = new HeroWalkToIOState(this);
+            ReadState = new HeroReadState(this, _progressData);
+            ChillState = new HeroChillState(this, _progressData);
+            PlayState = new HeroPlayState(this, _progressData);
             
             _heroStateMachine.Init(IdleState);
 
@@ -66,11 +88,17 @@ namespace Scripts.Hero
                 case InteractiveObjectType.Pc:
                     ChangeState(DevState);
                     break;
-                case InteractiveObjectType.Chair:
-                    ChangeState(SleepState);
-                    break;
                 case InteractiveObjectType.Fridge:
                     ChangeState(EatState);
+                    break;
+                case InteractiveObjectType.Books:
+                    ChangeState(ReadState);
+                    break;
+                case InteractiveObjectType.TV:
+                    ChangeState(PlayState);
+                    break;
+                case InteractiveObjectType.Chair:
+                    ChangeState(ChillState);
                     break;
                 default:
                     ChangeState(IdleState);
@@ -110,6 +138,24 @@ namespace Scripts.Hero
             }
         }
 
+        public void PlayAnimation(HeroAnimationState animationState, bool isLoop)
+        {
+            var sequence = _heroConfig.Sequences.Find(s => s.HeroAnimationState == animationState);
+            if (sequence != null)
+                _spriteAnimator.StartAnimation(_heroSprite, sequence?.Sprites, isLoop, sequence.Speed);
+        }
+
+        public void PlayTransitionAnimation(HeroAnimationState from, HeroAnimationState to)
+        {
+            var fromSequence = _heroConfig.Sequences.Find(f => f.HeroAnimationState == from);   
+            var toSequence = _heroConfig.Sequences.Find(t => t.HeroAnimationState == to);
+            
+            _spriteAnimator.StartAnimation(_heroSprite, fromSequence.Sprites, false, toSequence.Speed, () =>
+            {
+                _spriteAnimator.StartAnimation(_heroSprite, toSequence.Sprites, true, toSequence.Speed);
+            });
+        }
+
         private void GetTargetIO(IInteractiveObject iO)
         {
             _targetIO = iO;
@@ -123,12 +169,17 @@ namespace Scripts.Hero
             return new Vector3(vector.x, _yPos, 0);
         }
 
+        public void ChangeSortingOrder(int sortingOrder)
+        {
+            _heroSprite.sortingOrder = sortingOrder;
+        }
+
         private InteractiveObjectType GetTargetType(IInteractiveObject iO)
         {
             return iO.ObjectType;
         }
 
-        private void FlipHero(bool isLeft)
+        public void FlipHero(bool isLeft)
         {
             _heroSprite.flipX = isLeft;
         }
@@ -171,10 +222,15 @@ namespace Scripts.Hero
             return _targetIO;
         }
 
-        public void ChangeProgressData()
+        public void SaveProgress()
         {
-            _progressData.ChangeFieldValue(Consts.Food, -0.001f);
-            _progressData.ChangeFieldValue(Consts.Energy, -0.0005f);
+            _gameProgress.SaveProgress(_progressData.GetProgressData());
+            
+        }
+
+        public void PlaceHero(Vector3 targetPosition)
+        {
+            _heroView.transform.position = targetPosition;
         }
     }
 }

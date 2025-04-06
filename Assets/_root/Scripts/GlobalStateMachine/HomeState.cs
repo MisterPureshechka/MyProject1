@@ -1,7 +1,10 @@
+using Scripts.Animator;
 using Scripts.Data;
+using Scripts.EcoSystem;
 using Scripts.Hero;
 using Scripts.Progress;
 using Scripts.Rooms;
+using Scripts.Stat;
 using Scripts.Ui;
 using Scripts.Utils;
 using UnityEngine;
@@ -18,7 +21,9 @@ namespace Scripts.GlobalStateMachine
         public override void Enter()
         {
             var progressStat = _gameProgress.LoadProgress();
-            var homeFactory = new HomeFactory(_gameData.PrefabDataBase);
+            var progressDataAdapter = new ProgressDataAdapter(progressStat);
+            
+            var homeFactory = new HomeFactory(_gameData.PrefabDataBase); 
             var home = homeFactory.CreateRoom();
             var homeInitializer = new HomeInitializer(home);
             
@@ -28,20 +33,33 @@ namespace Scripts.GlobalStateMachine
 
             var interactiveObjectRegister = new InteractiveObjectRegisterer(home.InteractiveObjects);
             var camera = Camera.main;
+
+            var spriteAnimator = new SpriteAnimator();
             
             var inputController = new InputController();
 
             var roomSize = homeInitializer.GetRoomSize();
             var heroMovementLogic =
                 new HeroMovementLogic(camera, interactiveObjectRegister, inputController);
-            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroMovementLogic, hero, initialPos, roomSize, progressStat);
-            
+            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress);
+
             var interactiveObjectSelector = new InteractiveObjectSelector(camera, inputController, interactiveObjectRegister);
 
             var iOGlobalAnimator =
                 new InteractiveObjectGlobalAnimator(_gameData.InteractiveObjectConfig, interactiveObjectRegister);
 
+            var bloomLogic = new WindowBloomLogic();
             
+
+            var hud = Object.FindAnyObjectByType<HUDView>();
+            var statController = new StatsController(progressDataAdapter);
+            var statEffectLogic = new StatEffectLogic(heroLogic, progressDataAdapter);
+
+            statController.RegisterView(hud.HealthBar);
+            statController.RegisterView(hud.KnowledgeBar);
+            statController.RegisterView(hud.PassionBar);
+            statController.UpdateAllViews();
+
             var statsDebuger = Object.FindObjectOfType<StatsDebuger>();
             statsDebuger.Init(progressStat);
 
@@ -52,6 +70,10 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(interactiveObjectSelector);
             _controllers.Add(iOGlobalAnimator);
             _controllers.Add(statsDebuger); //temp
+            _controllers.Add(spriteAnimator);
+            _controllers.Add(bloomLogic);
+            _controllers.Add(statController);
+            _controllers.Add(statEffectLogic);
         }
 
         public override void Update(float deltaTime)

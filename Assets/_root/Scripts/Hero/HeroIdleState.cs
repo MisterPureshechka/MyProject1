@@ -10,6 +10,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
+            _heroLogic.PlayAnimation(HeroAnimationState.Idle, true);
         }
 
         public override void Update(float deltaTime)

@@ -34,7 +34,7 @@ namespace Scripts.Rooms
             _sequence = DOTween.Sequence();
             
 
-            _sequence.Append(_spriteRenderer.DOFade(0.5f, _config.AnimationSpeed));
+            _sequence.Append(_spriteRenderer.DOFade(0.4f, _config.AnimationSpeed));
         }
         
         private void AnimateCursorExit()

@@ -12,5 +12,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bafd13d017d4133a11e119f70dfdfca, type: 3}
   m_Name: MetadataConfig
   m_EditorClassIdentifier: 
-  StartFood: 10
-  StartEnergy: 10
+  MetaFields:
+    _serializedList:
+    - Key: Food
+      Value:
+        MetaType: 0
+        Value: 10
+        DisplayName: Food
+        MaxValue: 10
+        Tooltip: 
+    - Key: Energy
+      Value:
+        MetaType: 0
+        Value: 11
+        DisplayName: Energy
+        MaxValue: 12
+        Tooltip: 
+    - Key: Passion
+      Value:
+        MetaType: 2
+        Value: 12
+        DisplayName: Passion
+        MaxValue: 12
+        Tooltip: 
+    - Key: Programming
+      Value:
+        MetaType: 1
+        Value: 12
+        DisplayName: Programming
+        MaxValue: 12
+        Tooltip: 
+    - Key: EnergySpendWhileWorking
+      Value:
+        MetaType: 3
+        Value: -0.001
+        DisplayName: EnergySpendWhileWorking
+        MaxValue: 0.002
+        Tooltip: 
+    - Key: FoodSpendWhileWorking
+      Value:
+        MetaType: 3
+        Value: -0.001
+        DisplayName: FoodSpendWhileWorking
+        MaxValue: 0.002
+        Tooltip: 
+    - Key: EnergySpendWhileChilling
+      Value:
+        MetaType: 3
+        Value: 0.001
+        DisplayName: EnergySpendWhileChilling
+        MaxValue: 0.002
+        Tooltip: 

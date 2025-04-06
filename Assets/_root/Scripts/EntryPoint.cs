@@ -11,12 +11,13 @@ namespace Scripts
         [SerializeField] private LoadingCurtain _loadingCurtain;
 
         private GameStateMachine _stateMachine;
+        private Controllers _controllers;
 
         private void Start()
         {
             var gameProgress = new GameProgress();
-            var controllers = new Controllers();
-            _stateMachine = new GameStateMachine(controllers, _gameData, gameProgress, _loadingCurtain);
+            _controllers = new Controllers();
+            _stateMachine = new GameStateMachine(_controllers, _gameData, gameProgress, _loadingCurtain);
             
             _stateMachine.EnterState<LoadProgressState>();
         }
@@ -29,6 +30,7 @@ namespace Scripts
 
         private void OnDestroy()
         {
+            _controllers.CleanUp();
         }
     }
 }

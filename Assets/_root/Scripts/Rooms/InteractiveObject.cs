@@ -8,10 +8,12 @@ namespace Scripts.Rooms
     {
         [SerializeField] private InteractiveObjectType _interactiveObjectType;
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private Transform _rootObject;
 
         public SpriteRenderer spriteRenderer => _spriteRenderer;
         public Vector3 Position => GetComponent<Transform>().position;
-        
+        public Transform RootObjectPosition => _rootObject;
+
         public Action OnCursorEnter { get; set; }
         public Action OnCursorExit { get; set; }
         

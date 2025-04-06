@@ -1,8 +1,10 @@
+using Scripts.Progress;
+
 namespace Scripts.Hero
 {
     public class HeroSleepState : HeroBaseState
     {
-        public HeroSleepState(HeroLogic heroLogic) : base(heroLogic)
+        public HeroSleepState(HeroLogic heroLogic, ProgressDataAdapter progressData) : base(heroLogic)
         {
         }
         

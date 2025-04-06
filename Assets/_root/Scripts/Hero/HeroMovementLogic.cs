@@ -1,5 +1,6 @@
 using System;
 using Core;
+using Scripts.Animator;
 using Scripts.Rooms;
 using UnityEngine;
 
@@ -14,8 +15,10 @@ namespace Scripts.Hero
         private readonly Camera _camera;
         private readonly InteractiveObjectRegisterer _ioRegisterer;
         private readonly InputController _inputController;
+        private readonly SpriteAnimator _spriteAnimator;
 
-        public HeroMovementLogic(Camera camera, InteractiveObjectRegisterer ioRegisterer, InputController inputController)
+        public HeroMovementLogic(Camera camera, InteractiveObjectRegisterer ioRegisterer,
+            InputController inputController)
         {
             _camera = camera;
             _ioRegisterer = ioRegisterer;

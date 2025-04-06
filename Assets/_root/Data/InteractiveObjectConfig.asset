@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2877dfac0e0b423eb9c34563661c2f5f, type: 3}
   m_Name: InteractiveObjectConfig
   m_EditorClassIdentifier: 
-  <AnimationSpeed>k__BackingField: 0.47
+  <AnimationSpeed>k__BackingField: 0.1

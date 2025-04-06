@@ -16,7 +16,17 @@ namespace Scripts.Hero
         public override void Enter()
         {
             _targetIO = _heroLogic.GetTargetIO();
-            _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
+            
+            if (_targetIO.RootObjectPosition != null)
+            {
+                _targetPosition = _heroLogic.NormalizeVector(_targetIO.RootObjectPosition.position);
+            }
+            else
+            {
+                _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
+            }
+            
+            _heroLogic.PlayAnimation(HeroAnimationState.Walk, true);
         }
 
         public override void Update(float deltaTime)
@@ -27,8 +37,9 @@ namespace Scripts.Hero
 
             _heroLogic.MoveHero(_playerPosition, _targetPosition, deltaTime);
 
-            if (Vector3.Distance(_playerPosition, _targetPosition) < 0.1f) 
+            if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
+                _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
                 _heroLogic.ChangeStateByIOType(_targetIO.ObjectType);
             }
         }

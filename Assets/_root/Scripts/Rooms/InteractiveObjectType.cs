@@ -8,6 +8,8 @@ namespace Scripts.Rooms
         Chair,
         Bed,
         Door,
+        TV,
+        Books,
         None,
     }
 }

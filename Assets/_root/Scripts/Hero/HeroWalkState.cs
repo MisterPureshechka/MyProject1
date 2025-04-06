@@ -16,6 +16,7 @@ namespace Scripts.Hero
         public override void Enter()
         {
             _targetPosition = _heroLogic.GetTargetPosition();
+            _heroLogic.PlayAnimation(HeroAnimationState.Walk, true);
         }
 
         public override void Update(float deltaTime)

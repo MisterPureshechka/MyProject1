@@ -1,9 +1,14 @@
+using Scripts.Progress;
+
 namespace Scripts.Hero
 {
     public class HeroEatState : HeroBaseState
     {
-        public HeroEatState(HeroLogic heroLogic) : base(heroLogic)
+        private readonly ProgressDataAdapter _progressData;
+
+        public HeroEatState(HeroLogic heroLogic, ProgressDataAdapter progressData) : base(heroLogic)
         {
+            _progressData = progressData;
         }
         
         public override void Enter()

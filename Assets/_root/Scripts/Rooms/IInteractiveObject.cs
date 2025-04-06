@@ -9,6 +9,7 @@ namespace Scripts.Rooms
         SpriteRenderer spriteRenderer { get; }
         InteractiveObjectType ObjectType { get; }
         Vector3 Position { get; }
+        Transform RootObjectPosition { get; }
 
         Action OnCursorEnter { get; set; }
         Action OnCursorExit { get; set; }
