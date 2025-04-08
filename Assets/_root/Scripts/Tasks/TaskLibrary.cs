@@ -8,11 +8,12 @@ namespace Scripts.Tasks
     {
         private readonly ProgressDataAdapter _progressDataAdapter;
         
-        private Dictionary<DevTaskType, bool> _allDevTaskTypes = new Dictionary<DevTaskType, bool>();
-        private Dictionary<EatTaskType, bool> _allEatTaskTypes = new Dictionary<EatTaskType, bool>();
+        private Dictionary<DevTaskType, bool> _allDevTaskTypes = new();
+        private Dictionary<EatTaskType, bool> _allEatTaskTypes = new();
         
-        private Dictionary<IDevTask, bool> _allDevTasks = new Dictionary<IDevTask, bool>();
-        private Dictionary<IEatTask, bool> _allEatTasks = new Dictionary<IEatTask, bool>();
+        private Dictionary<IDevTask, bool> _allDevTasks = new();
+        private Dictionary<IEatTask, bool> _allEatTasks = new();
+        
         public TaskLibrary()
         {
             //_progressDataAdapter = progressDataAdapter;

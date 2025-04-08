@@ -5,6 +5,7 @@ using Scripts.Hero;
 using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Stat;
+using Scripts.Tasks;
 using Scripts.Ui;
 using Scripts.Utils;
 using UnityEngine;
@@ -22,6 +23,8 @@ namespace Scripts.GlobalStateMachine
         {
             var progressStat = _gameProgress.LoadProgress();
             var progressDataAdapter = new ProgressDataAdapter(progressStat);
+
+            var uiFactory = new UiFactory(_gameData);
             
             var homeFactory = new HomeFactory(_gameData.PrefabDataBase); 
             var home = homeFactory.CreateRoom();
@@ -50,10 +53,13 @@ namespace Scripts.GlobalStateMachine
 
             var bloomLogic = new WindowBloomLogic();
             
-
             var hud = Object.FindAnyObjectByType<HUDView>();
             var statController = new StatsController(progressDataAdapter);
             var statEffectLogic = new StatEffectLogic(heroLogic, progressDataAdapter);
+
+            
+            var taskLibrary = new TaskLibrary();
+            var sprintSystem = new SprintSystem(taskLibrary, _gameData, uiFactory.GetTaskPanelView(), uiFactory.GetSprintView(), uiFactory.GetTaskView());
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -74,6 +80,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(bloomLogic);
             _controllers.Add(statController);
             _controllers.Add(statEffectLogic);
+            _controllers.Add(sprintSystem);
         }
 
         public override void Update(float deltaTime)

@@ -9,7 +9,7 @@ namespace Scripts.Ui.TaskUi
     {
         private List<TaskView> _taskViews = new();
 
-        public void AddTask(ITask task, GameObject taskGO)
+        public void AddTask(ITask task, TaskView taskGO)
         {
             var taskView = Object.Instantiate(taskGO, gameObject.transform).GetComponent<TaskView>();
             taskView.SetInfo(task.Title, task.Progress);

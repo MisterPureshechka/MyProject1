@@ -11,6 +11,7 @@ namespace Scripts.Ui.TaskUi
     {
         public Action<ITask> OnTaskClicked;
         
+        //надо закинуть в ДАТУ!!!
         [SerializeField] private GameObject _taskButtonPrefab;
         
         private List<GameObject> _currentButtons = new List<GameObject>();

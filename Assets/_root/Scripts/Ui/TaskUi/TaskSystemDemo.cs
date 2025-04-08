@@ -9,20 +9,18 @@ public class TaskSystemDemo : MonoBehaviour
     [SerializeField] private TaskPanelView _taskPanelView;
     
     [SerializeField] private SprintView _sprintView;
-    [SerializeField] private GameObject _taskView;
+    [SerializeField] private TaskView _taskView;
     
     
     private DevSprint _devSprint;
     private EatSprint _eatSprint;
-    
-    private DevTask _devTask;
-    private EatTask _eatTask;
     
     private SprintBase _currentSprint;
 
     private void Start()
     {
         _taskLibrary = new TaskLibrary();
+        
         _taskPanelView.SetTaskLibrary(_taskLibrary);
         _taskPanelView.ShowTasksForSprint(SprintType.Dev);
         _taskPanelView.OnTaskClicked += AddTask;
@@ -30,11 +28,6 @@ public class TaskSystemDemo : MonoBehaviour
         
         _devSprint = new DevSprint(4);
         _eatSprint = new EatSprint(3);
-        
-        _devTask = new DevTask(DevTaskType.Programming, "Programming", 100f);
-        _eatTask = new EatTask(EatTaskType.coffee, "Coffee", 100f);
-        
-        
     }
 
     private void OpenDevTaskView()
