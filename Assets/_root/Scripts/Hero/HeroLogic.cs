@@ -8,6 +8,7 @@ using Scripts.Data;
 using Scripts.Meta;
 using Scripts.Progress;
 using Scripts.Rooms;
+using Scripts.Tasks;
 using Scripts.Utils;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace Scripts.Hero
     {
         public Action OnDevActiveStat;
         public Action OnChillActiveStat;
+        public Action<SprintType> OnGetIO;
         
         private readonly HeroStateMachine _heroStateMachine;
         
@@ -29,6 +31,7 @@ namespace Scripts.Hero
         public HeroPlayState PlayState { get; private set; }
         public HeroReadState ReadState { get; private set; }
         public HeroChillState ChillState { get; private set; }
+        public HeroAwaitState HeroAwaitState { get; private set; }
 
         private readonly HeroConfig _heroConfig;
         private readonly HeroMovementLogic _heroMovementLogic;
@@ -71,6 +74,7 @@ namespace Scripts.Hero
             ReadState = new HeroReadState(this, _progressData);
             ChillState = new HeroChillState(this, _progressData);
             PlayState = new HeroPlayState(this, _progressData);
+            HeroAwaitState = new HeroAwaitState(this);
             
             _heroStateMachine.Init(IdleState);
 

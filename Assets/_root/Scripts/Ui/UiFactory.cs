@@ -15,30 +15,30 @@ namespace Scripts.Ui
             _gameData = gameData;
         }
 
-        public TaskView GetTaskView()
+        public TaskView GetTaskView(Transform to)
         {
-            var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPrefab);
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPrefab, to);
 
             return instance.GetComponent<TaskView>();
         }
         
-        public TaskPanelView GetTaskPanelView()
+        public TaskPanelView GetTaskPanelView(Transform canvasTransform)
         {
-            var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPanelPrefab);
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPanelPrefab, canvasTransform);
 
             return instance.GetComponent<TaskPanelView>();
         }
 
-        public TaskPanelButtonView GetTaskPanelButtonView()
+        public TaskPanelButtonView GetTaskPanelButtonView(Transform to)
         {
-            var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPanelButton);
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPanelButton, to);
 
             return instance.GetComponent<TaskPanelButtonView>();
         }
 
-        public SprintView GetSprintView()
+        public SprintView GetSprintView(Transform canvasTransform)
         {
-            var instance = Object.Instantiate(_gameData.PrefabDataBase.SprintPrefab);
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.SprintPrefab, canvasTransform);
 
             return instance.GetComponent<SprintView>();
         }

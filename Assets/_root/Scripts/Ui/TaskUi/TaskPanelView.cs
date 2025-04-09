@@ -19,6 +19,7 @@ namespace Scripts.Ui.TaskUi
 
         public void ShowTasksForSprint(SprintType sprintType)
         {
+            gameObject.SetActive(true);
             ClearCurrentButtons();
             
             switch (sprintType)
@@ -48,6 +49,11 @@ namespace Scripts.Ui.TaskUi
                 
                 _currentButtons.Add(button);
             }
+        }
+
+        private void HidePanel()
+        {
+            gameObject.SetActive(false);
         }
 
         private void ClearCurrentButtons()

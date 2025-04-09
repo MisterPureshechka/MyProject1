@@ -17,7 +17,7 @@ namespace Scripts.GlobalStateMachine
         {
             LoadProgressOrInitNew();
 
-            _gameStateMachine.EnterState<MenuState>();
+            _gameStateMachine.EnterState<HomeState>();
         }
 
         public override void Update(float deltaTime)

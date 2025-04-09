@@ -36,6 +36,7 @@ namespace Scripts.GlobalStateMachine
 
             var interactiveObjectRegister = new InteractiveObjectRegisterer(home.InteractiveObjects);
             var camera = Camera.main;
+            var canvas = Object.FindAnyObjectByType<Canvas>();
 
             var spriteAnimator = new SpriteAnimator();
             
@@ -57,9 +58,8 @@ namespace Scripts.GlobalStateMachine
             var statController = new StatsController(progressDataAdapter);
             var statEffectLogic = new StatEffectLogic(heroLogic, progressDataAdapter);
 
-            
             var taskLibrary = new TaskLibrary();
-            var sprintSystem = new SprintSystem(taskLibrary, _gameData, uiFactory.GetTaskPanelView(), uiFactory.GetSprintView(), uiFactory.GetTaskView());
+            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
