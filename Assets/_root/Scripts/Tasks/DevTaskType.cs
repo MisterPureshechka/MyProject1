@@ -6,5 +6,6 @@ namespace Scripts.Tasks
         Art,
         GameDesign,
         SoundDesign,
+        Marketing,
     }
 }

@@ -42,7 +42,6 @@ namespace Scripts.EcoSystem
         {
             var spriteRenderer = bloomView.SpriteRenderer;
             spriteRenderer.DOFade(0.1f, 0.5f);
-            Debug.Log($"Enter Hero Callback: {bloomView}");
         }
         
         private void ExitHeroCallback(BloomView bloomView)

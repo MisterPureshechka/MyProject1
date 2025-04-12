@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca10d192cf64c6f9799fac7542afc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactiveObjectType: 7
+  _sprintType: 6
   _spriteRenderer: {fileID: 4634504666543168504}
   _rootObject: {fileID: 2317524197962254463}
 --- !u!61 &6759962711031432528
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca10d192cf64c6f9799fac7542afc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactiveObjectType: 6
+  _sprintType: 4
   _spriteRenderer: {fileID: 401257228098294145}
   _rootObject: {fileID: 2317524197962254463}
 --- !u!60 &9169418376372776664
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca10d192cf64c6f9799fac7542afc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactiveObjectType: 5
+  _sprintType: 0
   _spriteRenderer: {fileID: 2546809657545017229}
   _rootObject: {fileID: 0}
 --- !u!61 &149976180285255281
@@ -1556,7 +1556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca10d192cf64c6f9799fac7542afc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactiveObjectType: 0
+  _sprintType: 1
   _spriteRenderer: {fileID: 3662396347508926812}
   _rootObject: {fileID: 9192729953090352762}
 --- !u!60 &1653726051295370573
@@ -1984,7 +1984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca10d192cf64c6f9799fac7542afc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactiveObjectType: 4
+  _sprintType: 0
   _spriteRenderer: {fileID: 5518738853030688434}
   _rootObject: {fileID: 0}
 --- !u!61 &7369353239161481932
@@ -2135,7 +2135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca10d192cf64c6f9799fac7542afc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactiveObjectType: 3
+  _sprintType: 7
   _spriteRenderer: {fileID: 7716763475168029164}
   _rootObject: {fileID: 0}
 --- !u!60 &2124973481639506759

@@ -5,6 +5,7 @@ using DG.Tweening;
 using NUnit.Framework;
 using Scripts.Animator;
 using Scripts.Data;
+using Scripts.GlobalStateMachine;
 using Scripts.Meta;
 using Scripts.Progress;
 using Scripts.Rooms;
@@ -18,7 +19,6 @@ namespace Scripts.Hero
     {
         public Action OnDevActiveStat;
         public Action OnChillActiveStat;
-        public Action<SprintType> OnGetIO;
         
         private readonly HeroStateMachine _heroStateMachine;
         
@@ -40,9 +40,12 @@ namespace Scripts.Hero
         private readonly SpriteAnimator _spriteAnimator;
         private readonly ProgressDataAdapter _progressData;
         private readonly GameProgress _gameProgress;
-        
+        private readonly LocalEvents _localEvents;
+
         private readonly float _roomSize;
         private readonly float _yPos;
+
+        private bool _isAwait;
         
         private const float Offset = 1f;
         
@@ -52,7 +55,7 @@ namespace Scripts.Hero
 
         public HeroLogic(HeroConfig heroConfig, HeroMovementLogic heroMovementLogic, HeroView heroView,
             Vector3 initialPosition, float roomSize, SpriteAnimator spriteAnimator, ProgressDataAdapter progressData,
-            GameProgress gameProgress)
+            GameProgress gameProgress, LocalEvents localEvents)
         {
             _heroConfig = heroConfig;
             _heroMovementLogic = heroMovementLogic;
@@ -61,6 +64,7 @@ namespace Scripts.Hero
             _spriteAnimator = spriteAnimator;
             _progressData = progressData;
             _gameProgress = gameProgress;
+            _localEvents = localEvents;
             _yPos = initialPosition.y;
             _heroSprite = heroView.HeroSprite;
             
@@ -80,28 +84,32 @@ namespace Scripts.Hero
 
             _heroMovementLogic.OnGetDestination += MouseListener;
             _heroMovementLogic.OnGetTargetI0 += GetTargetIO;
+            _localEvents.OnClosePanel += PanelCloseCallback;
+            _localEvents.OnOpenPanel += PanelOpenListener;
+            _localEvents.OnMouseClickWorld += OnCLickWorld;
+            //_localEvents.OnGetSupportedType += HeroAwaitListener;
         }
 
-        public void ChangeStateByIOType(InteractiveObjectType iOType)
+        public void ChangeStateByIOType(SprintType iOType)
         {
             switch (iOType)
             {
-                case InteractiveObjectType.None :
+                case SprintType.None :
                     ChangeState(IdleState);
                     break;
-                case InteractiveObjectType.Pc:
+                case SprintType.Dev:
                     ChangeState(DevState);
                     break;
-                case InteractiveObjectType.Fridge:
+                case SprintType.Eat:
                     ChangeState(EatState);
                     break;
-                case InteractiveObjectType.Books:
+                case SprintType.Read:
                     ChangeState(ReadState);
                     break;
-                case InteractiveObjectType.TV:
+                case SprintType.Play:
                     ChangeState(PlayState);
                     break;
-                case InteractiveObjectType.Chair:
+                case SprintType.Chill:
                     ChangeState(ChillState);
                     break;
                 default:
@@ -110,26 +118,34 @@ namespace Scripts.Hero
             }
         }
 
-        public void AnimateHero()
+        public void TriggerIOBySprintType(SprintType iOType)
         {
-            _sequence?.Kill();
-            _sequence = DOTween.Sequence();
-            
-            _sequence.Append(_heroView.transform.DORotate(new Vector3(0,0,180f), 0.4f));
-            _sequence.SetLoops(-1);
-            _sequence.Play();
+            TriggerHeroGetIO(iOType);
         }
 
-        public void StopAnimation()
+        public void TriggerHeroGetIO(SprintType iOType)
         {
-            _sequence?.Kill();
-            _sequence = DOTween.Sequence();
-            
-            _sequence.Append(_heroView.transform.DORotate(new Vector3(0,0,0), 0));
+            _localEvents.TriggerHeroGetIO(iOType);
+        }
+        public void TriggerHeroGetIO()
+        {
+            _localEvents.TriggerGetHeroPos(_heroView.transform.position);
+        }
+
+        private void OnCLickWorld(Vector2 position)
+        {
+            _isAwait = false;
+        }
+
+        private void HeroAwaitListener(bool isAwait)
+        {
+            _isAwait = isAwait;
         }
 
         private void MouseListener(Vector3 pos)
         {
+            if(_isAwait) return;
+            
             var roomSize = (_roomSize - Offset)/2;
             
             if (pos.x > -roomSize && pos.x < roomSize)
@@ -162,10 +178,23 @@ namespace Scripts.Hero
 
         private void GetTargetIO(IInteractiveObject iO)
         {
+            if(_isAwait) return;
+            
             _targetIO = iO;
             _targetPosition = NormalizeVector(iO.Position);
             _heroStateMachine.ChangeState(WalkToIOState);
             FlipHero(_heroView.transform.position.x > _targetPosition.x);
+        }
+
+        private void PanelCloseCallback()
+        {
+            _isAwait = false;
+        }
+
+        private void PanelOpenListener()
+        {
+            _isAwait = true;
+            ChangeState(HeroAwaitState);
         }
 
         public Vector3 NormalizeVector(Vector3 vector)
@@ -178,9 +207,9 @@ namespace Scripts.Hero
             _heroSprite.sortingOrder = sortingOrder;
         }
 
-        private InteractiveObjectType GetTargetType(IInteractiveObject iO)
+        private SprintType GetTargetType(IInteractiveObject iO)
         {
-            return iO.ObjectType;
+            return iO.SprintType;
         }
 
         public void FlipHero(bool isLeft)
@@ -198,12 +227,6 @@ namespace Scripts.Hero
         public void Execute(float deltatime)
         {
             _heroStateMachine.CurrentState.Update(deltatime);
-        }
-
-        public void CleanUp()
-        {
-            _heroMovementLogic.OnGetDestination -= MouseListener;
-            _heroMovementLogic.OnGetTargetI0 -= GetTargetIO;
         }
 
         public Vector3 HeroPosition()
@@ -235,6 +258,16 @@ namespace Scripts.Hero
         public void PlaceHero(Vector3 targetPosition)
         {
             _heroView.transform.position = targetPosition;
+        }
+
+        public void CleanUp()
+        {
+            _heroMovementLogic.OnGetDestination -= MouseListener;
+            _heroMovementLogic.OnGetTargetI0 -= GetTargetIO;
+            _localEvents.OnClosePanel -= PanelCloseCallback;
+            _localEvents.OnMouseClickWorld -= OnCLickWorld;
+            //_localEvents.OnGetSupportedType -= HeroAwaitListener;
+            _localEvents.OnOpenPanel -= PanelOpenListener;
         }
     }
 }

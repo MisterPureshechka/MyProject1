@@ -19,3 +19,4 @@ MonoBehaviour:
   <TaskPanelPrefab>k__BackingField: {fileID: 8908130472114095729, guid: d49f5e88cbf40407e9f7cdf8ef08af17, type: 3}
   <TaskPrefab>k__BackingField: {fileID: 8280501280501517993, guid: e30995a29d6a44ff7adb1457d55a379f, type: 3}
   <SprintPrefab>k__BackingField: {fileID: 0}
+  <AllTaskView>k__BackingField: {fileID: 6429725669624933898, guid: 2274c33b4fe1a463cb9814dff0f7be55, type: 3}

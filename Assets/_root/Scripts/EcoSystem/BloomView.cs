@@ -16,7 +16,7 @@ namespace Scripts.EcoSystem
         {
             var rb = GetComponent<Rigidbody2D>();
             rb.isKinematic = true;
-            rb.simulated = true; // Важно для Unity 6!
+            rb.simulated = true; 
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -33,12 +33,6 @@ namespace Scripts.EcoSystem
             {
                 OnHeroExit?.Invoke(this);
             }
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = new Color(0, 1, 0, 0.3f);
-            Gizmos.DrawCube(transform.position, GetComponent<Collider2D>().bounds.size);
         }
     }
 }

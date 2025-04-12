@@ -1,6 +1,7 @@
 using System;
 using Core;
 using Scripts.Animator;
+using Scripts.GlobalStateMachine;
 using Scripts.Rooms;
 using UnityEngine;
 
@@ -15,19 +16,21 @@ namespace Scripts.Hero
         private readonly Camera _camera;
         private readonly InteractiveObjectRegisterer _ioRegisterer;
         private readonly InputController _inputController;
+        private readonly LocalEvents _localEvents;
         private readonly SpriteAnimator _spriteAnimator;
 
         public HeroMovementLogic(Camera camera, InteractiveObjectRegisterer ioRegisterer,
-            InputController inputController)
+            InputController inputController, LocalEvents localEvents)
         {
             _camera = camera;
             _ioRegisterer = ioRegisterer;
             _inputController = inputController;
 
-            _inputController.OnMouseClick += HandleMouseClick;
+            _localEvents = localEvents;
+            _localEvents.OnMouseClickWorld += HandleMouseClick;
         }
         
-        private void HandleMouseClick(Vector3 mousePosition)
+        private void HandleMouseClick(Vector2 mousePosition)
         {
             Vector2 worldPosition = _camera.ScreenToWorldPoint(mousePosition);
 
@@ -36,6 +39,7 @@ namespace Scripts.Hero
             if (hit.collider != null)
             {
                 GameObject clickedObject = hit.collider.gameObject;
+                
                 if (_ioRegisterer.IsObjectRegistered(clickedObject))
                 {
                     IInteractiveObject io = _ioRegisterer.GetInteractiveObject(clickedObject);
@@ -51,7 +55,7 @@ namespace Scripts.Hero
 
         public void CleanUp()
         {
-            _inputController.OnMouseClick -= HandleMouseClick;
+            _localEvents.OnMouseClickWorld -= HandleMouseClick;
         }
     }
 }

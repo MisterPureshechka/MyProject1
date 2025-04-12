@@ -23,7 +23,8 @@ namespace Scripts.GlobalStateMachine
         {
             var progressStat = _gameProgress.LoadProgress();
             var progressDataAdapter = new ProgressDataAdapter(progressStat);
-
+            var localEvents = new LocalEvents();
+            
             var uiFactory = new UiFactory(_gameData);
             
             var homeFactory = new HomeFactory(_gameData.PrefabDataBase); 
@@ -40,26 +41,28 @@ namespace Scripts.GlobalStateMachine
 
             var spriteAnimator = new SpriteAnimator();
             
-            var inputController = new InputController();
+            var inputController = new InputController(localEvents);
 
             var roomSize = homeInitializer.GetRoomSize();
             var heroMovementLogic =
-                new HeroMovementLogic(camera, interactiveObjectRegister, inputController);
-            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress);
+                new HeroMovementLogic(camera, interactiveObjectRegister, inputController, localEvents);
+            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress, localEvents);
 
-            var interactiveObjectSelector = new InteractiveObjectSelector(camera, inputController, interactiveObjectRegister);
+            var interactiveObjectSelector = new InteractiveObjectSelector(camera, inputController, interactiveObjectRegister, localEvents);
 
             var iOGlobalAnimator =
                 new InteractiveObjectGlobalAnimator(_gameData.InteractiveObjectConfig, interactiveObjectRegister);
 
             var bloomLogic = new WindowBloomLogic();
+
+            var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
             
             var hud = Object.FindAnyObjectByType<HUDView>();
             var statController = new StatsController(progressDataAdapter);
             var statEffectLogic = new StatEffectLogic(heroLogic, progressDataAdapter);
 
             var taskLibrary = new TaskLibrary();
-            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory);
+            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -81,6 +84,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(statController);
             _controllers.Add(statEffectLogic);
             _controllers.Add(sprintSystem);
+            _controllers.Add(commandSystem);
         }
 
         public override void Update(float deltaTime)

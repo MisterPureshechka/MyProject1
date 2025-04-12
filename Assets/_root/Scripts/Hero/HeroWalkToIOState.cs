@@ -39,8 +39,10 @@ namespace Scripts.Hero
 
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
-                _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
-                _heroLogic.ChangeStateByIOType(_targetIO.ObjectType);
+                // _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
+                // _heroLogic.ChangeStateByIOType(_targetIO.SprintType);
+                _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
+                _heroLogic.TriggerIOBySprintType(_targetIO.SprintType);
             }
         }
 

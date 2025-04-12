@@ -1,5 +1,6 @@
 using System;
 using Scripts.Data;
+using Scripts.Tasks;
 using Scripts.Ui.TaskUi;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -29,6 +30,13 @@ namespace Scripts.Ui
             return instance.GetComponent<TaskPanelView>();
         }
 
+        public AllTaskView GetAllTaskView(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.AllTaskView, canvasTransform);
+
+            return instance.GetComponent<AllTaskView>();
+        }
+
         public TaskPanelButtonView GetTaskPanelButtonView(Transform to)
         {
             var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPanelButton, to);
@@ -44,6 +52,12 @@ namespace Scripts.Ui
         }
 
 
+        public CommandPanelView GetCommandPanel(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.CommandPanelView, canvasTransform);
+
+            return instance.GetComponent<CommandPanelView>(); 
+        }
     }
 
     public class GameObjectFabric<T>

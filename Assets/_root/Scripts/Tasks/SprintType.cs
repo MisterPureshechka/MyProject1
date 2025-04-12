@@ -2,10 +2,13 @@ namespace Scripts.Tasks
 {
     public enum SprintType
     {
+        None,
         Dev,
         OfficeWork,
         Eat,
         Play,
-        Talk
+        Talk,
+        Read,
+        Chill,
     }
 }

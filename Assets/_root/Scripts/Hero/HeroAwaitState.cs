@@ -15,16 +15,17 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
-            _targetIO = _heroLogic.GetTargetIO();
-            
-            if (_targetIO.RootObjectPosition != null)
-            {
-                _targetPosition = _heroLogic.NormalizeVector(_targetIO.RootObjectPosition.position);
-            }
-            else
-            {
-                _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
-            }
+            // _targetIO = _heroLogic.GetTargetIO();
+            // _heroLogic.TriggerHeroGetIO();
+            //
+            // if (_targetIO.RootObjectPosition != null)
+            // {
+            //     _targetPosition = _heroLogic.NormalizeVector(_targetIO.RootObjectPosition.position);
+            // }
+            // else
+            // {
+            //     _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
+            // }
             _heroLogic.PlayAnimation(HeroAnimationState.Idle, true);
         }
 
@@ -32,13 +33,13 @@ namespace Scripts.Hero
         {  
             base.Update(deltaTime);
             
-            _playerPosition = _heroLogic.HeroPosition();
+            //_playerPosition = _heroLogic.HeroPosition();
             
-            if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
-            {
-                _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
-                _heroLogic.ChangeStateByIOType(_targetIO.ObjectType);
-            }
+            // if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
+            // {
+            //     _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
+            //     _heroLogic.ChangeStateByIOType(_targetIO.SprintType);
+            // }
         }
 
         public override void Exit()

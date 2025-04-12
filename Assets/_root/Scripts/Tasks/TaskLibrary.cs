@@ -1,110 +1,105 @@
+using System;
 using System.Collections.Generic;
 using Core;
-using Scripts.Progress;
 
 namespace Scripts.Tasks
 {
     public class TaskLibrary : ICleanUp
     {
-        private readonly ProgressDataAdapter _progressDataAdapter;
-        
-        private Dictionary<DevTaskType, bool> _allDevTaskTypes = new();
-        private Dictionary<EatTaskType, bool> _allEatTaskTypes = new();
-        
-        private Dictionary<IDevTask, bool> _allDevTasks = new();
-        private Dictionary<IEatTask, bool> _allEatTasks = new();
-        
+        private readonly Dictionary<ITask, bool> _allTasks = new();
+        private readonly Dictionary<System.Enum, bool> _allTaskTypes = new();
+        private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
+       
+
         public TaskLibrary()
         {
-            //_progressDataAdapter = progressDataAdapter;
-
             LoadAllAvailableTasks();
+            LoadAllDevTasks();
+        }
+
+        private void LoadAllDevTasks()
+        {
+            _allDevTasks.Clear();
+
+            foreach (DevTaskType type in Enum.GetValues(typeof(DevTaskType)))
+            {
+                _allDevTasks[type] = new List<IDevTask>();
+            }
+
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(DevTaskType.Programming, "Base Mechanics", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(DevTaskType.Programming, "Project Architecture", 100f));
+
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Character Design", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Environment Art", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "UI Assets", 100f));
+
+            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(DevTaskType.GameDesign, "Core Mechanics", 100f));
+            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(DevTaskType.GameDesign, "Level Design", 100f));
+
+            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(DevTaskType.SoundDesign, "Background Music", 100f));
+            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(DevTaskType.SoundDesign, "SFX", 100f));
+        }
+
+        public Dictionary<DevTaskType, List<IDevTask>> GetAlLDevTasks()
+        {
+            return _allDevTasks;
         }
 
         private void LoadAllAvailableTasks()
         {
-            _allDevTasks.Add(new DevTask(DevTaskType.Programming, "Saving System", 100f), true);
-            _allDevTasks.Add(new DevTask(DevTaskType.Programming, "Base Mechanics", 100f), true);
-            _allDevTasks.Add(new DevTask(DevTaskType.Programming, "Project Architecture", 100f), true);
+            _allTasks.Add(new DevTask(DevTaskType.Programming, "Saving System", 100f), true);
+            _allTasks.Add(new DevTask(DevTaskType.Programming, "Base Mechanics", 100f), true);
+            _allTasks.Add(new DevTask(DevTaskType.Programming, "Project Architecture", 100f), true);
             
-            _allEatTasks.Add(new EatTask(EatTaskType.cake, "Nice cake", 100f), true);
-            _allEatTasks.Add(new EatTask(EatTaskType.coffee, "Black coffee", 100f), true);
+            _allTasks.Add(new DevTask(DevTaskType.Art, "CharacterDesign", 100f), true);
             
-            _allDevTaskTypes.Add(DevTaskType.Programming, true);
-            _allDevTaskTypes.Add(DevTaskType.Art, true);
-            _allDevTaskTypes.Add(DevTaskType.GameDesign, true);
-            _allDevTaskTypes.Add(DevTaskType.SoundDesign, false);
+            _allTasks.Add(new EatTask(EatTaskType.cake, "Nice cake", 100f), true);
+            _allTasks.Add(new EatTask(EatTaskType.coffee, "Black coffee", 100f), true);
             
-            _allEatTaskTypes.Add(EatTaskType.coffee, true);
-            _allEatTaskTypes.Add(EatTaskType.cake, false);
+            _allTaskTypes.Add(DevTaskType.Programming, true);
+            _allTaskTypes.Add(DevTaskType.Art, true);
+            _allTaskTypes.Add(DevTaskType.GameDesign, true);
+            _allTaskTypes.Add(DevTaskType.SoundDesign, false);
+            
+            _allTaskTypes.Add(EatTaskType.coffee, true);
+            _allTaskTypes.Add(EatTaskType.cake, false);
         }
 
-        public List<IDevTask> GetDevTasks()
+        public List<ITask> GetTasks<T>() where T : ITask
         {
-            var devTasks = new List<IDevTask>();
+            var tasks = new List<ITask>();
             
-            foreach (var devTask in _allDevTasks.Keys)
+            foreach (var task in _allTasks)
             {
-                if (_allDevTasks[devTask])
+                if (task.Key is T && task.Value)
                 {
-                    devTasks.Add(devTask);
+                    tasks.Add(task.Key);
                 }
             }
             
-            return devTasks;
+            return tasks;
         }
 
-        public List<IEatTask> GetEatTasks()
+        public List<TEnum> GetAvailableTaskTypes<TEnum>() where TEnum : System.Enum
         {
-            var eatTasks = new List<IEatTask>();
+            var types = new List<TEnum>();
             
-            foreach (var eatTask in _allEatTasks.Keys)
+            foreach (var type in _allTaskTypes)
             {
-                if (_allEatTasks[eatTask])
+                if (type.Key is TEnum enumValue && type.Value)
                 {
-                    eatTasks.Add(eatTask);
+                    types.Add(enumValue);
                 }
             }
             
-            return eatTasks;
-        }
-
-        public List<DevTaskType> GetAvailableDevTasks()
-        {
-            var devTasks = new List<DevTaskType>();
-            
-            foreach (var devTask in _allDevTaskTypes.Keys)
-            {
-                if (_allDevTaskTypes[devTask])
-                {
-                    devTasks.Add(devTask);
-                }
-            }
-            
-            return devTasks;
-        }
-
-        public List<EatTaskType> GetAvailableEatTasks()
-        {
-            var eatTasks = new List<EatTaskType>();
-
-            foreach (var eatTask in _allEatTaskTypes.Keys)
-            {
-                if (_allEatTaskTypes[eatTask])
-                {
-                    eatTasks.Add(eatTask);
-                }
-            }
-            
-            return eatTasks;
+            return types;
         }
 
         public void CleanUp()
         {
-            _allDevTaskTypes.Clear();
-            _allEatTaskTypes.Clear();
-            _allDevTasks.Clear();
-            _allEatTasks.Clear();
+            _allTasks.Clear();
+            _allTaskTypes.Clear();
         }
     }
 }

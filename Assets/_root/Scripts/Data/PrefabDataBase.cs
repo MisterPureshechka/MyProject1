@@ -1,5 +1,6 @@
 using Scripts.Hero;
 using Scripts.Rooms;
+using Scripts.Tasks;
 using Scripts.Ui.TaskUi;
 using UnityEngine;
 
@@ -16,5 +17,7 @@ namespace Scripts.Data
         [field: SerializeField] public TaskPanelView TaskPanelPrefab { get; private set; }
         [field: SerializeField] public TaskView TaskPrefab { get; private set; }
         [field: SerializeField] public SprintView SprintPrefab { get; private set; }
+        [field: SerializeField] public AllTaskView AllTaskView { get; private set; }
+        [field: SerializeField] public CommandPanelView CommandPanelView { get; private set; }
     }
 }

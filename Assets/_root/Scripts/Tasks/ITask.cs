@@ -2,10 +2,9 @@ using System;
 
 namespace Scripts.Tasks
 {
-    public interface ITask
+    public interface ITask : IPanelItem
     {
         string Id { get; }
-        string Title { get; }
         float Progress { get; set; } 
         bool IsCompleted { get; }
         void ApplyProgress(float delta);

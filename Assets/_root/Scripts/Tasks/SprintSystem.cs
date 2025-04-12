@@ -1,5 +1,8 @@
+using System;
 using Core;
 using Scripts.Data;
+using Scripts.GlobalStateMachine;
+using Scripts.Hero;
 using Scripts.Ui;
 using Scripts.Ui.TaskUi;
 using UnityEngine;
@@ -8,59 +11,45 @@ namespace Scripts.Tasks
 {
     public class SprintSystem : ICleanUp
     {
+        public Action OnPanelClosed;
         private readonly GameData _gameData;
 
-        private readonly TaskPanelView _taskPanelView;
+        private readonly AllTaskView _allTaskView;
         private readonly SprintView _sprintView;
         private readonly UiFactory _uiFactory;
+        private readonly LocalEvents _localEvents;
 
         private DevSprint _devSprint;
         private EatSprint _eatSprint;
     
         private SprintBase _currentSprint;
         
-        public SprintSystem(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory)
+        private Vector3 _panelPosition;
+        
+        public SprintSystem(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents)
         {
             _gameData = gameData;
             _sprintView = sprintView;
             _uiFactory = uiFactory;
-            _taskPanelView = _uiFactory.GetTaskPanelView(canvas.transform);
+            _localEvents = localEvents;
+            _allTaskView = _uiFactory.GetAllTaskView(canvas.transform);
 
             _devSprint = new DevSprint(4);
             _eatSprint = new EatSprint(3);
-            
-            
-            _taskPanelView.SetTaskLibrary(taskLibrary);
-            //_taskPanelView.ShowTasksForSprint(SprintType.Dev);
-            _taskPanelView.OnTaskClicked += AddTask;
+
+            _allTaskView.OnTaskClicked += AddTask;
+            _allTaskView.SetDevTasks(taskLibrary.GetAlLDevTasks());
+            _localEvents.OnGetHeroPos += GetPanelPosition;
         }
-        
-        private void OpenDevTaskView()
+
+        private void OpenAllTasks(SprintType type)
         {
-            _currentSprint = _devSprint;
-        
-            var sprint = _currentSprint;
-        
-            var tasks = sprint.GetTasks();
-        
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                _sprintView.AddTask(tasks[i], _uiFactory.GetTaskView(_sprintView.transform));
-            }
+            _allTaskView.ShowAllTasks();
         }
-    
-        private void OpenEatTaskView()
+
+        private void GetPanelPosition(Vector3 position)
         {
-            _currentSprint = _eatSprint;
-        
-            var sprint = _currentSprint;
-        
-            var tasks = sprint.GetTasks();
-        
-            for(int i = 0; i < tasks.Count; i++)
-            {
-                _sprintView.AddTask(tasks[i], _uiFactory.GetTaskView(_sprintView.transform));
-            }
+            _panelPosition = position;
         }
 
         private void AddTask(ITask task)
@@ -69,9 +58,18 @@ namespace Scripts.Tasks
         
             if (_currentSprint.TryAddTask(task))
             {
-                Debug.Log($"Add task: {task}");
                 _sprintView.AddTask(task, _uiFactory.GetTaskView(_sprintView.transform));
             }
+        }
+
+        private bool CheckCurrentDevSprint()
+        {
+            if (_devSprint.Tasks.Count <= 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void HideSprint()
@@ -81,7 +79,9 @@ namespace Scripts.Tasks
 
         public void CleanUp()
         {
-            _taskPanelView.OnTaskClicked -= AddTask;
+            _allTaskView.OnTaskClicked -= AddTask;
+            //_taskPanelView.OnTaskClicked -= AddTask;
+            _localEvents.OnGetHeroPos -= GetPanelPosition;
         }
     }
 }
