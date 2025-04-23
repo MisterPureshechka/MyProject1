@@ -23,10 +23,13 @@ namespace Scripts.Tasks
             _commandPanelView = _uiFactory.GetCommandPanel(canvas.transform);
             _commandPanelView.gameObject.SetActive(false);
             
-            _commandManager = new CommandManager();
+            _commandManager = new CommandManager(localEvents);
 
             _localEvents.OnMouseClickIO += ShowCommandsByType;
+            _localEvents.OnAllTaskShow += ClosePanel;
             _localEvents.OnClickEmpty += ClosePanel;
+            _localEvents.OnSprintContinue += ClosePanel;
+            
         }
 
         private void ShowCommandsByType(SprintType type, Vector2 position)
@@ -36,9 +39,14 @@ namespace Scripts.Tasks
             UpdatePanelPosition(position);
             _localEvents.TriggerOpenPanel();
         }
-
         
         private void ClosePanel()
+        {
+            _localEvents.TriggerClosePanel();
+            _commandPanelView.gameObject.SetActive(false);
+        }
+        
+        private void ClosePanel(SprintType type)
         {
             _localEvents.TriggerClosePanel();
             _commandPanelView.gameObject.SetActive(false);
@@ -52,7 +60,9 @@ namespace Scripts.Tasks
 
         public void CleanUp()
         {
+            _commandManager.CleanUp();
             _localEvents.OnMouseClickIO -= ShowCommandsByType;
+            _localEvents.OnAllTaskShow -= ClosePanel;
             _localEvents.OnClickEmpty -= ClosePanel;
         }
     }

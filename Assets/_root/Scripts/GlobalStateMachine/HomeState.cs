@@ -64,6 +64,8 @@ namespace Scripts.GlobalStateMachine
             var taskLibrary = new TaskLibrary();
             var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
 
+            var fader = new FaderLogic(localEvents);
+
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
             statController.RegisterView(hud.PassionBar);
@@ -85,6 +87,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(statEffectLogic);
             _controllers.Add(sprintSystem);
             _controllers.Add(commandSystem);
+            _controllers.Add(fader);
         }
 
         public override void Update(float deltaTime)

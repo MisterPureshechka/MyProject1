@@ -88,6 +88,15 @@ namespace Scripts.Hero
             _localEvents.OnOpenPanel += PanelOpenListener;
             _localEvents.OnMouseClickWorld += OnCLickWorld;
             //_localEvents.OnGetSupportedType += HeroAwaitListener;
+            _localEvents.OnSprintCreated += WalkToIO;
+            _localEvents.OnSprintContinue += WalkToIO;
+            _localEvents.OnSprintClosed += ClosedSprintListener;
+        }
+
+        private void WalkToIO(SprintType sprintType)
+        {
+            ChangeState(WalkToIOState);
+            _localEvents.TriggerWalkToIO(sprintType);
         }
 
         public void ChangeStateByIOType(SprintType iOType)
@@ -117,7 +126,6 @@ namespace Scripts.Hero
                     break;
             }
         }
-
         public void TriggerIOBySprintType(SprintType iOType)
         {
             TriggerHeroGetIO(iOType);
@@ -140,6 +148,21 @@ namespace Scripts.Hero
         private void HeroAwaitListener(bool isAwait)
         {
             _isAwait = isAwait;
+        }
+
+        public void TriggerDevActiveState()
+        {
+            _localEvents.TriggerDevActiveState();
+        }
+
+        public void TriggerActiveSprintByType(SprintType sprintType)
+        {
+            _localEvents.TriggerActiveSprintByType(sprintType);
+        }
+
+        private void ClosedSprintListener(SprintType sprintType)
+        {
+            ChangeState(IdleState);
         }
 
         private void MouseListener(Vector3 pos)
@@ -265,9 +288,18 @@ namespace Scripts.Hero
             _heroMovementLogic.OnGetDestination -= MouseListener;
             _heroMovementLogic.OnGetTargetI0 -= GetTargetIO;
             _localEvents.OnClosePanel -= PanelCloseCallback;
-            _localEvents.OnMouseClickWorld -= OnCLickWorld;
             //_localEvents.OnGetSupportedType -= HeroAwaitListener;
             _localEvents.OnOpenPanel -= PanelOpenListener;
+            _localEvents.OnMouseClickWorld -= OnCLickWorld;
+            //_localEvents.OnGetSupportedType += HeroAwaitListener;
+            _localEvents.OnSprintCreated -= WalkToIO;
+            _localEvents.OnSprintContinue -= WalkToIO;
+            _localEvents.OnSprintClosed -= ClosedSprintListener;
+        }
+
+        public void TiggerSprintExit()
+        {
+            _localEvents.TriggerSprintExit();
         }
     }
 }

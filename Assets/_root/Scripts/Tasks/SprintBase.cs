@@ -7,7 +7,9 @@ namespace Scripts.Tasks
         public abstract SprintType Type { get; }
         public abstract IReadOnlyList<ITask> GetTasks();
         public abstract int Capacity { get; }
+        public abstract bool IsActiveSprint { get; }
         public abstract int FreeSlots { get; }
         public abstract bool TryAddTask(ITask task);
+        public abstract void ClearSprint();
     }
 }

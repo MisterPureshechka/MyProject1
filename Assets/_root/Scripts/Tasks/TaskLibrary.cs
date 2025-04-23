@@ -9,12 +9,14 @@ namespace Scripts.Tasks
         private readonly Dictionary<ITask, bool> _allTasks = new();
         private readonly Dictionary<System.Enum, bool> _allTaskTypes = new();
         private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
+        private ChillTask _chillTask;
        
 
         public TaskLibrary()
         {
             LoadAllAvailableTasks();
             LoadAllDevTasks();
+            _chillTask = new ChillTask("Just Chill", 100f);
         }
 
         private void LoadAllDevTasks()
@@ -33,12 +35,20 @@ namespace Scripts.Tasks
             _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Character Design", 100f));
             _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Environment Art", 100f));
             _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "UI Assets", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Character Design", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Environment Art", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "UI Assets", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Character Design", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Environment Art", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "UI Assets", 100f));
 
             _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(DevTaskType.GameDesign, "Core Mechanics", 100f));
             _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(DevTaskType.GameDesign, "Level Design", 100f));
 
             _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(DevTaskType.SoundDesign, "Background Music", 100f));
             _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(DevTaskType.SoundDesign, "SFX", 100f));
+            
+            _allDevTasks[DevTaskType.Marketing].Add(new DevTask(DevTaskType.Marketing, "Blog", 100f));
         }
 
         public Dictionary<DevTaskType, List<IDevTask>> GetAlLDevTasks()
@@ -95,6 +105,8 @@ namespace Scripts.Tasks
             
             return types;
         }
+        
+        public ChillTask GetChillTask => _chillTask;
 
         public void CleanUp()
         {

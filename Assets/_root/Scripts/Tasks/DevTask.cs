@@ -1,16 +1,26 @@
 using System;
+using UnityEngine;
 
 namespace Scripts.Tasks
 {
     public class DevTask : IDevTask
     {
+        private float _lastUpdateTime;
         public event Action<ITask> OnTaskCompleted;
+        public event Action<ITask, float> OnProgressChanged;
+        public ITask Clone()
+        {
+            return new DevTask(this.Type, this.Title, this.Progress)
+            {
+                Id = this.Id  
+            };
+        }
         public DevTaskType Type { get; set; }
         
-        public string Id { get; set;}
+        public string Id { get; private set;}
         public string Title { get; set; }
         public float Progress { get; set; }
-        public bool IsCompleted { get; }
+        public bool IsCompleted { get; private set; }
 
         public DevTask(DevTaskType taskType, string title, float progress)
         {
@@ -19,10 +29,24 @@ namespace Scripts.Tasks
             Progress = progress;
         }
 
-        public void ApplyProgress(float delta)
+        public void ApplyProgress(float delta, float interval = 0f)
         {
+            if (Time.time - _lastUpdateTime < interval) 
+                return;
+            float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);
-            if (IsCompleted) OnTaskCompleted?.Invoke(this);
+            _lastUpdateTime = Time.time;
+            
+            if (Progress != oldProgress)
+            {
+                OnProgressChanged?.Invoke(this, delta);
+            }
+
+            if (Progress <= 0)
+            {
+                IsCompleted = true;
+                OnTaskCompleted?.Invoke(this);
+            }
         }
     }
 }

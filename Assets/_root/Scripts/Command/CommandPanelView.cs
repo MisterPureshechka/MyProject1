@@ -10,6 +10,7 @@ namespace Scripts.Tasks
         [SerializeField] private RectTransform _panelRect;
 
         [SerializeField] private Vector2 _offset = new Vector2(0f, 400f);
+        
         public void ShowCommands(List<Command> commands)
         {
             ClearCommands();
@@ -18,7 +19,7 @@ namespace Scripts.Tasks
             {
                 var button = Instantiate(_commandButtonPrefab, _commandsContainer);
                 var buttonComp = button.GetComponent<CommandButtonView>();
-                buttonComp.UpdateInfo(command.CommandName);
+                buttonComp.Init(command.CommandName, command.OnExecute);
             }
         }
 

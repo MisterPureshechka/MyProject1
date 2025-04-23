@@ -9,11 +9,9 @@ namespace Scripts.Tasks
         public List<T> Tasks = new();
         public override SprintType Type { get; }
         public override IReadOnlyList<ITask> GetTasks() => Tasks.Cast<ITask>().ToList();
-        
-        public IReadOnlyList<T> GetTypedTasks() => Tasks.AsReadOnly();
         public override int Capacity { get; }
         public override int FreeSlots => Capacity - Tasks.Count;
-
+        public override bool IsActiveSprint => Tasks.Any();
         public Sprint(int capacity) => Capacity = capacity;
 
         public override bool TryAddTask(ITask task)
@@ -25,5 +23,9 @@ namespace Scripts.Tasks
             return true;
         }
 
+        public override void ClearSprint()
+        {
+            Tasks.Clear();
+        }
     }
 }

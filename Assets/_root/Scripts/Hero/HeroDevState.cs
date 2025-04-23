@@ -22,11 +22,12 @@ namespace Scripts.Hero
         public override void Update(float deltaTime)
         {  
             base.Update(deltaTime);
-            _heroLogic.OnDevActiveStat?.Invoke();
+            _heroLogic.TriggerDevActiveState();
         }
 
         public override void Exit()
         {
+            _heroLogic.TiggerSprintExit();
             _heroLogic.SaveProgress();
             _heroLogic.ChangeSortingOrder(Consts.HeroSortingOrder);
         }
