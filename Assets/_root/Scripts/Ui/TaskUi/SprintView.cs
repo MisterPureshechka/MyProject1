@@ -58,7 +58,7 @@ namespace Scripts.Ui.TaskUi
             }
         }
 
-        public async void ClearTasks()
+        public async Task ClearTasks()
         {
             foreach (var taskView in _taskViews)
             {

@@ -81,14 +81,12 @@ namespace Scripts.Ui.TaskUi
         
         public void ShowTask()
         {
-            //if(_isOnStart || _isDestroyed) return;
-        
             _imageSequence?.Kill();
             _imageSequence = DOTween.Sequence();
             _spriteImage.transform.localScale = Vector3.zero;
-            
-            //if (_fxText == null || _fxText.transform == null) return;
-            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.one, 0.1f));
+    
+            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.one, 0.1f))
+                .OnComplete(() => _isOnStart = false); // Сброс флага после показа
         }
 
         private void OnDestroy()
