@@ -1,14 +1,17 @@
+using System;
 using DG.Tweening;
 using Scripts.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Scripts.Ui.TaskUi
 {
     public class TaskView : MonoBehaviour
     {
-        private Sequence _sequence;
+        private Sequence _fxTextSequence;
+        private Sequence _imageSequence;
         private bool _isDestroyed;
         
         [SerializeField] private TextMeshProUGUI _titleText;
@@ -29,7 +32,17 @@ namespace Scripts.Ui.TaskUi
         [SerializeField] private Vector3 _moveToValue;
 
         private bool _isOnStart;
-        
+        private Vector3 _imageStartScale;
+
+        private void Start()
+        {
+            GetStartSize();
+        }
+
+        private void GetStartSize()
+        {
+            _imageStartScale = _spriteImage.transform.localScale;
+        }
         public void SetInfo(string titleText, float progressText)
         {
             //_titleText.text = titleText;
@@ -44,32 +57,64 @@ namespace Scripts.Ui.TaskUi
             _spriteImage.sprite = _paperSprite[Random.Range(0, _paperSprite.Length)];
             _spriteImage.color = DevTypeToColor(taskType);
         }
+
+        public void HideTask(Action onComplete)
+        {
+            if (_isOnStart || _isDestroyed)
+            {
+                onComplete?.Invoke();
+                return;
+            }
         
+            _imageSequence?.Kill();
+
+            if (_fxText == null || _fxText.transform == null)
+            {
+                onComplete?.Invoke();
+                return;
+            }
+        
+            _imageSequence = DOTween.Sequence();
+            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.zero, 0.5f)
+                .OnComplete(() => onComplete?.Invoke()));
+        }
+        
+        public void ShowTask()
+        {
+            //if(_isOnStart || _isDestroyed) return;
+        
+            _imageSequence?.Kill();
+            _imageSequence = DOTween.Sequence();
+            _spriteImage.transform.localScale = Vector3.zero;
+            
+            //if (_fxText == null || _fxText.transform == null) return;
+            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.one, 0.1f));
+        }
 
         private void OnDestroy()
         {
             _isDestroyed = true;
-            _sequence?.Kill();
+            _fxTextSequence?.Kill();
+            _imageSequence?.Kill();
         }
 
         public void UpdateProgress(float progress, float value)
         {
             if (_isDestroyed) return;
         
-            AnimateTextFx(value);
             _isOnStart = false;
             _progressInfo.text = progress.ToString("0.0");
         }
 
-        private void AnimateTextFx(float value)
+        public void AnimateTextFx(float value)
         {
             if(_isOnStart || _isDestroyed) return;
         
-            _sequence?.Kill();
+            _fxTextSequence?.Kill();
         
             if (_fxText == null || _fxText.transform == null) return;
         
-            _sequence = DOTween.Sequence();
+            _fxTextSequence = DOTween.Sequence();
         
             var offset = Random.Range(-_offset, _offset);
             _fxText.text = value.ToString("0.0");
@@ -78,11 +123,11 @@ namespace Scripts.Ui.TaskUi
         
             _fxText.transform.position = transform.position + new Vector3(offset, offset, 0);
         
-            _sequence.Append(_fxText.DOFade(1, 0));
-            _sequence.Append(_fxText.transform.DOMove(
+            _fxTextSequence.Append(_fxText.DOFade(1, 0));
+            _fxTextSequence.Append(_fxText.transform.DOMove(
                 _fxText.transform.position + _moveToValue, 
                 0.5f).SetEase(Ease.OutSine));
-            _sequence.Join(_fxText.DOFade(0, 0.5f).SetEase(Ease.OutSine));
+            _fxTextSequence.Join(_fxText.DOFade(0, 0.5f).SetEase(Ease.OutSine));
         }
         
         private Color DevTypeToColor(DevTaskType devType)

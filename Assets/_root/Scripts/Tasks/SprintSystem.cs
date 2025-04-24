@@ -50,7 +50,7 @@ namespace Scripts.Tasks
             _allTaskView.OnApplyButtonClicked += AllDevTaskApplyButtonClickListener;
             
             _localEvents.OnAllTaskShow += OpenAllTasks;
-            _localEvents.OnSprintContinue += RestoreSprint;
+            //_localEvents.OnSprintContinue += RestoreSprint;
             _localEvents.OnDevActiveState += DevActiveStateListener;
             _localEvents.OnActiveSprintByType += ActiveSprintListener;
             _localEvents.OnWalkToIO += HideSprint;
@@ -85,6 +85,21 @@ namespace Scripts.Tasks
                 _localEvents.TriggerSprintCreated(sprintType);
                 //_localEvents.TriggerActiveState(_currentSprint.IsActiveSprint, _currentSprint.Type); //эта штука убирвет команду из панели
             }
+        }
+
+        private void UpdateActiveTasks()
+        {
+            if(_activeTasks.Count <= 0) return;
+
+            foreach (var task in _activeTasks)
+            {
+                ApplyProgressToSprintTasks(9.5f, 0.7f);
+            }
+        }
+
+        private void UpdateTasksQueue()
+        {
+            
         }
 
         private void DevActiveStateListener()
@@ -174,7 +189,7 @@ namespace Scripts.Tasks
         
         private void HideSprint(SprintType type)
         {
-            if (_currentSprint == null || _isSprintHidden) return;
+            if (_currentSprint == null) return;
             
             if(type == _currentSprint.Type) return;
                 
@@ -182,7 +197,6 @@ namespace Scripts.Tasks
             _hiddenTasks.AddRange(_currentSprint.GetTasks());
 
             _sprintView.ClearTasks();
-            _isSprintHidden = true;
         
             _activeTasks.Clear();
             _pendingTasks.Clear();
@@ -197,13 +211,12 @@ namespace Scripts.Tasks
         
         private void HideSprint()
         {
-            if (_currentSprint == null || _isSprintHidden) return;
+            if (_currentSprint == null) return;
 
             _hiddenTasks.Clear();
             _hiddenTasks.AddRange(_currentSprint.GetTasks());
 
             _sprintView.ClearTasks();
-            _isSprintHidden = true;
 
             _activeTasks.Clear();
             _pendingTasks.Clear();
@@ -229,12 +242,12 @@ namespace Scripts.Tasks
                 _ => _currentSprint
             };
 
-            if (_currentSprint == null || !_isSprintHidden) return;
+            if (_currentSprint == null) return;
 
             // Восстанавливаем задачи в оригинальном порядке
             foreach (var task in _hiddenTasks.OrderBy(t => t.Progress))
             {
-                var clone = task.Clone();
+                var clone = task;
                 if (_currentSprint.TryAddTask(clone))
                 {
                     var taskView = _uiFactory.GetTaskView(_sprintView.ToDoField.transform);
@@ -293,6 +306,7 @@ namespace Scripts.Tasks
             _localEvents.OnAutoSprintCreated -= CreateAutoSprint;
             _localEvents.OnActiveSprintByType -= ActiveSprintListener;
             _localEvents.OnSprintExit -= HideSprint;
+            //_localEvents.OnSprintContinue -= RestoreSprint;
         }
     }
 }
