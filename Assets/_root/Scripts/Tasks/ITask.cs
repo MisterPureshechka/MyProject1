@@ -11,6 +11,7 @@ namespace Scripts.Tasks
 
         event Action<ITask> OnTaskCompleted;
         event Action<ITask, float> OnProgressChanged;
+        event Action<ITask> OnProgressChangedFirstTime;
 
         ITask Clone();
     }

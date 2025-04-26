@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using DG.Tweening;
 using Scripts.Tasks;
 using TMPro;
@@ -30,6 +31,8 @@ namespace Scripts.Ui.TaskUi
 
         [SerializeField] private float _offset = 0.01f;
         [SerializeField] private Vector3 _moveToValue;
+        [SerializeField] private float _showDuration = 0.2f;
+        [SerializeField] private float _hideDuration = 0.2f;
 
         private bool _isOnStart;
         private Vector3 _imageStartScale;
@@ -58,7 +61,7 @@ namespace Scripts.Ui.TaskUi
             _spriteImage.color = DevTypeToColor(taskType);
         }
 
-        public void HideTask(Action onComplete)
+        public void HideTask(Action onComplete = null)
         {
             if (_isOnStart || _isDestroyed)
             {
@@ -75,8 +78,26 @@ namespace Scripts.Ui.TaskUi
             }
         
             _imageSequence = DOTween.Sequence();
-            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.zero, 0.5f)
+            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.zero, _hideDuration)
                 .OnComplete(() => onComplete?.Invoke()));
+        }
+        
+        public async Task HideTaskAsync()
+        {
+            if (_isOnStart || _isDestroyed)
+                return;
+
+            _imageSequence?.Kill();
+
+            if (_fxText == null || _fxText.transform == null)
+                return;
+
+            _imageSequence = DOTween.Sequence();
+
+            var tween = _spriteImage.transform.DOScale(Vector3.zero, _hideDuration);
+            _imageSequence.Append(tween);
+
+            await tween.AsyncWaitForCompletion();
         }
         
         public void ShowTask()
@@ -85,8 +106,8 @@ namespace Scripts.Ui.TaskUi
             _imageSequence = DOTween.Sequence();
             _spriteImage.transform.localScale = Vector3.zero;
     
-            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.one, 0.1f))
-                .OnComplete(() => _isOnStart = false); // Сброс флага после показа
+            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.one, _showDuration))
+                .OnComplete(() => _isOnStart = false); 
         }
 
         private void OnDestroy()

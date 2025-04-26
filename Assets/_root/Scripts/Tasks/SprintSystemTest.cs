@@ -40,7 +40,7 @@ namespace Scripts.Tasks
             
             _demo = demo;
 
-            _sprints[SprintType.Dev] = new DevSprint(3);
+            _sprints[SprintType.Dev] = new DevSprint(12);
             _sprints[SprintType.Chill] = new ChillSprint(3);
             
             _demo.enterCurrentSprintButton.onClick.AddListener(EnterToCurrentSprint);
@@ -49,15 +49,79 @@ namespace Scripts.Tasks
             _demo.addChillTaskButton.onClick.AddListener(AddChillTask);
             _demo.exitCurrentSprintButton.onClick.AddListener(ExitSprint);
             _demo.restoreDevSprintTaskButton.onClick.AddListener(RestoreDevSprint);
+            _demo.applyProgressToCurrentTaskButton.onClick.AddListener(ApplyProgressToCurrentTask);
         }
+
+        private void ApplyProgressToCurrentTask()
+        {
+            const int MaxActiveTasks = 2; 
+
+            while (_activeTasks.Count < MaxActiveTasks && _pendingDevTasks.Count > 0)
+            {
+                var nextTask = _pendingDevTasks[0];
+                _pendingDevTasks.RemoveAt(0);
+                _activeTasks.Add(nextTask);
+                Debug.Log($"[SprintSystemTest] Added to active: {nextTask}");
+            }
+            
+            for (int i = _activeTasks.Count - 1; i >= 0; i--) 
+            {
+                var task = _activeTasks[i];
+        
+                task.ApplyProgress(15f, 0);
+
+                if (task.Progress <= 0f)
+                {
+                    CheckSprintCompletion();
+                    _activeTasks.RemoveAt(i);
+                }
+            }
+        }
+
+        private void CheckSprintCompletion()
+        {
+            if (_currentSprint == null) return;
+
+            var tasks = _currentSprint.GetTasks();
+
+            bool hasUnfinishedTask = false;
+
+            foreach (var task in tasks)
+            {
+                if (!task.IsCompleted) 
+                {
+                    hasUnfinishedTask = true;
+                    break;
+                }
+            }
+
+            if (!hasUnfinishedTask)
+            {
+                CompleteSprint();
+            }
+        }
+
+        private async void CompleteSprint()
+        {
+            await Task.Delay(500);
+            await _sprintView.ClearTasks();
+            _pendingTasks.Clear();
+            _activeTasks.Clear();
+            _currentSprint.ClearSprint();
+        }
+
 
         private void RestoreDevSprint()
         {
-            var tasks = _savedTasks[SprintType.Dev];
-            if(tasks == null) return;
-            
+            _savedTasks.TryGetValue(SprintType.Dev, out var tasks);
+
+            if (tasks == null) return;
+
             _currentSprintType = SprintType.Dev;
-            
+
+            _pendingDevTasks.Clear();
+            _activeTasks.Clear();
+
             foreach (var task in tasks)
             {
                 if (_currentSprint.TryAddTask(task))
@@ -68,8 +132,11 @@ namespace Scripts.Tasks
                     _pendingDevTasks.Add(task);
                 }
             }
-            
+
             _savedTasks[SprintType.Dev].Clear();
+
+            // Активируем сразу задачи после восстановления
+            ApplyProgressToCurrentTask();
         }
 
         public void UpdateStats()
@@ -87,6 +154,8 @@ namespace Scripts.Tasks
             {
                 result += $" saved tasks = {key}: {_savedTasks[key].Count}\n";
             }
+            
+            result += $"Active tasks: {_activeTasks.Count}\n";
             
             _demo._allSprintsText.text = result;
         }
@@ -110,7 +179,7 @@ namespace Scripts.Tasks
             if (type == SprintType.Dev && _savedTasks.ContainsKey(type))
             {
                 tasks = _savedTasks[type];
-                _pendingDevTasks.Clear(); // Подготовим для новых
+                _pendingDevTasks.Clear(); 
             }
 
             if (tasks != null)
@@ -168,6 +237,7 @@ namespace Scripts.Tasks
                 if (_currentSprint.TryAddTask(clone))
                 {
                     _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
+                    _pendingDevTasks.Add(clone);
                 }
             }
         }
@@ -183,12 +253,14 @@ namespace Scripts.Tasks
 
             if (_currentSprintType == SprintType.Dev)
             {
-                _savedTasks[_currentSprintType] = new List<ITask>(_pendingDevTasks);
+                var allTasks = _currentSprint.GetTasks();
+                _savedTasks[_currentSprintType] = new List<ITask>(allTasks);
             }
 
             await _sprintView.ClearTasks();
             _currentSprint.ClearSprint();
             _pendingDevTasks.Clear();
+            _activeTasks.Clear();
         }
         
         

@@ -18,6 +18,7 @@ namespace Scripts.Tasks
         public Button addDevTaskButton;
         public Button addChillTaskButton;
         public Button restoreDevSprintTaskButton;
+        public Button applyProgressToCurrentTaskButton;
         
         public TextMeshProUGUI _allSprintsText;
         private SprintSystemTest _sprintSystem;

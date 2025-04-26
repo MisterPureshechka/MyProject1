@@ -6,7 +6,10 @@ namespace Scripts.Tasks
     public class ChillTask : IChillTask
     {
         private float _lastUpdateTime;
-    
+        private bool _hasProgressChanged;
+        public event Action<ITask> OnTaskCompleted;
+        public event Action<ITask, float> OnProgressChanged;
+        public event Action<ITask> OnProgressChangedFirstTime;
         public string Title { get; }
         public string Id { get; } = Guid.NewGuid().ToString(); // Автогенерация ID
         public float Progress { get; set; }
@@ -18,28 +21,34 @@ namespace Scripts.Tasks
             Progress = progress;
         }
     
-        public event Action<ITask> OnTaskCompleted;
-        public event Action<ITask, float> OnProgressChanged;
-    
         public ITask Clone()
         {
             return new ChillTask(Title, Progress);
         }
     
-        public void ApplyProgress(float delta, float interval = 0)
+        public void ApplyProgress(float delta, float interval = 0f)
         {
             if (Time.time - _lastUpdateTime < interval) 
                 return;
             
             float oldProgress = Progress;
-            Progress = Mathf.Max(Progress - delta);
+            Progress = Math.Max(0, Progress - delta);
             _lastUpdateTime = Time.time;
-        
+            
             if (Progress != oldProgress)
             {
-                OnProgressChanged?.Invoke(this, delta);
+                // Если прогресс изменился впервые
+                if (!_hasProgressChanged)
+                {
+                    _hasProgressChanged = true;
+                    OnProgressChangedFirstTime?.Invoke(this);
+                }
+                else
+                {
+                    OnProgressChanged?.Invoke(this, delta);
+                }
             }
-
+        
             if (Progress <= 0 && !IsCompleted)
             {
                 IsCompleted = true;

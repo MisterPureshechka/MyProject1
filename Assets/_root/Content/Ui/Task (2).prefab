@@ -245,6 +245,8 @@ MonoBehaviour:
   _artColor: {r: 0.27450982, g: 0.8901961, b: 1, a: 1}
   _offset: 25
   _moveToValue: {x: 0, y: 100, z: 0}
+  _showDuration: 0.15
+  _hideDuration: 0.15
 --- !u!1 &3162187199766837022
 GameObject:
   m_ObjectHideFlags: 0

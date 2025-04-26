@@ -31,10 +31,31 @@ namespace Scripts.Ui.TaskUi
             }
             
             _taskViews.Add(taskView);
-            _taskIdToViewMap[uniqueKey] = taskView;  
+            _taskIdToViewMap[uniqueKey] = taskView;
+
+            if (task.Progress < 100f)
+            {
+                if (task.Progress <= 0)
+                {
+                    MoveTask(taskView, _done);
+                }
+                else
+                {
+                    MoveTask(taskView, _inProgress);
+                }
+            }
         
+            task.OnProgressChangedFirstTime += (completedTask) => OnTaskProgressChangedFirstTime(uniqueKey, completedTask);
             task.OnProgressChanged += (changedTask, value) => OnTaskProgressChanged(uniqueKey, changedTask, value);
             task.OnTaskCompleted += (completedTask) => OnTaskCompleted(uniqueKey, completedTask);
+        }
+
+        private void OnTaskProgressChangedFirstTime(string uniqueKey, ITask completedTask)
+        {
+            if (_taskIdToViewMap.TryGetValue(uniqueKey, out var taskView))
+            {
+                MoveTask(taskView, _inProgress);
+            }
         }
 
         private void OnTaskProgressChanged(string uniqueKey, ITask task, float value)
@@ -43,7 +64,7 @@ namespace Scripts.Ui.TaskUi
             {
                 if (taskView != null)
                 {
-                    taskView.transform.SetParent(_inProgress);
+                    //taskView.transform.SetParent(_inProgress);
                     taskView.UpdateProgress(task.Progress, value);
                     taskView.AnimateTextFx(value);
                 }
@@ -54,23 +75,39 @@ namespace Scripts.Ui.TaskUi
         {
             if (_taskIdToViewMap.TryGetValue(uniqueKey, out var taskView))
             {
-                taskView.transform.SetParent(_done);
+                MoveTask(taskView, _done);
             }
         }
 
+        private void MoveTask(TaskView taskView, Transform to)
+        {
+            taskView.HideTask( () =>
+            {
+                taskView.transform.SetParent(to);
+                taskView.ShowTask();
+            });
+        }
+        
         public async Task ClearTasks()
         {
+            _taskViews.Reverse();
+
+            // Вместо ожидания с помощью TaskCompletionSource, используем асинхронный вызов для каждой задачи
             foreach (var taskView in _taskViews)
             {
-                taskView.HideTask(() =>
-                {
-                    Destroy(taskView.gameObject);
-                });
+                await taskView.HideTaskAsync();  // Ждем завершения анимации
             }
-            await Task.Delay(1000);
-        
+
+            // После того как все задачи скрыты, уничтожаем их
+            foreach (var taskView in _taskViews)
+            {
+                Destroy(taskView.gameObject);
+            }
+
             _taskViews.Clear();
             _taskIdToViewMap.Clear();
         }
+
+
     }
 }

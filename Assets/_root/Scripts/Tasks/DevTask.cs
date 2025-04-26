@@ -6,8 +6,11 @@ namespace Scripts.Tasks
     public class DevTask : IDevTask
     {
         private float _lastUpdateTime;
+        private bool _hasProgressChanged;
         public event Action<ITask> OnTaskCompleted;
         public event Action<ITask, float> OnProgressChanged;
+        public event Action<ITask> OnProgressChangedFirstTime;
+        
         public ITask Clone()
         {
             return new DevTask(this.Type, this.Title, this.Progress)
@@ -33,16 +36,26 @@ namespace Scripts.Tasks
         {
             if (Time.time - _lastUpdateTime < interval) 
                 return;
+            
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);
             _lastUpdateTime = Time.time;
             
             if (Progress != oldProgress)
             {
-                OnProgressChanged?.Invoke(this, delta);
+                // Если прогресс изменился впервые
+                if (!_hasProgressChanged)
+                {
+                    _hasProgressChanged = true;
+                    OnProgressChangedFirstTime?.Invoke(this);
+                }
+                else
+                {
+                    OnProgressChanged?.Invoke(this, delta);
+                }
             }
-
-            if (Progress <= 0)
+        
+            if (Progress <= 0 && !IsCompleted)
             {
                 IsCompleted = true;
                 OnTaskCompleted?.Invoke(this);
