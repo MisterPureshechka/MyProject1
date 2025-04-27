@@ -33,15 +33,15 @@ namespace Scripts.Ui.TaskUi
             _taskViews.Add(taskView);
             _taskIdToViewMap[uniqueKey] = taskView;
 
-            if (task.Progress < 100f)
+            if (task.Progress < task.MaxProgress)
             {
                 if (task.Progress <= 0)
                 {
-                    MoveTask(taskView, _done);
+                    taskView.transform.SetParent(_done);
                 }
                 else
                 {
-                    MoveTask(taskView, _inProgress);
+                    taskView.transform.SetParent(_inProgress);
                 }
             }
         
@@ -92,13 +92,11 @@ namespace Scripts.Ui.TaskUi
         {
             _taskViews.Reverse();
 
-            // Вместо ожидания с помощью TaskCompletionSource, используем асинхронный вызов для каждой задачи
             foreach (var taskView in _taskViews)
             {
-                await taskView.HideTaskAsync();  // Ждем завершения анимации
+                await taskView.HideTaskAsync();  
             }
 
-            // После того как все задачи скрыты, уничтожаем их
             foreach (var taskView in _taskViews)
             {
                 Destroy(taskView.gameObject);

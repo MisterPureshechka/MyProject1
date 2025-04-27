@@ -3,35 +3,31 @@ using UnityEngine;
 
 namespace Scripts.Tasks
 {
-    public class DevTask : IDevTask
+    public class ChillTask : IChillTask
     {
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         public event Action<ITask> OnTaskCompleted;
         public event Action<ITask, float> OnProgressChanged;
         public event Action<ITask> OnProgressChangedFirstTime;
-        
-        public ITask Clone()
-        {
-            return new DevTask(this.Type, this.Title, this.Progress)
-            {
-                Id = this.Id  
-            };
-        }
-        public DevTaskType Type { get; set; }
-        
-        public string Id { get; private set;}
-        public string Title { get; set; }
+        public string Title { get; }
+        public string Id { get; } = Guid.NewGuid().ToString(); // Автогенерация ID
         public float Progress { get; set; }
+        public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
-        public DevTask(DevTaskType taskType, string title, float progress)
+        public ChillTask(string title, float progress)
         {
-            Type = taskType;
             Title = title;
             Progress = progress;
+            MaxProgress = progress;
         }
-
+    
+        public ITask Clone()
+        {
+            return new ChillTask(Title, Progress);
+        }
+    
         public void ApplyProgress(float delta, float interval = 0f)
         {
             if (Time.time - _lastUpdateTime < interval) 
@@ -43,7 +39,6 @@ namespace Scripts.Tasks
             
             if (Progress != oldProgress)
             {
-                // Если прогресс изменился впервые
                 if (!_hasProgressChanged)
                 {
                     _hasProgressChanged = true;

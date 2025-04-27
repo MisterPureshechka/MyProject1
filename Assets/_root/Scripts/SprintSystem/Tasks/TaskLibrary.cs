@@ -9,6 +9,7 @@ namespace Scripts.Tasks
         private readonly Dictionary<ITask, bool> _allTasks = new();
         private readonly Dictionary<System.Enum, bool> _allTaskTypes = new();
         private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
+        private readonly Dictionary<EatTaskType, List<IEatTask>> _allEatTasks = new();
         private ChillTask _chillTask;
        
 
@@ -16,6 +17,7 @@ namespace Scripts.Tasks
         {
             LoadAllAvailableTasks();
             LoadAllDevTasks();
+            LoadAllEatTasks();
             _chillTask = new ChillTask("Just Chill", 100f);
         }
 
@@ -64,16 +66,26 @@ namespace Scripts.Tasks
             
             _allTasks.Add(new DevTask(DevTaskType.Art, "CharacterDesign", 100f), true);
             
-            _allTasks.Add(new EatTask(EatTaskType.cake, "Nice cake", 100f), true);
-            _allTasks.Add(new EatTask(EatTaskType.coffee, "Black coffee", 100f), true);
-            
             _allTaskTypes.Add(DevTaskType.Programming, true);
             _allTaskTypes.Add(DevTaskType.Art, true);
             _allTaskTypes.Add(DevTaskType.GameDesign, true);
             _allTaskTypes.Add(DevTaskType.SoundDesign, false);
+        }
+
+        private void LoadAllEatTasks()
+        {
+            foreach (EatTaskType type in Enum.GetValues(typeof(EatTaskType)))
+            {
+                _allEatTasks[type] = new List<IEatTask>();
+            }
             
-            _allTaskTypes.Add(EatTaskType.coffee, true);
-            _allTaskTypes.Add(EatTaskType.cake, false);
+            _allEatTasks[EatTaskType.cake].Add(new EatTask(EatTaskType.cake, "Nice cake", 100f));
+            _allEatTasks[EatTaskType.coffee].Add(new EatTask(EatTaskType.coffee, "Coffee", 100f));
+        }
+
+        public ITask GetRandomEatTask()
+        {
+            return _allEatTasks[EatTaskType.cake][0];
         }
 
         public List<ITask> GetTasks<T>() where T : ITask

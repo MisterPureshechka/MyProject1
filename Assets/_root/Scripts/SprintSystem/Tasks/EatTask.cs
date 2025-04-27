@@ -12,10 +12,11 @@ namespace Scripts.Tasks
         public event Action<ITask> OnProgressChangedFirstTime;
         
         public EatTaskType Type { get; set; }
-
+        
         public string Id { get; private set; }
         public string Title { get; }
         public float Progress { get; set; }
+        public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
         public EatTask(EatTaskType taskType, string title, float progress)
@@ -23,6 +24,8 @@ namespace Scripts.Tasks
             Type = taskType;
             Title = title;
             Progress = progress;
+            MaxProgress = progress;
+            Id = Guid.NewGuid().ToString();
         }
         
         public ITask Clone()
@@ -44,7 +47,6 @@ namespace Scripts.Tasks
             
             if (Progress != oldProgress)
             {
-                // Если прогресс изменился впервые
                 if (!_hasProgressChanged)
                 {
                     _hasProgressChanged = true;
