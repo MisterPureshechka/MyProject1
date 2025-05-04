@@ -28,7 +28,7 @@ namespace Scripts.Tasks
         private void Start()
         {
             var uiFactory = new UiFactory(_data);
-            _sprintSystem = new SprintSystemTest(this, new TaskLibrary(), _canvas, _data, Object.FindAnyObjectByType<HUDView>().SprintView, uiFactory, new LocalEvents());
+            //_sprintSystem = new SprintSystemTest(this, new TaskLibrary(), _canvas, _data, Object.FindAnyObjectByType<HUDView>().SprintView, uiFactory, new LocalEvents());
         }
 
         private void Update()

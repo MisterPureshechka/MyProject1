@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
 using Scripts.Ui;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Scripts.Tasks
 {
-    public class SprintSystemTest
+    public class SprintSystemTest : ICleanUp
     {
         private TaskSystemDemo _demo;
         private readonly Dictionary<SprintType, ISprint> _sprints = new();
@@ -28,7 +29,7 @@ namespace Scripts.Tasks
         private ISprint _currentSprint => _sprints.ContainsKey(_currentSprintType) ? _sprints[_currentSprintType] : null;
 
 
-        public SprintSystemTest(TaskSystemDemo demo, TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents)
+        public SprintSystemTest(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents)
         {
             _sprintView = sprintView;
             _uiFactory = uiFactory;
@@ -36,26 +37,80 @@ namespace Scripts.Tasks
             _taskLibrary = taskLibrary;
             
             _allTaskView = _uiFactory.GetAllTaskView(canvas.transform);
+            _allTaskView.SetDevTasks(taskLibrary.GetAlLDevTasks());
+            _allTaskView.OnCloseButtonClicked += ExitSprint;
+            _allTaskView.OnApplyButtonClicked += AllDevTaskApplyButtonClickListener;
             
-            _demo = demo;
+            _allTaskView.OnTaskClicked += AddTask;
+            
+            _localEvents.OnAllTaskShow += OpenAllTasks;
+            _localEvents.OnSprintContinue += TryRestoreSprint;
+            
+            //_demo = demo;
 
             _sprints[SprintType.Dev] = new DevSprint(12);
             _sprints[SprintType.Chill] = new ChillSprint(3);
             _sprints[SprintType.Eat] = new EatSprint(5);
-            
-            _demo.enterCurrentSprintButton.onClick.AddListener(EnterToCurrentSprint);
-            
-            _demo.addDevTaskButton.onClick.AddListener(AddDevTask);
-            _demo.addChillTaskButton.onClick.AddListener(AddChillTask);
-            _demo.exitCurrentSprintButton.onClick.AddListener(ExitSprint);
-            _demo.restoreDevSprintTaskButton.onClick.AddListener(RestoreDevSprint);
-            _demo.applyProgressToCurrentTaskButton.onClick.AddListener(ApplyProgressToCurrentTask);
-            _demo.addEatTaskButton.onClick.AddListener(AddEatTask);
-            _demo.restoreEatSprintTaskButton.onClick.AddListener(RestoreEatSprint);
+
+
+            // _demo.enterCurrentSprintButton.onClick.AddListener(EnterToCurrentSprint);
+            //
+            // _demo.addDevTaskButton.onClick.AddListener(AddDevTask);
+            // _demo.addChillTaskButton.onClick.AddListener(AddChillTask);
+            // _demo.exitCurrentSprintButton.onClick.AddListener(ExitSprint);
+            // _demo.restoreDevSprintTaskButton.onClick.AddListener(RestoreDevSprint);
+            // _demo.applyProgressToCurrentTaskButton.onClick.AddListener(ApplyProgressToCurrentTask);
+            // _demo.addEatTaskButton.onClick.AddListener(AddEatTask);
+            // _demo.restoreEatSprintTaskButton.onClick.AddListener(RestoreEatSprint);
         }
 
-        private void RestoreDevSprint()
+        private void OpenAllTasks()
         {
+            _allTaskView.ShowAllTasks();
+        }
+
+        private async void TryRestoreSprint(SprintType type)
+        {
+            if (!_currentSprint.ShouldPersistTasksOnExit) return;
+            
+            while (_sprintView.IsBuisy)
+                await Task.Yield();
+            
+            _savedTasks.TryGetValue(type, out var tasks);
+
+            if (tasks == null) return;
+
+            _currentSprintType = type;
+
+            _pendingTasks.Clear();
+            _activeTasks.Clear();
+
+            foreach (var task in tasks)
+            {
+                if (_currentSprint.TryAddTask(task))
+                {
+                    await _sprintView.AddTask(task, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
+
+                    _pendingTasks.Add(task);
+                }
+            }
+
+            _savedTasks[type].Clear();
+
+            ApplyProgressToCurrentTask();
+            
+        }
+        
+        private void AllDevTaskApplyButtonClickListener()
+        {
+            _localEvents.TriggerSprintCreated(SprintType.Dev);
+        }
+
+        private async void RestoreDevSprint()
+        {
+            while (_sprintView.IsBuisy)
+                await Task.Yield();
+            
             _savedTasks.TryGetValue(SprintType.Dev, out var tasks);
 
             if (tasks == null) return;
@@ -69,8 +124,7 @@ namespace Scripts.Tasks
             {
                 if (_currentSprint.TryAddTask(task))
                 {
-                    var view = _uiFactory.GetTaskView(_sprintView.ToDoField.transform);
-                    _sprintView.AddTask(task, view);
+                    await _sprintView.AddTask(task, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
 
                     _pendingTasks.Add(task);
                 }
@@ -81,8 +135,24 @@ namespace Scripts.Tasks
             ApplyProgressToCurrentTask();
         }
 
-        private void RestoreEatSprint()
+        private async void AddTask(ITask task)
         {
+            while (_sprintView.IsBuisy)
+                await Task.Yield();
+            
+            ITask clone = task.Clone();
+                        
+            if (_currentSprint.TryAddTask(clone))
+            {
+                await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
+            }   
+        } 
+
+        private async void RestoreEatSprint()
+        {
+            while (_sprintView.IsBuisy)
+                await Task.Yield();
+            
             _savedTasks.TryGetValue(SprintType.Eat, out var tasks);
 
             if (tasks == null) return; 
@@ -96,8 +166,7 @@ namespace Scripts.Tasks
             {
                 if (_currentSprint.TryAddTask(task))
                 {
-                    var view = _uiFactory.GetTaskView(_sprintView.ToDoField.transform);
-                    _sprintView.AddTask(task, view);
+                    await _sprintView.AddTask(task, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
                     
                     _pendingTasks.Add(task);
                 }
@@ -114,8 +183,8 @@ namespace Scripts.Tasks
 
             while (_activeTasks.Count < MaxActiveTasks && _pendingTasks.Count > 0)
             {
-                var nextTask = _pendingTasks[0];
-                _pendingTasks.RemoveAt(0);
+                var nextTask = _pendingTasks[^1];
+                _pendingTasks.RemoveAt(_pendingTasks.Count - 1);
                 _activeTasks.Add(nextTask);
                 Debug.Log($"[SprintSystemTest] Added to active: {nextTask}");
             }
@@ -123,9 +192,9 @@ namespace Scripts.Tasks
             for (int i = _activeTasks.Count - 1; i >= 0; i--) 
             {
                 var task = _activeTasks[i];
-        
+            
                 task.ApplyProgress(15f, 0);
-
+            
                 if (task.Progress <= 0f)
                 {
                     CheckSprintCompletion();
@@ -184,7 +253,7 @@ namespace Scripts.Tasks
             }
             
             result += $"Active tasks: {_activeTasks.Count}\n";
-            
+            result += $"is SprintView buisy: {_sprintView.IsBuisy}\n";
             _demo._allSprintsText.text = result;
         }
 
@@ -216,8 +285,7 @@ namespace Scripts.Tasks
                 {
                     if (sprint.TryAddTask(task))
                     {
-                        var view = _uiFactory.GetTaskView(_sprintView.ToDoField.transform);
-                        _sprintView.AddTask(task, view);
+                        await _sprintView.AddTask(task, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
                         _pendingTasks.Add(task);
                     }
                 }
@@ -226,8 +294,11 @@ namespace Scripts.Tasks
             StartTaskProcessing();
         }
 
-        private void AddDevTask()
+        private async void AddDevTask()
         {
+            while (_sprintView.IsBuisy)
+                await Task.Yield();
+            
             _currentSprintType = SprintType.Dev;
             
             var tasks = _taskLibrary.GetAlLDevTasks();
@@ -237,15 +308,17 @@ namespace Scripts.Tasks
                         
             if (_currentSprint.TryAddTask(clone))
             {
-                var view = _uiFactory.GetTaskView(_sprintView.ToDoField.transform);
-                _sprintView.AddTask(clone, view);
+                await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
 
                 _pendingTasks.Add(clone);
             }
         }
 
-        private void AddEatTask()
+        private async void AddEatTask()
         {
+            while (_sprintView.IsBuisy)
+                await Task.Yield();
+            
             _currentSprintType = SprintType.Eat;
             
             var task = _taskLibrary.GetRandomEatTask();;
@@ -254,16 +327,18 @@ namespace Scripts.Tasks
                         
             if (_currentSprint.TryAddTask(clone))
             {
-                var view = _uiFactory.GetTaskView(_sprintView.ToDoField.transform);
-                _sprintView.AddTask(clone, view);
+                await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
 
                 _pendingTasks.Add(clone);
             }
         
         }
 
-        private void AddChillTask()
+        private async void AddChillTask()
         {
+            while (_sprintView.IsBuisy)
+                await Task.Yield();
+            
             _currentSprintType = SprintType.Chill;
 
             for (int i = 0; i < _currentSprint.Capacity; i++)
@@ -272,8 +347,7 @@ namespace Scripts.Tasks
                 
                 if (_currentSprint.TryAddTask(clone))
                 {
-                    var view = _uiFactory.GetTaskView(_sprintView.ToDoField.transform);
-                    _sprintView.AddTask(clone, view);
+                    await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
                     
                     _pendingTasks.Add(clone);
                 }
@@ -305,6 +379,14 @@ namespace Scripts.Tasks
         private void StartTaskProcessing()
         {
             // можно реализовать, например, перенос задач из ToDo -> InProgress -> Done
+        }
+
+        public void CleanUp()
+        {
+            _allTaskView.OnCloseButtonClicked -= ExitSprint;
+            _allTaskView.OnApplyButtonClicked -= AllDevTaskApplyButtonClickListener;
+            _localEvents.OnSprintContinue -= TryRestoreSprint;
+            _allTaskView.OnTaskClicked -= AddTask;
         }
     }
 }

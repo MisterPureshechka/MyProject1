@@ -14,9 +14,13 @@ namespace Scripts.Ui.TaskUi
         [field: SerializeField] public Transform ToDoField;
         [SerializeField] private Transform _inProgress;
         [SerializeField] private Transform _done;
+        private bool _isBuisy;
 
-        public void AddTask(ITask task, TaskView taskView)
+        public async Task AddTask(ITask task, TaskView taskView)
         {
+            while (_isBuisy)
+                await Task.Yield();
+            
             string uniqueKey = $"{task.Id}_{Guid.NewGuid()}";
 
             if (task is IDevTask devTask)
@@ -90,6 +94,7 @@ namespace Scripts.Ui.TaskUi
         
         public async Task ClearTasks()
         {
+            _isBuisy = true;
             _taskViews.Reverse();
 
             foreach (var taskView in _taskViews)
@@ -102,10 +107,11 @@ namespace Scripts.Ui.TaskUi
                 Destroy(taskView.gameObject);
             }
 
+            _isBuisy = false;
             _taskViews.Clear();
             _taskIdToViewMap.Clear();
         }
-
-
+        
+        public bool IsBuisy => _isBuisy;
     }
 }

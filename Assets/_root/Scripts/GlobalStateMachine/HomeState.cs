@@ -62,7 +62,8 @@ namespace Scripts.GlobalStateMachine
             var statEffectLogic = new StatEffectLogic(heroLogic, progressDataAdapter);
 
             var taskLibrary = new TaskLibrary();
-            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
+            //var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
+            var sprintSystem = new SprintSystemTest(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
 
             var fader = new FaderLogic(localEvents);
 

@@ -5,6 +5,6 @@ namespace Scripts.Tasks
         public override SprintType Type => SprintType.Eat;
         public EatSprint(int capacity) : base(capacity) { }
 
-        public override bool ShouldPersistTasksOnExit => false;
+        public override bool ShouldPersistTasksOnExit => true;
     }
 }
