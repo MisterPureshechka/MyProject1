@@ -1,3 +1,4 @@
+using Scripts.GlobalStateMachine;
 using Scripts.Progress;
 using Scripts.Utils;
 
@@ -6,9 +7,12 @@ namespace Scripts.Hero
     public class HeroDevState : HeroBaseState
     {
         private ProgressDataAdapter _progressData;
-        public HeroDevState(HeroLogic heroLogic, ProgressDataAdapter progressDataAdapter) : base(heroLogic)
+        private readonly LocalEvents _localEvents;
+
+        public HeroDevState(HeroLogic heroLogic, ProgressDataAdapter progressDataAdapter, LocalEvents localEvents) : base(heroLogic)
         {
             _progressData = progressDataAdapter;
+            _localEvents = localEvents;
         }
         
         public override void Enter()
@@ -22,7 +26,7 @@ namespace Scripts.Hero
         public override void Update(float deltaTime)
         {  
             base.Update(deltaTime);
-            _heroLogic.TriggerDevActiveState();
+            _localEvents.TriggerDevActiveState();
         }
 
         public override void Exit()

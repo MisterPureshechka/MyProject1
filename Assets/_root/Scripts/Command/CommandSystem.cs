@@ -26,13 +26,15 @@ namespace Scripts.Tasks
             _commandManager = new CommandManager(localEvents);
 
             _localEvents.OnMouseClickIO += ShowCommandsByType;
-            _localEvents.OnAllTaskShow += ClosePanel;
+            _localEvents.OnTaskCatalogShow += ClosePanel;
             _localEvents.OnClickEmpty += ClosePanel;
             _localEvents.OnSprintContinue += ClosePanel;
+            _localEvents.OnSprintCreated += ClosePanel;
+            _localEvents.OnHeroWalkToIO += ClosePanel;
             
         }
 
-        private void ShowCommandsByType(SprintType type, Vector2 position)
+        private void ShowCommandsByType(SprintType type, Vector2 position) // тут должен быть IOType
         {
             _commandPanelView.gameObject.SetActive(true);
             _commandPanelView.ShowCommands(_commandManager.GetCommandsForSprint(type));
@@ -62,7 +64,7 @@ namespace Scripts.Tasks
         {
             _commandManager.CleanUp();
             _localEvents.OnMouseClickIO -= ShowCommandsByType;
-            _localEvents.OnAllTaskShow -= ClosePanel;
+            _localEvents.OnTaskCatalogShow -= ClosePanel;
             _localEvents.OnClickEmpty -= ClosePanel;
         }
     }

@@ -15,6 +15,7 @@ namespace Scripts.Hero
 
         public virtual void Enter()
         {
+            
         }
 
         public virtual void Update(float deltaTime)

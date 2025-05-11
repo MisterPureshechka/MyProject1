@@ -1,23 +1,39 @@
 using System;
 using Core;
+using Scripts.GlobalStateMachine;
 using Scripts.Hero;
 using Scripts.Progress;
+using Scripts.Tasks;
 using Scripts.Utils;
 
 namespace Scripts.Stat
 {
     public class StatEffectLogic : ICleanUp
     {
-        private readonly HeroLogic _heroLogic;
         private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly LocalEvents _localEvents;
 
-        public StatEffectLogic(HeroLogic heroLogic, ProgressDataAdapter progressDataAdapter)
+        public StatEffectLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
         {
-            _heroLogic = heroLogic;
             _progressDataAdapter = progressDataAdapter;
+            _localEvents = localEvents;
 
-            _heroLogic.OnDevActiveStat += DevProgressCallback;
-            _heroLogic.OnChillActiveStat += ChillProgressCallback;
+            _localEvents.OnActiveSprintByType += ChangeStatBySprintType;
+        }
+
+        private void ChangeStatBySprintType(SprintType sprintType)
+        {
+            switch (sprintType)
+            {
+                case SprintType.Dev:
+                    DevProgressCallback();
+                    break;
+                case SprintType.Chill:
+                    ChillProgressCallback();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void DevProgressCallback()
@@ -32,8 +48,7 @@ namespace Scripts.Stat
 
         public void CleanUp()
         {
-            _heroLogic.OnDevActiveStat -= DevProgressCallback;
-            _heroLogic.OnChillActiveStat -= ChillProgressCallback;
+            _localEvents.OnActiveSprintByType -= ChangeStatBySprintType;
         }
     }
 }

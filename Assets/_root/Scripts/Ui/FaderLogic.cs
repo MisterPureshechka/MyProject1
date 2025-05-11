@@ -14,25 +14,25 @@ namespace Scripts.Ui
         public FaderLogic(LocalEvents events)
         {
             _events = events;
-            _events.OnAllTaskShow += ShowFader;
-            _events.OnAllTaskHide += HideFader;
+            _events.OnTaskCatalogShow += ShowFader;
+            _events.OnTaskCatalogHide += HideFader;
             _faderView = Object.FindObjectOfType<FaderView>();
         }
 
-        private void HideFader()
+        private void HideFader(SprintType sprintType)
         {
             _faderView.Hide();
         }
 
-        private void ShowFader()
+        private void ShowFader(SprintType sprintType)
         {
             _faderView.Show();
         }
 
         public void CleanUp()
         {
-            _events.OnAllTaskShow -= ShowFader;
-            _events.OnAllTaskHide -= HideFader;
+            _events.OnTaskCatalogShow -= ShowFader;
+            _events.OnTaskCatalogHide -= HideFader;
         }
     }
 }

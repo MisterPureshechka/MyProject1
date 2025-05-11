@@ -1,3 +1,4 @@
+using Scripts.GlobalStateMachine;
 using Scripts.Rooms;
 using UnityEngine;
 
@@ -5,12 +6,14 @@ namespace Scripts.Hero
 {
     public class HeroWalkToIOState : HeroBaseState
     {
+        private readonly LocalEvents _localEvents;
         private IInteractiveObject _targetIO;
         private Vector3 _playerPosition;
         private Vector3 _targetPosition;
 
-        public HeroWalkToIOState(HeroLogic heroLogic) : base(heroLogic)
+        public HeroWalkToIOState(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
         {
+            _localEvents = localEvents;
         }
         
         public override void Enter()
@@ -26,6 +29,7 @@ namespace Scripts.Hero
                 _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
             }
             
+            _heroLogic.FlipHero(_heroLogic.HeroPosition().x > _targetPosition.x);
             _heroLogic.PlayAnimation(HeroAnimationState.Walk, true);
         }
 
@@ -40,8 +44,9 @@ namespace Scripts.Hero
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
                 _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
-                _heroLogic.ChangeStateByIOType(_targetIO.SprintType);
-                // _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
+                //_heroLogic.ChangeStateByIOType(_targetIO.SprintType);
+                _localEvents.TriggerHeroGetIO(_targetIO.SprintType);
+                //_heroLogic.ChangeState(_heroLogic.HeroAwaitState);
                 // _heroLogic.TriggerIOBySprintType(_targetIO.SprintType);
             }
         }

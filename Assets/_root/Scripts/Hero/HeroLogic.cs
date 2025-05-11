@@ -71,35 +71,45 @@ namespace Scripts.Hero
             _heroStateMachine = new HeroStateMachine();
             IdleState = new HeroIdleState(this);
             WalkState = new HeroWalkState(this);
-            DevState = new HeroDevState(this, _progressData);
+            DevState = new HeroDevState(this, _progressData, _localEvents);
             EatState = new HeroEatState(this, _progressData);
             SleepState = new HeroSleepState(this, _progressData);
-            WalkToIOState = new HeroWalkToIOState(this);
+            WalkToIOState = new HeroWalkToIOState(this, _localEvents);
             ReadState = new HeroReadState(this, _progressData);
-            ChillState = new HeroChillState(this, _progressData);
+            ChillState = new HeroChillState(this, _progressData, _localEvents);
             PlayState = new HeroPlayState(this, _progressData);
             HeroAwaitState = new HeroAwaitState(this);
             
             _heroStateMachine.Init(IdleState);
 
-            _heroMovementLogic.OnGetDestination += MouseListener;
-            _heroMovementLogic.OnGetTargetI0 += GetTargetIO;
+            _heroMovementLogic.OnClickDestination += MouseListener;
+            _heroMovementLogic.OnClickI0 += GetTargetIO;
             _localEvents.OnClosePanel += PanelCloseCallback;
             _localEvents.OnOpenPanel += PanelOpenListener;
-            _localEvents.OnMouseClickWorld += OnCLickWorld;
-            //_localEvents.OnGetSupportedType += HeroAwaitListener;
-            _localEvents.OnSprintCreated += WalkToIO;
-            _localEvents.OnSprintContinue += WalkToIO;
-            _localEvents.OnSprintClosed += ClosedSprintListener;
+            _localEvents.OnTaskCatalogHide += TaskCatalogHideListener;
+            _localEvents.OnSprintCreated += ChangeStateByIOType;
+            _localEvents.OnWalkToIO += WalkToIO;
+            _localEvents.OnSprintComplete += SprintCompleteListener;
+        }
+
+        private void SprintCompleteListener(SprintType type)
+        {
+            Debug.Log("Sprint complete - " + type);
+            ChangeState(IdleState);
+        }
+
+        private void TaskCatalogHideListener(SprintType obj)
+        {
+            ChangeState(IdleState);
         }
 
         private void WalkToIO(SprintType sprintType)
         {
             ChangeState(WalkToIOState);
-            _localEvents.TriggerWalkToIO(sprintType);
+            _localEvents.TriggerHeroWalkToIO();
         }
 
-        public void ChangeStateByIOType(SprintType iOType)
+        private void ChangeStateByIOType(SprintType iOType)
         {
             switch (iOType)
             {
@@ -126,18 +136,10 @@ namespace Scripts.Hero
                     break;
             }
         }
-        public void TriggerIOBySprintType(SprintType iOType)
-        {
-            TriggerHeroGetIO(iOType);
-        }
-
+        
         public void TriggerHeroGetIO(SprintType iOType)
         {
             _localEvents.TriggerHeroGetIO(iOType);
-        }
-        public void TriggerHeroGetIO()
-        {
-            _localEvents.TriggerGetHeroPos(_heroView.transform.position);
         }
 
         private void OnCLickWorld(Vector2 position)
@@ -148,11 +150,6 @@ namespace Scripts.Hero
         private void HeroAwaitListener(bool isAwait)
         {
             _isAwait = isAwait;
-        }
-
-        public void TriggerDevActiveState()
-        {
-            _localEvents.TriggerDevActiveState();
         }
 
         public void TriggerActiveSprintByType(SprintType sprintType)
@@ -205,19 +202,20 @@ namespace Scripts.Hero
             
             _targetIO = iO;
             _targetPosition = NormalizeVector(iO.Position);
-            _heroStateMachine.ChangeState(WalkToIOState);
-            FlipHero(_heroView.transform.position.x > _targetPosition.x);
+            // _heroStateMachine.ChangeState(WalkToIOState);
+            // FlipHero(_heroView.transform.position.x > _targetPosition.x);
         }
 
         private void PanelCloseCallback()
         {
             _isAwait = false;
+            //ChangeState(IdleState);
         }
 
         private void PanelOpenListener()
         {
             _isAwait = true;
-            ChangeState(HeroAwaitState);
+            /////ChangeState(HeroAwaitState);
         }
 
         public Vector3 NormalizeVector(Vector3 vector)
@@ -285,16 +283,14 @@ namespace Scripts.Hero
 
         public void CleanUp()
         {
-            _heroMovementLogic.OnGetDestination -= MouseListener;
-            _heroMovementLogic.OnGetTargetI0 -= GetTargetIO;
+            _heroMovementLogic.OnClickDestination -= MouseListener;
+            _heroMovementLogic.OnClickI0 -= GetTargetIO;
             _localEvents.OnClosePanel -= PanelCloseCallback;
-            //_localEvents.OnGetSupportedType -= HeroAwaitListener;
             _localEvents.OnOpenPanel -= PanelOpenListener;
             _localEvents.OnMouseClickWorld -= OnCLickWorld;
-            //_localEvents.OnGetSupportedType += HeroAwaitListener;
-            _localEvents.OnSprintCreated -= WalkToIO;
-            _localEvents.OnSprintContinue -= WalkToIO;
-            _localEvents.OnSprintClosed -= ClosedSprintListener;
+            _localEvents.OnSprintCreated -= ChangeStateByIOType;
+            _localEvents.OnTaskCatalogHide -= TaskCatalogHideListener;
+            _localEvents.OnSprintComplete -= SprintCompleteListener;
         }
 
         public void TiggerSprintExit()

@@ -13,7 +13,7 @@ namespace Scripts.GlobalStateMachine
         public Action OnOpenPanel { get; set; }
         public void TriggerOpenPanel() => OnOpenPanel?.Invoke();
 
-        public Action<SprintType> OnHeroGetIO;
+        public Action<SprintType> OnHeroGetIO { get; set; }
         public void TriggerHeroGetIO(SprintType iOType) => OnHeroGetIO?.Invoke(iOType);
         
         public Action<Vector2> OnMouseClickWorld {get; set;}
@@ -36,15 +36,15 @@ namespace Scripts.GlobalStateMachine
         
         public Action<Vector3> OnGetHeroPos { get; set; }
         public void TriggerGetHeroPos(Vector3 pos) => OnGetHeroPos?.Invoke(pos);
-
+        
         public Action OnClickEmpty {get; set;}
         public void TriggerEmptyClick() => OnClickEmpty?.Invoke();
 
-        public Action OnAllTaskShow { get; set; }
-        public void TriggerAllTaskShow() => OnAllTaskShow?.Invoke();
+        public Action<SprintType> OnTaskCatalogShow { get; set; }
+        public void TriggerAllTaskShow(SprintType type) => OnTaskCatalogShow?.Invoke(type);
 
-        public Action OnAllTaskHide { get; set; }
-        public void TriggerAllTaskHide() => OnAllTaskHide?.Invoke();
+        public Action<SprintType> OnTaskCatalogHide { get; set; }
+        public void TriggerTaskCatalogHide(SprintType type) => OnTaskCatalogHide?.Invoke(type);
         
         public Action<SprintType> OnSprintCreated {get; set;}
         public void TriggerSprintCreated(SprintType type) => OnSprintCreated?.Invoke(type);
@@ -69,8 +69,14 @@ namespace Scripts.GlobalStateMachine
 
         public Action<SprintType> OnWalkToIO { get; set; }
         public void TriggerWalkToIO(SprintType sprintType) => OnWalkToIO?.Invoke(sprintType);
+        
+        public Action OnHeroWalkToIO { get; set; }
+        public void TriggerHeroWalkToIO() => OnHeroWalkToIO?.Invoke();
 
         public Action<SprintType> OnAutoSprintCreated { get; set; }
         public void TriggerCreateAutoSprint(SprintType type) => OnAutoSprintCreated?.Invoke(type);
+
+        public Action<SprintType> OnSprintComplete { get; set; }
+        public void TriggerSprintComplete(SprintType sprintType) => OnSprintComplete?.Invoke(sprintType); 
     }
 }

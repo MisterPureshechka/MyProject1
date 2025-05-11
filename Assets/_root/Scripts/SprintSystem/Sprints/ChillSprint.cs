@@ -6,5 +6,6 @@ namespace Scripts.Tasks
         public override SprintType Type => SprintType.Chill;
 
         public ChillSprint(int capacity) : base(capacity) {}
+        public override bool HasCatalog => false;
     }
 }

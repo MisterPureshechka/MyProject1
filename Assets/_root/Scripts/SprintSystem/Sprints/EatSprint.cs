@@ -6,5 +6,6 @@ namespace Scripts.Tasks
         public EatSprint(int capacity) : base(capacity) { }
 
         public override bool ShouldPersistTasksOnExit => true;
+        public override bool HasCatalog => true;
     }
 }

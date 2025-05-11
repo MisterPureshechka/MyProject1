@@ -9,8 +9,8 @@ namespace Scripts.Hero
 {
     public class HeroMovementLogic : ICleanUp
     {
-        public Action<Vector3> OnGetDestination;
-        public Action<IInteractiveObject> OnGetTargetI0;
+        public Action<Vector3> OnClickDestination {get;  set;}
+        public Action<IInteractiveObject> OnClickI0 {get;  set;}
         
 
         private readonly Camera _camera;
@@ -44,11 +44,11 @@ namespace Scripts.Hero
                 {
                     IInteractiveObject io = _ioRegisterer.GetInteractiveObject(clickedObject);
                     //OnGetDestination?.Invoke(io.Position);
-                    OnGetTargetI0?.Invoke(io);
+                    OnClickI0?.Invoke(io);
                 }
                 else
                 {
-                    OnGetDestination?.Invoke(worldPosition);
+                    OnClickDestination?.Invoke(worldPosition);
                 }
             }
         }

@@ -94,8 +94,6 @@ namespace Scripts.Ui.TaskUi
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             
-            _localEvents.TriggerAllTaskHide();
-            
             _root.gameObject.SetActive(true);
             _sequence.Append(_root.transform.DOMove(_hidePosition, 0.4f).SetEase(Ease.InSine));
         }
@@ -112,6 +110,8 @@ namespace Scripts.Ui.TaskUi
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             _applyButton.gameObject.SetActive(false);
+            
+            Debug.LogError("Task shown insight");
             
             foreach (var containers in _buttonsContainers)
             {

@@ -49,9 +49,10 @@ namespace Scripts.Tasks
                 new Command
                 {
                     CommandName = "Отдохнусть",
-                    OnExecute = () => _localEvents.TriggerCreateAutoSprint(SprintType.Chill),
+                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Chill),
                 }
             };
+            
             Commands.Add(SprintType.Chill, chillCommands);
         }
 
@@ -60,13 +61,13 @@ namespace Scripts.Tasks
             _createSprintCommand = new Command
             {
                 CommandName = "Create Sprint",
-                OnExecute = _localEvents.TriggerAllTaskShow,
+                OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Dev),
             };
             _devCommands.Add(_createSprintCommand);
             _continueSprintCommand = new Command
             {
                 CommandName = "Continue Sprint",
-                OnExecute = () => _localEvents.TriggerSprintContinue(SprintType.Dev),
+                OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Dev),
             };
             
             Commands.Add(SprintType.Dev, _devCommands);

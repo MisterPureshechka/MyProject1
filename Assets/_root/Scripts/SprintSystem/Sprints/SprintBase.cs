@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Scripts.Tasks
 {
@@ -10,9 +11,11 @@ namespace Scripts.Tasks
         public abstract int FreeSlots { get; }
         public abstract bool TryAddTask(ITask task);
         public abstract List<ITask> GetTasks();
-
         public abstract void ClearSprint();
         public abstract bool ShouldPersistTasksOnExit { get; }
+        public abstract bool HasCatalog { get; }
+        public abstract bool IsAutoSprint { get; }
+        public abstract Vector3 WorldPosition { get; }
     }
     
     public interface ISprint
@@ -22,6 +25,9 @@ namespace Scripts.Tasks
         bool TryAddTask(ITask task);
         List<ITask> GetTasks();
         void ClearSprint();
-        bool ShouldPersistTasksOnExit { get; } // новое!
+        bool ShouldPersistTasksOnExit { get; }
+        bool HasCatalog { get; }
+        bool IsAutoSprint { get; }
+        Vector3 WorldPosition { get; }
     }
 }

@@ -59,11 +59,11 @@ namespace Scripts.GlobalStateMachine
             
             var hud = Object.FindAnyObjectByType<HUDView>();
             var statController = new StatsController(progressDataAdapter);
-            var statEffectLogic = new StatEffectLogic(heroLogic, progressDataAdapter);
+            var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents);
 
             var taskLibrary = new TaskLibrary();
             //var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
-            var sprintSystem = new SprintSystemTest(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
+            var sprintSystem = new SprintSystemTest(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister);
 
             var fader = new FaderLogic(localEvents);
 

@@ -15,7 +15,6 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
-            // _targetIO = _heroLogic.GetTargetIO();
             // _heroLogic.TriggerHeroGetIO();
             //
             // if (_targetIO.RootObjectPosition != null)
@@ -26,6 +25,8 @@ namespace Scripts.Hero
             // {
             //     _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
             // }
+            //_heroLogic.TriggerHeroGetIO();
+            
             _heroLogic.PlayAnimation(HeroAnimationState.Idle, true);
         }
 

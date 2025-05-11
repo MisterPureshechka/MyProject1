@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Scripts.Tasks
 {
@@ -13,6 +14,11 @@ namespace Scripts.Tasks
         public override int FreeSlots => Capacity - Tasks.Count;
         public override bool IsActiveSprint => Tasks.Any();
         public Sprint(int capacity) => Capacity = capacity;
+        public override bool HasCatalog { get; }
+        
+        public override bool IsAutoSprint { get; }
+        
+        public override Vector3 WorldPosition { get; }
 
         public override bool TryAddTask(ITask task)
         {

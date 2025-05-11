@@ -10,6 +10,7 @@ namespace Scripts.Tasks
         private readonly Dictionary<System.Enum, bool> _allTaskTypes = new();
         private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
         private readonly Dictionary<EatTaskType, List<IEatTask>> _allEatTasks = new();
+        private readonly Dictionary<SprintType, ITask> _autoSprints = new();
         private ChillTask _chillTask;
        
 
@@ -18,7 +19,12 @@ namespace Scripts.Tasks
             LoadAllAvailableTasks();
             LoadAllDevTasks();
             LoadAllEatTasks();
-            _chillTask = new ChillTask("Just Chill", 100f);
+            LoadAutoSprintTasks();
+        }
+
+        private void LoadAutoSprintTasks()
+        {
+            _autoSprints[SprintType.Chill] = new ChillTask("Just Chill", 100f);
         }
 
         private void LoadAllDevTasks()
@@ -118,7 +124,7 @@ namespace Scripts.Tasks
             return types;
         }
         
-        public ChillTask GetChillTask => _chillTask;
+        public ITask GetAutoTasks(SprintType sprintType) => _autoSprints[sprintType];
 
         public void CleanUp()
         {
