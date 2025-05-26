@@ -17,16 +17,16 @@ MonoBehaviour:
     - Key: Food
       Value:
         MetaType: 0
-        Value: 10
+        Value: 100
         DisplayName: Food
-        MaxValue: 10
+        MaxValue: 100
         Tooltip: 
     - Key: Energy
       Value:
         MetaType: 0
-        Value: 11
+        Value: 100
         DisplayName: Energy
-        MaxValue: 12
+        MaxValue: 100
         Tooltip: 
     - Key: Passion
       Value:

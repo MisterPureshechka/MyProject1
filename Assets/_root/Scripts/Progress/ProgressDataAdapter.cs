@@ -50,14 +50,33 @@ namespace Scripts.Progress
             return null; 
         }
     
-        public void UpdateValue(string key, float newValue) {
+        public void UpdateValue(string key, float newValue) 
+        {
             if (_progressData.Metadata.ContainsKey(key)) {
-                _progressData.Metadata[key].Value += newValue;
+                
+                var oldValue = _progressData.Metadata[key].Value;
+                var result = oldValue + newValue;
+                
+                Debug.Log($"Updating {key}: old={oldValue}, delta={newValue}, result={_progressData.Metadata[key].Value}");
+                
+                if (result <= 0)
+                {
+                    _progressData.Metadata[key].Value = 0;
+                }
+                else if (result >= _progressData.Metadata[key].MaxValue)
+                {
+                    _progressData.Metadata[key].Value = _progressData.Metadata[key].MaxValue;
+                }
+                else
+                {
+                    _progressData.Metadata[key].Value = result;
+                }
             }
             else
             {
                 Debug.LogError($"Failed to Update metadata for {key}");
             }
+            
         }
 
         public ProgressData GetProgressData()

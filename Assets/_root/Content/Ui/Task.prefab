@@ -93,6 +93,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _titleText: {fileID: 3563120966893485472}
   _progressInfo: {fileID: 8067655240996608955}
+  _fxText: {fileID: 0}
+  _spriteImage: {fileID: 0}
+  _paperSprite: []
+  _gameDesignColor: {r: 0, g: 0, b: 0, a: 0}
+  _soundDesignColor: {r: 0, g: 0, b: 0, a: 0}
+  _programmingColor: {r: 0, g: 0, b: 0, a: 0}
+  _marketingColor: {r: 0, g: 0, b: 0, a: 0}
+  _artColor: {r: 0, g: 0, b: 0, a: 0}
+  _offset: 0.01
+  _moveToValue: {x: 0, y: 0, z: 0}
+  _showDuration: 0.2
+  _hideDuration: 0.2
 --- !u!114 &4733374313451335412
 MonoBehaviour:
   m_ObjectHideFlags: 0

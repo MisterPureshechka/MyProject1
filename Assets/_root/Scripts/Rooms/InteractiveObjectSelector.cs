@@ -93,7 +93,7 @@ namespace Scripts.Rooms
             {
                 var interactiveObj = _iORegisterer.GetInteractiveObject(clickedObject);
 
-                _localEvents.TriggerMouseClickedIO(interactiveObj.SprintType, interactiveObj.Position);
+                _localEvents.TriggerMouseClickedIO(interactiveObj.IOType, interactiveObj.Position);
             }
             else
             {

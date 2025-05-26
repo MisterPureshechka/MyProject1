@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Scripts.Hero
 {
-    public class HeroWalkToIOState : HeroBaseState
+    public class HeroWalkToRootIOState : HeroBaseState
     {
         private readonly LocalEvents _localEvents;
         private IInteractiveObject _targetIO;
         private Vector3 _playerPosition;
         private Vector3 _targetPosition;
 
-        public HeroWalkToIOState(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
+        public HeroWalkToRootIOState(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
         {
             _localEvents = localEvents;
         }
@@ -20,7 +20,14 @@ namespace Scripts.Hero
         {
             _targetIO = _heroLogic.GetTargetIO();
             
-            _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
+            if (_targetIO.RootObjectPosition != null)
+            {
+                _targetPosition = _heroLogic.NormalizeVector(_targetIO.RootObjectPosition.position);
+            }
+            else
+            {
+                _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
+            }
             
             _heroLogic.FlipHero(_heroLogic.HeroPosition().x > _targetPosition.x);
             _heroLogic.PlayAnimation(HeroAnimationState.Walk, true);
@@ -36,11 +43,9 @@ namespace Scripts.Hero
 
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
-                //_heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
-                //_heroLogic.ChangeStateByIOType(_targetIO.SprintType);
-                _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
-                _localEvents.TriggerHeroGetIO(_targetIO.SprintType);
-                
+                _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
+                _localEvents.TriggerHeroGetRootIO(_targetIO.SprintType);
+                //_heroLogic.ChangeState(_heroLogic.HeroAwaitState);
                 // _heroLogic.TriggerIOBySprintType(_targetIO.SprintType);
             }
         }

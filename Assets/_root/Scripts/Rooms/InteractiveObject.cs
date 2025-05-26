@@ -10,6 +10,7 @@ namespace Scripts.Rooms
         [SerializeField] private SprintType _sprintType;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Transform _rootObject;
+        [SerializeField] private InteractiveObjectType _ioType;
 
         public SpriteRenderer spriteRenderer => _spriteRenderer;
         public SprintType SprintType => _sprintType;
@@ -18,7 +19,8 @@ namespace Scripts.Rooms
 
         public Action OnCursorEnter { get; set; }
         public Action OnCursorExit { get; set; }
-        
+        public InteractiveObjectType IOType => _ioType;
+
         public void SetSortingOrder()
         {
             _spriteRenderer.sortingOrder = Consts.DafaultSortingOrder;

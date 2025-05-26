@@ -5,9 +5,9 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 10.0,
+                    "Value": 31.619583129882814,
                     "DisplayName": "Food",
-                    "MaxValue": 10.0,
+                    "MaxValue": 100.0,
                     "Tooltip": ""
                 }
             },
@@ -15,9 +15,9 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 0.4411826729774475,
+                    "Value": 31.619583129882814,
                     "DisplayName": "Energy",
-                    "MaxValue": 12.0,
+                    "MaxValue": 100.0,
                     "Tooltip": ""
                 }
             },

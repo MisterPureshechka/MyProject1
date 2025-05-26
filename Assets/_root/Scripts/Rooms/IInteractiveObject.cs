@@ -14,5 +14,7 @@ namespace Scripts.Rooms
 
         Action OnCursorEnter { get; set; }
         Action OnCursorExit { get; set; }
+        
+        InteractiveObjectType IOType { get; }
     }
 }

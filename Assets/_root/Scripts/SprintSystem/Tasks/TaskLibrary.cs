@@ -11,7 +11,6 @@ namespace Scripts.Tasks
         private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
         private readonly Dictionary<EatTaskType, List<IEatTask>> _allEatTasks = new();
         private readonly Dictionary<SprintType, ITask> _autoSprints = new();
-        private ChillTask _chillTask;
        
 
         public TaskLibrary()
@@ -25,6 +24,7 @@ namespace Scripts.Tasks
         private void LoadAutoSprintTasks()
         {
             _autoSprints[SprintType.Chill] = new ChillTask("Just Chill", 100f);
+            _autoSprints[SprintType.Read] = new ReadTask("Programming", 200f);
         }
 
         private void LoadAllDevTasks()

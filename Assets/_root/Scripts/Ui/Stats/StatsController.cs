@@ -25,12 +25,14 @@ namespace Scripts.Ui
             barView.UpdateView(value, maxValue);
         }
     
-        public void UpdateAllViews() {
+        public void UpdateAllViews() 
+        {
             foreach (var view in _views) {
                 var value = _adapter.GetStats(view.Metatype);
                 var maxValue = _adapter.GetMaxStats(view.Metatype);
 
                 view.UpdateView(value, maxValue);
+                Debug.Log(view.Metatype.ToString() + " - " +value);
             }
         }
 
@@ -46,6 +48,8 @@ namespace Scripts.Ui
                 UpdateAllViews();
                 _timeSinceLastUpdate = 0;
             }
+            
+            
         }
     }
 }

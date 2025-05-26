@@ -1,5 +1,6 @@
 using System;
 using Core;
+using Scripts.Rooms;
 using Scripts.Tasks;
 using UnityEngine;
 
@@ -19,8 +20,8 @@ namespace Scripts.GlobalStateMachine
         public Action<Vector2> OnMouseClickWorld {get; set;}
         public void TriggerMouseClickedWorld(Vector2 pos) => OnMouseClickWorld?.Invoke(pos);
 
-        public Action<SprintType, Vector2> OnMouseClickIO { get; set; }
-        public void TriggerMouseClickedIO(SprintType iOType, Vector2 pos) => OnMouseClickIO?.Invoke(iOType, pos);
+        public Action<InteractiveObjectType, Vector2> OnMouseClickIO { get; set; }
+        public void TriggerMouseClickedIO(InteractiveObjectType iOType, Vector2 pos) => OnMouseClickIO?.Invoke(iOType, pos);
         
         public Action<Vector2> OnMouseClickUI;
         public void TriggerMouseClickedUI(Vector2 pos) => OnMouseClickUI?.Invoke(pos);
@@ -77,6 +78,9 @@ namespace Scripts.GlobalStateMachine
         public void TriggerCreateAutoSprint(SprintType type) => OnAutoSprintCreated?.Invoke(type);
 
         public Action<SprintType> OnSprintComplete { get; set; }
-        public void TriggerSprintComplete(SprintType sprintType) => OnSprintComplete?.Invoke(sprintType); 
+        public void TriggerSprintComplete(SprintType sprintType) => OnSprintComplete?.Invoke(sprintType);
+
+        public Action<SprintType> OnHeroGetRootIO { get; set; }
+        public void TriggerHeroGetRootIO(SprintType targetIOSprintType) => OnHeroGetRootIO?.Invoke(targetIOSprintType);
     }
 }

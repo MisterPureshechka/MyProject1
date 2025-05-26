@@ -2,17 +2,17 @@ using Scripts.Rooms;
 
 namespace Scripts.Tasks
 {
-    public class ChillSprint : Sprint<IChillTask> 
+    public class ReadSprint : Sprint<IReadTask> 
     {
         private readonly IInteractiveObject _objectToInteract;
         public override bool ShouldPersistTasksOnExit => false;
-        public override SprintType Type => SprintType.Chill;
+        public override SprintType Type => SprintType.Read;
         public override bool HasCatalog => false;
+        
         public override IInteractiveObject InteractiveObject => _objectToInteract;
-
-        public ChillSprint(int capacity, IInteractiveObject objectToInteract) : base(capacity, objectToInteract)
+        
+        public ReadSprint(int capacity, IInteractiveObject objectToInteract) : base(capacity, objectToInteract)
         {
-            _objectToInteract = objectToInteract;
         }
     }
 }

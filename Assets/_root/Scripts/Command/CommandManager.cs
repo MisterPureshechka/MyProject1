@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Scripts.GlobalStateMachine;
+using Scripts.Rooms;
 using UnityEngine;
 
 namespace Scripts.Tasks
@@ -7,7 +8,7 @@ namespace Scripts.Tasks
     public class CommandManager 
     {
         private readonly LocalEvents _localEvents;
-        public Dictionary<SprintType, List<Command>> Commands = new();
+        public Dictionary<InteractiveObjectType, List<Command>> Commands = new();
         
         private List<Command> _devCommands = new();
 
@@ -18,7 +19,7 @@ namespace Scripts.Tasks
         {
             _localEvents = localEvents;
             LoadAllCommands();
-            _localEvents.OnActiveState += SwitchSprintCommandState;
+            //_localEvents.OnActiveState += SwitchSprintCommandState;
             _localEvents.OnSprintClosed += SprintCloseListener;
         }
 
@@ -32,6 +33,7 @@ namespace Scripts.Tasks
         private void LoadAllCommands()
         {
             CreateDevCommands();
+            CreateReadCommands();
 
             var eatCommands = new List<Command>
             {
@@ -42,7 +44,7 @@ namespace Scripts.Tasks
                     CommandName = "Закончить перерыв"
                 }
             };
-            Commands.Add(SprintType.Eat, eatCommands);
+            Commands.Add(InteractiveObjectType.Fridge, eatCommands);
 
             var chillCommands = new List<Command>
             {
@@ -53,7 +55,7 @@ namespace Scripts.Tasks
                 }
             };
             
-            Commands.Add(SprintType.Chill, chillCommands);
+            Commands.Add(InteractiveObjectType.Chair, chillCommands);
         }
 
         private void CreateDevCommands()
@@ -70,21 +72,35 @@ namespace Scripts.Tasks
                 OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Dev),
             };
             
-            Commands.Add(SprintType.Dev, _devCommands);
+            Commands.Add(InteractiveObjectType.Pc, _devCommands);
         }
 
-        public List<Command> GetCommandsForSprint(SprintType sprintType)
+        private void CreateReadCommands()
         {
-            if (Commands.TryGetValue(sprintType, out var commands))
+            var readCommands = new List<Command>
+            {
+                new Command
+                {
+                    CommandName = "Read Books",
+                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Read),
+                }
+            };
+            
+            Commands.Add(InteractiveObjectType.Books, readCommands);
+        }
+
+        public List<Command> GetCommandsForSprint(InteractiveObjectType iOType)
+        {
+            if (Commands.TryGetValue(iOType, out var commands))
             {
                 return commands;
             }
             return new List<Command>();
         }
 
-        private void SwitchSprintCommandState(bool hasActiveState, SprintType sprintType)
+        private void SwitchSprintCommandState(bool hasActiveState, InteractiveObjectType iOType)
         {
-            if (sprintType == SprintType.Dev)
+            if (iOType == InteractiveObjectType.Pc)
             {
                 if (hasActiveState)
                 {
@@ -101,7 +117,7 @@ namespace Scripts.Tasks
 
         public void CleanUp()
         {
-            _localEvents.OnActiveState -= SwitchSprintCommandState;
+            //_localEvents.OnActiveState -= SwitchSprintCommandState;
             _localEvents.OnSprintClosed -= SprintCloseListener;
         }
 

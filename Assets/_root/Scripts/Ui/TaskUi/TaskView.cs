@@ -49,14 +49,14 @@ namespace Scripts.Ui.TaskUi
         public void SetInfo(string titleText, float progressText)
         {
             //_titleText.text = titleText;
-            _progressInfo.text = progressText.ToString("0.0");
+            //_progressInfo.text = progressText.ToString("0.0");
         }
 
         public void SetInfoIfDev(string titleText, float progressText, DevTaskType taskType)
         {
             //_titleText.text = titleText;
             _isOnStart = true;
-            _progressInfo.text = progressText.ToString("0.0");
+            //_progressInfo.text = progressText.ToString("0.0");
             _spriteImage.sprite = _paperSprite[Random.Range(0, _paperSprite.Length)];
             _spriteImage.color = DevTypeToColor(taskType);
         }
@@ -122,7 +122,7 @@ namespace Scripts.Ui.TaskUi
             if (_isDestroyed) return;
         
             _isOnStart = false;
-            _progressInfo.text = progress.ToString("0.0");
+            //_progressInfo.text = progress.ToString("0.0");
         }
 
         public void AnimateTextFx(float value)

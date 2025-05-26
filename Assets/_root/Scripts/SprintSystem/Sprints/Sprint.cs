@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Scripts.Rooms;
 using UnityEngine;
 
 namespace Scripts.Tasks
@@ -13,12 +14,11 @@ namespace Scripts.Tasks
         public override int Capacity { get; }
         public override int FreeSlots => Capacity - Tasks.Count;
         public override bool IsActiveSprint => Tasks.Any();
-        public Sprint(int capacity) => Capacity = capacity;
         public override bool HasCatalog { get; }
-        
+
         public override bool IsAutoSprint { get; }
         
-        public override Vector3 WorldPosition { get; }
+        public Sprint(int capacity, IInteractiveObject objectToInteract) => Capacity = capacity;
 
         public override bool TryAddTask(ITask task)
         {
@@ -35,5 +35,7 @@ namespace Scripts.Tasks
         }
 
         public override bool ShouldPersistTasksOnExit { get; }
+
+        public override IInteractiveObject InteractiveObject { get; }
     }
 }

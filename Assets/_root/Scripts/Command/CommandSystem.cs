@@ -1,5 +1,6 @@
 using Core;
 using Scripts.GlobalStateMachine;
+using Scripts.Rooms;
 using Scripts.Ui;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace Scripts.Tasks
             
         }
 
-        private void ShowCommandsByType(SprintType type, Vector2 position) // тут должен быть IOType
+        private void ShowCommandsByType(InteractiveObjectType type, Vector2 position) // тут должен быть IOType
         {
             _commandPanelView.gameObject.SetActive(true);
             _commandPanelView.ShowCommands(_commandManager.GetCommandsForSprint(type));

@@ -63,7 +63,7 @@ namespace Scripts.GlobalStateMachine
 
             var taskLibrary = new TaskLibrary();
             //var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
-            var sprintSystem = new SprintSystemTest(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister);
+            var sprintSystem = new SprintSystemTest(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter);
 
             var fader = new FaderLogic(localEvents);
 

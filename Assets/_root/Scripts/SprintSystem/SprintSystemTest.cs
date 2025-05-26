@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Core;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
+using Scripts.Meta;
+using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Ui;
 using Scripts.Ui.TaskUi;
@@ -24,6 +26,8 @@ namespace Scripts.Tasks
         private readonly SprintView _sprintView;
         private readonly UiFactory _uiFactory;
         private readonly LocalEvents _localEvents;
+        private readonly InteractiveObjectRegisterer _interactiveObjectRegisterer;
+        private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly TaskLibrary _taskLibrary;
         private readonly AllTaskView _allTaskView;
         
@@ -33,14 +37,17 @@ namespace Scripts.Tasks
         private ISprint _currentSprint => _sprints.ContainsKey(_currentSprintType) ? _sprints[_currentSprintType] : null;
 
         private bool _isActiveState;
+        private float _interval;
 
 
-        public SprintSystemTest(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer)
+        public SprintSystemTest(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer, ProgressDataAdapter progressDataAdapter)
         {
             _tempStat = canvas.transform.Find("TempStat").GetComponent<TextMeshProUGUI>();
             _sprintView = sprintView;
             _uiFactory = uiFactory;
             _localEvents = localEvents;
+            _interactiveObjectRegisterer = interactiveObjectRegisterer;
+            _progressDataAdapter = progressDataAdapter;
             _taskLibrary = taskLibrary;
             
             _allTaskView = _uiFactory.GetAllTaskView(canvas.transform);
@@ -56,12 +63,14 @@ namespace Scripts.Tasks
             _localEvents.OnSprintClosed += ExitSprint;
             _localEvents.OnHeroGetIO += StartOrCreateSprint;
             _localEvents.OnHeroWalkToIO += ExitSprint;
+            _localEvents.OnHeroGetRootIO += HeroGetRootIOListener;
             
             //_demo = demo;
 
-            //_sprints[SprintType.Dev] = new DevSprint(12, );
-            _sprints[SprintType.Chill] = new ChillSprint(3);
-            _sprints[SprintType.Eat] = new EatSprint(5);
+            _sprints[SprintType.Dev] = new DevSprint(12, _interactiveObjectRegisterer.GetInteractiveObjectByType(InteractiveObjectType.Pc));
+            _sprints[SprintType.Chill] = new ChillSprint(12, _interactiveObjectRegisterer.GetInteractiveObjectByType(InteractiveObjectType.Chair));
+            _sprints[SprintType.Eat] = new EatSprint(5, _interactiveObjectRegisterer.GetInteractiveObjectByType(InteractiveObjectType.Fridge));
+            _sprints[SprintType.Read] = new ReadSprint(10, _interactiveObjectRegisterer.GetInteractiveObjectByType(InteractiveObjectType.Books));
 
 
             // _demo.enterCurrentSprintButton.onClick.AddListener(EnterToCurrentSprint);
@@ -75,19 +84,20 @@ namespace Scripts.Tasks
             // _demo.restoreEatSprintTaskButton.onClick.AddListener(RestoreEatSprint);
         }
 
+        private void HeroGetRootIOListener(SprintType type)
+        {
+            Debug.Log("Get rooooooot!");
+            _isActiveState = true;
+        }
+
         private void CloseCatalogButtonClickedListener()
         {
             _localEvents.TriggerTaskCatalogHide(SprintType.Dev);
+            ExitSprint();
         }
 
         private async void CreateAutoSprint(SprintType type)
         {
-            // if(_currentSprint != null)
-            //     await ExitSprintAsync();
-            
-            // while (_sprintView.IsBuisy)
-            //     await Task.Yield();
-            //
             _currentSprintType = type;
             
             for (int i = 0; i < _currentSprint.Capacity; i++)
@@ -102,7 +112,6 @@ namespace Scripts.Tasks
                 }
             }
             
-            _isActiveState = true;
             _localEvents.TriggerSprintCreated(type);
         }
 
@@ -132,12 +141,8 @@ namespace Scripts.Tasks
                     CreateAutoSprint(_currentSprint.Type);
                 }
             }
-            else
-            {
-                _isActiveState = true;
-            }
             
-            _localEvents.TriggerSprintCreated(sprintType);
+            //_localEvents.TriggerSprintCreated(sprintType);
         }
 
         private void OpenAllTasks(SprintType sprintType)
@@ -174,6 +179,8 @@ namespace Scripts.Tasks
             }
 
             _savedTasks[type].Clear();
+            
+            _localEvents.TriggerSprintCreated(type);
 
             ApplyProgressToCurrentTask();
         }
@@ -182,37 +189,7 @@ namespace Scripts.Tasks
         
         private void AllDevTaskApplyButtonClickListener()
         {
-            _isActiveState = true;
             _localEvents.TriggerSprintCreated(SprintType.Dev);
-        }
-
-        private async void RestoreDevSprint()
-        {
-            while (_sprintView.IsBuisy)
-                await Task.Yield();
-            
-            _savedTasks.TryGetValue(SprintType.Dev, out var tasks);
-
-            if (tasks == null) return;
-
-            _currentSprintType = SprintType.Dev;
-
-            _pendingTasks.Clear();
-            _activeTasks.Clear();
-
-            foreach (var task in tasks)
-            {
-                if (_currentSprint.TryAddTask(task))
-                {
-                    await _sprintView.AddTask(task, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
-
-                    _pendingTasks.Add(task);
-                }
-            }
-
-            _savedTasks[SprintType.Dev].Clear();
-
-            ApplyProgressToCurrentTask();
         }
 
         private async void AddTask(ITask task)
@@ -228,35 +205,6 @@ namespace Scripts.Tasks
                 _pendingTasks.Add(clone);
             }   
         } 
-
-        private async void RestoreEatSprint()
-        {
-            while (_sprintView.IsBuisy)
-                await Task.Yield();
-            
-            _savedTasks.TryGetValue(SprintType.Eat, out var tasks);
-
-            if (tasks == null) return; 
-
-            _currentSprintType = SprintType.Eat;
-
-            _pendingTasks.Clear();
-            _activeTasks.Clear();
-
-            foreach (var task in tasks)
-            {
-                if (_currentSprint.TryAddTask(task))
-                {
-                    await _sprintView.AddTask(task, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
-                    
-                    _pendingTasks.Add(task);
-                }
-            }
-
-            _savedTasks[SprintType.Eat].Clear();
-            
-            ApplyProgressToCurrentTask();
-        }
         
 
         private void ApplyProgressToCurrentTask()
@@ -274,8 +222,18 @@ namespace Scripts.Tasks
             for (int i = _activeTasks.Count - 1; i >= 0; i--) 
             {
                 var task = _activeTasks[i];
+                
+                float health = _progressDataAdapter.GetStats(MetaType.Health);
+                float maxHealth = _progressDataAdapter.GetMaxStats(MetaType.Health);
+
+                float healthPercent = Mathf.Clamp01(health / maxHealth);
+                
+                float minInterval = 1f;
+                float maxInterval = 10f;
             
-                task.ApplyProgress(25.1f, 1);
+                float interval = Mathf.Lerp(maxInterval, minInterval, healthPercent);
+                
+                task.ApplyProgress(15f, interval);
                 
                 _localEvents.TriggerActiveSprintByType(_currentSprint.Type);
                 
@@ -418,9 +376,9 @@ namespace Scripts.Tasks
             //_localEvents.OnSprintContinue -= TryRestoreSprint;
             _allTaskView.OnTaskClicked -= AddTask;
             _localEvents.OnTaskCatalogShow -= OpenAllTasks;
-            _localEvents.OnAutoSprintCreated -= CreateAutoSprint;
             _localEvents.OnHeroGetIO -= StartOrCreateSprint;
             _localEvents.OnSprintClosed -= ExitSprint;
+            _localEvents.OnHeroGetRootIO -= HeroGetRootIOListener;
         }
 
         public void Execute(float deltatime)

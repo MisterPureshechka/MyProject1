@@ -38,7 +38,10 @@ namespace Scripts.Stat
 
         private void DevProgressCallback()
         {
-            _progressDataAdapter.UpdateValue(Consts.Energy, _progressDataAdapter.GetMetadata(Consts.EnergySpendWhileWorking).Value);
+            _progressDataAdapter.UpdateValue
+                (Consts.Energy, _progressDataAdapter.GetMetadata(Consts.EnergySpendWhileWorking).Value);
+            _progressDataAdapter.UpdateValue
+                (Consts.Food, _progressDataAdapter.GetMetadata(Consts.FoodSpendWhileWorking).Value);
         }
 
         private void ChillProgressCallback()

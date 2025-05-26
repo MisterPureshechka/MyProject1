@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core;
+using Scripts.Tasks;
 using UnityEngine;
 
 namespace Scripts.Rooms
 {
-    public class InteractiveObjectRegisterer : IInitialization
+    public class InteractiveObjectRegisterer : IInitialization, ICleanUp
     {
         private readonly Dictionary<GameObject, IInteractiveObject> _interactiveObjectHash = new();
-
+        private readonly Dictionary<InteractiveObjectType, IInteractiveObject> _interactiveObjectByTypeHash = new();
+        
         public InteractiveObjectRegisterer(List<IInteractiveObject> interactiveObjects)
         {
             RegisterAllInteractiveObjects(interactiveObjects);
@@ -21,8 +23,15 @@ namespace Scripts.Rooms
                 if (interactiveObject is MonoBehaviour monoBehaviour)
                 {
                     _interactiveObjectHash[monoBehaviour.gameObject] = interactiveObject;
+                    _interactiveObjectByTypeHash[interactiveObject.IOType] = interactiveObject;
                 }
             }
+        }
+
+        public IInteractiveObject GetInteractiveObjectByType(InteractiveObjectType type)
+        {
+            _interactiveObjectByTypeHash.TryGetValue(type, out var result);
+            return result;
         }
 
         public bool IsObjectRegistered(GameObject interactiveObject)
@@ -45,6 +54,12 @@ namespace Scripts.Rooms
         public List<IInteractiveObject> GetInteractiveObjects()
         {
             return _interactiveObjectHash.Values.ToList();
+        }
+
+        public void CleanUp()
+        {
+            _interactiveObjectHash.Clear();
+            _interactiveObjectByTypeHash.Clear();
         }
     }
 }

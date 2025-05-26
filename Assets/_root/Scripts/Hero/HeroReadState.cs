@@ -13,7 +13,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
-            _heroLogic.PlayAnimation(HeroAnimationState.Read, true);
+            _heroLogic.PlayAnimation(HeroAnimationState.Dev, true);
             _heroLogic.FlipHero(false);
         }
 

@@ -25,6 +25,7 @@ namespace Scripts.Hero
         public HeroIdleState IdleState { get; private set; }
         public HeroWalkState WalkState { get; private set; }
         public HeroWalkToIOState WalkToIOState { get; private set; }
+        public HeroWalkToRootIOState WalkToRootIOState { get; private set; }
         public HeroDevState DevState { get; private set; }
         public HeroSleepState SleepState { get; private set; }
         public HeroEatState EatState { get; private set; }
@@ -75,6 +76,7 @@ namespace Scripts.Hero
             EatState = new HeroEatState(this, _progressData);
             SleepState = new HeroSleepState(this, _progressData);
             WalkToIOState = new HeroWalkToIOState(this, _localEvents);
+            WalkToRootIOState = new HeroWalkToRootIOState(this, _localEvents);
             ReadState = new HeroReadState(this, _progressData);
             ChillState = new HeroChillState(this, _progressData, _localEvents);
             PlayState = new HeroPlayState(this, _progressData);
@@ -87,9 +89,16 @@ namespace Scripts.Hero
             _localEvents.OnClosePanel += PanelCloseCallback;
             _localEvents.OnOpenPanel += PanelOpenListener;
             _localEvents.OnTaskCatalogHide += TaskCatalogHideListener;
-            _localEvents.OnSprintCreated += ChangeStateByIOType;
+            //_localEvents.OnSprintCreated += ChangeStateByIOType;
+            _localEvents.OnSprintCreated += SprintCratedListener;
             _localEvents.OnWalkToIO += WalkToIO;
             _localEvents.OnSprintComplete += SprintCompleteListener;
+            _localEvents.OnHeroGetRootIO += ChangeStateByIOType;
+        }
+
+        private void SprintCratedListener(SprintType obj)
+        {
+            ChangeState(WalkToRootIOState);
         }
 
         private void SprintCompleteListener(SprintType type)
@@ -111,6 +120,7 @@ namespace Scripts.Hero
 
         private void ChangeStateByIOType(SprintType iOType)
         {
+            Debug.Log($"Change state of {iOType} ------- ");
             switch (iOType)
             {
                 case SprintType.None :
@@ -291,6 +301,7 @@ namespace Scripts.Hero
             _localEvents.OnSprintCreated -= ChangeStateByIOType;
             _localEvents.OnTaskCatalogHide -= TaskCatalogHideListener;
             _localEvents.OnSprintComplete -= SprintCompleteListener;
+            _localEvents.OnHeroGetRootIO -= ChangeStateByIOType;
         }
 
         public void TiggerSprintExit()
