@@ -1,12 +1,14 @@
+using Core;
 using Scripts.Meta;
+using TMPro;
 using UnityEngine;
 
 namespace Scripts.Progress
 {
-    public class ProgressDataAdapter
+    public class ProgressDataAdapter 
     {
         private ProgressData _progressData;
-    
+
         public ProgressDataAdapter(ProgressData progressData) {
             _progressData = progressData;
         }
@@ -62,9 +64,11 @@ namespace Scripts.Progress
                 if (result <= 0)
                 {
                     _progressData.Metadata[key].Value = 0;
+                    Debug.Log($" result less than 0 = {result}");
                 }
                 else if (result >= _progressData.Metadata[key].MaxValue)
                 {
+                    Debug.Log($" result more than Max = {result}");
                     _progressData.Metadata[key].Value = _progressData.Metadata[key].MaxValue;
                 }
                 else
@@ -76,7 +80,6 @@ namespace Scripts.Progress
             {
                 Debug.LogError($"Failed to Update metadata for {key}");
             }
-            
         }
 
         public ProgressData GetProgressData()

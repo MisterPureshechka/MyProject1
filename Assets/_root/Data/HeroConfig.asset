@@ -69,13 +69,32 @@ MonoBehaviour:
     Speed: 5
   - HeroAnimationState: 3
     Sprites:
-    - {fileID: 21300000, guid: 710df3daef69c455fb41523230338846, type: 3}
-    Speed: 5
-  - HeroAnimationState: 4
-    Sprites:
-    - {fileID: 21300000, guid: 710df3daef69c455fb41523230338846, type: 3}
+    - {fileID: 21300000, guid: f970c9dfb8f9f4e34b44e16876d2148d, type: 3}
     Speed: 5
   - HeroAnimationState: 5
     Sprites:
-    - {fileID: 21300000, guid: 710df3daef69c455fb41523230338846, type: 3}
+    - {fileID: 21300000, guid: 42e57646880a14601ae9ec4ec2f8b67a, type: 3}
     Speed: 5
+  - HeroAnimationState: 4
+    Sprites:
+    - {fileID: 21300000, guid: 698f8e7ebd5ca47a797edced256148ec, type: 3}
+    - {fileID: 21300000, guid: 05eb9dd141c8b4f71bb97c753e80463f, type: 3}
+    - {fileID: 21300000, guid: fc686336f8e814a46b771b18b152a49e, type: 3}
+    Speed: 15
+  - HeroAnimationState: 9
+    Sprites:
+    - {fileID: 21300000, guid: 67d39295dae3b4dbb9fb0b589dc4c5cc, type: 3}
+    Speed: 5
+  - HeroAnimationState: 8
+    Sprites:
+    - {fileID: 21300000, guid: 107c73d849222430980c570999369262, type: 3}
+    - {fileID: 21300000, guid: 733eb6d66012845ee91e52bbe90c2e4f, type: 3}
+    - {fileID: 21300000, guid: e7a61a95908eb418780a6d05a2475f1f, type: 3}
+    - {fileID: 21300000, guid: 107c73d849222430980c570999369262, type: 3}
+    - {fileID: 21300000, guid: 733eb6d66012845ee91e52bbe90c2e4f, type: 3}
+    Speed: 3
+  - HeroAnimationState: 6
+    Sprites:
+    - {fileID: 21300000, guid: 563de05f3d2ad4437ba203c89cf098fe, type: 3}
+    - {fileID: 21300000, guid: 6e4395b843b31471794a76958d8cb94a, type: 3}
+    Speed: 3

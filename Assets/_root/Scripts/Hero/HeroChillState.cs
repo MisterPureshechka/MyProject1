@@ -24,7 +24,7 @@ namespace Scripts.Hero
         public override void Update(float deltaTime)
         {  
             base.Update(deltaTime);
-            _heroLogic.TriggerActiveSprintByType(SprintType.Chill);
+            //_heroLogic.TriggerActiveSprintByType(SprintType.Chill);
         }
 
         public override void Exit()

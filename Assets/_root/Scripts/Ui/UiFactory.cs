@@ -30,11 +30,11 @@ namespace Scripts.Ui
             return instance.GetComponent<TaskPanelView>();
         }
 
-        public AllTaskView GetAllTaskView(Transform canvasTransform)
+        public DevTaskCatalogue GetAllTaskView(Transform canvasTransform)
         {
-            var instance = Object.Instantiate(_gameData.PrefabDataBase.AllTaskView, canvasTransform);
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.devTaskCatalogue, canvasTransform);
 
-            return instance.GetComponent<AllTaskView>();
+            return instance.GetComponent<DevTaskCatalogue>();
         }
 
         public TaskPanelButtonView GetTaskPanelButtonView(Transform to)

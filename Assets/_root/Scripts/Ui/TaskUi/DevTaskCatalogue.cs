@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Scripts.Ui.TaskUi
 {
-    public class AllTaskView : MonoBehaviour
+    public class DevTaskCatalogue : MonoBehaviour
     {
         private List<TaskButtonsContainerView> _buttonsContainers = new List<TaskButtonsContainerView>();
         private Sequence _sequence;
@@ -105,7 +105,7 @@ namespace Scripts.Ui.TaskUi
         }
 
 
-        public void ShowAllTasks()
+        public void ShowCatalogue()
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();

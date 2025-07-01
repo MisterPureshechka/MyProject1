@@ -5,6 +5,8 @@ using Scripts.Hero;
 using Scripts.Progress;
 using Scripts.Tasks;
 using Scripts.Utils;
+using TMPro;
+using UnityEngine;
 
 namespace Scripts.Stat
 {
@@ -12,6 +14,7 @@ namespace Scripts.Stat
     {
         private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly LocalEvents _localEvents;
+        private readonly TextMeshProUGUI _tempStat;
 
         public StatEffectLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
         {

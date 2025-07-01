@@ -10,6 +10,9 @@ namespace Scripts.Rooms
         Door,
         TV,
         Books,
+        Bath,
+        CoffeeMachine,
+        Toilet,
         None,
     }
 }

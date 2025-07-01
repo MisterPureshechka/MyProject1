@@ -10,5 +10,8 @@ namespace Scripts.Tasks
         Talk,
         Read,
         Chill,
+        Wash,
+        Toilet,
+        Coffee,
     }
 }

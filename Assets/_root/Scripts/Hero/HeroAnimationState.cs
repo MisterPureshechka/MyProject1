@@ -8,5 +8,10 @@ namespace Scripts.Hero
         Read,
         Play,
         Chill,
+        Eat,
+        DrinkCoffee,
+        Toilet,
+        Bath,
+        
     }
 }

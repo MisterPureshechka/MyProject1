@@ -29,7 +29,7 @@ namespace Scripts.Tasks
         private readonly InteractiveObjectRegisterer _interactiveObjectRegisterer;
         private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly TaskLibrary _taskLibrary;
-        private readonly AllTaskView _allTaskView;
+        private readonly DevTaskCatalogue _devTaskCatalogue;
         
         private TextMeshProUGUI _tempStat;
         
@@ -50,13 +50,13 @@ namespace Scripts.Tasks
             _progressDataAdapter = progressDataAdapter;
             _taskLibrary = taskLibrary;
             
-            _allTaskView = _uiFactory.GetAllTaskView(canvas.transform);
-            _allTaskView.Init(_localEvents);
-            _allTaskView.SetDevTasks(taskLibrary.GetAlLDevTasks());
-            _allTaskView.OnCloseButtonClicked += CloseCatalogButtonClickedListener;
-            _allTaskView.OnApplyButtonClicked += AllDevTaskApplyButtonClickListener;
+            _devTaskCatalogue = _uiFactory.GetAllTaskView(canvas.transform);
+            _devTaskCatalogue.Init(_localEvents);
+            _devTaskCatalogue.SetDevTasks(taskLibrary.GetAlLDevTasks());
+            _devTaskCatalogue.OnCloseButtonClicked += CloseCatalogButtonClickedListener;
+            _devTaskCatalogue.OnApplyButtonClicked += AllDevTaskApplyButtonClickListener;
             
-            _allTaskView.OnTaskClicked += AddTask;
+            _devTaskCatalogue.OnTaskClicked += AddTask;
             
             _localEvents.OnTaskCatalogShow += OpenAllTasks;
             //_localEvents.OnSprintContinue += TryRestoreSprint;
@@ -134,7 +134,8 @@ namespace Scripts.Tasks
             {
                 if (_currentSprint.HasCatalog)
                 {
-                    _allTaskView.ShowAllTasks();  
+                    //_devTaskCatalogue.ShowCatalogue(); 
+                    ShowCatalogue(sprintType);
                 }
                 else
                 {
@@ -145,10 +146,26 @@ namespace Scripts.Tasks
             //_localEvents.TriggerSprintCreated(sprintType);
         }
 
+        private void ShowCatalogue(SprintType sprintType)
+        {
+            switch (sprintType)
+            {
+                case SprintType.Dev:
+                    _devTaskCatalogue.ShowCatalogue();
+                    break;
+                case SprintType.Read:
+                    _devTaskCatalogue.ShowCatalogue();
+                    break;
+                default:
+                    Debug.LogError($"{nameof(SprintType)} is doesn't have catalogue");
+                    return;
+            }
+        }
+
         private void OpenAllTasks(SprintType sprintType)
         {
             _isActiveState = false;
-            _allTaskView.ShowAllTasks();
+            _devTaskCatalogue.ShowCatalogue();
             _currentSprintType = sprintType;
         }
 
@@ -228,12 +245,12 @@ namespace Scripts.Tasks
 
                 float healthPercent = Mathf.Clamp01(health / maxHealth);
                 
-                float minInterval = 1f;
-                float maxInterval = 10f;
+                float minInterval = 0.5f;
+                float maxInterval = 3f;
             
                 float interval = Mathf.Lerp(maxInterval, minInterval, healthPercent);
                 
-                task.ApplyProgress(15f, interval);
+                task.ApplyProgress(10f, interval);
                 
                 _localEvents.TriggerActiveSprintByType(_currentSprint.Type);
                 
@@ -299,6 +316,7 @@ namespace Scripts.Tasks
             result += $"Active tasks: {_activeTasks.Count}\n";
             result += $"is SprintView buisy: {_sprintView.IsBuisy}\n";
             result += $"_isActiveState = {_isActiveState}\n";
+            result += $"Health = {_progressDataAdapter.GetStats(MetaType.Health)}\n";
             _tempStat.text = result;
         }
 
@@ -371,10 +389,10 @@ namespace Scripts.Tasks
 
         public void CleanUp()
         {
-            _allTaskView.OnCloseButtonClicked -= ExitSprint;
-            _allTaskView.OnApplyButtonClicked -= AllDevTaskApplyButtonClickListener;
+            _devTaskCatalogue.OnCloseButtonClicked -= ExitSprint;
+            _devTaskCatalogue.OnApplyButtonClicked -= AllDevTaskApplyButtonClickListener;
             //_localEvents.OnSprintContinue -= TryRestoreSprint;
-            _allTaskView.OnTaskClicked -= AddTask;
+            _devTaskCatalogue.OnTaskClicked -= AddTask;
             _localEvents.OnTaskCatalogShow -= OpenAllTasks;
             _localEvents.OnHeroGetIO -= StartOrCreateSprint;
             _localEvents.OnSprintClosed -= ExitSprint;

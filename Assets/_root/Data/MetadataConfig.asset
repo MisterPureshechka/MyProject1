@@ -59,7 +59,7 @@ MonoBehaviour:
     - Key: EnergySpendWhileChilling
       Value:
         MetaType: 3
-        Value: 0.001
+        Value: 0.005
         DisplayName: EnergySpendWhileChilling
         MaxValue: 0.002
         Tooltip: 
