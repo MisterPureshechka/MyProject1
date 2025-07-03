@@ -37,8 +37,10 @@ namespace Scripts.GlobalStateMachine
 
             var interactiveObjectRegister = new InteractiveObjectRegisterer(home.InteractiveObjects);
             var camera = Camera.main;
+            var cameraLogic = new CameraLogic(camera, localEvents, _gameData.InteractiveObjectConfig);
+            
             var canvas = Object.FindAnyObjectByType<Canvas>();
-
+            
             var spriteAnimator = new SpriteAnimator();
             
             var inputController = new InputController(localEvents);
@@ -60,6 +62,8 @@ namespace Scripts.GlobalStateMachine
             var hud = Object.FindAnyObjectByType<HUDView>();
             var statController = new StatsController(progressDataAdapter);
             var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents);
+
+            var sideRoomChecker = new SideRoomChecker(home, localEvents);
 
             var taskLibrary = new TaskLibrary();
             //var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
@@ -89,6 +93,8 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(sprintSystem);
             _controllers.Add(commandSystem);
             _controllers.Add(fader);
+            _controllers.Add(sideRoomChecker);
+            _controllers.Add(cameraLogic);
         }
 
         public override void Update(float deltaTime)

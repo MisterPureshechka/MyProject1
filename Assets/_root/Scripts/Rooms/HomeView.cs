@@ -12,6 +12,7 @@ namespace Scripts.Rooms
         [SerializeField] private Transform _initialTransform;
         [SerializeField] private Collider2D _roomCollider;
         [SerializeField] private List<MonoBehaviour> _interactiveObjects;
+        [SerializeField] private SideRoom[] _sideRooms;
         
         public List<IInteractiveObject> InteractiveObjects
         {
@@ -29,6 +30,8 @@ namespace Scripts.Rooms
                 return interactiveObjects;
             }
         }
+        public ISideRoom[] SideRooms => _sideRooms;
+
         public Vector3 InitialPosition => _initialTransform.position;
         public float RoomSize => _roomCollider.bounds.size.x;
         

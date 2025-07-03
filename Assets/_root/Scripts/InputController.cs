@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Core;
 using Scripts.GlobalStateMachine;
+using Scripts.Rooms;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -25,7 +26,6 @@ namespace Scripts
             }
             
             UpdateMousePosition(Input.mousePosition);
-
         }
 
         private void UpdateMousePosition(Vector3 mousePosition)
@@ -63,6 +63,23 @@ namespace Scripts
             return results.Any(r => 
                 r.gameObject.GetComponent<Graphic>() != null && 
                 r.gameObject.GetComponent<Graphic>().raycastTarget);
+        }
+
+        private bool IsPointerOverSideRoom()
+        {
+            if (EventSystem.current == null)
+                return false;
+            
+            var eventData = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition
+            };
+            
+            var results = new System.Collections.Generic.List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            return results.Any(r =>
+                r.gameObject.GetComponent<ISideRoom>() != null);
         }
     }
 }

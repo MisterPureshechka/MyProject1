@@ -6,5 +6,6 @@ namespace Scripts.Data
     public class InteractiveObjectConfig : ScriptableObject
     {
         [field: SerializeField] public float AnimationSpeed { get; private set; }
+        [field: SerializeField] public Vector2[] CameraSideMomePositionKeys { get; private set; }
     }
 }

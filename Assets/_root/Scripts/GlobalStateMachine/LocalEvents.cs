@@ -82,5 +82,8 @@ namespace Scripts.GlobalStateMachine
 
         public Action<SprintType> OnHeroGetRootIO { get; set; }
         public void TriggerHeroGetRootIO(SprintType targetIOSprintType) => OnHeroGetRootIO?.Invoke(targetIOSprintType);
+
+        public Action<bool> OnMouseOverSideRoom { get; set; }
+        public void TriggerMouseOverSideRoom(bool sideRoomIsLeftRoom) => OnMouseOverSideRoom?.Invoke(sideRoomIsLeftRoom);
     }
 }
