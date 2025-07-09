@@ -186,7 +186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8014739542329774465}
   - component: {fileID: 4261627972759114749}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: pc_glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,7 +450,7 @@ GameObject:
   - component: {fileID: 6796169576225625958}
   - component: {fileID: 1765915157099871833}
   - component: {fileID: 2400088540216305255}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: toilet_collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,7 +506,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -4.1685348, y: 0.0050255656}
+  m_Offset: {x: -4.1519876, y: 0.0050255656}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -516,7 +516,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.9113226, y: 1.4888169}
+  m_Size: {x: 1.9444168, y: 1.4888169}
   m_EdgeRadius: 0
 --- !u!114 &2400088540216305255
 MonoBehaviour:
@@ -541,7 +541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3091731282975613739}
   - component: {fileID: 8134675700342323012}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: kitchen_table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 3016875397104827282}
   - component: {fileID: 4447128567533632791}
   - component: {fileID: 6759962711031432528}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Books
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +646,7 @@ Transform:
   m_GameObject: {fileID: 1252745765774386460}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.949, y: -0.1947, z: -10}
+  m_LocalPosition: {x: 0.949, y: -0.2044, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -780,7 +780,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7642100855584439998}
   - component: {fileID: 5518738853030688434}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bed_Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,7 +867,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8384600211213720918}
   - component: {fileID: 401257228098294145}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TV_Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1166,7 +1166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5700902690516846616}
   - component: {fileID: 8438990377441538499}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bath_outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1255,7 +1255,7 @@ GameObject:
   - component: {fileID: 1266180554900857723}
   - component: {fileID: 8630187560108905596}
   - component: {fileID: 9169418376372776664}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1271,7 +1271,7 @@ Transform:
   m_GameObject: {fileID: 2822376785721966977}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.496, y: -0.4998, z: -10}
+  m_LocalPosition: {x: 1.496, y: -0.5095, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1522,7 +1522,7 @@ Transform:
   m_GameObject: {fileID: 2975407177690682365}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.45, y: -0.7303, z: -10}
+  m_LocalPosition: {x: 2.989, y: -0.7303, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1538,7 +1538,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7635864080599849508}
   - component: {fileID: 7208500850784123708}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1628,7 +1628,7 @@ GameObject:
   - component: {fileID: 8951438058533136707}
   - component: {fileID: 3640931414868803149}
   - component: {fileID: 6106184344828268618}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: coffee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1780,7 +1780,7 @@ GameObject:
   - component: {fileID: 596126472043394967}
   - component: {fileID: 8122895670015298247}
   - component: {fileID: 776913785214723387}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: fridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1796,7 +1796,7 @@ Transform:
   m_GameObject: {fileID: 4597090775051142098}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.7399, y: -0.3099, z: -10}
+  m_LocalPosition: {x: 3.7399, y: -0.3064, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1932,7 +1932,7 @@ GameObject:
   - component: {fileID: 1288103207277860144}
   - component: {fileID: 6033263278314459697}
   - component: {fileID: 149976180285255281}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2258,7 +2258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4902261881462125373}
   - component: {fileID: 3825958678901458927}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: table_01_atlas_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2345,7 +2345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9192729953090352762}
   - component: {fileID: 8893282545520616406}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Chair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2361,7 +2361,7 @@ Transform:
   m_GameObject: {fileID: 4983949267735009713}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.559, y: -0.479, z: -10}
+  m_LocalPosition: {x: -0.559, y: -0.4892, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2434,7 +2434,7 @@ GameObject:
   - component: {fileID: 8374803870485520030}
   - component: {fileID: 2389769002547125902}
   - component: {fileID: 2048797072939873925}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Home_background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2450,7 +2450,7 @@ Transform:
   m_GameObject: {fileID: 5070694273308381780}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0.003, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2593,7 +2593,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.006584406, y: 0.0044818223}
+  m_Offset: {x: 0.00903213, y: 0.0044817924}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2603,7 +2603,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 6.296601, y: 1.5135403}
+  m_Size: {x: 6.3676844, y: 1.5135403}
   m_EdgeRadius: 0
 --- !u!1 &5179605793654458815
 GameObject:
@@ -2704,7 +2704,7 @@ GameObject:
   - component: {fileID: 3662396347508926812}
   - component: {fileID: 7711556302934789117}
   - component: {fileID: 1653726051295370573}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2720,7 +2720,7 @@ Transform:
   m_GameObject: {fileID: 5366708306364755498}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.3264, y: -0.33490002, z: -10}
+  m_LocalPosition: {x: -0.3264, y: -0.349, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2957,7 +2957,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7513049973655147874}
   - component: {fileID: 2126612276672799449}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: coffee_outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3045,7 +3045,7 @@ GameObject:
   - component: {fileID: 5000838691551312395}
   - component: {fileID: 2034189162900033193}
   - component: {fileID: 2810787656516898749}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: kitchen_collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3101,7 +3101,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 4.194162, y: 0.0050255656}
+  m_Offset: {x: 4.173731, y: 0.0050255656}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3111,7 +3111,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.9029987, y: 1.4888169}
+  m_Size: {x: 1.9438605, y: 1.4888169}
   m_EdgeRadius: 0
 --- !u!114 &2810787656516898749
 MonoBehaviour:
@@ -3136,7 +3136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5167505952047065438}
   - component: {fileID: 7246885717347783685}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: toilet_outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3225,7 +3225,7 @@ GameObject:
   - component: {fileID: 785533740804706598}
   - component: {fileID: 5679629228601742239}
   - component: {fileID: 353884219858563483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: toilet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3386,7 +3386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 837037157852002224}
   - component: {fileID: 2546809657545017229}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door_Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3473,7 +3473,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1459409727764545309}
   - component: {fileID: 7716763475168029164}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sofa_Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3560,7 +3560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2878366213025968407}
   - component: {fileID: 7611470610672750331}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: table_01_atlas_31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3650,7 +3650,7 @@ GameObject:
   - component: {fileID: 1174262771367464472}
   - component: {fileID: 1781218346937561235}
   - component: {fileID: 7369353239161481932}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3666,7 +3666,7 @@ Transform:
   m_GameObject: {fileID: 6992980866000284849}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.191, y: -0.499, z: -10}
+  m_LocalPosition: {x: -2.191, y: -0.5095, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3802,7 +3802,7 @@ GameObject:
   - component: {fileID: 1967486181342885439}
   - component: {fileID: 1710263691103393202}
   - component: {fileID: 2124973481639506759}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sofa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3818,7 +3818,7 @@ Transform:
   m_GameObject: {fileID: 7140794731329737755}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.042, y: -0.4252, z: -10}
+  m_LocalPosition: {x: 2.042, y: -0.4349, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4140,7 +4140,7 @@ GameObject:
   - component: {fileID: 9009024696548229840}
   - component: {fileID: 1500930653441423933}
   - component: {fileID: 3251223453491047931}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4232,7 +4232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sprintType: 8
   _spriteRenderer: {fileID: 8438990377441538499}
-  _rootObject: {fileID: 0}
+  _rootObject: {fileID: 529661383279290655}
   _ioType: 8
 --- !u!60 &3251223453491047931
 PolygonCollider2D:
@@ -4301,7 +4301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4493055043377860330}
   - component: {fileID: 4634504666543168504}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Books_Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4475,7 +4475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2070073861625415016}
   - component: {fileID: 1341934403767919089}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: gradient_vibe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4562,7 +4562,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8704906857327676118}
   - component: {fileID: 3910575586747114686}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: fridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}

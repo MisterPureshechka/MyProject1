@@ -9,9 +9,6 @@ namespace Scripts.Rooms
     public class SideRoomChecker : ICleanUp
     {
         private readonly LocalEvents _localEvents;
-        private ISideRoom[] _rooms;
-        
-        private readonly LayerMask _sideRoomLayerMask = LayerMask.GetMask("SideRoom");
 
         private Vector2 _mousePosition;
         
@@ -21,31 +18,69 @@ namespace Scripts.Rooms
         public SideRoomChecker(IRoomView roomView, LocalEvents localEvents)
         {
             _localEvents = localEvents;
-            _rooms = roomView.SideRooms;
             
             _localEvents.OnMousePositionChange += UpdateMousePosition;
         }
 
+        private LayerMask _mainRoomLayerMask = LayerMask.GetMask("MainRoom");
+        private LayerMask _kitchenLayerMask = LayerMask.GetMask("Kitchen");
+        private LayerMask _toiletLayerMask = LayerMask.GetMask("Toilet");
+
+        private string _currentRoom;
+
         private void UpdateMousePosition(Vector2 mousePosition)
         {
             _mousePosition = mousePosition;
-            
+
             if (Time.time - _lastUpdateTime < UpdateInterval)
                 return;
 
+            _lastUpdateTime = Time.time;
+
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(_mousePosition);
 
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _sideRoomLayerMask);
-            if (hit.collider != null)
+            // Kitchen
+            if (Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _kitchenLayerMask).collider != null)
             {
-                var sideRoom = hit.collider.GetComponent<ISideRoom>();
-                if (sideRoom != null)
+                if (_currentRoom != "Kitchen")
                 {
-                    _localEvents.TriggerMouseOverSideRoom(sideRoom.IsLeftRoom);
-                    Debug.Log("Навели на SideRoom: " + hit.collider.name);
+                    _currentRoom = "Kitchen";
+                    _localEvents.TriggerMouseOverKitchen();
+                    Debug.Log("Навели на Kitchen");
                 }
+                return;
             }
-            
+
+            // Toilet
+            if (Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _toiletLayerMask).collider != null)
+            {
+                if (_currentRoom != "Toilet")
+                {
+                    _currentRoom = "Toilet";
+                    _localEvents.TriggerMouseOverToilet();
+                    Debug.Log("Навели на Toilet");
+                }
+                return;
+            }
+
+            // MainRoom
+            if (Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _mainRoomLayerMask).collider != null)
+            {
+                if (_currentRoom != "MainRoom")
+                {
+                    _currentRoom = "MainRoom";
+                    _localEvents.TriggerMouseOverMainRoom();
+                    Debug.Log("Навели на MainRoom");
+                }
+                return;
+            }
+
+            // Вышли из всех
+            if (_currentRoom != null)
+            {
+                _currentRoom = null;
+                Debug.Log("Курсор вне всех комнат");
+            }
         }
         
         public void CleanUp()

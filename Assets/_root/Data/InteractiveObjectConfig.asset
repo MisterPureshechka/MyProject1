@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: InteractiveObjectConfig
   m_EditorClassIdentifier: 
   <AnimationSpeed>k__BackingField: 0.1
+  <CameraMoveDuration>k__BackingField: 0.7
+  <CameraMoveEase>k__BackingField: 4
+  <CameraSideMomePositionKeys>k__BackingField:
+  - {x: -1.9, y: 0.7}
+  - {x: 1.86, y: 0.7}

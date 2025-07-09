@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace Scripts.Data
@@ -6,6 +7,8 @@ namespace Scripts.Data
     public class InteractiveObjectConfig : ScriptableObject
     {
         [field: SerializeField] public float AnimationSpeed { get; private set; }
+        [field: SerializeField] public float CameraMoveDuration { get; private set; }
+        [field: SerializeField] public Ease CameraMoveEase { get; private set; }
         [field: SerializeField] public Vector2[] CameraSideMomePositionKeys { get; private set; }
     }
 }

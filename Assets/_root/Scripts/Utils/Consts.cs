@@ -35,5 +35,16 @@ namespace Scripts.Utils
         public const string EnergySpendWhileWorking = "EnergySpendWhileWorking";
         public const string EnergySpendWhileChilling = "EnergySpendWhileChilling";
         public const string FoodSpendWhileWorking = "FoodSpendWhileWorking";
+        public const string FoodOnEating = "FoodOnEating";
+        public const string EnergyOnEating = "EnergyOnEating";
+        public const string ShowerOnEating = "ShowerOnEating";
+        public const string ShowerOnShower = "ShowerOnShower";
+        public const string ShowerOnWorking = "ShowerOnWorking";
+        
+        public const string MoodOnWorking = "MoodOnWorking";
+        public const string MoodOnShower = "MoodOnShower";
+        public const string MoodOnEating = "MoodOnEating";
+        public const string MoodOnPlay = "MoodOnPlay";
+        public const string MoodOnToilet = "MoodOnToilet";
     }
 }

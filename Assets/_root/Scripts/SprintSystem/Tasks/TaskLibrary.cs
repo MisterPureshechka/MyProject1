@@ -25,6 +25,10 @@ namespace Scripts.Tasks
         {
             _autoSprints[SprintType.Chill] = new ChillTask("Just Chill", 100f);
             _autoSprints[SprintType.Read] = new ReadTask("Programming", 200f);
+            _autoSprints[SprintType.Play] = new PlayTask("Play", 100f);
+            _autoSprints[SprintType.Toilet] = new ToiletTask("Is it necessary to watch here?", 100f);
+            _autoSprints[SprintType.Wash] = new ToiletTask("Bath", 100f);
+            _autoSprints[SprintType.Eat] = new EatTask(EatTaskType.cake, "Nice cake", 100f);
         }
 
         private void LoadAllDevTasks()

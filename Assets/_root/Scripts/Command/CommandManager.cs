@@ -39,12 +39,10 @@ namespace Scripts.Tasks
             {
                 new Command { 
                     CommandName = "Перекусить", 
+                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Eat),
                 },
-                new Command { 
-                    CommandName = "Закончить перерыв"
-                }
             };
-            Commands.Add(InteractiveObjectType.Fridge, eatCommands);
+            
 
             var chillCommands = new List<Command>
             {
@@ -54,8 +52,40 @@ namespace Scripts.Tasks
                     OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Chill),
                 }
             };
+
+            var playCommand = new List<Command>
+            {
+                new Command
+                {
+                    CommandName = "Поиграть",
+                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Play),
+                }
+            };
             
+            var toiletCommand = new List<Command>
+            {
+                new Command
+                {
+                    CommandName = "Справить нужду",
+                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Toilet),
+                }
+            };
+
+            var bathCommand = new List<Command>
+            {
+                new Command()
+                {
+                    CommandName = "Take a shower",
+                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Wash),
+                }
+
+            };
+            
+            Commands.Add(InteractiveObjectType.Fridge, eatCommands);
+            Commands.Add(InteractiveObjectType.Toilet, toiletCommand);
             Commands.Add(InteractiveObjectType.Chair, chillCommands);
+            Commands.Add(InteractiveObjectType.TV, playCommand);
+            Commands.Add(InteractiveObjectType.Bath, bathCommand);
         }
 
         private void CreateDevCommands()

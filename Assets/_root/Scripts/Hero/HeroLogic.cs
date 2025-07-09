@@ -33,6 +33,8 @@ namespace Scripts.Hero
         public HeroReadState ReadState { get; private set; }
         public HeroChillState ChillState { get; private set; }
         public HeroAwaitState HeroAwaitState { get; private set; }
+        public HeroToiletState HeroToiletState { get; private set; }
+        public HeroBathState HeroBathState { get; private set; }
 
         private readonly HeroConfig _heroConfig;
         private readonly HeroMovementLogic _heroMovementLogic;
@@ -81,6 +83,8 @@ namespace Scripts.Hero
             ChillState = new HeroChillState(this, _progressData, _localEvents);
             PlayState = new HeroPlayState(this, _progressData);
             HeroAwaitState = new HeroAwaitState(this);
+            HeroToiletState = new HeroToiletState(this);
+            HeroBathState = new HeroBathState(this);
             
             _heroStateMachine.Init(IdleState);
 
@@ -103,7 +107,6 @@ namespace Scripts.Hero
 
         private void SprintCompleteListener(SprintType type)
         {
-            Debug.Log("Sprint complete - " + type);
             ChangeState(IdleState);
         }
 
@@ -120,7 +123,6 @@ namespace Scripts.Hero
 
         private void ChangeStateByIOType(SprintType iOType)
         {
-            Debug.Log($"Change state of {iOType} ------- ");
             switch (iOType)
             {
                 case SprintType.None :
@@ -141,6 +143,12 @@ namespace Scripts.Hero
                 case SprintType.Chill:
                     ChangeState(ChillState);
                     break;
+                case SprintType.Toilet:
+                    ChangeState(HeroToiletState);
+                    break;
+                case SprintType.Wash:
+                    ChangeState(HeroBathState);
+                    break;
                 default:
                     ChangeState(IdleState);
                     break;
@@ -160,16 +168,6 @@ namespace Scripts.Hero
         private void HeroAwaitListener(bool isAwait)
         {
             _isAwait = isAwait;
-        }
-
-        public void TriggerActiveSprintByType(SprintType sprintType)
-        {
-            _localEvents.TriggerActiveSprintByType(sprintType);
-        }
-
-        private void ClosedSprintListener(SprintType sprintType)
-        {
-            ChangeState(IdleState);
         }
 
         private void MouseListener(Vector3 pos)
@@ -289,6 +287,12 @@ namespace Scripts.Hero
         public void PlaceHero(Vector3 targetPosition)
         {
             _heroView.transform.position = targetPosition;
+        }
+
+        public void ResetHeroPosition()
+        {
+            var position = _heroView.transform.position;
+            _heroView.transform.position = new Vector3(position.x, _yPos, position.z);
         }
 
         public void CleanUp()

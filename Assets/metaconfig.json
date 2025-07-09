@@ -5,7 +5,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 0.0,
+                    "Value": 50.0,
                     "DisplayName": "Food",
                     "MaxValue": 100.0,
                     "Tooltip": ""
@@ -15,7 +15,7 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 29.670654296875,
+                    "Value": 50.0,
                     "DisplayName": "Energy",
                     "MaxValue": 100.0,
                     "Tooltip": ""
@@ -38,6 +38,16 @@
                     "Value": 12.0,
                     "DisplayName": "Programming",
                     "MaxValue": 12.0,
+                    "Tooltip": ""
+                }
+            },
+            {
+                "Key": "Shower",
+                "Value": {
+                    "MetaType": 0,
+                    "Value": 100.0,
+                    "DisplayName": "Shower",
+                    "MaxValue": 100.0,
                     "Tooltip": ""
                 }
             },
@@ -68,6 +78,46 @@
                     "Value": 0.004999999888241291,
                     "DisplayName": "EnergySpendWhileChilling",
                     "MaxValue": 0.0020000000949949028,
+                    "Tooltip": ""
+                }
+            },
+            {
+                "Key": "EnergyOnEating",
+                "Value": {
+                    "MetaType": 3,
+                    "Value": 0.0010000000474974514,
+                    "DisplayName": "EnergyOnEating",
+                    "MaxValue": 0.0020000000949949028,
+                    "Tooltip": ""
+                }
+            },
+            {
+                "Key": "FoodOnEating",
+                "Value": {
+                    "MetaType": 3,
+                    "Value": 0.006000000052154064,
+                    "DisplayName": "FoodIncreaseWhileEating",
+                    "MaxValue": 0.0010000000474974514,
+                    "Tooltip": ""
+                }
+            },
+            {
+                "Key": "ShowerOnEating",
+                "Value": {
+                    "MetaType": 3,
+                    "Value": 0.0010000000474974514,
+                    "DisplayName": "ShowerOnEating",
+                    "MaxValue": 0.0010000000474974514,
+                    "Tooltip": ""
+                }
+            },
+            {
+                "Key": "ShowerOnShower",
+                "Value": {
+                    "MetaType": 3,
+                    "Value": 0.006000000052154064,
+                    "DisplayName": "ShowerOnShower",
+                    "MaxValue": 0.0010000000474974514,
                     "Tooltip": ""
                 }
             }

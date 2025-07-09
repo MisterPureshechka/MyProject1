@@ -34,9 +34,29 @@ namespace Scripts.Stat
                 case SprintType.Chill:
                     ChillProgressCallback();
                     break;
+                case SprintType.Eat:
+                    EatProgressCallBack();
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void EatProgressCallBack()
+        {
+            _progressDataAdapter.UpdateValue
+                (Consts.Energy, _progressDataAdapter.GetMetadata(Consts.EnergyOnEating).Value);
+            _progressDataAdapter.UpdateValue
+                (Consts.Food, _progressDataAdapter.GetMetadata(Consts.FoodOnEating).Value);
+            
+            _progressDataAdapter.UpdateValue
+                (Consts.Shower, _progressDataAdapter.GetMetadata(Consts.ShowerOnEating).Value);
+        }
+
+        public void ShowerProgressCallback()
+        {
+            _progressDataAdapter.UpdateValue
+                (Consts.Shower, _progressDataAdapter.GetMetadata(Consts.ShowerOnShower).Value);
         }
 
         private void DevProgressCallback()
@@ -45,6 +65,10 @@ namespace Scripts.Stat
                 (Consts.Energy, _progressDataAdapter.GetMetadata(Consts.EnergySpendWhileWorking).Value);
             _progressDataAdapter.UpdateValue
                 (Consts.Food, _progressDataAdapter.GetMetadata(Consts.FoodSpendWhileWorking).Value);
+            _progressDataAdapter.UpdateValue
+                (Consts.Shower, _progressDataAdapter.GetMetadata(Consts.ShowerOnWorking).Value);
+            _progressDataAdapter.UpdateValue
+                (Consts.Mood, _progressDataAdapter.GetMetadata(Consts.MoodOnWorking).Value);
         }
 
         private void ChillProgressCallback()

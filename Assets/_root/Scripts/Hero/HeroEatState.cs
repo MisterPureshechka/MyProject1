@@ -13,6 +13,8 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
+            _heroLogic.PlayAnimation(HeroAnimationState.Eat, true);
+            _heroLogic.FlipHero(false);
         }
 
         public override void Update(float deltaTime)

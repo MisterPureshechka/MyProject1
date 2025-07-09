@@ -23,7 +23,7 @@ namespace Scripts.Tasks
         public Button applyProgressToCurrentTaskButton;
         
         public TextMeshProUGUI _allSprintsText;
-        private SprintSystemTest _sprintSystem;
+        private SprintSystem _sprintSystemOld;
 
         private void Start()
         {
@@ -33,7 +33,7 @@ namespace Scripts.Tasks
 
         private void Update()
         {
-            _sprintSystem.UpdateStats();
+            _sprintSystemOld.UpdateStats();
         }
         
     }

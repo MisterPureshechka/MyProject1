@@ -45,8 +45,6 @@ namespace Scripts.Hero
             {
                 _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
                 _localEvents.TriggerHeroGetRootIO(_targetIO.SprintType);
-                //_heroLogic.ChangeState(_heroLogic.HeroAwaitState);
-                // _heroLogic.TriggerIOBySprintType(_targetIO.SprintType);
             }
         }
 

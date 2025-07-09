@@ -17,14 +17,14 @@ MonoBehaviour:
     - Key: Food
       Value:
         MetaType: 0
-        Value: 100
+        Value: 50
         DisplayName: Food
         MaxValue: 100
         Tooltip: 
     - Key: Energy
       Value:
         MetaType: 0
-        Value: 100
+        Value: 50
         DisplayName: Energy
         MaxValue: 100
         Tooltip: 
@@ -41,6 +41,13 @@ MonoBehaviour:
         Value: 12
         DisplayName: Programming
         MaxValue: 12
+        Tooltip: 
+    - Key: Shower
+      Value:
+        MetaType: 0
+        Value: 100
+        DisplayName: Shower
+        MaxValue: 100
         Tooltip: 
     - Key: EnergySpendWhileWorking
       Value:
@@ -62,4 +69,32 @@ MonoBehaviour:
         Value: 0.005
         DisplayName: EnergySpendWhileChilling
         MaxValue: 0.002
+        Tooltip: 
+    - Key: EnergyOnEating
+      Value:
+        MetaType: 3
+        Value: 0.001
+        DisplayName: EnergyOnEating
+        MaxValue: 0.002
+        Tooltip: 
+    - Key: FoodOnEating
+      Value:
+        MetaType: 3
+        Value: 0.006
+        DisplayName: FoodIncreaseWhileEating
+        MaxValue: 0.001
+        Tooltip: 
+    - Key: ShowerOnEating
+      Value:
+        MetaType: 3
+        Value: 0.001
+        DisplayName: ShowerOnEating
+        MaxValue: 0.001
+        Tooltip: 
+    - Key: ShowerOnShower
+      Value:
+        MetaType: 3
+        Value: 0.006
+        DisplayName: ShowerOnShower
+        MaxValue: 0.001
         Tooltip: 

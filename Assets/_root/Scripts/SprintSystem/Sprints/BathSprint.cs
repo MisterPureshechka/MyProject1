@@ -2,15 +2,15 @@ using Scripts.Rooms;
 
 namespace Scripts.Tasks
 {
-    public class EatSprint : Sprint<IEatTask>
+    public class BathSprint : Sprint<IBathTask>
     {
         private readonly IInteractiveObject _objectToInteract;
-        public override SprintType Type => SprintType.Eat;
-        public override bool ShouldPersistTasksOnExit => true;
+        public override bool ShouldPersistTasksOnExit => false;
+        public override SprintType Type => SprintType.Chill;
         public override bool HasCatalog => false;
         public override IInteractiveObject InteractiveObject => _objectToInteract;
 
-        public EatSprint(int capacity, IInteractiveObject objectToInteract) : base(capacity, objectToInteract)
+        public BathSprint(int capacity, IInteractiveObject objectToInteract) : base(capacity, objectToInteract)
         {
             _objectToInteract = objectToInteract;
         }

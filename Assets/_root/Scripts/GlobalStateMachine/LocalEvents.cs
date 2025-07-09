@@ -85,5 +85,14 @@ namespace Scripts.GlobalStateMachine
 
         public Action<bool> OnMouseOverSideRoom { get; set; }
         public void TriggerMouseOverSideRoom(bool sideRoomIsLeftRoom) => OnMouseOverSideRoom?.Invoke(sideRoomIsLeftRoom);
+        
+        public Action OnMouseOverMainRoom;
+        public void TriggerMouseOverMainRoom() => OnMouseOverMainRoom?.Invoke();
+
+        public Action OnMouseOverKitchen;
+        public void TriggerMouseOverKitchen() => OnMouseOverKitchen?.Invoke();
+
+        public Action OnMouseOverToilet;
+        public void TriggerMouseOverToilet() => OnMouseOverToilet?.Invoke();
     }
 }
