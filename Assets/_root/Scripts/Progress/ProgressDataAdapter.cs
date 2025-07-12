@@ -1,90 +1,67 @@
-using Core;
 using Scripts.Meta;
-using TMPro;
 using UnityEngine;
 
 namespace Scripts.Progress
 {
-    public class ProgressDataAdapter 
+    public class ProgressDataAdapter
     {
-        private ProgressData _progressData;
+        private readonly ProgressData _progressData;
 
-        public ProgressDataAdapter(ProgressData progressData) {
+        public ProgressDataAdapter(ProgressData progressData)
+        {
             _progressData = progressData;
         }
-        
+
         public float GetStats(MetaType metaType)
         {
-            float stats = 0f;
+            float total = 0f;
 
-            foreach (var value in _progressData.Metadata.Values)
+            foreach (var metadata in _progressData.Metadata.Values)
             {
-                if (value.MetaType == metaType)
-                {
-                    stats += value.Value;
-                }
+                if (metadata.MetaType == metaType)
+                    total += metadata.Value;
             }
-            
-            return stats;
+
+            return total;
         }
-        
+
         public float GetMaxStats(MetaType metaType)
         {
-            float maxStats = 0f;
+            float total = 0f;
 
-            foreach (var value in _progressData.Metadata.Values)
+            foreach (var metadata in _progressData.Metadata.Values)
             {
-                if (value.MetaType == metaType)
-                {
-                    maxStats += value.MaxValue;
-                }
+                if (metadata.MetaType == metaType)
+                    total += metadata.MaxValue;
             }
-            
-            return maxStats;
+
+            return total;
         }
-    
-        public Meta.Metadata GetMetadata(string key) {
-            if (_progressData.Metadata.TryGetValue(key, out var metadata)) {
+
+        public Meta.Metadata GetMetadata(string key)
+        {
+            if (_progressData.Metadata.TryGetValue(key, out var metadata))
                 return metadata;
-            }
-            
-            Debug.LogError($"Failed to get metadata for {key}");
-            return null; 
-        }
-    
-        public void UpdateValue(string key, float newValue) 
-        {
-            if (_progressData.Metadata.ContainsKey(key)) {
-                
-                var oldValue = _progressData.Metadata[key].Value;
-                var result = oldValue + newValue;
-                
-                Debug.Log($"Updating {key}: old={oldValue}, delta={newValue}, result={_progressData.Metadata[key].Value}");
-                
-                if (result <= 0)
-                {
-                    _progressData.Metadata[key].Value = 0;
-                    Debug.Log($" result less than 0 = {result}");
-                }
-                else if (result >= _progressData.Metadata[key].MaxValue)
-                {
-                    Debug.Log($" result more than Max = {result}");
-                    _progressData.Metadata[key].Value = _progressData.Metadata[key].MaxValue;
-                }
-                else
-                {
-                    _progressData.Metadata[key].Value = result;
-                }
-            }
-            else
-            {
-                Debug.LogError($"Failed to Update metadata for {key}");
-            }
+
+            Debug.LogError($"[ProgressDataAdapter] Metadata key not found: '{key}'");
+            return null;
         }
 
-        public ProgressData GetProgressData()
+        public bool TryUpdateValue(string key, float delta)
         {
-            return _progressData;
+            if (!_progressData.Metadata.TryGetValue(key, out var metadata))
+            {
+                Debug.LogWarning($"[ProgressDataAdapter] Cannot update unknown key: '{key}'");
+                return false;
+            }
+
+            var original = metadata.Value;
+            metadata.ChangeValue(delta); // использует Clamp внутри
+            //Debug.Log($"[ProgressDataAdapter] {key}: {original} -> {metadata.Value} (Δ {delta})");
+
+            return true;
         }
+
+        public ProgressData GetProgressData() => _progressData;
     }
 }

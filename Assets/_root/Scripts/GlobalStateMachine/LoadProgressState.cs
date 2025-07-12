@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Scripts.Data;
-using Scripts.Metadata;
 using Scripts.Progress;
 using Scripts.Utils;
 using UnityEngine;
@@ -9,24 +7,18 @@ namespace Scripts.GlobalStateMachine
 {
     public class LoadProgressState : BaseState
     {
-        public LoadProgressState(GameStateMachine gameStateMachine, Controllers controllers, GameProgress gameProgress, GameData gameData) : base(gameStateMachine, controllers, gameProgress, gameData)
-        {
-        }
+        public LoadProgressState(GameStateMachine gameStateMachine, Controllers controllers, GameProgress gameProgress, GameData gameData)
+            : base(gameStateMachine, controllers, gameProgress, gameData) { }
 
         public override void Enter()
         {
             LoadProgressOrInitNew();
-
             _gameStateMachine.EnterState<HomeState>();
         }
 
-        public override void Update(float deltaTime)
-        {
-        }
+        public override void Update(float deltaTime) { }
 
-        public override void Exit()
-        {
-        }
+        public override void Exit() { }
 
         private void LoadProgressOrInitNew()
         {
@@ -34,20 +26,18 @@ namespace Scripts.GlobalStateMachine
 
             if (progress == null)
             {
-                Debug.Log("Progress is null, creating new progress.");
+                Debug.Log("Progress is null, creating new progress from meta_config.json.");
                 progress = NewProgress();
                 _gameProgress.SaveProgress(progress);
             }
-            
-            Tools.SaveToJson(progress,Application.dataPath + "/metaconfig.json");
+
+            Tools.SaveToJson(progress, Application.dataPath + "/meta_config_backup.json");
         }
 
         private ProgressData NewProgress()
         {
-            var config = _gameData.MetadataConfig;
-            var progress = new ProgressData(config.MetaFields);
-            
-            return progress;
+            var metadata = MetaConfigLoader.LoadFromResources();
+            return new ProgressData(metadata);
         }
     }
 }

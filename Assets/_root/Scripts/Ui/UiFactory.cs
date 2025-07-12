@@ -2,6 +2,7 @@ using System;
 using Scripts.Data;
 using Scripts.Tasks;
 using Scripts.Ui.TaskUi;
+using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -21,6 +22,21 @@ namespace Scripts.Ui
             var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPrefab, to);
 
             return instance.GetComponent<TaskView>();
+        }
+
+        public TooltipView GetTooltip(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.TooltipPrefab, canvasTransform);
+            instance.gameObject.SetActive(false);
+
+            return instance.GetComponent<TooltipView>();
+        }
+
+        public TooltipStatItem GetTooltipStatItem(Transform to)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.TooltipPrefab, to);
+
+            return instance.GetComponent<TooltipStatItem>();
         }
         
         public TaskPanelView GetTaskPanelView(Transform canvasTransform)
@@ -57,6 +73,13 @@ namespace Scripts.Ui
             var instance = Object.Instantiate(_gameData.PrefabDataBase.CommandPanelView, canvasTransform);
 
             return instance.GetComponent<CommandPanelView>(); 
+        }
+
+        public ReadTaskCatalogue GetReadTaskCatalogue(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.ReadTaskCatalogue, canvasTransform);
+
+            return instance.GetComponent<ReadTaskCatalogue>(); 
         }
     }
 

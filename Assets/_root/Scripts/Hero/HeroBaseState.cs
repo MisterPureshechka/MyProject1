@@ -24,6 +24,7 @@ namespace Scripts.Hero
 
         public virtual void Exit()
         {
+            _heroLogic.SaveProgress();
         }
     }
 }

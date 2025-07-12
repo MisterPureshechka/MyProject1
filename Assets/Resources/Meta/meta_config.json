@@ -1,0 +1,74 @@
+{
+  "Energy": {
+    "MetaType": "Health",
+    "Value": 50,
+    "MaxValue": 100,
+    "DisplayName": "Энергия",
+    "Tooltip": "Используется при работе"
+  },
+  "Food": {
+    "MetaType": "Health",
+    "Value": 10,
+    "MaxValue": 100,
+    "DisplayName": "Еда",
+    "Tooltip": "Нужно есть регулярно"
+  },
+  "Mood": {
+    "MetaType": "Health",
+    "Value": 80,
+    "MaxValue": 100,
+    "DisplayName": "Настроение",
+    "Tooltip": "Улучшается отдыхом"
+  },
+  "Shower": {
+    "MetaType": "Health",
+    "Value": 10,
+    "MaxValue": 100,
+    "DisplayName": "Гигиена",
+    "Tooltip": "Ухудшается при активности"
+  },
+  "Toilet": {
+    "MetaType": "Health",
+    "Value": 10,
+    "MaxValue": 100,
+    "DisplayName": "Туалет",
+    "Tooltip": "Ухудшается редким использованием"
+  },
+  
+  "Programming": {
+    "MetaType": "Knowledge",
+    "Value": 10,
+    "MaxValue": 100,
+    "DisplayName": "Познания в программировании",
+    "Tooltip": "Читай"
+  },
+  "Art": {
+    "MetaType": "Knowledge",
+    "Value": 5,
+    "MaxValue": 100,
+    "DisplayName": "Познания в программировании",
+    "Tooltip": "Читай"
+  },
+  "Marketing": {
+    "MetaType": "Knowledge",
+    "Value": 5,
+    "MaxValue": 100,
+    "DisplayName": "Познания в программировании",
+    "Tooltip": "Читай"
+  },
+  "GameDesign": {
+    "MetaType": "Knowledge",
+    "Value": 5,
+    "MaxValue": 100,
+    "DisplayName": "Познания в программировании",
+    "Tooltip": "Читай"
+  },
+  "SoundDesign": {
+    "MetaType": "Knowledge",
+    "Value": 0,
+    "MaxValue": 100,
+    "DisplayName": "Познания в программировании",
+    "Tooltip": "Читай"
+  }
+  
+}

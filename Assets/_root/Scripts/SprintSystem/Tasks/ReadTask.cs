@@ -1,10 +1,14 @@
 using System;
+using Scripts.GlobalStateMachine;
 using UnityEngine;
 
 namespace Scripts.Tasks
 {
     public class ReadTask : IReadTask
     {
+        private readonly LocalEvents _localEvents;
+        public DevTaskType _knowledgeToUpgrade;
+        public DevTaskType KnowledgeToUpgrade => _knowledgeToUpgrade;
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         public string Title { get; }
@@ -19,15 +23,17 @@ namespace Scripts.Tasks
 
         public event Action<ITask> OnProgressChangedFirstTime;
 
-        public ReadTask(string title, float progress)
+        public ReadTask(LocalEvents localEvents, DevTaskType knowledgeToUpgrade, string title, float progress)
         {
+            _localEvents = localEvents;
+            _knowledgeToUpgrade = knowledgeToUpgrade;
             Title = title;
             Progress = progress;
         }
         
         public ITask Clone()
         {
-            return new ReadTask(Title, Progress); 
+            return new ReadTask(_localEvents, _knowledgeToUpgrade, Title, Progress); 
         }
 
         public void ApplyProgress(float delta, float interval = 0f)
@@ -57,6 +63,8 @@ namespace Scripts.Tasks
                 IsCompleted = true;
                 OnTaskCompleted?.Invoke(this);
             }
+
+            if (!IsCompleted) _localEvents.TriggerReadTaskUpdate(_knowledgeToUpgrade);
         }
     }
 }

@@ -31,8 +31,8 @@ namespace Scripts.Hero
 
         public override void Exit()
         {
+            base.Exit();
             _heroLogic.TiggerSprintExit();
-            _heroLogic.SaveProgress();
             _heroLogic.ChangeSortingOrder(Consts.HeroSortingOrder);
         }
     }

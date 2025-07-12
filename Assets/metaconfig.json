@@ -2,123 +2,103 @@
     "Metadata": {
         "_serializedList": [
             {
-                "Key": "Food",
-                "Value": {
-                    "MetaType": 0,
-                    "Value": 50.0,
-                    "DisplayName": "Food",
-                    "MaxValue": 100.0,
-                    "Tooltip": ""
-                }
-            },
-            {
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 50.0,
-                    "DisplayName": "Energy",
+                    "Value": 14.156941413879395,
                     "MaxValue": 100.0,
-                    "Tooltip": ""
+                    "DisplayName": "Энергия",
+                    "Tooltip": "Используется при работе"
                 }
             },
             {
-                "Key": "Passion",
+                "Key": "Food",
                 "Value": {
-                    "MetaType": 2,
-                    "Value": 12.0,
-                    "DisplayName": "Passion",
-                    "MaxValue": 12.0,
-                    "Tooltip": ""
+                    "MetaType": 0,
+                    "Value": 0.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Еда",
+                    "Tooltip": "Нужно есть регулярно"
                 }
             },
             {
-                "Key": "Programming",
+                "Key": "Mood",
                 "Value": {
-                    "MetaType": 1,
-                    "Value": 12.0,
-                    "DisplayName": "Programming",
-                    "MaxValue": 12.0,
-                    "Tooltip": ""
+                    "MetaType": 0,
+                    "Value": 100.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Настроение",
+                    "Tooltip": "Улучшается отдыхом"
                 }
             },
             {
                 "Key": "Shower",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 100.0,
-                    "DisplayName": "Shower",
+                    "Value": 10.0,
                     "MaxValue": 100.0,
-                    "Tooltip": ""
+                    "DisplayName": "Гигиена",
+                    "Tooltip": "Ухудшается при активности"
                 }
             },
             {
-                "Key": "EnergySpendWhileWorking",
+                "Key": "Toilet",
                 "Value": {
-                    "MetaType": 3,
-                    "Value": -0.0010000000474974514,
-                    "DisplayName": "EnergySpendWhileWorking",
-                    "MaxValue": 0.0020000000949949028,
-                    "Tooltip": ""
+                    "MetaType": 0,
+                    "Value": 10.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Туалет",
+                    "Tooltip": "Ухудшается редким использованием"
                 }
             },
             {
-                "Key": "FoodSpendWhileWorking",
+                "Key": "Programming",
                 "Value": {
-                    "MetaType": 3,
-                    "Value": -0.0010000000474974514,
-                    "DisplayName": "FoodSpendWhileWorking",
-                    "MaxValue": 0.0020000000949949028,
-                    "Tooltip": ""
+                    "MetaType": 1,
+                    "Value": 10.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
                 }
             },
             {
-                "Key": "EnergySpendWhileChilling",
+                "Key": "Art",
                 "Value": {
-                    "MetaType": 3,
-                    "Value": 0.004999999888241291,
-                    "DisplayName": "EnergySpendWhileChilling",
-                    "MaxValue": 0.0020000000949949028,
-                    "Tooltip": ""
+                    "MetaType": 1,
+                    "Value": 5.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
                 }
             },
             {
-                "Key": "EnergyOnEating",
+                "Key": "Marketing",
                 "Value": {
-                    "MetaType": 3,
-                    "Value": 0.0010000000474974514,
-                    "DisplayName": "EnergyOnEating",
-                    "MaxValue": 0.0020000000949949028,
-                    "Tooltip": ""
+                    "MetaType": 1,
+                    "Value": 6.815862655639648,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
                 }
             },
             {
-                "Key": "FoodOnEating",
+                "Key": "GameDesign",
                 "Value": {
-                    "MetaType": 3,
-                    "Value": 0.006000000052154064,
-                    "DisplayName": "FoodIncreaseWhileEating",
-                    "MaxValue": 0.0010000000474974514,
-                    "Tooltip": ""
+                    "MetaType": 1,
+                    "Value": 6.775107383728027,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
                 }
             },
             {
-                "Key": "ShowerOnEating",
+                "Key": "SoundDesign",
                 "Value": {
-                    "MetaType": 3,
-                    "Value": 0.0010000000474974514,
-                    "DisplayName": "ShowerOnEating",
-                    "MaxValue": 0.0010000000474974514,
-                    "Tooltip": ""
-                }
-            },
-            {
-                "Key": "ShowerOnShower",
-                "Value": {
-                    "MetaType": 3,
-                    "Value": 0.006000000052154064,
-                    "DisplayName": "ShowerOnShower",
-                    "MaxValue": 0.0010000000474974514,
-                    "Tooltip": ""
+                    "MetaType": 1,
+                    "Value": 0.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
                 }
             }
         ]

@@ -20,6 +20,7 @@ namespace Scripts.Hero
 
         public override void Exit()
         {
+            base.Exit();
             _heroLogic.ResetHeroPosition();
         }
     }

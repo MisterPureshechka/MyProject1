@@ -10,29 +10,37 @@ namespace Scripts.Progress
 
         public void SaveProgress(ProgressData progress)
         {
-            string json = JsonConvert.SerializeObject(progress, Formatting.Indented, 
+            string json = JsonConvert.SerializeObject(progress, Formatting.Indented,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
 
             PlayerPrefs.SetString(ProgressKey, json);
             PlayerPrefs.Save();
-            
-            //что бы не потерять
-            Tools.SaveToJson(progress, Application.dataPath + Consts.BASE_PATH );
+
+            // Резервная копия для дебага
+            Tools.SaveToJson(progress, Application.dataPath + Consts.BASE_PATH);
         }
 
         public ProgressData LoadProgress()
         {
-            if (PlayerPrefs.HasKey(ProgressKey))
+            if (!PlayerPrefs.HasKey(ProgressKey))
+            {
+                Debug.Log("PlayerPrefs Doesn't HaveKey(ProgressKey)");
+                return null;
+            }
+            
+            try
             {
                 string json = PlayerPrefs.GetString(ProgressKey);
                 Debug.Log("Loaded JSON: " + json);
 
-                return JsonConvert.DeserializeObject<ProgressData>(json, 
+                return JsonConvert.DeserializeObject<ProgressData>(json,
                     new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
             }
-
-            Debug.Log("PlayerPrefs Doesn't HaveKey(ProgressKey)");
-            return null;
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error while loading progress: {e.Message}");
+                return null;
+            }
         }
 
         public void ClearProgress()

@@ -29,6 +29,7 @@ namespace Scripts.Hero
 
         public override void Exit()
         {
+            base.Exit();
         }
     }
 }

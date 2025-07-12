@@ -1,3 +1,4 @@
+using Scripts.GlobalStateMachine;
 using Scripts.Meta;
 
 namespace Scripts.Ui
@@ -6,6 +7,9 @@ namespace Scripts.Ui
     {
         string DataKey { get; }
         void UpdateView(float value, float maxValue);
-        MetaType Metatype { get; }
+        void Init(LocalEvents localEvents);
+        
+        MetaType MetaType { get; }
+        
     }
 }

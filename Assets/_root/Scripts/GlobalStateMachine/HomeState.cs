@@ -7,6 +7,7 @@ using Scripts.Rooms;
 using Scripts.Stat;
 using Scripts.Tasks;
 using Scripts.Ui;
+using Scripts.Ui.TaskUi;
 using Scripts.Utils;
 using UnityEngine;
 
@@ -60,16 +61,18 @@ namespace Scripts.GlobalStateMachine
             var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
             
             var hud = Object.FindAnyObjectByType<HUDView>();
-            var statController = new StatsController(progressDataAdapter);
+            var statController = new StatsController(progressDataAdapter, localEvents);
             var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents);
 
             var sideRoomChecker = new SideRoomChecker(home, localEvents);
 
-            var taskLibrary = new TaskLibrary();
+            var taskLibrary = new TaskLibrary(localEvents);
             //var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
             var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter);
 
             var fader = new FaderLogic(localEvents);
+            
+            var tooltipLogic = new TooltipStatLogic(progressDataAdapter, uiFactory.GetTooltip(canvas.transform), _gameData.PrefabDataBase, localEvents, canvas);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -95,6 +98,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(fader);
             _controllers.Add(sideRoomChecker);
             _controllers.Add(cameraLogic);
+            _controllers.Add(tooltipLogic);
         }
 
         public override void Update(float deltaTime)

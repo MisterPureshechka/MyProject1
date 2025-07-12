@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Core;
+using Scripts.GlobalStateMachine;
 
 namespace Scripts.Tasks
 {
@@ -11,23 +12,33 @@ namespace Scripts.Tasks
         private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
         private readonly Dictionary<EatTaskType, List<IEatTask>> _allEatTasks = new();
         private readonly Dictionary<SprintType, ITask> _autoSprints = new();
-       
+        private readonly List<IReadTask> _allReadTasks = new();
+        private LocalEvents _localEvents;
 
-        public TaskLibrary()
+        public TaskLibrary(LocalEvents localEvents)
         {
+            _localEvents = localEvents;
             LoadAllAvailableTasks();
             LoadAllDevTasks();
             LoadAllEatTasks();
             LoadAutoSprintTasks();
+            LoadReadSprints();
+        }
+
+        private void LoadReadSprints()
+        {
+            _allReadTasks.Add(new ReadTask(_localEvents, DevTaskType.Programming,"CleanCode", 100f));
+            _allReadTasks.Add(new ReadTask(_localEvents,DevTaskType.Art,"Art", 100f));
+            _allReadTasks.Add(new ReadTask(_localEvents,DevTaskType.GameDesign,"Good Game Design", 100f));
+            _allReadTasks.Add(new ReadTask(_localEvents,DevTaskType.Marketing,"How to publish game", 100f));
         }
 
         private void LoadAutoSprintTasks()
         {
             _autoSprints[SprintType.Chill] = new ChillTask("Just Chill", 100f);
-            _autoSprints[SprintType.Read] = new ReadTask("Programming", 200f);
             _autoSprints[SprintType.Play] = new PlayTask("Play", 100f);
             _autoSprints[SprintType.Toilet] = new ToiletTask("Is it necessary to watch here?", 100f);
-            _autoSprints[SprintType.Wash] = new ToiletTask("Bath", 100f);
+            _autoSprints[SprintType.Shower] = new BathTask("Bath", 100f);
             _autoSprints[SprintType.Eat] = new EatTask(EatTaskType.cake, "Nice cake", 100f);
         }
 
@@ -111,6 +122,11 @@ namespace Scripts.Tasks
             }
             
             return tasks;
+        }
+
+        public List<IReadTask> GetReadTasks()
+        {
+            return _allReadTasks;
         }
 
         public List<TEnum> GetAvailableTaskTypes<TEnum>() where TEnum : System.Enum

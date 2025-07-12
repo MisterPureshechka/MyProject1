@@ -1,5 +1,6 @@
 using System;
 using Core;
+using Scripts.Meta;
 using Scripts.Rooms;
 using Scripts.Tasks;
 using UnityEngine;
@@ -94,5 +95,13 @@ namespace Scripts.GlobalStateMachine
 
         public Action OnMouseOverToilet;
         public void TriggerMouseOverToilet() => OnMouseOverToilet?.Invoke();
+        public Action<MetaType, Vector2> OnMouseOverStat;
+        public void TriggerMouseOverStat(MetaType metaType, Vector2 pos) => OnMouseOverStat?.Invoke(metaType, pos);
+
+        public Action OnMouseExitStat;
+        public void TriggerMouseExitStat() => OnMouseExitStat?.Invoke();
+
+        public Action<DevTaskType> OnReadTaskUpdate;
+        public void TriggerReadTaskUpdate(DevTaskType knowledgeToUpgrade) => OnReadTaskUpdate?.Invoke(knowledgeToUpgrade);
     }
 }

@@ -1,7 +1,6 @@
-using System;
+using System.Collections.Generic;
 using Core;
 using Scripts.GlobalStateMachine;
-using Scripts.Hero;
 using Scripts.Progress;
 using Scripts.Tasks;
 using Scripts.Utils;
@@ -14,71 +13,62 @@ namespace Scripts.Stat
     {
         private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly LocalEvents _localEvents;
-        private readonly TextMeshProUGUI _tempStat;
+        private readonly Dictionary<string, Dictionary<string, float>> _effects;
+        private DevTaskType _activeReadTaskType;
 
         public StatEffectLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
         {
             _progressDataAdapter = progressDataAdapter;
             _localEvents = localEvents;
 
-            _localEvents.OnActiveSprintByType += ChangeStatBySprintType;
+            _effects = StatEffectLoader.Load(); 
+            _localEvents.OnActiveSprintByType += OnSprintActivated;
+            _localEvents.OnReadTaskUpdate += ReadTaskUpdateListener; 
+        }
+        
+        private void ReadTaskUpdateListener(DevTaskType readTask)
+        {
+            _activeReadTaskType = readTask;
         }
 
-        private void ChangeStatBySprintType(SprintType sprintType)
+        private void OnSprintActivated(SprintType sprintType)
         {
-            switch (sprintType)
+            if (sprintType == SprintType.Read)
             {
-                case SprintType.Dev:
-                    DevProgressCallback();
-                    break;
-                case SprintType.Chill:
-                    ChillProgressCallback();
-                    break;
-                case SprintType.Eat:
-                    EatProgressCallBack();
-                    break;
-                default:
-                    break;
+                string knowledgeKey = _activeReadTaskType.ToString(); 
+    
+                if (_effects.TryGetValue("ReadKnowledgeEffect", out var effectDict) &&
+                    effectDict.TryGetValue(knowledgeKey, out float delta))
+                {
+                    _progressDataAdapter.TryUpdateValue(knowledgeKey, delta);
+                }
+                else
+                {
+                    Debug.LogWarning($"No effect found for key: {knowledgeKey} in Read sprint");
+                }
+
             }
-        }
-
-        private void EatProgressCallBack()
-        {
-            _progressDataAdapter.UpdateValue
-                (Consts.Energy, _progressDataAdapter.GetMetadata(Consts.EnergyOnEating).Value);
-            _progressDataAdapter.UpdateValue
-                (Consts.Food, _progressDataAdapter.GetMetadata(Consts.FoodOnEating).Value);
             
-            _progressDataAdapter.UpdateValue
-                (Consts.Shower, _progressDataAdapter.GetMetadata(Consts.ShowerOnEating).Value);
-        }
+            string actionKey = sprintType.ToString();
 
-        public void ShowerProgressCallback()
-        {
-            _progressDataAdapter.UpdateValue
-                (Consts.Shower, _progressDataAdapter.GetMetadata(Consts.ShowerOnShower).Value);
-        }
+            if (!_effects.TryGetValue(actionKey, out var statChanges))
+            {
+                Debug.LogWarning($"No stat effects found for action: {actionKey}");
+                return;
+            }
 
-        private void DevProgressCallback()
-        {
-            _progressDataAdapter.UpdateValue
-                (Consts.Energy, _progressDataAdapter.GetMetadata(Consts.EnergySpendWhileWorking).Value);
-            _progressDataAdapter.UpdateValue
-                (Consts.Food, _progressDataAdapter.GetMetadata(Consts.FoodSpendWhileWorking).Value);
-            _progressDataAdapter.UpdateValue
-                (Consts.Shower, _progressDataAdapter.GetMetadata(Consts.ShowerOnWorking).Value);
-            _progressDataAdapter.UpdateValue
-                (Consts.Mood, _progressDataAdapter.GetMetadata(Consts.MoodOnWorking).Value);
-        }
+            foreach (var pair in statChanges)
+            {
+                string statKey = pair.Key;
+                float delta = pair.Value;
 
-        private void ChillProgressCallback()
-        {
-            _progressDataAdapter.UpdateValue(Consts.Energy, _progressDataAdapter.GetMetadata(Consts.EnergySpendWhileChilling).Value);
+                _progressDataAdapter.TryUpdateValue(statKey, delta);
+            }
         }
 
         public void CleanUp()
         {
-            _localEvents.OnActiveSprintByType -= ChangeStatBySprintType;
+            _localEvents.OnActiveSprintByType -= OnSprintActivated;
         }
     }
 }

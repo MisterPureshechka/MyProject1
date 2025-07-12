@@ -7,7 +7,7 @@ namespace Scripts.Tasks
         private readonly IInteractiveObject _objectToInteract;
         public override bool ShouldPersistTasksOnExit => false;
         public override SprintType Type => SprintType.Read;
-        public override bool HasCatalog => false;
+        public override bool HasCatalog => true;
         
         public override IInteractiveObject InteractiveObject => _objectToInteract;
         

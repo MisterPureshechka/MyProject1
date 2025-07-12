@@ -146,7 +146,7 @@ namespace Scripts.Hero
                 case SprintType.Toilet:
                     ChangeState(HeroToiletState);
                     break;
-                case SprintType.Wash:
+                case SprintType.Shower:
                     ChangeState(HeroBathState);
                     break;
                 default:

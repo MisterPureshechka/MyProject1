@@ -1,3 +1,5 @@
+using _root.Scripts.Ui.Stats;
+using Scripts.GlobalStateMachine;
 using Scripts.Meta;
 using Scripts.Utils;
 using TMPro;
@@ -7,23 +9,24 @@ using UnityEngine.UI;
 
 namespace Scripts.Ui
 {
-    public class PassionStatBarView : MonoBehaviour, IStatBarView
+    public class PassionStatBarView : BarBase, IStatBarView
     {
         [SerializeField] private Image _fillBar;
         [SerializeField] private TextMeshProUGUI _label;
         
-        public MetaType _metaType = MetaType.Passion;
-        private float _initialWidth; 
-        public string DataKey => Consts.Energy;
+        private MetaType _metaType = MetaType.Passion;
+        
+        private float _initialWidth;
+        private StatsController _statsController;
 
-        public MetaType Metatype => _metaType;
+        public override string DataKey => Consts.Programming;
 
         private void Awake()
         {
             _initialWidth = _fillBar.rectTransform.rect.width;
         }
-        
-        public void UpdateView(float value, float maxValue) 
+    
+        public override void UpdateView(float value, float maxValue) 
         {
             _label.text = _metaType.ToString();
         
@@ -34,5 +37,7 @@ namespace Scripts.Ui
                 newWidth
             );
         }
+
+        public override MetaType MetaType => _metaType;
     }
 }

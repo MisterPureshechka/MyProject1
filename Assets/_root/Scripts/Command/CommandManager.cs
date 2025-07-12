@@ -76,7 +76,7 @@ namespace Scripts.Tasks
                 new Command()
                 {
                     CommandName = "Take a shower",
-                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Wash),
+                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Shower),
                 }
 
             };

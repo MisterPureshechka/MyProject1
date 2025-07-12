@@ -11,7 +11,7 @@ namespace Scripts.Ui.TaskUi
 {
     public class DevTaskCatalogue : MonoBehaviour
     {
-        private List<TaskButtonsContainerView> _buttonsContainers = new List<TaskButtonsContainerView>();
+        private List<TaskButtonsContainerView> _buttonsContainers = new();
         private Sequence _sequence;
         private LocalEvents _localEvents;
         
@@ -122,7 +122,11 @@ namespace Scripts.Ui.TaskUi
             _sequence.Append(_root.transform.DOMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
             
         }
-        
-        
+
+        private void OnDestroy()
+        {
+            _closeButton.onClick.RemoveAllListeners();
+            _applyButton.onClick.RemoveAllListeners();
+        }
     }
 }

@@ -19,5 +19,8 @@ namespace Scripts.Data
         [field: SerializeField] public SprintView SprintPrefab { get; private set; }
         [field: SerializeField] public DevTaskCatalogue devTaskCatalogue { get; private set; }
         [field: SerializeField] public CommandPanelView CommandPanelView { get; private set; }
+        [field: SerializeField] public TooltipView TooltipPrefab { get; private set; }
+        [field: SerializeField] public TooltipStatItem TooltipItem { get; private set; }
+        [field: SerializeField] public ReadTaskCatalogue ReadTaskCatalogue { get; private set; }
     }
 }

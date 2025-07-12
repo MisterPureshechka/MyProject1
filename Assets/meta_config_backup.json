@@ -1,0 +1,106 @@
+{
+    "Metadata": {
+        "_serializedList": [
+            {
+                "Key": "Energy",
+                "Value": {
+                    "MetaType": 0,
+                    "Value": 31.875961303710939,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Энергия",
+                    "Tooltip": "Используется при работе"
+                }
+            },
+            {
+                "Key": "Food",
+                "Value": {
+                    "MetaType": 0,
+                    "Value": 0.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Еда",
+                    "Tooltip": "Нужно есть регулярно"
+                }
+            },
+            {
+                "Key": "Mood",
+                "Value": {
+                    "MetaType": 0,
+                    "Value": 100.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Настроение",
+                    "Tooltip": "Улучшается отдыхом"
+                }
+            },
+            {
+                "Key": "Shower",
+                "Value": {
+                    "MetaType": 0,
+                    "Value": 10.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Гигиена",
+                    "Tooltip": "Ухудшается при активности"
+                }
+            },
+            {
+                "Key": "Toilet",
+                "Value": {
+                    "MetaType": 0,
+                    "Value": 10.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Туалет",
+                    "Tooltip": "Ухудшается редким использованием"
+                }
+            },
+            {
+                "Key": "Programming",
+                "Value": {
+                    "MetaType": 1,
+                    "Value": 10.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
+                }
+            },
+            {
+                "Key": "Art",
+                "Value": {
+                    "MetaType": 1,
+                    "Value": 5.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
+                }
+            },
+            {
+                "Key": "Marketing",
+                "Value": {
+                    "MetaType": 1,
+                    "Value": 6.815862655639648,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
+                }
+            },
+            {
+                "Key": "GameDesign",
+                "Value": {
+                    "MetaType": 1,
+                    "Value": 5.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
+                }
+            },
+            {
+                "Key": "SoundDesign",
+                "Value": {
+                    "MetaType": 1,
+                    "Value": 0.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай"
+                }
+            }
+        ]
+    }
+}

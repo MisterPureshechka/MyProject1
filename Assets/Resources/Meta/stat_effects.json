@@ -1,0 +1,47 @@
+{
+  "Dev": {
+    "Energy": -0.001,
+    "Food": -0.001,
+    "Mood": -0.001,
+    "Shower": -0.001
+  },
+  "Eat": {
+    "Energy": 0.01,
+    "Food": 0.01,
+    "Shower": -0.000
+  },
+  "Chill": {
+    "Energy": 0.01,
+    "Mood": 0.002
+  },
+  "Shower": {
+    "Shower": 0.02,
+    "Mood": 0.004,
+    "Energy": 0.002,
+    "Food": -0.001,
+    "Toilet": 0.0001
+  },
+  "Play": {
+    "Mood": 0.01,
+    "Energy": -0.0001,
+    "Food": -0.0001
+  },
+  "Read": {
+    "Mood": 0.005,
+    "Energy": -0.001,
+    "Food": -0.001
+  },
+  "Toilet": {
+    "Toilet": 0.005,
+    "Energy": 0.002,
+    "Food": -0.001
+  },
+
+  "ReadKnowledgeEffect": {
+    "Programming": 0.0001,
+    "Art": 0.0001,
+    "Marketing": 0.0001,
+    "GameDesign": 0.0001,
+    "SoundDesign": 0.0001
+  }
+}
