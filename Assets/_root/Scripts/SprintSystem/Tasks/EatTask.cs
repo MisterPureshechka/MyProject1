@@ -1,10 +1,16 @@
 using System;
+using Scripts.Progress;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.Tasks
 {
     public class EatTask : IEatTask
     {
+        private const string Food = "Food";
+        
+        private readonly ProgressDataAdapter _progressDataAdapter;
+        
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         public event Action<ITask> OnTaskCompleted;
@@ -19,8 +25,9 @@ namespace Scripts.Tasks
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
-        public EatTask(EatTaskType taskType, string title, float progress)
+        public EatTask(ProgressDataAdapter progressDataAdapter, EatTaskType taskType, string title, float progress)
         {
+            _progressDataAdapter = progressDataAdapter;
             Type = taskType;
             Title = title;
             Progress = progress;
@@ -30,16 +37,18 @@ namespace Scripts.Tasks
         
         public ITask Clone()
         {
-            return new EatTask(this.Type, this.Title, this.Progress)
+            return new EatTask(this._progressDataAdapter, this.Type, this.Title, this.Progress)
             {
                 Id = this.Id  
             };
         }
         
-        public void ApplyProgress(float delta, float interval = 0f)
+        public void ApplyProgress(float interval = 0f)
         {
             if (Time.time - _lastUpdateTime < interval) 
                 return;
+            
+            float delta = _progressDataAdapter.GetProgressData().Metadata.GetProgressDelta(Food);
             
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);

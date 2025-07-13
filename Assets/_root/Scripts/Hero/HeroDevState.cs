@@ -26,7 +26,6 @@ namespace Scripts.Hero
         public override void Update(float deltaTime)
         {  
             base.Update(deltaTime);
-            _localEvents.TriggerDevActiveState();
         }
 
         public override void Exit()

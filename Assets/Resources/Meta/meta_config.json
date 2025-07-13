@@ -1,38 +1,43 @@
 {
   "Energy": {
     "MetaType": "Health",
-    "Value": 50,
+    "Value": 100,
     "MaxValue": 100,
     "DisplayName": "Энергия",
-    "Tooltip": "Используется при работе"
+    "Tooltip": "Используется при работе",
+    "ProgressDelta": 5
   },
   "Food": {
     "MetaType": "Health",
-    "Value": 10,
+    "Value": 100,
     "MaxValue": 100,
     "DisplayName": "Еда",
-    "Tooltip": "Нужно есть регулярно"
+    "Tooltip": "Нужно есть регулярно",
+    "ProgressDelta": 10
   },
   "Mood": {
     "MetaType": "Health",
-    "Value": 80,
+    "Value": 100,
     "MaxValue": 100,
     "DisplayName": "Настроение",
-    "Tooltip": "Улучшается отдыхом"
+    "Tooltip": "Улучшается отдыхом",
+    "ProgressDelta": 10
   },
   "Shower": {
     "MetaType": "Health",
-    "Value": 10,
+    "Value": 100,
     "MaxValue": 100,
     "DisplayName": "Гигиена",
-    "Tooltip": "Ухудшается при активности"
+    "Tooltip": "Ухудшается при активности",
+    "ProgressDelta": 10
   },
   "Toilet": {
     "MetaType": "Health",
-    "Value": 10,
+    "Value": 100,
     "MaxValue": 100,
     "DisplayName": "Туалет",
-    "Tooltip": "Ухудшается редким использованием"
+    "Tooltip": "Ухудшается редким использованием",
+    "ProgressDelta": 10
   },
   
   "Programming": {
@@ -40,35 +45,40 @@
     "Value": 10,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
-    "Tooltip": "Читай"
+    "Tooltip": "Читай",
+    "ProgressDelta": 1
   },
   "Art": {
     "MetaType": "Knowledge",
     "Value": 5,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
-    "Tooltip": "Читай"
+    "Tooltip": "Читай",
+    "ProgressDelta": 1
   },
   "Marketing": {
     "MetaType": "Knowledge",
     "Value": 5,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
-    "Tooltip": "Читай"
+    "Tooltip": "Читай",
+    "ProgressDelta": 1
   },
   "GameDesign": {
     "MetaType": "Knowledge",
     "Value": 5,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
-    "Tooltip": "Читай"
+    "Tooltip": "Читай",
+    "ProgressDelta": 1
   },
   "SoundDesign": {
     "MetaType": "Knowledge",
     "Value": 0,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
-    "Tooltip": "Читай"
+    "Tooltip": "Читай",
+    "ProgressDelta": 1
   }
   
 }

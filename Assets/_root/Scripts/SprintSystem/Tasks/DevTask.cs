@@ -1,12 +1,17 @@
 using System;
+using System.Collections.Generic;
+using Scripts.Progress;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.Tasks
 {
     public class DevTask : IDevTask
     {
+        private readonly ProgressDataAdapter _progressDataAdapter;
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
+        private Dictionary<string,Dictionary<string,float>> _effects;
         public event Action<ITask> OnTaskCompleted;
         public event Action<ITask, float> OnProgressChanged;
         public event Action<ITask> OnProgressChangedFirstTime;
@@ -19,8 +24,9 @@ namespace Scripts.Tasks
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
-        public DevTask(DevTaskType taskType, string title, float progress)
+        public DevTask(ProgressDataAdapter progressDataAdapter, DevTaskType taskType, string title, float progress)
         {
+            _progressDataAdapter = progressDataAdapter;
             Type = taskType;
             Title = title;
             Progress = progress;
@@ -30,16 +36,18 @@ namespace Scripts.Tasks
 
         public ITask Clone()
         {
-            return new DevTask(this.Type, this.Title, this.Progress)
+            return new DevTask(this._progressDataAdapter, this.Type, this.Title, this.Progress)
             {
                 Id = this.Id  
             };
         }
 
-        public void ApplyProgress(float delta, float interval = 0f)
+        public void ApplyProgress(float interval = 0f)
         {
             if (Time.time - _lastUpdateTime < interval) 
                 return;
+            
+            float delta = _progressDataAdapter.GetProgressData().Metadata.GetValue(Type.ToString());
             
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);

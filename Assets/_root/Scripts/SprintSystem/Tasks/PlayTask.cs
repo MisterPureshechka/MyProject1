@@ -1,10 +1,13 @@
 using System;
+using Scripts.Progress;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.Tasks
 {
     public class PlayTask : IPlayTask
     {
+        private readonly ProgressDataAdapter _progressDataAdapter;
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         public string Title { get; }
@@ -19,21 +22,24 @@ namespace Scripts.Tasks
 
         public event Action<ITask> OnProgressChangedFirstTime;
 
-        public PlayTask(string title, float progress)
+        public PlayTask(ProgressDataAdapter progressDataAdapter, string title, float progress)
         {
+            _progressDataAdapter = progressDataAdapter;
             Title = title;
             Progress = progress;
         }
         
         public ITask Clone()
         {
-            return new PlayTask(Title, Progress); 
+            return new PlayTask(_progressDataAdapter, Title, Progress); 
         }
 
-        public void ApplyProgress(float delta, float interval = 0f)
+        public void ApplyProgress(float interval = 0f)
         {
             if (Time.time - _lastUpdateTime < interval) 
                 return;
+            
+            float delta = _progressDataAdapter.GetProgressData().Metadata.GetProgressDelta(SprintType.Play.ToString());
             
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);

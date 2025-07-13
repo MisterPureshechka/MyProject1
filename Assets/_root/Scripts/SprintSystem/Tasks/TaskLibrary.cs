@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Core;
 using Scripts.GlobalStateMachine;
+using Scripts.Progress;
 
 namespace Scripts.Tasks
 {
@@ -13,10 +14,12 @@ namespace Scripts.Tasks
         private readonly Dictionary<EatTaskType, List<IEatTask>> _allEatTasks = new();
         private readonly Dictionary<SprintType, ITask> _autoSprints = new();
         private readonly List<IReadTask> _allReadTasks = new();
+        private readonly ProgressDataAdapter _progressDataAdapter;
         private LocalEvents _localEvents;
 
-        public TaskLibrary(LocalEvents localEvents)
+        public TaskLibrary(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
         {
+            _progressDataAdapter = progressDataAdapter;
             _localEvents = localEvents;
             LoadAllAvailableTasks();
             LoadAllDevTasks();
@@ -27,19 +30,19 @@ namespace Scripts.Tasks
 
         private void LoadReadSprints()
         {
-            _allReadTasks.Add(new ReadTask(_localEvents, DevTaskType.Programming,"CleanCode", 100f));
-            _allReadTasks.Add(new ReadTask(_localEvents,DevTaskType.Art,"Art", 100f));
-            _allReadTasks.Add(new ReadTask(_localEvents,DevTaskType.GameDesign,"Good Game Design", 100f));
-            _allReadTasks.Add(new ReadTask(_localEvents,DevTaskType.Marketing,"How to publish game", 100f));
+            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents, DevTaskType.Programming,"CleanCode", 100f));
+            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents,DevTaskType.Art,"Art", 100f));
+            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents,DevTaskType.GameDesign,"Good Game Design", 100f));
+            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents,DevTaskType.Marketing,"How to publish game", 100f));
         }
 
         private void LoadAutoSprintTasks()
         {
-            _autoSprints[SprintType.Chill] = new ChillTask("Just Chill", 100f);
-            _autoSprints[SprintType.Play] = new PlayTask("Play", 100f);
-            _autoSprints[SprintType.Toilet] = new ToiletTask("Is it necessary to watch here?", 100f);
-            _autoSprints[SprintType.Shower] = new BathTask("Bath", 100f);
-            _autoSprints[SprintType.Eat] = new EatTask(EatTaskType.cake, "Nice cake", 100f);
+            _autoSprints[SprintType.Chill] = new ChillTask(_progressDataAdapter, "Just Chill", 100f);
+            _autoSprints[SprintType.Play] = new PlayTask(_progressDataAdapter, "Play", 100f);
+            _autoSprints[SprintType.Toilet] = new ToiletTask(_progressDataAdapter, "Is it necessary to watch here?", 100f);
+            _autoSprints[SprintType.Shower] = new BathTask(_progressDataAdapter, "Bath", 100f);
+            _autoSprints[SprintType.Eat] = new EatTask(_progressDataAdapter, EatTaskType.cake, "Nice cake", 100f);
         }
 
         private void LoadAllDevTasks()
@@ -51,27 +54,27 @@ namespace Scripts.Tasks
                 _allDevTasks[type] = new List<IDevTask>();
             }
 
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(DevTaskType.Programming, "Base Mechanics", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(DevTaskType.Programming, "Project Architecture", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 20f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Base Mechanics", 20f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Project Architecture", 20f));
 
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Character Design", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Environment Art", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "UI Assets", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Character Design", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Environment Art", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "UI Assets", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Character Design", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "Environment Art", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(DevTaskType.Art, "UI Assets", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Character Design", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Environment Art", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "UI Assets", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Character Design", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Environment Art", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "UI Assets", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Character Design", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Environment Art", 100f));
+            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "UI Assets", 100f));
 
-            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(DevTaskType.GameDesign, "Core Mechanics", 100f));
-            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(DevTaskType.GameDesign, "Level Design", 100f));
+            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(_progressDataAdapter, DevTaskType.GameDesign, "Core Mechanics", 100f));
+            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(_progressDataAdapter, DevTaskType.GameDesign, "Level Design", 100f));
 
-            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(DevTaskType.SoundDesign, "Background Music", 100f));
-            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(DevTaskType.SoundDesign, "SFX", 100f));
+            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(_progressDataAdapter, DevTaskType.SoundDesign, "Background Music", 100f));
+            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(_progressDataAdapter, DevTaskType.SoundDesign, "SFX", 100f));
             
-            _allDevTasks[DevTaskType.Marketing].Add(new DevTask(DevTaskType.Marketing, "Blog", 100f));
+            _allDevTasks[DevTaskType.Marketing].Add(new DevTask(_progressDataAdapter, DevTaskType.Marketing, "Blog", 100f));
         }
 
         public Dictionary<DevTaskType, List<IDevTask>> GetAlLDevTasks()
@@ -81,11 +84,11 @@ namespace Scripts.Tasks
 
         private void LoadAllAvailableTasks()
         {
-            _allTasks.Add(new DevTask(DevTaskType.Programming, "Saving System", 100f), true);
-            _allTasks.Add(new DevTask(DevTaskType.Programming, "Base Mechanics", 100f), true);
-            _allTasks.Add(new DevTask(DevTaskType.Programming, "Project Architecture", 100f), true);
+            _allTasks.Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f), true);
+            _allTasks.Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Base Mechanics", 100f), true);
+            _allTasks.Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Project Architecture", 100f), true);
             
-            _allTasks.Add(new DevTask(DevTaskType.Art, "CharacterDesign", 100f), true);
+            _allTasks.Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "CharacterDesign", 100f), true);
             
             _allTaskTypes.Add(DevTaskType.Programming, true);
             _allTaskTypes.Add(DevTaskType.Art, true);
@@ -100,8 +103,8 @@ namespace Scripts.Tasks
                 _allEatTasks[type] = new List<IEatTask>();
             }
             
-            _allEatTasks[EatTaskType.cake].Add(new EatTask(EatTaskType.cake, "Nice cake", 100f));
-            _allEatTasks[EatTaskType.coffee].Add(new EatTask(EatTaskType.coffee, "Coffee", 100f));
+            _allEatTasks[EatTaskType.cake].Add(new EatTask(_progressDataAdapter, EatTaskType.cake, "Nice cake", 100f));
+            _allEatTasks[EatTaskType.coffee].Add(new EatTask(_progressDataAdapter, EatTaskType.coffee, "Coffee", 100f));
         }
 
         public ITask GetRandomEatTask()

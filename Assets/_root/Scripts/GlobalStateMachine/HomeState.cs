@@ -66,7 +66,7 @@ namespace Scripts.GlobalStateMachine
 
             var sideRoomChecker = new SideRoomChecker(home, localEvents);
 
-            var taskLibrary = new TaskLibrary(localEvents);
+            var taskLibrary = new TaskLibrary(progressDataAdapter, localEvents);
             //var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
             var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter);
 

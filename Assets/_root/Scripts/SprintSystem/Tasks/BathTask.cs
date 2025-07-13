@@ -1,10 +1,13 @@
 using System;
+using Scripts.Progress;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.Tasks
 {
     public class BathTask : IBathTask
     {
+        private readonly ProgressDataAdapter _progressDataAdapter;
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         public event Action<ITask> OnTaskCompleted;
@@ -16,8 +19,9 @@ namespace Scripts.Tasks
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
-        public BathTask(string title, float progress)
+        public BathTask(ProgressDataAdapter progressDataAdapter, string title, float progress)
         {
+            _progressDataAdapter = progressDataAdapter;
             Title = title;
             Progress = progress;
             MaxProgress = progress;
@@ -25,13 +29,15 @@ namespace Scripts.Tasks
     
         public ITask Clone()
         {
-            return new BathTask(Title, Progress); 
+            return new BathTask(_progressDataAdapter, Title, Progress); 
         }
     
-        public void ApplyProgress(float delta, float interval = 0f)
+        public void ApplyProgress(float interval = 0f)
         {
             if (Time.time - _lastUpdateTime < interval) 
                 return;
+            
+            float delta = _progressDataAdapter.GetProgressData().Metadata.GetProgressDelta(SprintType.Shower.ToString());
             
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);

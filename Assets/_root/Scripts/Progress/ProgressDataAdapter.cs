@@ -56,8 +56,7 @@ namespace Scripts.Progress
             }
 
             var original = metadata.Value;
-            metadata.ChangeValue(delta); // использует Clamp внутри
-            //Debug.Log($"[ProgressDataAdapter] {key}: {original} -> {metadata.Value} (Δ {delta})");
+            metadata.ChangeValue(delta); 
 
             return true;
         }

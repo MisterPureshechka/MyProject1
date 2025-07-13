@@ -47,7 +47,6 @@ namespace Scripts.EcoSystem
             
             _localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
             _localEvents.OnMouseOverToilet += MoveCameraToToilet;
-            _localEvents.OnMouseOverMainRoom += ResetCameraPos;
         }
 
         private void MoveCameraToToilet()
@@ -66,6 +65,27 @@ namespace Scripts.EcoSystem
                 _isMoveFinished = true;
                 
             });
+        }
+        
+        private void HandleCameraReturnByCursor()
+        {
+            if (!_isMoveFinished)
+                return;
+
+            var screenWidth = Screen.width;
+            var mouseX = Input.mousePosition.x;
+
+            switch (_cameraState)
+            {
+                case CameraState.Kitchen:
+                    if (mouseX < screenWidth / 2f)
+                        ResetCameraPos();
+                    break;
+                case CameraState.Toilet:
+                    if (mouseX > screenWidth / 2f)
+                        ResetCameraPos();
+                    break;
+            }
         }
 
         private void MoveCameraToKitchen()
@@ -90,7 +110,7 @@ namespace Scripts.EcoSystem
 
         public void Execute(float deltaTime)
         {
-            UpdateStats();
+            HandleCameraReturnByCursor();
         }
         
         public void UpdateStats()

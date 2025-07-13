@@ -58,18 +58,17 @@ namespace Scripts.Tasks
             _devTaskCatalogue.Init(_localEvents);
             _devTaskCatalogue.SetDevTasks(taskLibrary.GetAlLDevTasks());
             _devTaskCatalogue.OnCloseButtonClicked += CloseCatalogButtonClickedListener;
-            _devTaskCatalogue.OnApplyButtonClicked += AllDevTaskApplyButtonClickListener;
+            _devTaskCatalogue.OnApplyButtonClicked += CatalogueApplyButtonClickListener;
             
             _readTaskCatalogue = _uiFactory.GetReadTaskCatalogue(canvas.transform);
             _readTaskCatalogue.Init(_localEvents);
             _readTaskCatalogue.SetReadTask(taskLibrary.GetReadTasks());
             _readTaskCatalogue.OnCloseButtonClicked += CloseCatalogButtonClickedListener;
-            _readTaskCatalogue.OnApplyButtonClicked += AllDevTaskApplyButtonClickListener;
+            _readTaskCatalogue.OnApplyButtonClicked += CatalogueApplyButtonClickListener;
             
             _devTaskCatalogue.OnTaskClicked += AddTask;
             _readTaskCatalogue.OnTaskClicked += AddTask;
             
-            _localEvents.OnTaskCatalogShow += OpenAllTasks;
             _localEvents.OnSprintClosed += ExitSprint;
             _localEvents.OnHeroGetIO += StartOrCreateSprint;
             _localEvents.OnHeroWalkToIO += ExitSprint;
@@ -91,7 +90,7 @@ namespace Scripts.Tasks
 
         private void CloseCatalogButtonClickedListener()
         {
-            _localEvents.TriggerTaskCatalogHide(SprintType.Dev);
+            _localEvents.TriggerTaskCatalogHide(_currentSprintType);
             ExitSprint();
         }
 
@@ -123,14 +122,13 @@ namespace Scripts.Tasks
             
             if (_currentSprint.ShouldPersistTasksOnExit)
             {
-                await TryRestoreSprint(sprintType); 
+                await TryRestoreSprint(sprintType);
             }
 
             if (_currentSprint.GetTasks().Count <= 0)
             {
                 if (_currentSprint.HasCatalog)
                 {
-                    //_devTaskCatalogue.ShowCatalogue(); 
                     ShowCatalogue(sprintType);
                 }
                 else
@@ -138,12 +136,12 @@ namespace Scripts.Tasks
                     CreateAutoSprint(_currentSprint.Type);
                 }
             }
-            
-            //_localEvents.TriggerSprintCreated(sprintType);
         }
 
         private void ShowCatalogue(SprintType sprintType)
         {
+            _isActiveState = false;
+            
             switch (sprintType)
             {
                 case SprintType.Dev:
@@ -158,13 +156,6 @@ namespace Scripts.Tasks
             }
         }
 
-        private void OpenAllTasks(SprintType sprintType)
-        {
-            _isActiveState = false;
-            _devTaskCatalogue.ShowCatalogue();
-            _currentSprintType = sprintType;
-        }
-
         private async Task TryRestoreSprint(SprintType type)
         {
             if (!_currentSprint.ShouldPersistTasksOnExit) return;
@@ -174,7 +165,7 @@ namespace Scripts.Tasks
             
             _savedTasks.TryGetValue(type, out var tasks);
 
-            if (tasks == null) return;
+            if (tasks == null || tasks.Count == 0) return;
 
             _currentSprintType = type;
 
@@ -193,16 +184,16 @@ namespace Scripts.Tasks
 
             _savedTasks[type].Clear();
             
-            _localEvents.TriggerSprintCreated(type);
-
             ApplyProgressToCurrentTask();
+            
+            _localEvents.TriggerSprintCreated(_currentSprintType);
         }
         
         
         
-        private void AllDevTaskApplyButtonClickListener()
+        private void CatalogueApplyButtonClickListener()
         {
-            _localEvents.TriggerSprintCreated(SprintType.Dev);
+            _localEvents.TriggerSprintCreated(_currentSprintType);
         }
 
         private async void AddTask(ITask task)
@@ -246,7 +237,7 @@ namespace Scripts.Tasks
             {
                 var task = _activeTasks[i];
                 
-                task.ApplyProgress(10f, interval);
+                task.ApplyProgress(interval);
                 
                 _localEvents.TriggerActiveSprintByType(_currentSprint.Type);
                 
@@ -256,19 +247,6 @@ namespace Scripts.Tasks
                     _activeTasks.RemoveAt(i);
                 }
             }
-        }
-
-        private void GetProgressEffect(DevTaskType type)
-        {
-            string key = type.ToString();
-
-            if (!_effects.TryGetValue("Read", out var readEffects) || !readEffects.TryGetValue(key, out float delta))
-            {
-                Debug.LogWarning($"No effect defined for Read.{key}");
-                return;
-            }
-
-            _progressDataAdapter.TryUpdateValue(key, delta);
         }
 
         private void CheckSprintCompletion()
@@ -329,46 +307,6 @@ namespace Scripts.Tasks
             _tempStat.text = result;
         }
 
-        private async void AddDevTask()
-        {
-            while (_sprintView.IsBuisy)
-                await Task.Yield();
-            
-            _currentSprintType = SprintType.Dev;
-            
-            var tasks = _taskLibrary.GetAlLDevTasks();
-            var task = tasks[DevTaskType.Programming][Random.Range(0, 1)];
-            
-            ITask clone = task.Clone();
-                        
-            if (_currentSprint.TryAddTask(clone))
-            {
-                await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
-
-                _pendingTasks.Add(clone);
-            }
-        }
-
-        private async void AddEatTask()
-        {
-            while (_sprintView.IsBuisy)
-                await Task.Yield();
-            
-            _currentSprintType = SprintType.Eat;
-            
-            var task = _taskLibrary.GetRandomEatTask();;
-            
-            ITask clone = task.Clone();
-                        
-            if (_currentSprint.TryAddTask(clone))
-            {
-                await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform));
-
-                _pendingTasks.Add(clone);
-            }
-        
-        }
-
         private async void ExitSprint()
         {
             await ExitSprintAsync();
@@ -399,11 +337,11 @@ namespace Scripts.Tasks
         public void CleanUp()
         {
             _devTaskCatalogue.OnCloseButtonClicked -= ExitSprint;
-            _devTaskCatalogue.OnApplyButtonClicked -= AllDevTaskApplyButtonClickListener;
-            //_localEvents.OnSprintContinue -= TryRestoreSprint;
+            _devTaskCatalogue.OnApplyButtonClicked -= CatalogueApplyButtonClickListener;
             _devTaskCatalogue.OnTaskClicked -= AddTask;
             _readTaskCatalogue.OnTaskClicked -= AddTask;
-            _localEvents.OnTaskCatalogShow -= OpenAllTasks;
+            _readTaskCatalogue.OnCloseButtonClicked -= CloseCatalogButtonClickedListener;
+            _readTaskCatalogue.OnApplyButtonClicked -= CatalogueApplyButtonClickListener;
             _localEvents.OnHeroGetIO -= StartOrCreateSprint;
             _localEvents.OnSprintClosed -= ExitSprint;
             _localEvents.OnHeroGetRootIO -= HeroGetRootIOListener;

@@ -111,8 +111,6 @@ namespace Scripts.Ui.TaskUi
             _sequence = DOTween.Sequence();
             _applyButton.gameObject.SetActive(false);
             
-            Debug.LogError("Task shown insight");
-            
             foreach (var containers in _buttonsContainers)
             {
                 containers.UpdateAllItemsPositions();

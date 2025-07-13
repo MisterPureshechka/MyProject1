@@ -8,7 +8,7 @@ namespace Scripts.Tasks
         float Progress { get;  } 
         float MaxProgress { get;  } 
         bool IsCompleted { get; }
-        void ApplyProgress(float delta, float interval = 0f);
+        void ApplyProgress(float interval = 0f);
 
         event Action<ITask> OnTaskCompleted;
         event Action<ITask, float> OnProgressChanged;

@@ -1,11 +1,14 @@
 using System;
 using Scripts.GlobalStateMachine;
+using Scripts.Progress;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.Tasks
 {
     public class ReadTask : IReadTask
     {
+        private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly LocalEvents _localEvents;
         public DevTaskType _knowledgeToUpgrade;
         public DevTaskType KnowledgeToUpgrade => _knowledgeToUpgrade;
@@ -23,8 +26,9 @@ namespace Scripts.Tasks
 
         public event Action<ITask> OnProgressChangedFirstTime;
 
-        public ReadTask(LocalEvents localEvents, DevTaskType knowledgeToUpgrade, string title, float progress)
+        public ReadTask(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents, DevTaskType knowledgeToUpgrade, string title, float progress)
         {
+            _progressDataAdapter = progressDataAdapter;
             _localEvents = localEvents;
             _knowledgeToUpgrade = knowledgeToUpgrade;
             Title = title;
@@ -33,13 +37,15 @@ namespace Scripts.Tasks
         
         public ITask Clone()
         {
-            return new ReadTask(_localEvents, _knowledgeToUpgrade, Title, Progress); 
+            return new ReadTask(_progressDataAdapter, _localEvents, _knowledgeToUpgrade, Title, Progress); 
         }
 
-        public void ApplyProgress(float delta, float interval = 0f)
+        public void ApplyProgress(float interval = 0f)
         {
             if (Time.time - _lastUpdateTime < interval) 
                 return;
+            
+            float delta = _progressDataAdapter.GetProgressData().Metadata.GetProgressDelta(_knowledgeToUpgrade.ToString());
             
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);

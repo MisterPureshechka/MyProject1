@@ -23,3 +23,4 @@ MonoBehaviour:
   <CommandPanelView>k__BackingField: {fileID: 8574929721281965812, guid: d9249f285bde34185aa29c536038f54e, type: 3}
   <TooltipPrefab>k__BackingField: {fileID: 5025724360896003362, guid: a013a5d6d74974f46b2f56b999152f2b, type: 3}
   <TooltipItem>k__BackingField: {fileID: 2795018050956126632, guid: 78cd9f3a30db94d55b2534182ca747fa, type: 3}
+  <ReadTaskCatalogue>k__BackingField: {fileID: 6611442615963128792, guid: 7ebb4e1336a7541afab0e4d721c14daf, type: 3}

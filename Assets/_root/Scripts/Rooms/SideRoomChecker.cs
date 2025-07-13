@@ -39,7 +39,6 @@ namespace Scripts.Rooms
 
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(_mousePosition);
 
-            // Kitchen
             if (Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _kitchenLayerMask).collider != null)
             {
                 if (_currentRoom != "Kitchen")
@@ -51,7 +50,6 @@ namespace Scripts.Rooms
                 return;
             }
 
-            // Toilet
             if (Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _toiletLayerMask).collider != null)
             {
                 if (_currentRoom != "Toilet")
@@ -63,7 +61,6 @@ namespace Scripts.Rooms
                 return;
             }
 
-            // MainRoom
             if (Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _mainRoomLayerMask).collider != null)
             {
                 if (_currentRoom != "MainRoom")
@@ -75,7 +72,6 @@ namespace Scripts.Rooms
                 return;
             }
 
-            // Вышли из всех
             if (_currentRoom != null)
             {
                 _currentRoom = null;

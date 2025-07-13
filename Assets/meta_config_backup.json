@@ -5,10 +5,11 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 31.875961303710939,
+                    "Value": 99.99899291992188,
                     "MaxValue": 100.0,
                     "DisplayName": "Энергия",
-                    "Tooltip": "Используется при работе"
+                    "Tooltip": "Используется при работе",
+                    "ProgressDelta": 5.0
                 }
             },
             {
@@ -18,77 +19,85 @@
                     "Value": 0.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
-                    "Tooltip": "Нужно есть регулярно"
+                    "Tooltip": "Нужно есть регулярно",
+                    "ProgressDelta": 10.0
                 }
             },
             {
                 "Key": "Mood",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 100.0,
+                    "Value": 62.847129821777347,
                     "MaxValue": 100.0,
                     "DisplayName": "Настроение",
-                    "Tooltip": "Улучшается отдыхом"
+                    "Tooltip": "Улучшается отдыхом",
+                    "ProgressDelta": 10.0
                 }
             },
             {
                 "Key": "Shower",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 10.0,
+                    "Value": 9.542842864990235,
                     "MaxValue": 100.0,
                     "DisplayName": "Гигиена",
-                    "Tooltip": "Ухудшается при активности"
+                    "Tooltip": "Ухудшается при активности",
+                    "ProgressDelta": 10.0
                 }
             },
             {
                 "Key": "Toilet",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 10.0,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Туалет",
-                    "Tooltip": "Ухудшается редким использованием"
+                    "Tooltip": "Ухудшается редким использованием",
+                    "ProgressDelta": 10.0
                 }
             },
             {
                 "Key": "Programming",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 10.0,
+                    "Value": 10.084733963012696,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
-                    "Tooltip": "Читай"
+                    "Tooltip": "Читай",
+                    "ProgressDelta": 1.0
                 }
             },
             {
                 "Key": "Art",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 5.0,
+                    "Value": 5.133801460266113,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
-                    "Tooltip": "Читай"
+                    "Tooltip": "Читай",
+                    "ProgressDelta": 1.0
                 }
             },
             {
                 "Key": "Marketing",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 6.815862655639648,
+                    "Value": 5.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
-                    "Tooltip": "Читай"
+                    "Tooltip": "Читай",
+                    "ProgressDelta": 1.0
                 }
             },
             {
                 "Key": "GameDesign",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 5.0,
+                    "Value": 5.239204406738281,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
-                    "Tooltip": "Читай"
+                    "Tooltip": "Читай",
+                    "ProgressDelta": 1.0
                 }
             },
             {
@@ -98,7 +107,8 @@
                     "Value": 0.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
-                    "Tooltip": "Читай"
+                    "Tooltip": "Читай",
+                    "ProgressDelta": 1.0
                 }
             }
         ]

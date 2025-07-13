@@ -18,6 +18,8 @@ namespace Scripts.Meta
 
         public string Tooltip;
 
+        public float ProgressDelta;
+
         public virtual void ChangeValue(float delta)
         {
             Value += delta;
