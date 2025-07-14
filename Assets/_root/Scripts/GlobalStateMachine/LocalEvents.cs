@@ -57,11 +57,15 @@ namespace Scripts.GlobalStateMachine
         public Action<bool, SprintType> OnActiveState { get; set; }
         public void TriggerActiveState(bool isActive, SprintType sprintType) => OnActiveState?.Invoke(isActive, sprintType);
 
-        public Action OnDevActiveState { get; set; }
-        public void TriggerDevActiveState() => OnDevActiveState?.Invoke();
+        public Action OnActiveSprint { get; set; }
         
         public Action<SprintType> OnActiveSprintByType { get; set; }
-        public void TriggerActiveSprintByType(SprintType sprintType) => OnActiveSprintByType?.Invoke(sprintType);
+
+        public void TriggerActiveSprintByType(SprintType sprintType)
+        {
+            OnActiveSprintByType?.Invoke(sprintType);
+            OnActiveSprint?.Invoke();
+        }
         
         public Action OnSprintExit { get; set; }
         public void TriggerSprintExit() => OnSprintExit?.Invoke();
@@ -103,5 +107,11 @@ namespace Scripts.GlobalStateMachine
 
         public Action<DevTaskType> OnReadTaskUpdate;
         public void TriggerReadTaskUpdate(DevTaskType knowledgeToUpgrade) => OnReadTaskUpdate?.Invoke(knowledgeToUpgrade);
+
+        public Action<float> OnDayTimeChange;
+        public void TriggerOnDayTimeChange(float time) => OnDayTimeChange?.Invoke(time);
+
+        public Action<float> OnNormilizeDayTimeChange;
+        public void TriggerNormilizeDayTimeChange(float time) => OnNormilizeDayTimeChange?.Invoke(time);
     }
 }

@@ -79,6 +79,14 @@
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",
     "ProgressDelta": 1
+  },
+
+  "GameTime": {
+    "MetaType": "System",
+    "Value": 9,
+    "MaxValue": 24,
+    "DisplayName": "Познания в программировании",
+    "Tooltip": "Читай",
+    "ProgressDelta": 1
   }
-  
 }

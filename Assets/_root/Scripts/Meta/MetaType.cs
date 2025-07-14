@@ -5,6 +5,7 @@ namespace Scripts.Meta
         Health,
         Knowledge,
         Passion,
-        Costs
+        Costs,
+        System
     }
 }

@@ -11,6 +11,8 @@ namespace Scripts.EcoSystem
         public System.Action<BloomView> OnHeroExit;
         
         [field: SerializeField] public SpriteRenderer SpriteRenderer;
+        
+        public bool IsHeroInside { get; private set; }
 
         private void Awake()
         {
@@ -23,6 +25,7 @@ namespace Scripts.EcoSystem
         {
             if (other.CompareTag(Consts.PlayerKey))
             {
+                IsHeroInside = true;
                 OnHeroEnter?.Invoke(this);
             }
         }
@@ -31,6 +34,7 @@ namespace Scripts.EcoSystem
         {
             if (other.CompareTag(Consts.PlayerKey))
             {
+                IsHeroInside = false;
                 OnHeroExit?.Invoke(this);
             }
         }

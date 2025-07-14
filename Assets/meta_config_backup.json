@@ -5,7 +5,7 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 99.99899291992188,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Энергия",
                     "Tooltip": "Используется при работе",
@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 0.0,
+                    "Value": 84.40032958984375,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -27,7 +27,7 @@
                 "Key": "Mood",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 62.847129821777347,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Настроение",
                     "Tooltip": "Улучшается отдыхом",
@@ -38,7 +38,7 @@
                 "Key": "Shower",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 9.542842864990235,
+                    "Value": 93.63525390625,
                     "MaxValue": 100.0,
                     "DisplayName": "Гигиена",
                     "Tooltip": "Ухудшается при активности",
@@ -60,7 +60,7 @@
                 "Key": "Programming",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 10.084733963012696,
+                    "Value": 10.088119506835938,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -71,7 +71,7 @@
                 "Key": "Art",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 5.133801460266113,
+                    "Value": 5.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -93,7 +93,7 @@
                 "Key": "GameDesign",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 5.239204406738281,
+                    "Value": 5.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -106,6 +106,17 @@
                     "MetaType": 1,
                     "Value": 0.0,
                     "MaxValue": 100.0,
+                    "DisplayName": "Познания в программировании",
+                    "Tooltip": "Читай",
+                    "ProgressDelta": 1.0
+                }
+            },
+            {
+                "Key": "GameTime",
+                "Value": {
+                    "MetaType": 4,
+                    "Value": 9.0,
+                    "MaxValue": 24.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
                     "ProgressDelta": 1.0

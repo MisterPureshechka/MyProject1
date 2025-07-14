@@ -41,6 +41,8 @@ namespace Scripts.GlobalStateMachine
             var cameraLogic = new CameraLogic(camera, localEvents, _gameData.InteractiveObjectConfig);
             
             var canvas = Object.FindAnyObjectByType<Canvas>();
+            var timeView = Object.FindAnyObjectByType<TimeView>();
+            var timeLogic = new TimeLogic(progressDataAdapter, timeView, localEvents);
             
             var spriteAnimator = new SpriteAnimator();
             
@@ -56,7 +58,9 @@ namespace Scripts.GlobalStateMachine
             var iOGlobalAnimator =
                 new InteractiveObjectGlobalAnimator(_gameData.InteractiveObjectConfig, interactiveObjectRegister);
 
-            var bloomLogic = new WindowBloomLogic();
+            var bloomLogic = new WindowBloomLogic(localEvents);
+            var skyLogic = new SkyLogic(localEvents, Object.FindAnyObjectByType<SkyView>());
+            var volumeLogic = new VolumeLogic(localEvents, _gameData.InteractiveObjectConfig);
 
             var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
             
@@ -99,6 +103,8 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(sideRoomChecker);
             _controllers.Add(cameraLogic);
             _controllers.Add(tooltipLogic);
+            _controllers.Add(timeLogic);
+            _controllers.Add(skyLogic);
         }
 
         public override void Update(float deltaTime)

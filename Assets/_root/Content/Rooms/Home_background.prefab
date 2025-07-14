@@ -1708,6 +1708,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7635864080599849508}
   - component: {fileID: 7208500850784123708}
+  - component: {fileID: 102185198569718552}
   m_Layer: 2
   m_Name: Square
   m_TagString: Untagged
@@ -1776,7 +1777,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -100
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.514151, g: 0.81627804, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1786,6 +1787,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &102185198569718552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3048490459679395798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a91e9c587dd4bde87a55213081a2751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skyRenderer: {fileID: 7208500850784123708}
+  _dayColor: {r: 0.5137255, g: 0.8156863, b: 1, a: 1}
+  _nightColor: {r: 0, g: 0.003921569, b: 0.49019608, a: 1}
 --- !u!1 &3904999774441998882
 GameObject:
   m_ObjectHideFlags: 0
@@ -4807,7 +4823,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2070073861625415016
 Transform:
   m_ObjectHideFlags: 0
@@ -4868,7 +4884,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -99
   m_Sprite: {fileID: 21300000, guid: a131a0358cb21411fb97408d53e337b1, type: 3}
-  m_Color: {r: 0.28862584, g: 0.6782802, b: 0.8867924, a: 1}
+  m_Color: {r: 0.1462264, g: 0.70230293, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

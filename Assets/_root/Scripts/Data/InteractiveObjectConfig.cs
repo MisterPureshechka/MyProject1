@@ -10,5 +10,7 @@ namespace Scripts.Data
         [field: SerializeField] public float CameraMoveDuration { get; private set; }
         [field: SerializeField] public Ease CameraMoveEase { get; private set; }
         [field: SerializeField] public Vector2[] CameraSideMomePositionKeys { get; private set; }
+        [field: SerializeField] public Color VolumeDayColor { get; private set; }
+        [field: SerializeField] public Color VolumeNightColor { get; private set; }
     }
 }

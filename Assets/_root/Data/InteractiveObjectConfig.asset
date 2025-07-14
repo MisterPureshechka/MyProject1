@@ -18,3 +18,5 @@ MonoBehaviour:
   <CameraSideMomePositionKeys>k__BackingField:
   - {x: -1.9, y: 0.7}
   - {x: 1.86, y: 0.7}
+  <VolumeDayColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  <VolumeNightColor>k__BackingField: {r: 0.48584908, g: 0.53301907, b: 1, a: 1}
