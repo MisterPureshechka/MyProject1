@@ -275,6 +275,7 @@ namespace Scripts.Tasks
         private async void CompleteSprint()
         {
             _isActiveState = false;
+            _localEvents.TriggerSprintExit();
             _localEvents.TriggerSprintComplete(_currentSprint.Type);
             await Task.Delay(500);
             await _sprintView.ClearTasks();
@@ -319,6 +320,7 @@ namespace Scripts.Tasks
 
         private async Task ExitSprintAsync()
         {
+            _localEvents.TriggerSprintExit();
             _isActiveState = false;
             if (_currentSprint == null) return;
             

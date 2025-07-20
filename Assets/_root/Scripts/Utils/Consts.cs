@@ -6,6 +6,11 @@ namespace Scripts.Utils
         
         public const string PlayerKey = "Player";
         
+        public const string CurrentDayKey = "CurrentDay";
+        public const string CurrentMonthKey = "CurrentMonth";
+        public const string CurrentWeekKey = "CurrentWeek";
+        public const string CurrentYearKey = "CurrentYear";
+        
         public const int BackGroundSortingOrder = -10;
         public const int HeroSortingOrder = 10;
         public const int ChairSortingOrder = 9;

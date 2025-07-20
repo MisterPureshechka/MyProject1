@@ -16,7 +16,6 @@ namespace Scripts.Progress
             PlayerPrefs.SetString(ProgressKey, json);
             PlayerPrefs.Save();
 
-            // Резервная копия для дебага
             Tools.SaveToJson(progress, Application.dataPath + Consts.BASE_PATH);
         }
 
@@ -41,12 +40,6 @@ namespace Scripts.Progress
                 Debug.LogError($"Error while loading progress: {e.Message}");
                 return null;
             }
-        }
-
-        public void ClearProgress()
-        {
-            PlayerPrefs.DeleteKey(ProgressKey);
-            PlayerPrefs.Save();
         }
     }
 }

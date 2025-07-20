@@ -52,18 +52,28 @@ namespace Scripts.EcoSystem
             CalculateTime(deltatime);
 
             _timeView.UpdateTimeText(_currentTime);
+            
+            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue("GameTime", out var metadata))
+            {
+                metadata.Value = _currentTime;
+            }
         }
 
         private void CalculateTime(float deltatime)
         {
             _currentTime += deltatime * _timeMultiplier;
             if (_currentTime >= 24f)
+            {
+                _localEvents.TriggerNewDay();
                 _currentTime = 0;
+            }
             
             float dayValue = CalculateDayValue(_currentTime);
             _localEvents.TriggerOnDayTimeChange(dayValue);
-            float normilizeDayValue = GetNormalizedDayTime(_currentTime);
-            _localEvents.TriggerNormilizeDayTimeChange(normilizeDayValue);
+            float normalizedDayTime = GetNormalizedDayTime(_currentTime);
+            _localEvents.TriggerNormalizeDayTimeChange(normalizedDayTime);
+            float normalizeNightValue = GetNormalizedNightTime(_currentTime);
+            _localEvents.TriggerNormalizeNightTimeChange(normalizeNightValue);
         }
         
         private float CalculateDayValue(float time)
@@ -85,15 +95,27 @@ namespace Scripts.EcoSystem
             var startOfPeak = 11f;
             var endOfPeak = 18f;
             
-            if (currentTime >= 6f && currentTime < endOfPeak)
+            if (currentTime >= startOfPeak && currentTime < endOfPeak)
                 return Mathf.InverseLerp(startOfPeak, endOfPeak, currentTime); 
+            return 0f;
+        }
+        
+        public float GetNormalizedNightTime(float currentTime)
+        {
+            // Вечер: 20 → 24 (растёт от 0 до 1)
+            if (currentTime >= 20f && currentTime <= 24f)
+                return Mathf.InverseLerp(20f, 24f, currentTime);
+
+            if (currentTime >= 0f && currentTime < 12f)
+                return Mathf.InverseLerp(0f, 12f, currentTime) * -1 + 1; 
+
             return 0f;
         }
 
         public void CleanUp()
         {
-            _localEvents.OnActiveSprint += SpeedUpTime;
-            _localEvents.OnSprintExit += SpeedDownTime;
+            _localEvents.OnActiveSprint -= SpeedUpTime;
+            _localEvents.OnSprintExit -= SpeedDownTime;
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c71d0eeab21846dc9406a61006d7a617, type: 3}
   m_Name: HeroConfig
   m_EditorClassIdentifier: 
-  <WalkSpeed>k__BackingField: 2.7
+  <WalkSpeed>k__BackingField: 0.9
   <Sequences>k__BackingField:
   - HeroAnimationState: 0
     Sprites:

@@ -281,7 +281,7 @@ namespace Scripts.Hero
         public void SaveProgress()
         {
             _gameProgress.SaveProgress(_progressData.GetProgressData());
-            
+            Debug.Log("GameTime в прогрессе: " + _progressData.GetProgressData().Metadata.GetValue("GameTime"));
         }
 
         public void PlaceHero(Vector3 targetPosition)

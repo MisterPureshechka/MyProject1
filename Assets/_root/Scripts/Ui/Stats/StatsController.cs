@@ -37,7 +37,6 @@ namespace Scripts.Ui
                 var maxValue = _adapter.GetMaxStats(view.MetaType);
 
                 view.UpdateView(value, maxValue);
-                Debug.Log(view.MetaType.ToString() + " - " +value);
             }
         }
 

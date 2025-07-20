@@ -77,8 +77,6 @@ namespace Scripts.Ui.TaskUi
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             
-            Debug.LogError("Task shown insight");
-            
             gameObject.SetActive(true);
             _sequence.Append(gameObject.transform.DOMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
             

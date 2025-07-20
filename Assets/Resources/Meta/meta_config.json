@@ -85,8 +85,33 @@
     "MetaType": "System",
     "Value": 9,
     "MaxValue": 24,
-    "DisplayName": "Познания в программировании",
+    "DisplayName": "Current Time",
+    "Tooltip": "",
+    "ProgressDelta": 1
+  },
+  "CurrentDay": {
+    "MetaType": "System",
+    "Value": 7,
+    "MaxValue": 31,
+    "DisplayName": "Day",
+    "Tooltip": "",
+    "ProgressDelta": 1
+  },
+  "CurrentMonth": {
+    "MetaType": "System",
+    "Value": 9,
+    "MaxValue": 12,
+    "DisplayName": "Month",
     "Tooltip": "Читай",
     "ProgressDelta": 1
+  },
+  "CurrentYear": {
+    "MetaType": "System",
+    "Value": 2025,
+    "MaxValue": 9999,
+    "DisplayName": "Year",
+    "Tooltip": "",
+    "ProgressDelta": 1
   }
+  
 }

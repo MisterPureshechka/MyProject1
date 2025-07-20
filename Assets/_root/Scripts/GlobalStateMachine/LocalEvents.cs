@@ -112,6 +112,12 @@ namespace Scripts.GlobalStateMachine
         public void TriggerOnDayTimeChange(float time) => OnDayTimeChange?.Invoke(time);
 
         public Action<float> OnNormilizeDayTimeChange;
-        public void TriggerNormilizeDayTimeChange(float time) => OnNormilizeDayTimeChange?.Invoke(time);
+        public void TriggerNormalizeDayTimeChange(float time) => OnNormilizeDayTimeChange?.Invoke(time);
+        
+        public Action<float> OnNormalizeNightTimeChange;
+        public void TriggerNormalizeNightTimeChange(float time) => OnNormalizeNightTimeChange?.Invoke(time);
+
+        public Action OnNewDay;
+        public void TriggerNewDay() => OnNewDay?.Invoke();
     }
 }

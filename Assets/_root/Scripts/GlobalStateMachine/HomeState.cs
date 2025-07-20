@@ -1,6 +1,7 @@
 using Scripts.Animator;
 using Scripts.Data;
 using Scripts.EcoSystem;
+using Scripts.EcoSystem.Calendar;
 using Scripts.Hero;
 using Scripts.Progress;
 using Scripts.Rooms;
@@ -61,6 +62,7 @@ namespace Scripts.GlobalStateMachine
             var bloomLogic = new WindowBloomLogic(localEvents);
             var skyLogic = new SkyLogic(localEvents, Object.FindAnyObjectByType<SkyView>());
             var volumeLogic = new VolumeLogic(localEvents, _gameData.InteractiveObjectConfig);
+            var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(), progressDataAdapter);
 
             var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
             
@@ -105,6 +107,8 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(tooltipLogic);
             _controllers.Add(timeLogic);
             _controllers.Add(skyLogic);
+            _controllers.Add(volumeLogic);
+            _controllers.Add(calendarLogic);
         }
 
         public override void Update(float deltaTime)

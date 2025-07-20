@@ -1471,7 +1471,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fillBar: {fileID: 30526741455690179}
   _label: {fileID: 2707025302176714605}
-  _metaType: 2
 --- !u!1 &3297638250289162034
 GameObject:
   m_ObjectHideFlags: 0

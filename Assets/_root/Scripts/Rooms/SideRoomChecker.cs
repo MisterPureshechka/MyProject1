@@ -45,7 +45,6 @@ namespace Scripts.Rooms
                 {
                     _currentRoom = "Kitchen";
                     _localEvents.TriggerMouseOverKitchen();
-                    Debug.Log("Навели на Kitchen");
                 }
                 return;
             }
@@ -56,7 +55,6 @@ namespace Scripts.Rooms
                 {
                     _currentRoom = "Toilet";
                     _localEvents.TriggerMouseOverToilet();
-                    Debug.Log("Навели на Toilet");
                 }
                 return;
             }
@@ -67,7 +65,6 @@ namespace Scripts.Rooms
                 {
                     _currentRoom = "MainRoom";
                     _localEvents.TriggerMouseOverMainRoom();
-                    Debug.Log("Навели на MainRoom");
                 }
                 return;
             }
@@ -75,7 +72,6 @@ namespace Scripts.Rooms
             if (_currentRoom != null)
             {
                 _currentRoom = null;
-                Debug.Log("Курсор вне всех комнат");
             }
         }
         

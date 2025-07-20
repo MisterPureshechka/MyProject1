@@ -55,7 +55,6 @@ namespace Scripts.Progress
                 return false;
             }
 
-            var original = metadata.Value;
             metadata.ChangeValue(delta); 
 
             return true;
