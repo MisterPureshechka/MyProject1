@@ -128,7 +128,7 @@ namespace Scripts.EcoSystem
             _cameraState = CameraState.MainRoom;
 
             var config = _interactiveObjectConfig;
-            _camera.transform.DOKill(); // Остановить текущую анимацию
+            _camera.transform.DOKill(); 
 
             _camera.transform.DOMove(_cameraDefaultPosition, config.CameraMoveDuration).SetEase(config.CameraMoveEase).OnComplete(() =>
             {
@@ -142,7 +142,7 @@ namespace Scripts.EcoSystem
             _localEvents.OnMouseOverKitchen -= MoveCameraToKitchen;
             _localEvents.OnMouseOverToilet -= MoveCameraToToilet;
             _localEvents.OnMouseOverMainRoom -= ResetCameraPos;
-            _camera.transform.DOKill();
+            _camera?.transform.DOKill();
         }
     }
 }

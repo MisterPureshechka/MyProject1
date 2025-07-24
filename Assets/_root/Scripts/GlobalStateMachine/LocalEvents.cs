@@ -119,5 +119,8 @@ namespace Scripts.GlobalStateMachine
 
         public Action OnNewDay;
         public void TriggerNewDay() => OnNewDay?.Invoke();
+
+        public Action OnMiniCalendarButtonClick;
+        public void TriggerMiniCalendarButtonOpen() => OnMiniCalendarButtonClick?.Invoke();
     }
 }

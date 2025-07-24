@@ -62,7 +62,7 @@ namespace Scripts.GlobalStateMachine
             var bloomLogic = new WindowBloomLogic(localEvents);
             var skyLogic = new SkyLogic(localEvents, Object.FindAnyObjectByType<SkyView>());
             var volumeLogic = new VolumeLogic(localEvents, _gameData.InteractiveObjectConfig);
-            var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(), progressDataAdapter);
+            var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(), Object.FindAnyObjectByType<CalendarCatalogue>(), progressDataAdapter);
 
             var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
             

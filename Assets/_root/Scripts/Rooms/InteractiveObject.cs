@@ -16,7 +16,7 @@ namespace Scripts.Rooms
         public SprintType SprintType => _sprintType;
         public Vector3 Position => GetComponent<Transform>().position;
         public Transform RootObjectPosition => _rootObject;
-
+        public Transform IOTransform => gameObject.transform;
         public Action OnCursorEnter { get; set; }
         public Action OnCursorExit { get; set; }
         public InteractiveObjectType IOType => _ioType;

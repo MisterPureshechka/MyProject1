@@ -10,20 +10,30 @@ namespace Scripts.EcoSystem.Calendar
     {
         private LocalEvents _localEvents;
         private readonly MiniCalendarView _miniCalendarView;
+        private readonly CalendarCatalogue _calendarCatalogue;
         private readonly ProgressDataAdapter _progressDataAdapter;
 
         private GameDate _currentDate;
 
 
-        public CalendarLogic(LocalEvents localEvents, MiniCalendarView miniCalendarView, ProgressDataAdapter progressDataAdapter)
+        public CalendarLogic(LocalEvents localEvents, MiniCalendarView miniCalendarView, CalendarCatalogue calendarCatalogue, ProgressDataAdapter progressDataAdapter)
         {
             _localEvents = localEvents;
             _miniCalendarView = miniCalendarView;
+            _calendarCatalogue = calendarCatalogue;
             _progressDataAdapter = progressDataAdapter;
 
+            _miniCalendarView.Init(_localEvents);
             LoadOrCreateNewDay();
 
             _localEvents.OnNewDay += IncreaseDay;
+            _localEvents.OnMiniCalendarButtonClick += ShowCatalogue;
+        }
+
+        private void ShowCatalogue()
+        {
+            Debug.Log("Catalogue get");
+            _calendarCatalogue.ShowCatalogue();
         }
 
         private void LoadOrCreateNewDay()
@@ -51,7 +61,7 @@ namespace Scripts.EcoSystem.Calendar
         {
             _currentDate.Day++;
 
-            int daysInCurrentMonth = CalendarConsts.DaysInMonths[_currentDate.Month - 1];
+            int daysInCurrentMonth = CalendarExtentions.DaysInMonths[_currentDate.Month - 1];
 
             if (_currentDate.Day > daysInCurrentMonth)
             {
@@ -93,6 +103,7 @@ namespace Scripts.EcoSystem.Calendar
         public void CleanUp()
         {
             _localEvents.OnNewDay -= IncreaseDay;
+            _localEvents.OnMiniCalendarButtonClick -= ShowCatalogue;
         }
     }
 }

@@ -2,22 +2,22 @@ using UnityEngine;
 
 namespace Scripts.EcoSystem.Calendar
 {
-    public static class CalendarConsts
+    public static class CalendarExtentions
     {
         public static readonly string[] MonthNames =
         {
-            "JANUARY",
-            "FEBRUARY",
-            "MARCH",
-            "APRIL",
-            "MAY",
-            "JUNE",
-            "JULY",
-            "AUGUST",
-            "SEPTEMBER",
-            "OCTOBER",
-            "NOVEMBER",
-            "DECEMBER",
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
         };
 
         public static string GetMonthName(int month)
@@ -57,6 +57,14 @@ namespace Scripts.EcoSystem.Calendar
             return MiniDayNames[index];
         }
         
+        public static int GetDayOfWeek(int day, int month, int year)
+        {
+            System.DateTime date = new System.DateTime(year, month, day);
+            // Преобразуем Sunday=0, Monday=1,... → Monday=0, ..., Sunday=6
+            int dow = (int)date.DayOfWeek;
+            return dow == 0 ? 6 : dow - 1;
+        }
+        
         public static readonly int[] DaysInMonths = 
         {
             31, // Январь
@@ -72,6 +80,17 @@ namespace Scripts.EcoSystem.Calendar
             30, // Ноябрь
             31  // Декабрь
         };
+        public static int GetDaysInMonth(int month, int year)
+        {
+            if (month < 1 || month > 12)
+            {
+                Debug.LogWarning($"[CalendarUtils] Invalid month: {month}");
+                return 30;
+            }
+
+            return DaysInMonths[month - 1];
+        }
+
 
     }
 }

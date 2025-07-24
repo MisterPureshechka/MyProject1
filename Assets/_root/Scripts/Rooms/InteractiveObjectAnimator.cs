@@ -32,7 +32,6 @@ namespace Scripts.Rooms
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
-            
 
             _sequence.Append(_spriteRenderer.DOFade(0.4f, _config.AnimationSpeed));
         }
@@ -41,7 +40,7 @@ namespace Scripts.Rooms
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
-
+            
             _sequence.Append(_spriteRenderer.DOFade(0, _config.AnimationSpeed));
         }
 

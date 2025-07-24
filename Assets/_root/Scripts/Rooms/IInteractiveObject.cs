@@ -11,7 +11,7 @@ namespace Scripts.Rooms
         SprintType SprintType { get; }
         Vector3 Position { get; }
         Transform RootObjectPosition { get; }
-
+        Transform IOTransform  { get; }
         Action OnCursorEnter { get; set; }
         Action OnCursorExit { get; set; }
         
