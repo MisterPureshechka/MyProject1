@@ -1779,7 +1779,7 @@ Transform:
   m_GameObject: {fileID: 2975407177690682365}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.989, y: -0.7303, z: -10}
+  m_LocalPosition: {x: -3.7, y: -0.7303, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1889,16 +1889,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a91e9c587dd4bde87a55213081a2751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skyRenderer: {fileID: 7208500850784123708}
-  _dayColor: {r: 0.5137255, g: 0.8156863, b: 1, a: 1}
-  _nightColor: {r: 0, g: 0.003921569, b: 0.49019608, a: 1}
-  _starDayColor: {r: 1, g: 1, b: 1, a: 0}
-  _starStartPosition: {x: 0, y: 0, z: 0}
-  _starEndPosition: {x: 0, y: 0, z: 0}
   _starsPrefabs:
   - {fileID: 1788575149472890845}
   - {fileID: 3150673017468181649}
   - {fileID: 3691407608610081471}
+  _skyRenderer: {fileID: 7208500850784123708}
+  _dayColor: {r: 0.5137255, g: 0.8156863, b: 1, a: 1}
+  _nightColor: {r: 0, g: 0.003921569, b: 0.49019608, a: 1}
+  _starDayColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1 &3904999774441998882
 GameObject:
   m_ObjectHideFlags: 0

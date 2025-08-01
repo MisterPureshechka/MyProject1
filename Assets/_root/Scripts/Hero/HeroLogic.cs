@@ -17,9 +17,6 @@ namespace Scripts.Hero
 {
     public class HeroLogic : IExecute, ICleanUp
     {
-        public Action OnDevActiveStat;
-        public Action OnChillActiveStat;
-        
         private readonly HeroStateMachine _heroStateMachine;
         
         public HeroIdleState IdleState { get; private set; }
@@ -88,7 +85,6 @@ namespace Scripts.Hero
             
             _heroStateMachine.Init(IdleState);
 
-            _heroMovementLogic.OnClickDestination += MouseListener;
             _heroMovementLogic.OnClickI0 += GetTargetIO;
             _localEvents.OnClosePanel += PanelCloseCallback;
             _localEvents.OnOpenPanel += PanelOpenListener;
@@ -162,12 +158,7 @@ namespace Scripts.Hero
 
         private void OnCLickWorld(Vector2 position)
         {
-            _isAwait = false;
-        }
-
-        private void HeroAwaitListener(bool isAwait)
-        {
-            _isAwait = isAwait;
+            //_isAwait = false;
         }
 
         private void MouseListener(Vector3 pos)
@@ -297,7 +288,6 @@ namespace Scripts.Hero
 
         public void CleanUp()
         {
-            _heroMovementLogic.OnClickDestination -= MouseListener;
             _heroMovementLogic.OnClickI0 -= GetTargetIO;
             _localEvents.OnClosePanel -= PanelCloseCallback;
             _localEvents.OnOpenPanel -= PanelOpenListener;

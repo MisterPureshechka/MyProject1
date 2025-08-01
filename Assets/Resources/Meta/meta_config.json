@@ -74,7 +74,7 @@
   },
   "SoundDesign": {
     "MetaType": "Knowledge",
-    "Value": 0,
+    "Value": 3,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",

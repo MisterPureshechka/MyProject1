@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using Scripts.Tasks;
@@ -20,7 +21,11 @@ namespace Scripts.Ui.TaskUi
         [SerializeField] private TextMeshProUGUI _fxText;
 
         [SerializeField] private Image _spriteImage;
+        [SerializeField] private Image _fxImage;
         [SerializeField] private Sprite[] _paperSprite;
+        [SerializeField] private Sprite[] _taskSprites;
+        [SerializeField] private Sprite[] _fxSprites;
+        [SerializeField] private AnimationCurve[] _fxCurves;
 
         [SerializeField] private Color _gameDesignColor;
         [SerializeField] private Color _soundDesignColor;
@@ -36,6 +41,7 @@ namespace Scripts.Ui.TaskUi
 
         private bool _isOnStart;
         private Vector3 _imageStartScale;
+        private SprintType _currentSprintType;
 
         private void Start()
         {
@@ -46,17 +52,38 @@ namespace Scripts.Ui.TaskUi
         {
             _imageStartScale = _spriteImage.transform.localScale;
         }
-        public void SetInfo(string titleText, float progressText)
+        public void SetInfo(string titleText, float progressText, SprintType sprintType)
         {
-            //_titleText.text = titleText;
-            //_progressInfo.text = progressText.ToString("0.0");
+            _currentSprintType = sprintType;
+            
+            switch (sprintType)
+            {
+                case SprintType.Chill:
+                    _spriteImage.sprite = _taskSprites[0];
+                    break;
+                case SprintType.Eat:
+                    _spriteImage.sprite = _taskSprites[1];
+                    break;
+                case SprintType.Read:
+                    _spriteImage.sprite = _taskSprites[2];
+                    break;
+                case SprintType.Coffee:
+                    _spriteImage.sprite = _taskSprites[3];
+                    break;
+                case SprintType.Toilet:
+                    _spriteImage.sprite = _taskSprites[4];
+                    break;
+                case SprintType.Shower:
+                    _spriteImage.sprite = _taskSprites[5];
+                    break;
+            }
+            
+            _spriteImage.color = Color.white;
         }
 
         public void SetInfoIfDev(string titleText, float progressText, DevTaskType taskType)
         {
-            //_titleText.text = titleText;
             _isOnStart = true;
-            //_progressInfo.text = progressText.ToString("0.0");
             _spriteImage.sprite = _paperSprite[Random.Range(0, _paperSprite.Length)];
             _spriteImage.color = DevTypeToColor(taskType);
         }
@@ -122,31 +149,77 @@ namespace Scripts.Ui.TaskUi
             if (_isDestroyed) return;
         
             _isOnStart = false;
-            //_progressInfo.text = progress.ToString("0.0");
         }
 
-        public void AnimateTextFx(float value)
+        public void AnimateTextFx(float value, float duration)
         {
             if(_isOnStart || _isDestroyed) return;
-        
-            _fxTextSequence?.Kill();
-        
+            
             if (_fxText == null || _fxText.transform == null) return;
         
+            _fxTextSequence?.Kill();
             _fxTextSequence = DOTween.Sequence();
+            
+            if (_currentSprintType == SprintType.Shower)
+            {
+                var offset = Random.Range(-_offset, _offset);
         
-            var offset = Random.Range(-_offset, _offset);
-            _fxText.text = value.ToString("0.0");
+                if (this == null || transform == null) return;
+                
+                SetBubbleSprite();
+                    
+                _fxImage.transform.position = transform.position + new Vector3(offset, offset, 0);
+                _fxTextSequence.Append(_fxImage.transform.DOMoveY(
+                    _fxImage.transform.position.y + _moveToValue.y, 
+                    duration * 0.8f).SetEase(Ease.InSine));
+                _fxTextSequence.Join(_fxImage.transform.DOMoveX(
+                    10f,
+                    duration * 0.8f).SetEase(_fxCurves[Random.Range(0, _fxCurves.Length)]));
+                _fxTextSequence.Append(_fxImage.transform.DOScale(
+                    _fxImage.transform.localScale * 1.5f, 
+                    duration * 0.2f).SetEase(Ease.InSine).OnComplete(() => _fxImage.gameObject.SetActive(false)));
+            }
+            else if (_currentSprintType == SprintType.Toilet)
+            {
+                var offset = Random.Range(-_offset, _offset);
+                _fxText.text = value.ToString("0.0");
         
-            if (this == null || transform == null) return;
+                if (this == null || transform == null) return;
         
-            _fxText.transform.position = transform.position + new Vector3(offset, offset, 0);
+                _fxText.transform.position = transform.position + new Vector3(offset, offset, 0);
         
-            _fxTextSequence.Append(_fxText.DOFade(1, 0));
-            _fxTextSequence.Append(_fxText.transform.DOMove(
-                _fxText.transform.position + _moveToValue, 
-                0.5f).SetEase(Ease.OutSine));
-            _fxTextSequence.Join(_fxText.DOFade(0, 0.5f).SetEase(Ease.OutSine));
+                _fxTextSequence.Append(_fxText.DOFade(1, 0));
+                _fxTextSequence.Append(_fxText.transform.DOMove(
+                    _fxText.transform.position - _moveToValue, 
+                    duration).SetEase(Ease.InSine));
+                _fxTextSequence.Join(_fxText.DOFade(0, 0.5f).SetEase(Ease.InSine));
+            }
+            else
+            {
+                var offset = Random.Range(-_offset, _offset);
+                _fxText.text = value.ToString("0.0");
+        
+                if (this == null || transform == null) return;
+        
+                _fxText.transform.position = transform.position + new Vector3(offset, offset, 0);
+        
+                _fxTextSequence.Append(_fxText.DOFade(1, 0));
+                _fxTextSequence.Append(_fxText.transform.DOMove(
+                    _fxText.transform.position + _moveToValue, 
+                    duration).SetEase(Ease.InSine));
+                _fxTextSequence.Join(_fxText.DOFade(0, 0.5f).SetEase(Ease.InSine));
+            }
+            
+        }
+
+        private void SetBubbleSprite()
+        {
+            _fxImage.gameObject.SetActive(true);
+            float scaleOffset = Random.Range(1.1f, 1.5f);
+            
+            _fxImage.sprite = _fxSprites[0];
+            _fxImage.transform.localScale = Vector3.one * scaleOffset;
+            
         }
         
         private Color DevTypeToColor(DevTaskType devType)
@@ -166,6 +239,13 @@ namespace Scripts.Ui.TaskUi
                 default:
                     return Color.white;
             }
+        }
+
+        public void StopFx()
+        {
+            _fxImage.gameObject.SetActive(false);
+            _fxTextSequence?.Kill();
+            _fxText.gameObject.SetActive(false);
         }
     }
 }

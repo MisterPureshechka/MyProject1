@@ -1,4 +1,5 @@
 using Core;
+using Scripts.Catalogues;
 using Scripts.GlobalStateMachine;
 using Scripts.Tasks;
 using UnityEngine;
@@ -14,25 +15,25 @@ namespace Scripts.Ui
         public FaderLogic(LocalEvents events)
         {
             _events = events;
-            _events.OnTaskCatalogShow += ShowFader;
-            _events.OnTaskCatalogHide += HideFader;
+            _events.OnCatalogueShow += ShowFader;
+            _events.OnCatalogueHide += HideFader;
             _faderView = Object.FindObjectOfType<FaderView>();
         }
 
-        private void HideFader(SprintType sprintType)
+        private void HideFader(ICatalogue catalogue)
         {
             _faderView.Hide();
         }
 
-        private void ShowFader(SprintType sprintType)
+        private void ShowFader(ICatalogue catalogue)
         {
             _faderView.Show();
         }
 
         public void CleanUp()
         {
-            _events.OnTaskCatalogShow -= ShowFader;
-            _events.OnTaskCatalogHide -= HideFader;
+            _events.OnCatalogueShow -= ShowFader;
+            _events.OnCatalogueHide -= HideFader;
         }
     }
 }

@@ -11,8 +11,8 @@
     "Shower": -0.0005
   },
   "Chill": {
-    "Energy": 0.01,
-    "Mood": 0.002
+    "Energy": 0.002,
+    "Mood": 0.0005
   },
   "Shower": {
     "Shower": 0.02,

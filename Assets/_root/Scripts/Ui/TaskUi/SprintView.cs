@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DG.Tweening;
 using Scripts.Tasks;
 using UnityEngine;
 
@@ -14,9 +15,11 @@ namespace Scripts.Ui.TaskUi
         [field: SerializeField] public Transform ToDoField;
         [SerializeField] private Transform _inProgress;
         [SerializeField] private Transform _done;
+        [SerializeField] private Vector3 _shakeValue;
         private bool _isBuisy;
+        private Tweener _currentTween;
 
-        public async Task AddTask(ITask task, TaskView taskView)
+        public async Task AddTask(ITask task, TaskView taskView, SprintType sprintType)
         {
             while (_isBuisy)
                 await Task.Yield();
@@ -30,7 +33,7 @@ namespace Scripts.Ui.TaskUi
             }
             else
             {
-                taskView.SetInfo(task.Title, task.Progress);
+                taskView.SetInfo(task.Title, task.Progress, sprintType);
                 taskView.ShowTask();
             }
             
@@ -50,7 +53,7 @@ namespace Scripts.Ui.TaskUi
             }
         
             task.OnProgressChangedFirstTime += (completedTask) => OnTaskProgressChangedFirstTime(uniqueKey, completedTask);
-            task.OnProgressChanged += (changedTask, value) => OnTaskProgressChanged(uniqueKey, changedTask, value);
+            task.OnProgressChanged += (changedTask, value, interval) => OnTaskProgressChanged(uniqueKey, changedTask, value, interval);
             task.OnTaskCompleted += (completedTask) => OnTaskCompleted(uniqueKey, completedTask);
         }
 
@@ -62,15 +65,27 @@ namespace Scripts.Ui.TaskUi
             }
         }
 
-        private void OnTaskProgressChanged(string uniqueKey, ITask task, float value)
+        private void OnTaskProgressChanged(string uniqueKey, ITask task, float value, float interval)
         {
             if (_taskIdToViewMap.TryGetValue(uniqueKey, out var taskView))
             {
                 if (taskView != null)
                 {
-                    //taskView.transform.SetParent(_inProgress);
+                    var defaultScale = taskView.transform.localScale;
                     taskView.UpdateProgress(task.Progress, value);
-                    taskView.AnimateTextFx(value);
+                    taskView.AnimateTextFx(value, interval);
+                    if(task.IsCompleted) taskView.StopFx();
+                    
+                    taskView.transform.eulerAngles = Vector3.zero;
+                    
+                    currentTween = taskView.transform.DOShakeRotation(0.1f, _shakeValue, 100, 50).SetEase(Ease.OutSine).OnStart(() =>
+                    {
+                        taskView.transform.DOScale(defaultScale * 1.1f, 0.1f)
+                            .OnComplete(() =>
+                            {
+                                taskView.transform.localScale = defaultScale;
+                            });
+                    });
                 }
             }
         }
@@ -80,6 +95,7 @@ namespace Scripts.Ui.TaskUi
             if (_taskIdToViewMap.TryGetValue(uniqueKey, out var taskView))
             {
                 MoveTask(taskView, _done);
+                taskView.StopFx();
             }
         }
 
@@ -113,5 +129,11 @@ namespace Scripts.Ui.TaskUi
         }
         
         public bool IsBuisy => _isBuisy;
+
+        public Tweener currentTween
+        {
+            get => _currentTween;
+            set => _currentTween = value;
+        }
     }
 }

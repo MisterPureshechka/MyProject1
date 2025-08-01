@@ -1,8 +1,10 @@
 using System;
 using Core;
+using Scripts.Catalogues;
 using Scripts.Meta;
 using Scripts.Rooms;
 using Scripts.Tasks;
+using Scripts.Ui.TaskUi;
 using UnityEngine;
 
 namespace Scripts.GlobalStateMachine
@@ -23,9 +25,6 @@ namespace Scripts.GlobalStateMachine
 
         public Action<InteractiveObjectType, Vector2> OnMouseClickIO { get; set; }
         public void TriggerMouseClickedIO(InteractiveObjectType iOType, Vector2 pos) => OnMouseClickIO?.Invoke(iOType, pos);
-        
-        public Action<Vector2> OnMouseClickUI;
-        public void TriggerMouseClickedUI(Vector2 pos) => OnMouseClickUI?.Invoke(pos);
         
         public Action<Vector2> OnMousePositionChange;
         public void TriggerMousePositionChange(Vector2 pos) => OnMousePositionChange?.Invoke(pos);
@@ -122,5 +121,11 @@ namespace Scripts.GlobalStateMachine
 
         public Action OnMiniCalendarButtonClick;
         public void TriggerMiniCalendarButtonOpen() => OnMiniCalendarButtonClick?.Invoke();
+        
+        public Action<ICatalogue> OnCatalogueShow;
+        public void TriggerShowCatalogue(ICatalogue catalogue) => OnCatalogueShow?.Invoke(catalogue);
+
+        public Action<ICatalogue> OnCatalogueHide;
+        public void TriggerHideCatalogue(ICatalogue catalogue) => OnCatalogueHide?.Invoke(catalogue);
     }
 }

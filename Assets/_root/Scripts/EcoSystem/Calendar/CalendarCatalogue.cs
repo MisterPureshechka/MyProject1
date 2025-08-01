@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using _root.Notification;
 using DG.Tweening;
+using Scripts.Catalogues;
+using Scripts.GlobalStateMachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +11,7 @@ using Random = Unity.Mathematics.Random;
 
 namespace Scripts.EcoSystem.Calendar
 {
-    public class CalendarCatalogue : MonoBehaviour
+    public class CalendarCatalogue : MonoBehaviour, ICatalogue
     {
         [SerializeField] private Button _leftButton;
         [SerializeField] private Button _rightButton;
@@ -33,7 +35,14 @@ namespace Scripts.EcoSystem.Calendar
         private List<DayUI> _days = new();
         private List<MonthUI> _months = new();
         private List<CalendarEvent> _allEvents = new();
-        
+        private bool _isVisible;
+        private LocalEvents _localEvents;
+
+        public void Init(LocalEvents localEvents)
+        {
+            _localEvents = localEvents;
+        }
+
 
         private void Awake()
         {
@@ -45,12 +54,18 @@ namespace Scripts.EcoSystem.Calendar
         {
             _leftButton.onClick.AddListener(OnLeftButtonClicked);
             _rightButton.onClick.AddListener(OnRightButtonClicked);
+            _closeButton.onClick.AddListener(OnCloseButtonClicked);
             
             transform.localPosition = _hidePosition;
             
             CreateTempEvent();
             SetDays();
             ShowMonth(_currentMonth, _currentYear);
+        }
+
+        private void OnCloseButtonClicked()
+        {
+            _localEvents.TriggerHideCatalogue(this);
         }
 
         private void CreateTempEvent()
@@ -209,14 +224,25 @@ namespace Scripts.EcoSystem.Calendar
             _rightButton?.onClick.RemoveAllListeners();
         }
 
-        public void ShowCatalogue()
+        public void Show(Action onComplete = null)
         {
-            transform.DOMoveY(_showPosition.y, 0.1f).SetEase(Ease.OutSine);
+            _isVisible = true;
+            gameObject.SetActive(true);
+            transform.DOMoveY(_showPosition.y, 0.4f).SetEase(Ease.OutSine)
+                .OnComplete(() => onComplete?.Invoke());
         }
 
-        public void HideCatalogue()
+        public void Hide(Action onComplete = null)
         {
-            transform.DOMoveY(_hidePosition.y, 0.1f).SetEase(Ease.InSine);
+            transform.DOMoveY(_hidePosition.y, 0.4f).SetEase(Ease.InSine)
+                .OnComplete(() =>
+                {
+                    _isVisible = false;
+                    gameObject.SetActive(false);
+                    onComplete?.Invoke();
+                });
         }
+
+        public bool IsVisible => _isVisible;
     }
 }

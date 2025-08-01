@@ -1,9 +1,11 @@
+using System;
 using DG.Tweening;
 using Scripts.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Scripts.Ui.TaskUi
 {
@@ -44,6 +46,7 @@ namespace Scripts.Ui.TaskUi
             _image.useSpriteMesh = true;
             
             SetupHoverEvents();
+            TaskPannelButton.onClick.AddListener(OnPointerClick);
         }
 
         public void UpdateInfo(string info, DevTaskType type)
@@ -99,7 +102,14 @@ namespace Scripts.Ui.TaskUi
         {
             _currentTween?.Kill();
             transform.eulerAngles = Vector3.zero;
-            _currentTween = transform.DOShakeRotation(0.1f, _shakeValue).SetEase(Ease.OutSine);
+            _currentTween = transform.DOShakeRotation(0.1f, _shakeValue, 100, 50).SetEase(Ease.OutSine).OnStart(() =>
+            {
+                transform.DOScale(_originalScale * _hoverScaleAmount * 1.1f, _hoverDuration/2)
+                    .OnComplete(() =>
+                    {
+                        transform.localScale = _originalScale * _hoverScaleAmount;
+                    });
+            });
         }
         
         private Color DevTypeToColor(DevTaskType devType)
@@ -124,6 +134,11 @@ namespace Scripts.Ui.TaskUi
         public void AddToRoot(Transform newRoot)
         {
             transform.SetParent(newRoot);
+        }
+
+        private void OnDestroy()
+        {
+            TaskPannelButton.onClick.RemoveAllListeners();
         }
     }
 }

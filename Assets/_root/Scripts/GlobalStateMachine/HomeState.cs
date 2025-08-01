@@ -1,4 +1,5 @@
 using Scripts.Animator;
+using Scripts.Catalogues;
 using Scripts.Data;
 using Scripts.EcoSystem;
 using Scripts.EcoSystem.Calendar;
@@ -79,6 +80,7 @@ namespace Scripts.GlobalStateMachine
             var fader = new FaderLogic(localEvents);
             
             var tooltipLogic = new TooltipStatLogic(progressDataAdapter, uiFactory.GetTooltip(canvas.transform), _gameData.PrefabDataBase, localEvents, canvas);
+            var catalogueManager = new CatalogueManager(localEvents);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -109,6 +111,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(skyLogic);
             _controllers.Add(volumeLogic);
             _controllers.Add(calendarLogic);
+            _controllers.Add(catalogueManager);
         }
 
         public override void Update(float deltaTime)

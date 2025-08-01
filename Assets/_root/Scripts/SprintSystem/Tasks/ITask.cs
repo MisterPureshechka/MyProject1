@@ -11,7 +11,7 @@ namespace Scripts.Tasks
         void ApplyProgress(float interval = 0f);
 
         event Action<ITask> OnTaskCompleted;
-        event Action<ITask, float> OnProgressChanged;
+        event Action<ITask, float, float> OnProgressChanged;
         event Action<ITask> OnProgressChangedFirstTime;
 
         ITask Clone();

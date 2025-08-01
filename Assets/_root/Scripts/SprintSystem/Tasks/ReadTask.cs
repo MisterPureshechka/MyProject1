@@ -22,7 +22,7 @@ namespace Scripts.Tasks
 
         public event Action<ITask> OnTaskCompleted;
 
-        public event Action<ITask, float> OnProgressChanged;
+        public event Action<ITask, float, float> OnProgressChanged;
 
         public event Action<ITask> OnProgressChangedFirstTime;
 
@@ -60,7 +60,7 @@ namespace Scripts.Tasks
                 }
                 else
                 {
-                    OnProgressChanged?.Invoke(this, delta);
+                    OnProgressChanged?.Invoke(this, delta, interval);
                 }
             }
         

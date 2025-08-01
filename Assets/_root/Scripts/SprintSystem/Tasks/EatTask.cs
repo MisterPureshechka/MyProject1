@@ -14,7 +14,7 @@ namespace Scripts.Tasks
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         public event Action<ITask> OnTaskCompleted;
-        public event Action<ITask, float> OnProgressChanged;
+        public event Action<ITask, float, float> OnProgressChanged;
         public event Action<ITask> OnProgressChangedFirstTime;
         
         public EatTaskType Type { get; set; }
@@ -63,7 +63,7 @@ namespace Scripts.Tasks
                 }
                 else
                 {
-                    OnProgressChanged?.Invoke(this, delta);
+                    OnProgressChanged?.Invoke(this, delta, interval);
                 }
             }
         

@@ -37,7 +37,7 @@ namespace Scripts.EcoSystem
         
         private void SpeedUpTime()
         {
-            _realSecondsPerDay = 24f;
+            _realSecondsPerDay = 240f;
             SetTimeSpeed();
         }
 

@@ -1956,6 +1956,7 @@ MonoBehaviour:
   ToDoField: {fileID: 163473816965751913}
   _inProgress: {fileID: 5668929839568504153}
   _done: {fileID: 7432113720898970025}
+  _shakeValue: {x: 0, y: 0, z: 15}
 --- !u!1 &6043205698523002811
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Scripts.Catalogues;
 using Scripts.GlobalStateMachine;
 using Scripts.Tasks;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Scripts.Ui.TaskUi
 {
-    public class DevTaskCatalogue : MonoBehaviour
+    public class DevTaskCatalogue : MonoBehaviour, ICatalogue
     {
         private List<TaskButtonsContainerView> _buttonsContainers = new();
         private Sequence _sequence;
@@ -30,7 +31,10 @@ namespace Scripts.Ui.TaskUi
         private Vector2 _startPosition;
         private Vector2 _hidePosition;
         private Vector2 _offset = new Vector2(0, -1000);
-        
+
+        private bool _isVisible;
+        public bool IsVisible => _isVisible;
+
         private void Start()
         {
             _startPosition = _root.transform.position;
@@ -68,13 +72,13 @@ namespace Scripts.Ui.TaskUi
         private void CloseButtonClickListener()
         {
             OnCloseButtonClicked?.Invoke();
-            HideAllTasks();
+            _localEvents.TriggerHideCatalogue(this);
         }
 
         private void ApplyButtonClickListener()
         {
             OnApplyButtonClicked?.Invoke();
-            HideAllTasks();
+            _localEvents.TriggerHideCatalogue(this);
         }
 
         private void ShowApplyButton()
@@ -89,13 +93,15 @@ namespace Scripts.Ui.TaskUi
             ShowApplyButton();
         }
 
-        private void HideAllTasks()
+        public void Hide(Action onComplete = null)
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             
+            _isVisible = true;
             _root.gameObject.SetActive(true);
             _sequence.Append(_root.transform.DOMove(_hidePosition, 0.4f).SetEase(Ease.InSine));
+            _sequence.OnComplete(() => onComplete?.Invoke());
         }
 
         private void HideAllTasksOnStart()
@@ -105,7 +111,7 @@ namespace Scripts.Ui.TaskUi
         }
 
 
-        public void ShowCatalogue()
+        public void Show(Action onComplete = null)
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
@@ -118,7 +124,11 @@ namespace Scripts.Ui.TaskUi
             
             _root.gameObject.SetActive(true);
             _sequence.Append(_root.transform.DOMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
-            
+            _sequence.OnComplete(() =>
+            {
+                _isVisible = false;
+                onComplete?.Invoke();
+            });
         }
 
         private void OnDestroy()

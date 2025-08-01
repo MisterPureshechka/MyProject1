@@ -23,17 +23,11 @@ namespace Scripts.EcoSystem.Calendar
             _calendarCatalogue = calendarCatalogue;
             _progressDataAdapter = progressDataAdapter;
 
-            _miniCalendarView.Init(_localEvents);
+            _calendarCatalogue.Init(_localEvents);
+            _miniCalendarView.Init(_localEvents, _calendarCatalogue);
             LoadOrCreateNewDay();
 
             _localEvents.OnNewDay += IncreaseDay;
-            _localEvents.OnMiniCalendarButtonClick += ShowCatalogue;
-        }
-
-        private void ShowCatalogue()
-        {
-            Debug.Log("Catalogue get");
-            _calendarCatalogue.ShowCatalogue();
         }
 
         private void LoadOrCreateNewDay()
@@ -103,7 +97,6 @@ namespace Scripts.EcoSystem.Calendar
         public void CleanUp()
         {
             _localEvents.OnNewDay -= IncreaseDay;
-            _localEvents.OnMiniCalendarButtonClick -= ShowCatalogue;
         }
     }
 }

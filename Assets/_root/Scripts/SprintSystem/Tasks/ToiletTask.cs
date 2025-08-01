@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Scripts.Progress;
 using Scripts.Utils;
 using UnityEngine;
@@ -15,10 +16,12 @@ namespace Scripts.Tasks
         public float Progress { get; private set; }
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
+        
+        private readonly Dictionary<string, Dictionary<string, float>> _effects;
 
         public event Action<ITask> OnTaskCompleted;
 
-        public event Action<ITask, float> OnProgressChanged;
+        public event Action<ITask, float, float> OnProgressChanged;
 
         public event Action<ITask> OnProgressChangedFirstTime;
 
@@ -27,6 +30,8 @@ namespace Scripts.Tasks
             _progressDataAdapter = progressDataAdapter;
             Title = title;
             Progress = progress;
+
+            _effects = StatEffectLoader.Load();
         }
         
         public ITask Clone()
@@ -54,7 +59,7 @@ namespace Scripts.Tasks
                 }
                 else
                 {
-                    OnProgressChanged?.Invoke(this, delta);
+                    OnProgressChanged?.Invoke(this, delta, interval);
                 }
             }
         

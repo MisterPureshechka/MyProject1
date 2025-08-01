@@ -46,10 +46,6 @@ namespace Scripts.Hero
                     //OnGetDestination?.Invoke(io.Position);
                     OnClickI0?.Invoke(io);
                 }
-                else
-                {
-                    OnClickDestination?.Invoke(worldPosition);
-                }
             }
         }
 
