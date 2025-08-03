@@ -1,4 +1,5 @@
 using Scripts.Hero;
+using Scripts.OnlineShop;
 using Scripts.Rooms;
 using Scripts.Tasks;
 using Scripts.Ui.TaskUi;
@@ -22,5 +23,7 @@ namespace Scripts.Data
         [field: SerializeField] public TooltipView TooltipPrefab { get; private set; }
         [field: SerializeField] public TooltipStatItem TooltipItem { get; private set; }
         [field: SerializeField] public ReadTaskCatalogue ReadTaskCatalogue { get; private set; }
+        [field: SerializeField] public TopPanelButtonView OnlineShopTopPanelButton { get; private set; }
+        [field: SerializeField] public ShopItemView ShopItemView { get; private set; }
     }
 }

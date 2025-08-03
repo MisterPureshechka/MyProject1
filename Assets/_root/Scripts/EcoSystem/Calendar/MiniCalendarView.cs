@@ -46,7 +46,6 @@ namespace Scripts.EcoSystem.Calendar
 
         private void ButtonListener()
         {
-            Debug.Log("Button send");
             _localEvents.TriggerShowCatalogue(_calendar);
             AnimateButtonOnEnter(1.1f);
         }

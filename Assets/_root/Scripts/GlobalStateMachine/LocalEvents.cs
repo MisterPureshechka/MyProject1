@@ -5,6 +5,7 @@ using Scripts.Meta;
 using Scripts.Rooms;
 using Scripts.Tasks;
 using Scripts.Ui.TaskUi;
+using Scripts.UpgradeLogic;
 using UnityEngine;
 
 namespace Scripts.GlobalStateMachine
@@ -127,5 +128,7 @@ namespace Scripts.GlobalStateMachine
 
         public Action<ICatalogue> OnCatalogueHide;
         public void TriggerHideCatalogue(ICatalogue catalogue) => OnCatalogueHide?.Invoke(catalogue);
+        public  Action<int, UpgradeType> OnUpgradeItem { get; set; }
+        public void TriggerUpdateItem(int id, UpgradeType upgradeType) => OnUpgradeItem?.Invoke(id, upgradeType);
     }
 }

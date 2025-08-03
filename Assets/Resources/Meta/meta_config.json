@@ -112,6 +112,14 @@
     "DisplayName": "Year",
     "Tooltip": "",
     "ProgressDelta": 1
+  },
+  "WalletAmount": {
+    "MetaType": "System",
+    "Value": 350,
+    "MaxValue": 99999999,
+    "DisplayName": "Wallet Amount",
+    "Tooltip": "",
+    "ProgressDelta": 1
   }
   
 }

@@ -20,8 +20,6 @@ namespace Scripts.Catalogues
 
         public void ShowCatalogue(ICatalogue newCatalogue)
         {
-            Debug.Log("new catalogue - " + newCatalogue + "old catalogue - " + _currentCatalogue);
-            
             if (_isTransition)
                 return;
 

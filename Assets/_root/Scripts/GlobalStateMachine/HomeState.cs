@@ -4,6 +4,7 @@ using Scripts.Data;
 using Scripts.EcoSystem;
 using Scripts.EcoSystem.Calendar;
 using Scripts.Hero;
+using Scripts.OnlineShop;
 using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Stat;
@@ -78,6 +79,10 @@ namespace Scripts.GlobalStateMachine
             var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter);
 
             var fader = new FaderLogic(localEvents);
+
+            var wallet = new WalletLogic(progressDataAdapter);
+            var onlineShopController = new OnlineShopController(Object.FindAnyObjectByType<OnlineShopView>(),
+                localEvents, _gameData.PrefabDataBase, new ShopItemsLibrary(), wallet);
             
             var tooltipLogic = new TooltipStatLogic(progressDataAdapter, uiFactory.GetTooltip(canvas.transform), _gameData.PrefabDataBase, localEvents, canvas);
             var catalogueManager = new CatalogueManager(localEvents);
@@ -112,6 +117,8 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(volumeLogic);
             _controllers.Add(calendarLogic);
             _controllers.Add(catalogueManager);
+            _controllers.Add(onlineShopController);
+            _controllers.Add(wallet);
         }
 
         public override void Update(float deltaTime)
