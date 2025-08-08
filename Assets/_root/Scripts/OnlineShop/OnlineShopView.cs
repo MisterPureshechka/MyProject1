@@ -11,7 +11,8 @@ namespace Scripts.OnlineShop
     public class OnlineShopView : MonoBehaviour, ICatalogue
     {
         [field: SerializeField] public Button CloseButton;
-        
+     
+        [SerializeField] private RectTransform _shopPanel;
         [SerializeField] private Transform _topPanelButtonsContainer;
         [SerializeField] private Transform _shopItemsContainer;
 
@@ -19,24 +20,17 @@ namespace Scripts.OnlineShop
         private Dictionary<ShopItemType, TopPanelButtonView> _topPanelButtonViewMap = new();
         private Sequence _sequence;
 
-        private Vector2 _startPosition;
+        private Vector2 _startPosition = new Vector2(0, -80);
         private Vector2 _hidePosition;
-        private Vector2 _offset = new (0, -1000);
-        
-        private LocalEvents _localEvents;
+        private Vector2 _offset = new (0, -400);
 
         public Transform TopPanelButtonsContainer => _topPanelButtonsContainer;
 
-        public void Init(LocalEvents localEvents)
-        {
-            _localEvents = localEvents;
-        }
-
         private void Start()
         {
-            _startPosition = gameObject.transform.position;
             _hidePosition = _startPosition + _offset;
-            gameObject.transform.position = _hidePosition;
+            _shopPanel.localPosition = _hidePosition;
+            //gameObject.SetActive(false);
         }
 
         public void SetShopItems(ShopItemType shopItemType, List<ShopItemView> shopItemViews)
@@ -64,6 +58,7 @@ namespace Scripts.OnlineShop
         public void SetTopPanelButtons(TopPanelButtonView button, ShopItemType type)
         {
             button.transform.SetParent(TopPanelButtonsContainer);
+            button.transform.localScale = Vector3.one;
             _topPanelButtonViewMap.Add(type, button);
             button.SetButtonText(type);
             SetActiveButton(type);
@@ -85,11 +80,11 @@ namespace Scripts.OnlineShop
             _sequence = DOTween.Sequence();
             
             gameObject.SetActive(true);
-            _sequence.Append(gameObject.transform.DOMove(_hidePosition, 0.4f).SetEase(Ease.InSine));
+            _sequence.Append(_shopPanel.DOLocalMove(_hidePosition, 0.4f).SetEase(Ease.InSine));
             _sequence.OnComplete(() => onComplete?.Invoke());
         }
 
-        private void HideAllTasksOnStart()
+        private void HideOnStart()
         {
             gameObject.SetActive(false);
             transform.position = _hidePosition;
@@ -102,7 +97,7 @@ namespace Scripts.OnlineShop
             _sequence = DOTween.Sequence();
             
             gameObject.SetActive(true);
-            _sequence.Append(gameObject.transform.DOMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
+            _sequence.Append(_shopPanel.DOLocalMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
             _sequence.OnComplete(() =>
             {
                 onComplete?.Invoke();

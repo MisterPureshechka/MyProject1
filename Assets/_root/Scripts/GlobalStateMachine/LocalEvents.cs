@@ -4,8 +4,7 @@ using Scripts.Catalogues;
 using Scripts.Meta;
 using Scripts.Rooms;
 using Scripts.Tasks;
-using Scripts.Ui.TaskUi;
-using Scripts.UpgradeLogic;
+using Scripts.Upgrade;
 using UnityEngine;
 
 namespace Scripts.GlobalStateMachine
@@ -127,8 +126,18 @@ namespace Scripts.GlobalStateMachine
         public void TriggerShowCatalogue(ICatalogue catalogue) => OnCatalogueShow?.Invoke(catalogue);
 
         public Action<ICatalogue> OnCatalogueHide;
+        public Action OnNewMinute {get; set;}
+        public void TriggerNewMinute() => OnNewMinute?.Invoke();
         public void TriggerHideCatalogue(ICatalogue catalogue) => OnCatalogueHide?.Invoke(catalogue);
         public  Action<int, UpgradeType> OnUpgradeItem { get; set; }
         public void TriggerUpdateItem(int id, UpgradeType upgradeType) => OnUpgradeItem?.Invoke(id, upgradeType);
+        public Action OnNewNotificatiom { get; set; }
+        public void TriggerNewNotification() => OnNewNotificatiom?.Invoke();
+
+        public Action<Vector2> OnMouseMoveStat { get; set; }
+        public void TriggerMouseMoveStat(Vector2 eventDataPosition) => OnMouseMoveStat?.Invoke(eventDataPosition);
+
+        public Action<MetaType> OnMouseEnterStat { get; set; }
+        public void TriggerMouseEnterStat(MetaType metaType) => OnMouseEnterStat?.Invoke(metaType);
     }
 }

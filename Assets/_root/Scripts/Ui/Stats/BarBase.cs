@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 namespace _root.Scripts.Ui.Stats
 {
-    public abstract class BarBase : MonoBehaviour, IPointerMoveHandler, IPointerExitHandler, IStatBarView
+    public abstract class BarBase : MonoBehaviour, IPointerMoveHandler, IPointerEnterHandler, IPointerExitHandler, IStatBarView
     {
         private LocalEvents _localEvents;
         
@@ -20,15 +20,23 @@ namespace _root.Scripts.Ui.Stats
             _localEvents = localEvents;
         }
         
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _localEvents.TriggerMouseEnterStat(MetaType);
+            _localEvents.TriggerMouseMoveStat(eventData.position);
+            Debug.Log($"Вошел в: {MetaType}");
+        }
+
         public void OnPointerMove(PointerEventData eventData)
         {
-            var pointer = eventData.position;
-            _localEvents.TriggerMouseOverStat(MetaType, pointer); 
+            _localEvents.TriggerMouseMoveStat(eventData.position);
+            Debug.Log($"Курсор поверх: {MetaType}");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             _localEvents.TriggerMouseExitStat(); 
+            Debug.Log($"Вышел из: {MetaType}");
         }
     }
 }

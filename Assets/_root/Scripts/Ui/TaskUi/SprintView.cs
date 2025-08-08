@@ -65,27 +65,19 @@ namespace Scripts.Ui.TaskUi
             }
         }
 
-        private void OnTaskProgressChanged(string uniqueKey, ITask task, float value, float interval)
+        private async void OnTaskProgressChanged(string uniqueKey, ITask task, float value, float interval)
         {
             if (_taskIdToViewMap.TryGetValue(uniqueKey, out var taskView))
             {
                 if (taskView != null)
                 {
                     var defaultScale = taskView.transform.localScale;
+                    await Task.Delay(TimeSpan.FromSeconds(interval));
                     taskView.UpdateProgress(task.Progress, value);
                     taskView.AnimateTextFx(value, interval);
                     if(task.IsCompleted) taskView.StopFx();
                     
                     taskView.transform.eulerAngles = Vector3.zero;
-                    
-                    currentTween = taskView.transform.DOShakeRotation(0.1f, _shakeValue, 100, 50).SetEase(Ease.OutSine).OnStart(() =>
-                    {
-                        taskView.transform.DOScale(defaultScale * 1.1f, 0.1f)
-                            .OnComplete(() =>
-                            {
-                                taskView.transform.localScale = defaultScale;
-                            });
-                    });
                 }
             }
         }

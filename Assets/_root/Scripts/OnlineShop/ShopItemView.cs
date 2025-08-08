@@ -13,8 +13,9 @@ namespace Scripts.OnlineShop
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private TextMeshProUGUI _priceText;
 
-        public void SetInfo(IShopItem shopItem)
+        public void SetInfo(IShopItem shopItem, Sprite icon)
         {
+            _itemImage.sprite = icon;
             shopItem.GameObject = gameObject;
             _titleText.text = shopItem.Title;
             _descriptionText.text = shopItem.Description;

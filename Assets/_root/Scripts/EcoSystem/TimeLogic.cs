@@ -13,17 +13,18 @@ namespace Scripts.EcoSystem
         private readonly TimeView _timeView;
         private readonly LocalEvents _localEvents;
 
-        float _currentTime;
+        float _currentHour;
         
         private float _timeMultiplier;
         private float _realSecondsPerDay = 2400f;
+        private int _lastMinute = -1;
 
         public TimeLogic(ProgressDataAdapter progressDataAdapter, TimeView timeView, LocalEvents localEvents)
         {
             _progressDataAdapter = progressDataAdapter;
             _timeView = timeView;
             _localEvents = localEvents;
-            _currentTime = _progressDataAdapter.GetProgressData().Metadata.GetValue("GameTime");
+            _currentHour = _progressDataAdapter.GetProgressData().Metadata.GetValue("GameTime");
             
             SetTimeSpeed();
             _localEvents.OnActiveSprint += SpeedUpTime;
@@ -51,28 +52,35 @@ namespace Scripts.EcoSystem
         {
             CalculateTime(deltatime);
 
-            _timeView.UpdateTimeText(_currentTime);
+            _timeView.UpdateTimeText(_currentHour);
             
             if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue("GameTime", out var metadata))
             {
-                metadata.Value = _currentTime;
+                metadata.Value = _currentHour;
             }
         }
 
         private void CalculateTime(float deltatime)
         {
-            _currentTime += deltatime * _timeMultiplier;
-            if (_currentTime >= 24f)
+            _currentHour += deltatime * _timeMultiplier;
+            
+            if (_currentHour >= 24f)
             {
                 _localEvents.TriggerNewDay();
-                _currentTime = 0;
+                _currentHour = 0;
             }
             
-            float dayValue = CalculateDayValue(_currentTime);
+            if (CurrentMinute != _lastMinute)
+            {
+                _lastMinute = CurrentMinute;
+                _localEvents.TriggerNewMinute();
+            }
+            
+            float dayValue = CalculateDayValue(_currentHour);
             _localEvents.TriggerOnDayTimeChange(dayValue);
-            float normalizedDayTime = GetNormalizedDayTime(_currentTime);
+            float normalizedDayTime = GetNormalizedDayTime(_currentHour);
             _localEvents.TriggerNormalizeDayTimeChange(normalizedDayTime);
-            float normalizeNightValue = GetNormalizedNightTime(_currentTime);
+            float normalizeNightValue = GetNormalizedNightTime(_currentHour);
             _localEvents.TriggerNormalizeNightTimeChange(normalizeNightValue);
         }
         
@@ -102,7 +110,6 @@ namespace Scripts.EcoSystem
         
         public float GetNormalizedNightTime(float currentTime)
         {
-            // Вечер: 20 → 24 (растёт от 0 до 1)
             if (currentTime >= 20f && currentTime <= 24f)
                 return Mathf.InverseLerp(20f, 24f, currentTime);
 
@@ -111,6 +118,9 @@ namespace Scripts.EcoSystem
 
             return 0f;
         }
+        
+        public int CurrentHour => Mathf.FloorToInt(_currentHour);
+        public int CurrentMinute => Mathf.FloorToInt((_currentHour % 1f) * 60);
 
         public void CleanUp()
         {

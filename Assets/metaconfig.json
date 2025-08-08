@@ -115,7 +115,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 9.0,
+                    "Value": 9.17747974395752,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -159,7 +159,7 @@
                 "Key": "WalletAmount",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 350.0,
+                    "Value": 100.0,
                     "MaxValue": 100000000.0,
                     "DisplayName": "Wallet Amount",
                     "Tooltip": "",

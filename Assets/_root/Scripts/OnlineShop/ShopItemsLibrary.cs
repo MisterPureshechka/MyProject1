@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Scripts.UpgradeLogic;
+using Scripts.Upgrade;
 
 namespace Scripts.OnlineShop
 {

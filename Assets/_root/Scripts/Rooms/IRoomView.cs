@@ -6,6 +6,7 @@ namespace Scripts.Rooms
 {
     public interface IRoomView : ISortedLayer
     {
+        Transform Transform { get; }
         List<IInteractiveObject> InteractiveObjects { get; }
         ISideRoom[] SideRooms { get; }
         Vector3 InitialPosition { get; }

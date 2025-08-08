@@ -15,6 +15,8 @@ MonoBehaviour:
   <AnimationSpeed>k__BackingField: 0.1
   <CameraMoveDuration>k__BackingField: 0.7
   <CameraMoveEase>k__BackingField: 4
+  <RoomShakePower>k__BackingField: 0.01
+  <RoomShakeDuration>k__BackingField: 0.3
   <CameraSideMomePositionKeys>k__BackingField:
   - {x: -1.9, y: 0.7}
   - {x: 1.86, y: 0.7}

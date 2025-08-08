@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
+using Scripts.Wallet;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -25,7 +26,7 @@ namespace Scripts.OnlineShop
             _shopItemsLibrary = shopItemsLibrary;
             _walletLogic = walletLogic;
             _shopButton = Object.FindAnyObjectByType<OnlineShopButton>();
-            _shopButton.Init(_localEvents);
+            if(_shopButton == null) Debug.LogError("Shop Button Not Found");
             _shopButton.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_view));
             _view.CloseButton.onClick.AddListener(() => _localEvents.TriggerHideCatalogue(_view));
 
@@ -52,7 +53,7 @@ namespace Scripts.OnlineShop
             foreach (var shopItem in _shopItemsLibrary.ShopItems[shopItemType])
             {
                 var itemInstance = Object.Instantiate(_prefabData.ShopItemView).GetComponent<ShopItemView>();
-                itemInstance.SetInfo(shopItem);
+                itemInstance.SetInfo(shopItem, _prefabData.ChairSprites[shopItem.Id]);
                 itemInstance.BuyButton.onClick.AddListener(() => TryBuyItem(shopItem));
                 shopItems.Add(itemInstance);
             }
@@ -64,7 +65,6 @@ namespace Scripts.OnlineShop
         {
             if (_walletLogic.TrySpend(shopItem.Price))
             {
-                Debug.Log("Updated item. Id = " + shopItem.Id);
                 _localEvents.TriggerUpdateItem(shopItem.Id, shopItem.UpgradeType);
             }
         }

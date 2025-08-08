@@ -13,7 +13,9 @@ namespace Scripts.Rooms
         [SerializeField] private Collider2D _roomCollider;
         [SerializeField] private List<MonoBehaviour> _interactiveObjects;
         [SerializeField] private SideRoom[] _sideRooms;
-        
+
+        public Transform Transform => transform;
+
         public List<IInteractiveObject> InteractiveObjects
         {
             get

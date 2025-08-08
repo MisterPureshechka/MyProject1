@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Scripts.Catalogues;
 using Scripts.GlobalStateMachine;
 using Scripts.Tasks;
 using UnityEngine;
@@ -8,34 +9,38 @@ using UnityEngine.UI;
 
 namespace Scripts.Ui.TaskUi
 {
-    public class ReadTaskCatalogue : MonoBehaviour
+    public class ReadTaskCatalogue : MonoBehaviour, ICatalogue
     {
         [SerializeField] private Transform _tasksContainer;
+        [SerializeField] private RectTransform _raedTasksCatalogue;
         [SerializeField] private ReadTaskButton _readTaskButton;
         
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _applyButton;
         
         public Action<IReadTask> OnTaskClicked;
-        public Action OnCloseButtonClicked;
-        public Action OnApplyButtonClicked;
+        public Action OnApplyButtonClicked { get; set; }
+        public Action OnCloseButtonClicked { get; set; }
         
         private Sequence _sequence;
         
-        private Vector2 _startPosition;
+        private Vector2 _startPosition = new Vector2(0,-75);
         private Vector2 _hidePosition;
-        private Vector2 _offset = new Vector2(0, -1000);
+        private Vector2 _offset = new Vector2(0, -400);
         private LocalEvents _localEvents;
 
         private void Start()
         {
-            _startPosition = _tasksContainer.transform.position;
             _hidePosition = _startPosition + _offset;
 
             HideAllTasksOnStart();
-
         }
 
+        public void Init(LocalEvents localEvents)
+        {
+            _localEvents = localEvents;
+        }
+        
         public void SetReadTask(List<IReadTask> readTasks)
         {
             foreach (var readTask in readTasks)
@@ -51,7 +56,7 @@ namespace Scripts.Ui.TaskUi
         private void CloseButtonClickListener()
         {
             OnCloseButtonClicked?.Invoke();
-            HideAllTasks();
+            _localEvents.TriggerHideCatalogue(this);
         }
         
         private void AddReadTask(IReadTask readTask)
@@ -63,7 +68,7 @@ namespace Scripts.Ui.TaskUi
         private void ApplyButtonClickListener()
         {
             OnApplyButtonClicked?.Invoke();
-            HideAllTasks();
+            _localEvents.TriggerHideCatalogue(this);
         }
         
         private void ShowApplyButton()
@@ -72,34 +77,39 @@ namespace Scripts.Ui.TaskUi
             _applyButton.onClick.AddListener(ApplyButtonClickListener);
         }
         
-        public void ShowCatalogue()
+        public void Show(Action onComplete)
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             
             gameObject.SetActive(true);
-            _sequence.Append(gameObject.transform.DOMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
+            _sequence.Append(_raedTasksCatalogue.DOLocalMove(_startPosition, 0.6f).SetEase(Ease.OutSine).OnComplete(
+                () =>
+                {
+                    onComplete?.Invoke();
+                }));
             
         }
         
-        public void HideAllTasks()
+        public void Hide(Action onComplete = null)
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             
             gameObject.SetActive(true);
-            _sequence.Append(gameObject.transform.DOMove(_hidePosition, 0.4f).SetEase(Ease.InSine));
+            _sequence.Append(_raedTasksCatalogue.DOLocalMove(_hidePosition, 0.4f).SetEase(Ease.InSine).OnComplete(
+                () =>
+                {
+                    onComplete?.Invoke();
+                }));
         }
-        
+
+        public bool IsVisible { get; }
+
         private void HideAllTasksOnStart()
         {
-            gameObject.gameObject.SetActive(false);
-            gameObject.transform.position = _hidePosition;
-        }
-        
-        public void Init(LocalEvents localEvents)
-        {
-            _localEvents = localEvents;
+            gameObject.SetActive(false);
+            _raedTasksCatalogue.localPosition = _hidePosition;
         }
         
         private void OnDestroy()

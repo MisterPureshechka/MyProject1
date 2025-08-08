@@ -148,7 +148,7 @@ namespace Scripts.Tasks
                     _localEvents.TriggerShowCatalogue(_devTaskCatalogue);
                     break;
                 case SprintType.Read:
-                    _readTaskCatalogue.ShowCatalogue();
+                    _localEvents.TriggerShowCatalogue(_readTaskCatalogue);
                     break;
                 default:
                     Debug.LogError($"{nameof(SprintType)} doesn't have catalogue");

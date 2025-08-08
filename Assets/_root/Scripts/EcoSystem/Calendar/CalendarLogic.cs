@@ -28,6 +28,12 @@ namespace Scripts.EcoSystem.Calendar
             LoadOrCreateNewDay();
 
             _localEvents.OnNewDay += IncreaseDay;
+            _localEvents.OnNewNotificatiom += AnimateIcon;
+        }
+
+        private void AnimateIcon()
+        {
+            _miniCalendarView.AnimateButtonOnEnter();
         }
 
         private void LoadOrCreateNewDay()
@@ -97,6 +103,7 @@ namespace Scripts.EcoSystem.Calendar
         public void CleanUp()
         {
             _localEvents.OnNewDay -= IncreaseDay;
+            _localEvents.OnNewNotificatiom -= AnimateIcon;
         }
     }
 }

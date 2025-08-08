@@ -42,6 +42,7 @@ namespace Scripts.Ui.TaskUi
         private bool _isOnStart;
         private Vector3 _imageStartScale;
         private SprintType _currentSprintType;
+        private bool _isAppearing;
 
         private void Start()
         {
@@ -116,7 +117,7 @@ namespace Scripts.Ui.TaskUi
 
             _imageSequence?.Kill();
 
-            if (_fxText == null || _fxText.transform == null)
+            if (_fxText == null)
                 return;
 
             _imageSequence = DOTween.Sequence();
@@ -129,12 +130,18 @@ namespace Scripts.Ui.TaskUi
         
         public void ShowTask()
         {
+            _isOnStart = true;
+            _isAppearing = true;
             _imageSequence?.Kill();
             _imageSequence = DOTween.Sequence();
             _spriteImage.transform.localScale = Vector3.zero;
     
-            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.one, _showDuration))
-                .OnComplete(() => _isOnStart = false); 
+            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.one, _showDuration)
+                .OnComplete(() =>
+                {
+                    _isOnStart = false;
+                    _isAppearing = false;
+                })); 
         }
 
         private void OnDestroy()
@@ -146,14 +153,14 @@ namespace Scripts.Ui.TaskUi
 
         public void UpdateProgress(float progress, float value)
         {
-            if (_isDestroyed) return;
+            if (_isDestroyed || _isAppearing) return;
         
             _isOnStart = false;
         }
 
         public void AnimateTextFx(float value, float duration)
         {
-            if(_isOnStart || _isDestroyed) return;
+            if(_isOnStart || _isDestroyed || _isAppearing) return;
             
             if (_fxText == null || _fxText.transform == null) return;
         
@@ -168,11 +175,11 @@ namespace Scripts.Ui.TaskUi
                 
                 SetBubbleSprite();
                     
-                _fxImage.transform.position = transform.position + new Vector3(offset, offset, 0);
-                _fxTextSequence.Append(_fxImage.transform.DOMoveY(
-                    _fxImage.transform.position.y + _moveToValue.y, 
+                _fxImage.rectTransform.localPosition = new Vector3(offset, offset, 0);
+                _fxTextSequence.Append(_fxImage.rectTransform.DOLocalMoveY(
+                    _fxImage.rectTransform.localPosition.y + _moveToValue.y, 
                     duration * 0.8f).SetEase(Ease.InSine));
-                _fxTextSequence.Join(_fxImage.transform.DOMoveX(
+                _fxTextSequence.Join(_fxImage.rectTransform.DOLocalMoveX(
                     10f,
                     duration * 0.8f).SetEase(_fxCurves[Random.Range(0, _fxCurves.Length)]));
                 _fxTextSequence.Append(_fxImage.transform.DOScale(
@@ -186,11 +193,11 @@ namespace Scripts.Ui.TaskUi
         
                 if (this == null || transform == null) return;
         
-                _fxText.transform.position = transform.position + new Vector3(offset, offset, 0);
+                _fxText.rectTransform.localPosition = new Vector3(offset, offset, 0);
         
                 _fxTextSequence.Append(_fxText.DOFade(1, 0));
-                _fxTextSequence.Append(_fxText.transform.DOMove(
-                    _fxText.transform.position - _moveToValue, 
+                _fxTextSequence.Append(_fxText.rectTransform.DOLocalMove(
+                    _fxText.rectTransform.localPosition - _moveToValue, 
                     duration).SetEase(Ease.InSine));
                 _fxTextSequence.Join(_fxText.DOFade(0, 0.5f).SetEase(Ease.InSine));
             }
@@ -198,17 +205,27 @@ namespace Scripts.Ui.TaskUi
             {
                 var offset = Random.Range(-_offset, _offset);
                 _fxText.text = value.ToString("0.0");
-        
+                _fxText.transform.localScale = Vector3.zero;
                 if (this == null || transform == null) return;
         
-                _fxText.transform.position = transform.position + new Vector3(offset, offset, 0);
+                _fxText.rectTransform.localPosition = new Vector3(offset, offset, 0);
         
                 _fxTextSequence.Append(_fxText.DOFade(1, 0));
-                _fxTextSequence.Append(_fxText.transform.DOMove(
-                    _fxText.transform.position + _moveToValue, 
+                _fxTextSequence.Append(_fxText.DOScale(1, duration * 0.1f));
+                _fxTextSequence.Append(_fxText.rectTransform.DOLocalMove(
+                    _fxText.rectTransform.localPosition + _moveToValue, 
                     duration).SetEase(Ease.InSine));
                 _fxTextSequence.Join(_fxText.DOFade(0, 0.5f).SetEase(Ease.InSine));
             }
+            
+            _fxTextSequence.Join(_spriteImage.transform.DOShakeRotation(0.1f, 45, 100, 50).SetEase(Ease.OutSine).OnStart(() =>
+            {
+                _spriteImage.transform.DOScale(Vector3.one * 1.1f, 0.1f)
+                    .OnComplete(() =>
+                    {
+                        _spriteImage.transform.localScale = Vector3.one;
+                    });
+            }));
             
         }
 
@@ -244,6 +261,7 @@ namespace Scripts.Ui.TaskUi
         public void StopFx()
         {
             _fxImage.gameObject.SetActive(false);
+            _fxImage.transform.localRotation = Quaternion.identity;
             _fxTextSequence?.Kill();
             _fxText.gameObject.SetActive(false);
         }

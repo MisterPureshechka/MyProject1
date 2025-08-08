@@ -58,7 +58,7 @@ namespace Scripts.Tasks
         private void UpdatePanelPosition(Vector3 worldPosition)
         {
             Vector2 screenPosition = _camera.WorldToScreenPoint(worldPosition);
-            _commandPanelView.SetPosition(screenPosition);
+            _commandPanelView.SetPosition(screenPosition, _camera);
         }
 
         public void CleanUp()

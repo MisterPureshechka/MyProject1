@@ -25,3 +25,7 @@ MonoBehaviour:
   <TooltipItem>k__BackingField: {fileID: 2795018050956126632, guid: 78cd9f3a30db94d55b2534182ca747fa, type: 3}
   <ReadTaskCatalogue>k__BackingField: {fileID: 6611442615963128792, guid: 7ebb4e1336a7541afab0e4d721c14daf, type: 3}
   <OnlineShopTopPanelButton>k__BackingField: {fileID: 2188132548049356872, guid: 23073ddfbad8d452fa691ae19fffcb55, type: 3}
+  <ShopItemView>k__BackingField: {fileID: 7843614357375134291, guid: fb272c7e4c7a84288a3d2b10073b2a94, type: 3}
+  <ChairSprites>k__BackingField:
+  - {fileID: 1022842692, guid: 71977a2907e994699ba45972d75a629a, type: 3}
+  - {fileID: -1039978742, guid: 71977a2907e994699ba45972d75a629a, type: 3}

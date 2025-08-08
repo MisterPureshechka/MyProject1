@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tasksContainer: {fileID: 560173852490048085}
+  _raedTasksCatalogue: {fileID: 73782988086073512}
   _readTaskButton: {fileID: 8903053525771669595, guid: 294673d23c46642dcb7ea736c8d32396, type: 3}
   _closeButton: {fileID: 891401325551728044}
   _applyButton: {fileID: 101026054526270661}

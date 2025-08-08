@@ -2,8 +2,6 @@ using Core;
 using DG.Tweening;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
-using Scripts.Meta;
-using Scripts.Rooms;
 using TMPro;
 using UnityEngine;
 
@@ -20,6 +18,7 @@ namespace Scripts.EcoSystem
         private bool _isMoveFinished = true;
         private readonly TextMeshProUGUI _tempStat;
         private CameraState _cameraState = CameraState.MainRoom;
+        private Sequence _sequence;
         
         private enum CameraState
         {
@@ -142,7 +141,6 @@ namespace Scripts.EcoSystem
             _localEvents.OnMouseOverKitchen -= MoveCameraToKitchen;
             _localEvents.OnMouseOverToilet -= MoveCameraToToilet;
             _localEvents.OnMouseOverMainRoom -= ResetCameraPos;
-            _camera?.transform.DOKill();
         }
     }
 }

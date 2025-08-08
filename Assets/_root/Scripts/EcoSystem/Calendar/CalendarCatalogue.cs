@@ -13,6 +13,7 @@ namespace Scripts.EcoSystem.Calendar
 {
     public class CalendarCatalogue : MonoBehaviour, ICatalogue
     {
+        [SerializeField] private RectTransform _calendarPanel;
         [SerializeField] private Button _leftButton;
         [SerializeField] private Button _rightButton;
         [SerializeField] private Button _closeButton;
@@ -22,7 +23,7 @@ namespace Scripts.EcoSystem.Calendar
         [SerializeField] private TextMeshProUGUI _dayNames;
 
         [SerializeField] private Vector3 _showPosition = new Vector3(0, -75f, 0);
-        [SerializeField] private Vector3 _hidePosition = new Vector3(0, -1000f, 0);
+        [SerializeField] private Vector3 _hidePosition = new Vector3(0, -400f, 0);
         [SerializeField] private Color[] _colors;
         private int _currentColorId;
         
@@ -56,7 +57,7 @@ namespace Scripts.EcoSystem.Calendar
             _rightButton.onClick.AddListener(OnRightButtonClicked);
             _closeButton.onClick.AddListener(OnCloseButtonClicked);
             
-            transform.localPosition = _hidePosition;
+            _calendarPanel.localPosition = _hidePosition;
             
             CreateTempEvent();
             SetDays();
@@ -228,13 +229,13 @@ namespace Scripts.EcoSystem.Calendar
         {
             _isVisible = true;
             gameObject.SetActive(true);
-            transform.DOMoveY(_showPosition.y, 0.4f).SetEase(Ease.OutSine)
+            _calendarPanel.DOLocalMoveY(_showPosition.y, 0.4f).SetEase(Ease.OutSine)
                 .OnComplete(() => onComplete?.Invoke());
         }
 
         public void Hide(Action onComplete = null)
         {
-            transform.DOMoveY(_hidePosition.y, 0.4f).SetEase(Ease.InSine)
+            _calendarPanel.DOLocalMoveY(_hidePosition.y, 0.4f).SetEase(Ease.InSine)
                 .OnComplete(() =>
                 {
                     _isVisible = false;

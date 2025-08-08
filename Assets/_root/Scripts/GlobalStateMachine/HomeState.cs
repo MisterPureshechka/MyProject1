@@ -1,3 +1,4 @@
+using _root.Notification;
 using Scripts.Animator;
 using Scripts.Catalogues;
 using Scripts.Data;
@@ -11,7 +12,8 @@ using Scripts.Stat;
 using Scripts.Tasks;
 using Scripts.Ui;
 using Scripts.Ui.TaskUi;
-using Scripts.Utils;
+using Scripts.Upgrade;
+using Scripts.Wallet;
 using UnityEngine;
 
 namespace Scripts.GlobalStateMachine
@@ -80,12 +82,16 @@ namespace Scripts.GlobalStateMachine
 
             var fader = new FaderLogic(localEvents);
 
-            var wallet = new WalletLogic(progressDataAdapter);
+            var wallet = new WalletLogic(progressDataAdapter, _gameProgress);
             var onlineShopController = new OnlineShopController(Object.FindAnyObjectByType<OnlineShopView>(),
                 localEvents, _gameData.PrefabDataBase, new ShopItemsLibrary(), wallet);
+            var upgradeLogic = new UpgradeLogic(localEvents, progressDataAdapter);
             
             var tooltipLogic = new TooltipStatLogic(progressDataAdapter, uiFactory.GetTooltip(canvas.transform), _gameData.PrefabDataBase, localEvents, canvas);
             var catalogueManager = new CatalogueManager(localEvents);
+
+            var notificationSystem = new NotificationSystem(new NotificationLibrary(), calendarLogic, localEvents, timeLogic);
+            var roomShaker = new RoomShaker(home, localEvents, _gameData.InteractiveObjectConfig);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -119,6 +125,9 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(catalogueManager);
             _controllers.Add(onlineShopController);
             _controllers.Add(wallet);
+            _controllers.Add(upgradeLogic);
+            _controllers.Add(notificationSystem);
+            _controllers.Add(roomShaker);
         }
 
         public override void Update(float deltaTime)

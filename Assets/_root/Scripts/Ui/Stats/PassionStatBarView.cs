@@ -28,6 +28,8 @@ namespace Scripts.Ui
     
         public override void UpdateView(float value, float maxValue) 
         {
+            _fillBar.raycastTarget = !(value <= 0);
+            
             _label.text = _metaType.ToString();
         
             float newWidth = (value / maxValue) * _initialWidth;

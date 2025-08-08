@@ -82,7 +82,7 @@ namespace Scripts.EcoSystem.Calendar
             AnimateButtonOnEnter();
         }
 
-        private void AnimateButtonOnEnter(float strength = 1f)
+        public void AnimateButtonOnEnter(float strength = 1f)
         {
             _sequence?.Kill();
             _sequence = DOTween.Sequence();

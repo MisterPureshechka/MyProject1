@@ -31,16 +31,33 @@ namespace Scripts.Tasks
             }
         }
         
-        public void SetPosition(Vector2 screenPosition)
+        public void SetPosition(Vector2 screenPosition, Camera camera)
         {
-            _panelRect.position = screenPosition;
-        
-            Vector2 clampedPosition = new Vector2(
-                Mathf.Clamp(screenPosition.x, _panelRect.rect.width/2, Screen.width - _panelRect.rect.width/2),
-                Mathf.Clamp(screenPosition.y, _panelRect.rect.height/2, Screen.height - _panelRect.rect.height/2)
+            screenPosition += _offset;
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _panelRect.parent as RectTransform,
+                screenPosition,
+                camera,
+                out Vector2 localPoint
             );
-        
-            _panelRect.position = clampedPosition + _offset;
+
+            // Кладём локальную позицию
+            _panelRect.localPosition = ClampToCanvas(localPoint);
         }
+
+        private Vector2 ClampToCanvas(Vector2 localPos)
+        {
+            RectTransform parentRect = _panelRect.parent as RectTransform;
+
+            Vector2 halfSize = _panelRect.rect.size * 0.5f;
+            Vector2 parentHalfSize = parentRect.rect.size * 0.5f;
+
+            float x = Mathf.Clamp(localPos.x, -parentHalfSize.x + halfSize.x, parentHalfSize.x - halfSize.x);
+            float y = Mathf.Clamp(localPos.y, -parentHalfSize.y + halfSize.y, parentHalfSize.y - halfSize.y);
+
+            return new Vector2(x, y);
+        }
+
     }
 }

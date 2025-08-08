@@ -25,19 +25,18 @@ namespace Scripts.Ui.TaskUi
         [SerializeField] private Transform _newRoot;
 
         public Action<ITask> OnTaskClicked;
-        public Action OnCloseButtonClicked;
-        public Action OnApplyButtonClicked;
+        public Action OnCloseButtonClicked { get; set; }
+        public Action OnApplyButtonClicked { get; set; }
         
-        private Vector2 _startPosition;
+        private Vector2 _startPosition = new Vector2(0f, -60f);
         private Vector2 _hidePosition;
-        private Vector2 _offset = new Vector2(0, -1000);
+        private Vector2 _offset = new Vector2(0, -400f);
 
         private bool _isVisible;
         public bool IsVisible => _isVisible;
 
         private void Start()
         {
-            _startPosition = _root.transform.position;
             _hidePosition = _startPosition + _offset;
             _applyButton.gameObject.SetActive(false);
             HideAllTasksOnStart();
@@ -100,14 +99,14 @@ namespace Scripts.Ui.TaskUi
             
             _isVisible = true;
             _root.gameObject.SetActive(true);
-            _sequence.Append(_root.transform.DOMove(_hidePosition, 0.4f).SetEase(Ease.InSine));
+            _sequence.Append(_root.transform.DOLocalMove(_hidePosition, 0.4f).SetEase(Ease.InSine));
             _sequence.OnComplete(() => onComplete?.Invoke());
         }
 
         private void HideAllTasksOnStart()
         {
             _root.gameObject.SetActive(false);
-            _root.position = _hidePosition;
+            _root.localPosition = _hidePosition;
         }
 
 
@@ -123,7 +122,7 @@ namespace Scripts.Ui.TaskUi
             }
             
             _root.gameObject.SetActive(true);
-            _sequence.Append(_root.transform.DOMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
+            _sequence.Append(_root.transform.DOLocalMove(_startPosition, 0.6f).SetEase(Ease.OutSine));
             _sequence.OnComplete(() =>
             {
                 _isVisible = false;

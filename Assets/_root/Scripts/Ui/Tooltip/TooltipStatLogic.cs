@@ -5,6 +5,7 @@ using Scripts.GlobalStateMachine;
 using Scripts.Meta;
 using Scripts.Progress;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scripts.Ui.TaskUi
 {
@@ -31,28 +32,37 @@ namespace Scripts.Ui.TaskUi
             _localEvents = localEvents;
             _canvas = canvas;
 
-            _localEvents.OnMouseOverStat += ShowToolTip;
-            _localEvents.OnMouseExitStat += HideToolTip;
+            _localEvents.OnMouseEnterStat += ShowToolTip;         // только построить контент
+            _localEvents.OnMouseMoveStat  += UpdateMousePos;      // только двигать
+            _localEvents.OnMouseExitStat  += HideToolTip;    
         }
-        public void ShowToolTip(MetaType metaType, Vector2 position)
+        
+        
+        public void ShowToolTip(MetaType metaType)
         {
-            HideToolTip(); // очищает старые
+            if (_isTooltipVisible && _currentMetaType == metaType)
+                return;
+
+            HideToolTip();
 
             _currentMetaType = metaType;
             _isTooltipVisible = true;
-            _mousePos = position;
-
             _tooltipView.gameObject.SetActive(true);
 
             foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
             {
-                if (kvp.Value.MetaType != _currentMetaType)
-                    continue;
+                if (kvp.Value.MetaType != _currentMetaType) continue;
 
-                var statView = Object.Instantiate(_prefabData.TooltipItem, _tooltipView.StatHolder).GetComponent<TooltipStatItem>();
+                var statView = Object.Instantiate(_prefabData.TooltipItem, _tooltipView.StatHolder)
+                    .GetComponent<TooltipStatItem>();
                 statView.SetInfo(kvp.Key, kvp.Value.Value);
-                _activeItems.Add(statView); // сохраняем
+                _activeItems.Add(statView);
             }
+
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_tooltipView.StatHolder as RectTransform);
+
+            UpdateTooltipPos();
         }
 
         public void HideToolTip()
@@ -69,12 +79,20 @@ namespace Scripts.Ui.TaskUi
 
         public void CleanUp()
         {
-            _localEvents.OnMouseOverStat -= ShowToolTip;
+            _localEvents.OnMouseEnterStat -= ShowToolTip;         
+            _localEvents.OnMouseMoveStat  -= UpdateMousePos;      
+            _localEvents.OnMouseExitStat  -= HideToolTip;  
         }
 
         public void Execute(float deltatime)
         {
             UpdateTooltipInfo();
+            UpdateTooltipPos();
+        }
+        
+        private void UpdateMousePos(Vector2 position)
+        {
+            _mousePos = position;
             UpdateTooltipPos();
         }
 
@@ -101,8 +119,17 @@ namespace Scripts.Ui.TaskUi
         {
             if (!_tooltipView.gameObject.activeSelf)
                 return;
-            
-            _tooltipView.ToolTipRect.position = _mousePos + new Vector2(OFFSET, 0);
+
+            Vector2 screenPos = _mousePos + new Vector2(OFFSET, 0);
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                _tooltipView.ToolTipRect.parent as RectTransform,
+                screenPos,
+                _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera,
+                out var localPoint
+            );
+
+            _tooltipView.ToolTipRect.localPosition = localPoint;
         }
     }
 }

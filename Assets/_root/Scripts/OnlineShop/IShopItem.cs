@@ -1,4 +1,4 @@
-using Scripts.UpgradeLogic;
+using Scripts.Upgrade;
 using UnityEngine;
 
 namespace Scripts.OnlineShop
