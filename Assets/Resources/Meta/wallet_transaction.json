@@ -1,0 +1,7 @@
+{
+  "Transactions": [
+    { "Id": 1, "Name": "Apartment",   "Amount": -700, "DayForTransaction": 1 },
+    { "Id": 2, "Name": "Salary", "Amount": 1000, "DayForTransaction": 5 },
+    { "Id": 3, "Name": "Bills", "Amount": -50,  "DayForTransaction": 10 }
+  ]
+}

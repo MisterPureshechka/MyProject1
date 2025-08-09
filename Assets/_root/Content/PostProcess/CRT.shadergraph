@@ -14,6 +14,12 @@
         },
         {
             "m_Id": "2468293daee14e34932f74be1c47850c"
+        },
+        {
+            "m_Id": "8e7be1750e264b5ea12963ba5581ab1b"
+        },
+        {
+            "m_Id": "a52ecd8d552841439076419cd66f76a5"
         }
     ],
     "m_Keywords": [],
@@ -1512,15 +1518,15 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 1663.0001220703125,
-            "y": -1484.0001220703125
+            "x": 3800.499755859375,
+            "y": -1286.9998779296875
         },
         "m_Blocks": []
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 2928.000244140625,
-            "y": -648.0001220703125
+            "x": 3800.499755859375,
+            "y": -1105.4998779296875
         },
         "m_Blocks": [
             {
@@ -4279,10 +4285,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1343.000244140625,
-            "y": -46.999942779541019,
-            "width": 207.9998779296875,
-            "height": 350.0002136230469
+            "x": 1446.9998779296875,
+            "y": -63.99995040893555,
+            "width": 208.0,
+            "height": 349.99993896484377
         }
     },
     "m_Slots": [
@@ -6723,6 +6729,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector2ShaderProperty",
+    "m_ObjectId": "8e7be1750e264b5ea12963ba5581ab1b",
+    "m_Guid": {
+        "m_GuidSerialized": "cc4cf7b6-365b-4dcb-aee0-def83856efbe"
+    },
+    "m_Name": "Pixel tiling",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Pixel tiling",
+    "m_DefaultReferenceName": "_Pixel_tiling",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "8f0149b026f24674a96bcc41eaf7499a",
@@ -7443,6 +7477,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "a52ecd8d552841439076419cd66f76a5",
+    "m_Guid": {
+        "m_GuidSerialized": "8ccca6cf-218e-4bba-baa1-e69ed0a5f4dc"
+    },
+    "m_Name": "Pixel opacity",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Pixel opacity",
+    "m_DefaultReferenceName": "_Pixel_opacity",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "a5f6626d8f6d4fab96948a1821576729",
@@ -7627,10 +7689,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1342.999755859375,
-            "y": -483.99993896484377,
-            "width": 155.0001220703125,
-            "height": 128.99996948242188
+            "x": 1348.4998779296875,
+            "y": -494.4998779296875,
+            "width": 155.0,
+            "height": 128.5
         }
     },
     "m_Slots": [
@@ -8259,6 +8321,12 @@
         },
         {
             "m_Id": "2468293daee14e34932f74be1c47850c"
+        },
+        {
+            "m_Id": "8e7be1750e264b5ea12963ba5581ab1b"
+        },
+        {
+            "m_Id": "a52ecd8d552841439076419cd66f76a5"
         }
     ]
 }
@@ -10327,10 +10395,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.0,
-            "height": 0.0
+            "x": 3875.999755859375,
+            "y": -868.9999389648438,
+            "width": 200.0,
+            "height": 41.0
         }
     },
     "m_Slots": [

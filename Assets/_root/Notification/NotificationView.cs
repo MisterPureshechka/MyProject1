@@ -28,6 +28,7 @@ namespace _root.Notification
         [SerializeField] private Vector3 _scaleToValue;
 
         private LocalEvents _localEvents;
+        private bool _isHidden;
 
         private Sequence _sequence;
 
@@ -45,6 +46,7 @@ namespace _root.Notification
         public void Notify(string message)
         {
             gameObject.SetActive(true);
+            _isHidden = false;
             _localEvents.TriggerNewNotification();
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
@@ -90,9 +92,11 @@ namespace _root.Notification
 
         public void HideNotification()
         { 
+            if(_isHidden) return;
+            _isHidden = true;
+            
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
-            
             var animator = new DOTweenTMPAnimator(_text);
             
             var delay = _letterDelay + _letterHideDuration;
@@ -102,10 +106,8 @@ namespace _root.Notification
             {
                 animator.DOOffsetChar(i, new Vector2(0, _dropOffsetY), _dropDuration).SetDelay(i * delay);
                 animator.DOScaleChar(i, Vector3.zero, 0).SetDelay(i * delay + _dropDuration);
-                //delayMultiplier++;
             }
             
-            //_sequence.SetDelay(animator.textInfo.characterCount/2 * delay);
             var hideDuration = animator.textInfo.characterCount * (delay + _letterHideDuration);
             
             float targetWidth = _startScaleValue.x; 

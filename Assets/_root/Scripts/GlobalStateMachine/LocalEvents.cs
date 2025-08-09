@@ -126,6 +126,8 @@ namespace Scripts.GlobalStateMachine
         public void TriggerShowCatalogue(ICatalogue catalogue) => OnCatalogueShow?.Invoke(catalogue);
 
         public Action<ICatalogue> OnCatalogueHide;
+        public Action OnWalletUpdate { get; set; }
+        public void TriggerWalletUpdate() => OnWalletUpdate?.Invoke();
         public Action OnNewMinute {get; set;}
         public void TriggerNewMinute() => OnNewMinute?.Invoke();
         public void TriggerHideCatalogue(ICatalogue catalogue) => OnCatalogueHide?.Invoke(catalogue);

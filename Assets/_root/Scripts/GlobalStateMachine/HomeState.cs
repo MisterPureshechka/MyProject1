@@ -5,6 +5,7 @@ using Scripts.Data;
 using Scripts.EcoSystem;
 using Scripts.EcoSystem.Calendar;
 using Scripts.Hero;
+using Scripts.Job;
 using Scripts.OnlineShop;
 using Scripts.Progress;
 using Scripts.Rooms;
@@ -66,24 +67,23 @@ namespace Scripts.GlobalStateMachine
             var bloomLogic = new WindowBloomLogic(localEvents);
             var skyLogic = new SkyLogic(localEvents, Object.FindAnyObjectByType<SkyView>());
             var volumeLogic = new VolumeLogic(localEvents, _gameData.InteractiveObjectConfig);
-            var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(), Object.FindAnyObjectByType<CalendarCatalogue>(), progressDataAdapter);
+            var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(FindObjectsInactive.Include), Object.FindAnyObjectByType<CalendarCatalogue>(FindObjectsInactive.Include), progressDataAdapter);
 
             var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
             
-            var hud = Object.FindAnyObjectByType<HUDView>();
+            var hud = Object.FindAnyObjectByType<HUDView>(FindObjectsInactive.Include);
             var statController = new StatsController(progressDataAdapter, localEvents);
             var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents);
 
             var sideRoomChecker = new SideRoomChecker(home, localEvents);
 
             var taskLibrary = new TaskLibrary(progressDataAdapter, localEvents);
-            //var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents);
             var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter);
 
             var fader = new FaderLogic(localEvents);
 
-            var wallet = new WalletLogic(progressDataAdapter, _gameProgress);
-            var onlineShopController = new OnlineShopController(Object.FindAnyObjectByType<OnlineShopView>(),
+            var wallet = new WalletLogic(progressDataAdapter, _gameProgress, localEvents);
+            var onlineShopController = new OnlineShopController(Object.FindAnyObjectByType<OnlineShopView>(FindObjectsInactive.Include),
                 localEvents, _gameData.PrefabDataBase, new ShopItemsLibrary(), wallet);
             var upgradeLogic = new UpgradeLogic(localEvents, progressDataAdapter);
             
@@ -92,6 +92,8 @@ namespace Scripts.GlobalStateMachine
 
             var notificationSystem = new NotificationSystem(new NotificationLibrary(), calendarLogic, localEvents, timeLogic);
             var roomShaker = new RoomShaker(home, localEvents, _gameData.InteractiveObjectConfig);
+
+            var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary());
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -128,6 +130,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(upgradeLogic);
             _controllers.Add(notificationSystem);
             _controllers.Add(roomShaker);
+            _controllers.Add(jobLogic);
         }
 
         public override void Update(float deltaTime)
