@@ -36,14 +36,15 @@ namespace Scripts.EcoSystem.Calendar
         private List<DayUI> _days = new();
         private List<MonthUI> _months = new();
         private List<CalendarEvent> _allEvents = new();
+        private List<List<CalendarEvent>> _permanentEvents = new();
         private bool _isVisible;
         private LocalEvents _localEvents;
 
         public void Init(LocalEvents localEvents)
         {
             _localEvents = localEvents;
+            _localEvents.OnCalendarNoteAdded += CreatePermanentEvents;
         }
-
 
         private void Awake()
         {
@@ -67,6 +68,31 @@ namespace Scripts.EcoSystem.Calendar
         private void OnCloseButtonClicked()
         {
             _localEvents.TriggerHideCatalogue(this);
+        }
+
+        private void CreatePermanentEvents(string message, int day)
+        {
+            var permanentEvent = new List<CalendarEvent>();
+
+            for (int i = 0; i < 12; i++)
+            {
+                int rawMonth = _currentMonth + i;                // может выйти за 12
+                int year = _currentYear + (rawMonth - 1) / 12;   // добавляем годы
+                int month = ((rawMonth - 1) % 12) + 1;           // нормализуем в диапазон 1..12
+
+                int maxDay = CalendarExtentions.GetDaysInMonth(month, year);
+                int clampedDay = Mathf.Clamp(day, 1, maxDay);
+
+                permanentEvent.Add(new CalendarEvent
+                {
+                    Day = clampedDay,
+                    Month = month,   // 1..12 — как ждут твои GetMonthName/GetMiniMonthName
+                    Year = year,
+                    Message = message
+                });
+            }
+
+            _permanentEvents.Add(permanentEvent);
         }
 
         private void CreateTempEvent()
@@ -176,6 +202,20 @@ namespace Scripts.EcoSystem.Calendar
                             _currentColorId = (_currentColorId + 1) % _colors.Length;
                         }
                     }
+                    
+                    foreach (var permanentEvent in _permanentEvents)
+                    {
+                        foreach (var ev in permanentEvent)
+                        {
+                            if (ev.Day == dayNumber && ev.Month == month && ev.Year == year)
+                            {
+                                var eventInstance = Instantiate(_dayEventPrefab, dayUI.transform);
+                                eventInstance.UpdateEventInfo(ev.Message, _colors[_currentColorId]);
+                                dayUI.AddEvent(eventInstance);
+                                _currentColorId = (_currentColorId + 1) % _colors.Length;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -210,9 +250,6 @@ namespace Scripts.EcoSystem.Calendar
 
         private void AnimateCalendar(bool isLeft)
         {
-            // transform.DOScale(_startScale * 1.1f, 0.1f).SetEase(Ease.OutBack)
-            //     .OnComplete(() => transform.DOScale(_startScale, 0.1f));
-            
             transform.DORotate(new Vector3(0, 0, isLeft ? 2.0f : -2.0f), 0.1f)
                 .SetEase(Ease.OutSine)
                 .OnComplete(() => transform.localRotation = Quaternion.identity);
@@ -223,6 +260,7 @@ namespace Scripts.EcoSystem.Calendar
             _closeButton?.onClick.RemoveAllListeners();
             _leftButton?.onClick.RemoveAllListeners();
             _rightButton?.onClick.RemoveAllListeners();
+            _localEvents.OnCalendarNoteAdded -= CreatePermanentEvents;
         }
 
         public void Show(Action onComplete = null)

@@ -5,7 +5,7 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 71.24580383300781,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Энергия",
                     "Tooltip": "Используется при работе",
@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 85.51315307617188,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -27,7 +27,7 @@
                 "Key": "Mood",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 91.43959045410156,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Настроение",
                     "Tooltip": "Улучшается отдыхом",
@@ -38,7 +38,7 @@
                 "Key": "Shower",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 85.51315307617188,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Гигиена",
                     "Tooltip": "Ухудшается при активности",
@@ -115,7 +115,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 13.73797607421875,
+                    "Value": 9.0,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",

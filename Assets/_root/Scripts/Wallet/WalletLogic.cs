@@ -49,11 +49,17 @@ namespace Scripts.Wallet
 
         private void UpdateWallet()
         {
-            _transactions.Add(_transactionLibrary.All[0]);
-            _transactions.Add(_transactionLibrary.All[1]);
-            _transactions.Add(_transactionLibrary.All[2]);
+            ApplyTransaction(_transactionLibrary.All[0]);
+            ApplyTransaction(_transactionLibrary.All[1]);
+            ApplyTransaction(_transactionLibrary.All[2]);
             
             _walletCatalogue.UpdateInfo(_transactions, _walletAmount);
+        }
+
+        private void ApplyTransaction(Transaction transaction)
+        {
+            _localEvents.TriggerCalendarNoteAdded(transaction.Description, transaction.DayForTransaction);
+            _transactions.Add(transaction);
         }
         
         public bool TrySpend(int value)

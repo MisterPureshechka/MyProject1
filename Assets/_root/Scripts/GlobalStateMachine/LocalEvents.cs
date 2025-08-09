@@ -138,8 +138,9 @@ namespace Scripts.GlobalStateMachine
 
         public Action<Vector2> OnMouseMoveStat { get; set; }
         public void TriggerMouseMoveStat(Vector2 eventDataPosition) => OnMouseMoveStat?.Invoke(eventDataPosition);
-
         public Action<MetaType> OnMouseEnterStat { get; set; }
         public void TriggerMouseEnterStat(MetaType metaType) => OnMouseEnterStat?.Invoke(metaType);
+        public Action<string, int> OnCalendarNoteAdded { get; set; }
+        public void TriggerCalendarNoteAdded(string note, int day) => OnCalendarNoteAdded?.Invoke(note, day);
     }
 }

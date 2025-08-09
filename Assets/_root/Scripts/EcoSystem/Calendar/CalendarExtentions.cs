@@ -60,7 +60,6 @@ namespace Scripts.EcoSystem.Calendar
         public static int GetDayOfWeek(int day, int month, int year)
         {
             System.DateTime date = new System.DateTime(year, month, day);
-            // Преобразуем Sunday=0, Monday=1,... → Monday=0, ..., Sunday=6
             int dow = (int)date.DayOfWeek;
             return dow == 0 ? 6 : dow - 1;
         }
