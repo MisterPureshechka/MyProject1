@@ -13,5 +13,6 @@ namespace Scripts.Tasks
         Shower,
         Toilet,
         Coffee,
+        GoOut,
     }
 }

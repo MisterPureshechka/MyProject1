@@ -70,7 +70,7 @@ namespace Scripts.Tasks
             _readTaskCatalogue.OnTaskClicked += AddTask;
             
             _localEvents.OnSprintClosed += ExitSprint;
-            _localEvents.OnHeroGetIO += StartOrCreateSprint;
+            _localEvents.OnHeroGetSprint += StartOrCreateSprint;
             _localEvents.OnHeroWalkToIO += ExitSprint;
             _localEvents.OnHeroGetRootIO += HeroGetRootIOListener;
 
@@ -344,7 +344,7 @@ namespace Scripts.Tasks
             _readTaskCatalogue.OnTaskClicked -= AddTask;
             _readTaskCatalogue.OnCloseButtonClicked -= CloseCatalogButtonClickedListener;
             _readTaskCatalogue.OnApplyButtonClicked -= CatalogueApplyButtonClickListener;
-            _localEvents.OnHeroGetIO -= StartOrCreateSprint;
+            _localEvents.OnHeroGetSprint -= StartOrCreateSprint;
             _localEvents.OnSprintClosed -= ExitSprint;
             _localEvents.OnHeroGetRootIO -= HeroGetRootIOListener;
         }

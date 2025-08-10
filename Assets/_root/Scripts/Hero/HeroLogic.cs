@@ -12,6 +12,7 @@ using Scripts.Rooms;
 using Scripts.Tasks;
 using Scripts.Utils;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Scripts.Hero
 {
@@ -21,7 +22,8 @@ namespace Scripts.Hero
         
         public HeroIdleState IdleState { get; private set; }
         public HeroWalkState WalkState { get; private set; }
-        public HeroWalkToIOState WalkToIOState { get; private set; }
+        public HeroWalkToSprint WalkToSprintState { get; private set; }
+        public HeroWalkToIO WalkToIOState { get; private set; }
         public HeroWalkToRootIOState WalkToRootIOState { get; private set; }
         public HeroDevState DevState { get; private set; }
         public HeroSleepState SleepState { get; private set; }
@@ -74,7 +76,7 @@ namespace Scripts.Hero
             DevState = new HeroDevState(this, _progressData, _localEvents);
             EatState = new HeroEatState(this, _progressData);
             SleepState = new HeroSleepState(this, _progressData);
-            WalkToIOState = new HeroWalkToIOState(this, _localEvents);
+            WalkToSprintState = new HeroWalkToSprint(this, _localEvents);
             WalkToRootIOState = new HeroWalkToRootIOState(this, _localEvents);
             ReadState = new HeroReadState(this, _progressData);
             ChillState = new HeroChillState(this, _progressData, _localEvents);
@@ -82,6 +84,7 @@ namespace Scripts.Hero
             HeroAwaitState = new HeroAwaitState(this);
             HeroToiletState = new HeroToiletState(this);
             HeroBathState = new HeroBathState(this);
+            WalkToIOState = new HeroWalkToIO(this, _localEvents);
             
             _heroStateMachine.Init(IdleState);
 
@@ -91,9 +94,10 @@ namespace Scripts.Hero
             _localEvents.OnTaskCatalogHide += TaskCatalogHideListener;
             //_localEvents.OnSprintCreated += ChangeStateByIOType;
             _localEvents.OnSprintCreated += SprintCratedListener;
-            _localEvents.OnWalkToIO += WalkToIO;
+            _localEvents.OnWalkToSprint += WalkToSprint;
             _localEvents.OnSprintComplete += SprintCompleteListener;
             _localEvents.OnHeroGetRootIO += ChangeStateByIOType;
+            _localEvents.OnWalkToIO += WalkToIO;
         }
 
         private void SprintCratedListener(SprintType obj)
@@ -111,10 +115,15 @@ namespace Scripts.Hero
             ChangeState(IdleState);
         }
 
-        private void WalkToIO(SprintType sprintType)
+        private void WalkToSprint(SprintType sprintType)
         {
-            ChangeState(WalkToIOState);
+            ChangeState(WalkToSprintState);
             _localEvents.TriggerHeroWalkToIO();
+        }
+
+        private void WalkToIO(InteractiveObjectType interactiveObjectType)
+        {
+           ChangeState(WalkToIOState);
         }
 
         private void ChangeStateByIOType(SprintType iOType)
@@ -153,7 +162,7 @@ namespace Scripts.Hero
         
         public void TriggerHeroGetIO(SprintType iOType)
         {
-            _localEvents.TriggerHeroGetIO(iOType);
+            _localEvents.TriggerHeroGetSprint(iOType);
         }
 
         private void OnCLickWorld(Vector2 position)
@@ -295,6 +304,8 @@ namespace Scripts.Hero
             _localEvents.OnTaskCatalogHide -= TaskCatalogHideListener;
             _localEvents.OnSprintComplete -= SprintCompleteListener;
             _localEvents.OnHeroGetRootIO -= ChangeStateByIOType;
+            
+            Object.Destroy(_heroView.gameObject);
         }
 
         public void TiggerSprintExit()

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework;
 using Scripts.GlobalStateMachine;
 using Scripts.Rooms;
 using UnityEngine;
@@ -39,7 +40,7 @@ namespace Scripts.Tasks
             {
                 new Command { 
                     CommandName = "Перекусить", 
-                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Eat),
+                    OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Eat),
                 },
             };
             
@@ -49,7 +50,7 @@ namespace Scripts.Tasks
                 new Command
                 {
                     CommandName = "Отдохнусть",
-                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Chill),
+                    OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Chill),
                 }
             };
 
@@ -58,7 +59,7 @@ namespace Scripts.Tasks
                 new Command
                 {
                     CommandName = "Поиграть",
-                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Play),
+                    OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Play),
                 }
             };
             
@@ -67,7 +68,7 @@ namespace Scripts.Tasks
                 new Command
                 {
                     CommandName = "Справить нужду",
-                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Toilet),
+                    OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Toilet),
                 }
             };
 
@@ -76,9 +77,18 @@ namespace Scripts.Tasks
                 new Command()
                 {
                     CommandName = "Take a shower",
-                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Shower),
+                    OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Shower),
                 }
 
+            };
+
+            var doorCommand = new List<Command>
+            {
+                new Command()
+                {
+                    CommandName = "Go to work",
+                    OnExecute = () => _localEvents.TriggerWalkToIO(InteractiveObjectType.Door),
+                }
             };
             
             Commands.Add(InteractiveObjectType.Fridge, eatCommands);
@@ -86,6 +96,7 @@ namespace Scripts.Tasks
             Commands.Add(InteractiveObjectType.Chair, chillCommands);
             Commands.Add(InteractiveObjectType.TV, playCommand);
             Commands.Add(InteractiveObjectType.Bath, bathCommand);
+            Commands.Add(InteractiveObjectType.Door, doorCommand);
         }
 
         private void CreateDevCommands()
@@ -93,13 +104,13 @@ namespace Scripts.Tasks
             _createSprintCommand = new Command
             {
                 CommandName = "Create Sprint",
-                OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Dev),
+                OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Dev),
             };
             _devCommands.Add(_createSprintCommand);
             _continueSprintCommand = new Command
             {
                 CommandName = "Continue Sprint",
-                OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Dev),
+                OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Dev),
             };
             
             Commands.Add(InteractiveObjectType.Pc, _devCommands);
@@ -112,7 +123,7 @@ namespace Scripts.Tasks
                 new Command
                 {
                     CommandName = "Read Books",
-                    OnExecute = () => _localEvents.TriggerWalkToIO(SprintType.Read),
+                    OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Read),
                 }
             };
             

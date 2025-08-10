@@ -71,6 +71,18 @@ namespace Scripts.OnlineShop
                 Destroy(child.gameObject);
             }
         }
+        
+        public void ResetView()
+        {
+            _topPanelButtonViewMap.Clear();
+            _shopItemViews.Clear();
+
+            foreach (Transform t in _topPanelButtonsContainer) Destroy(t.gameObject);
+            foreach (Transform t in _shopItemsContainer) Destroy(t.gameObject);
+
+            _sequence?.Kill();
+            _shopPanel.localPosition = _hidePosition; // вернуть в скрытое состояние
+        }
 
         public bool IsVisible { get; }
         

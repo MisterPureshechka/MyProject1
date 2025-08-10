@@ -1,3 +1,5 @@
+using System;
+
 namespace _root.Notification
 {
     public class Notification : INotification
@@ -10,8 +12,9 @@ namespace _root.Notification
         public int Day { get; set; }
         public int Hour { get; set; }
         public int Minute { get; set; }
+        public Action AddCommand { get; set; }
 
-        public Notification(string id, string title, string message, int year, int month, int day, int hour, int minute)
+        public Notification(string id, string title, string message, int year, int month, int day, int hour, int minute, Action addCommand = null)
         {
             Id = id;
             Title = title;
@@ -21,6 +24,7 @@ namespace _root.Notification
             Day = day;
             Hour = hour;
             Minute = minute;
+            AddCommand = addCommand;
         }
     }
 }

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Core;
+using UnityEngine;
 
-    public class Controllers : IInitialization, IExecute, IFixedExecute, ICleanUp
+public class Controllers : IInitialization, IExecute, IFixedExecute, ICleanUp
     {
         private List<IInitialization> _initializeControllers;
         private List<IFixedExecute> _fixedExecuteControllers;
@@ -71,6 +72,26 @@ using Core;
             for (var index = 0; index < _cleanUpControllers.Count; ++index)
             {
                 _cleanUpControllers[index].CleanUp();
+            }
+            
+            foreach (var VARIABLE in _executeControllers)
+            {
+                Debug.Log(VARIABLE.GetType().Name);
+            }
+            
+            foreach (var VARIABLE in _cleanUpControllers)
+            {
+                Debug.Log(VARIABLE.GetType().Name);
+            }
+            
+            foreach (var VARIABLE in _initializeControllers)
+            {
+                Debug.Log(VARIABLE.GetType().Name);
+            }
+            
+            foreach (var VARIABLE in _fixedExecuteControllers)
+            {
+                Debug.Log(VARIABLE.GetType().Name);
             }
         }
 

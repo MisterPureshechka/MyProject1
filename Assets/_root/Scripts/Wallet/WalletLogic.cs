@@ -68,6 +68,7 @@ namespace Scripts.Wallet
             {
                 _walletAmount -= value;
                 UpdateMiniWallet();
+                UpdateWallet();
                 _progressDataAdapter.GetMetadata(WalletKey).Value -= value;
                 _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
                 return true;

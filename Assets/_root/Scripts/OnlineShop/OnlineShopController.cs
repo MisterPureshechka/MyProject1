@@ -83,6 +83,7 @@ namespace Scripts.OnlineShop
         {
             _shopButton.Button.onClick.RemoveAllListeners();
             _view.CloseButton.onClick.RemoveAllListeners();
+            _view.ResetView(); 
         }
     }
 }

@@ -17,8 +17,11 @@ namespace Scripts.GlobalStateMachine
         public Action OnOpenPanel { get; set; }
         public void TriggerOpenPanel() => OnOpenPanel?.Invoke();
 
-        public Action<SprintType> OnHeroGetIO { get; set; }
-        public void TriggerHeroGetIO(SprintType iOType) => OnHeroGetIO?.Invoke(iOType);
+        public Action<SprintType> OnHeroGetSprint { get; set; }
+        public void TriggerHeroGetSprint(SprintType iOType) => OnHeroGetSprint?.Invoke(iOType);
+        
+        public Action<InteractiveObjectType> OnHeroGetIO { get; set; }
+        public void TriggerHeroGetIO(InteractiveObjectType IOType) => OnHeroGetIO?.Invoke(IOType);
         
         public Action<Vector2> OnMouseClickWorld {get; set;}
         public void TriggerMouseClickedWorld(Vector2 pos) => OnMouseClickWorld?.Invoke(pos);
@@ -72,8 +75,11 @@ namespace Scripts.GlobalStateMachine
         public Action<SprintType> OnSprintClosed { get; set; }
         public void TriggerSprintClosed(SprintType sprintType) => OnSprintClosed?.Invoke(sprintType);
 
-        public Action<SprintType> OnWalkToIO { get; set; }
-        public void TriggerWalkToIO(SprintType sprintType) => OnWalkToIO?.Invoke(sprintType);
+        public Action<SprintType> OnWalkToSprint { get; set; }
+        public void TriggerWalkToSprint(SprintType sprintType) => OnWalkToSprint?.Invoke(sprintType);
+        
+        public Action<InteractiveObjectType> OnWalkToIO { get; set; }
+        public void TriggerWalkToIO(InteractiveObjectType ioType) => OnWalkToIO?.Invoke(ioType);
         
         public Action OnHeroWalkToIO { get; set; }
         public void TriggerHeroWalkToIO() => OnHeroWalkToIO?.Invoke();
@@ -142,5 +148,8 @@ namespace Scripts.GlobalStateMachine
         public void TriggerMouseEnterStat(MetaType metaType) => OnMouseEnterStat?.Invoke(metaType);
         public Action<string, int> OnCalendarNoteAdded { get; set; }
         public void TriggerCalendarNoteAdded(string note, int day) => OnCalendarNoteAdded?.Invoke(note, day);
+
+        
+        
     }
 }

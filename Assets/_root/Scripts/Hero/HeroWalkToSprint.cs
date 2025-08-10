@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Scripts.Hero
 {
-    public class HeroWalkToIOState : HeroBaseState
+    public class HeroWalkToSprint : HeroBaseState
     {
         private readonly LocalEvents _localEvents;
         private IInteractiveObject _targetIO;
         private Vector3 _playerPosition;
         private Vector3 _targetPosition;
 
-        public HeroWalkToIOState(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
+        public HeroWalkToSprint(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
         {
             _localEvents = localEvents;
         }
@@ -39,7 +39,7 @@ namespace Scripts.Hero
                 //_heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
                 //_heroLogic.ChangeStateByIOType(_targetIO.SprintType);
                 _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
-                _localEvents.TriggerHeroGetIO(_targetIO.SprintType);
+                _localEvents.TriggerHeroGetSprint(_targetIO.SprintType);
                 
                 // _heroLogic.TriggerIOBySprintType(_targetIO.SprintType);
             }

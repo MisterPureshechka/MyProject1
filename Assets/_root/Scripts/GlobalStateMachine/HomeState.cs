@@ -95,6 +95,8 @@ namespace Scripts.GlobalStateMachine
 
             var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary());
 
+            var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents);
+
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
             statController.RegisterView(hud.PassionBar);
@@ -131,6 +133,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(notificationSystem);
             _controllers.Add(roomShaker);
             _controllers.Add(jobLogic);
+            _controllers.Add(roomExitLogic);
         }
 
         public override void Update(float deltaTime)

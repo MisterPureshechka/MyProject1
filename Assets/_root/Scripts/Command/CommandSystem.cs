@@ -35,7 +35,7 @@ namespace Scripts.Tasks
             
         }
 
-        private void ShowCommandsByType(InteractiveObjectType type, Vector2 position) // тут должен быть IOType
+        private void ShowCommandsByType(InteractiveObjectType type, Vector2 position) 
         {
             _commandPanelView.gameObject.SetActive(true);
             _commandPanelView.ShowCommands(_commandManager.GetCommandsForSprint(type));
@@ -67,6 +67,8 @@ namespace Scripts.Tasks
             _localEvents.OnMouseClickIO -= ShowCommandsByType;
             _localEvents.OnTaskCatalogShow -= ClosePanel;
             _localEvents.OnClickEmpty -= ClosePanel;
+            
+            Object.Destroy(_commandPanelView.gameObject);
         }
     }
 }
