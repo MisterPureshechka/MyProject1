@@ -6,6 +6,7 @@ using Scripts.EcoSystem;
 using Scripts.EcoSystem.Calendar;
 using Scripts.Hero;
 using Scripts.Job;
+using Scripts.Messenger;
 using Scripts.OnlineShop;
 using Scripts.Progress;
 using Scripts.Rooms;
@@ -65,7 +66,9 @@ namespace Scripts.GlobalStateMachine
                 new InteractiveObjectGlobalAnimator(_gameData.InteractiveObjectConfig, interactiveObjectRegister);
 
             var bloomLogic = new WindowBloomLogic(localEvents);
-            var skyLogic = new SkyLogic(localEvents, Object.FindAnyObjectByType<SkyView>());
+            var sky = Object.FindAnyObjectByType<SkyView>(FindObjectsInactive.Include);
+            var loopingMover = new LoopingMoverGroup(sky.StarsPrefabs, 3f, 5f);
+            var skyLogic = new SkyLogic(loopingMover, localEvents, Object.FindAnyObjectByType<SkyView>());
             var volumeLogic = new VolumeLogic(localEvents, _gameData.InteractiveObjectConfig);
             var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(FindObjectsInactive.Include), Object.FindAnyObjectByType<CalendarCatalogue>(FindObjectsInactive.Include), progressDataAdapter);
 
@@ -92,10 +95,15 @@ namespace Scripts.GlobalStateMachine
 
             var notificationSystem = new NotificationSystem(new NotificationLibrary(), calendarLogic, localEvents, timeLogic);
             var roomShaker = new RoomShaker(home, localEvents, _gameData.InteractiveObjectConfig);
+            
+            var jobMessageGenerator = new JobMessageGenerator(calendarLogic, localEvents, _gameData.MessengerConfig, timeLogic);
+            var messanger = new MessengerLogic(localEvents, _gameData.MessengerConfig);
+            var clickLogic = new ClickLogic.ClickLogic(localEvents);
+            var roomColliderController = new RoomColliderController(home, localEvents);
 
-            var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary());
+            //var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary());
 
-            var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents);
+            var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -123,6 +131,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(cameraLogic);
             _controllers.Add(tooltipLogic);
             _controllers.Add(timeLogic);
+            _controllers.Add(loopingMover);
             _controllers.Add(skyLogic);
             _controllers.Add(volumeLogic);
             _controllers.Add(calendarLogic);
@@ -132,8 +141,12 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(upgradeLogic);
             _controllers.Add(notificationSystem);
             _controllers.Add(roomShaker);
-            _controllers.Add(jobLogic);
+            //_controllers.Add(jobLogic);
             _controllers.Add(roomExitLogic);
+            _controllers.Add(jobMessageGenerator);
+            _controllers.Add(messanger);
+            _controllers.Add(clickLogic);
+            _controllers.Add(roomColliderController);
         }
 
         public override void Update(float deltaTime)

@@ -16,3 +16,4 @@ MonoBehaviour:
   <HeroConfig>k__BackingField: {fileID: 11400000, guid: f4537867bdb8b48a8b2301789fc3d0ea, type: 2}
   <InteractiveObjectConfig>k__BackingField: {fileID: 11400000, guid: 268a8ad69e9e44c51981268cf5cf4618, type: 2}
   <MetadataConfig>k__BackingField: {fileID: 11400000, guid: 6f014129631a44e34a32386e0a7569a6, type: 2}
+  <MessengerConfig>k__BackingField: {fileID: 11400000, guid: 694f0b82c68bd42fbb3f700d0f91210c, type: 2}

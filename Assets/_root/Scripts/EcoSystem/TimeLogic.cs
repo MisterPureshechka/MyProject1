@@ -16,7 +16,7 @@ namespace Scripts.EcoSystem
         float _currentHour;
         
         private float _timeMultiplier;
-        private float _realSecondsPerDay = 2400f;
+        private float _realSecondsPerDay = 24f;
         private int _lastMinute = -1;
 
         public TimeLogic(ProgressDataAdapter progressDataAdapter, TimeView timeView, LocalEvents localEvents)
@@ -38,13 +38,13 @@ namespace Scripts.EcoSystem
         
         private void SpeedUpTime()
         {
-            _realSecondsPerDay = 240f;
+            _realSecondsPerDay = 24f;
             SetTimeSpeed();
         }
 
         private void SpeedDownTime()
         {
-            _realSecondsPerDay = 2400f;
+            _realSecondsPerDay = 24f;
             SetTimeSpeed();
         }
 

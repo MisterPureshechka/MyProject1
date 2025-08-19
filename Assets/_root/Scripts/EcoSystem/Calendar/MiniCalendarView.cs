@@ -21,6 +21,9 @@ namespace Scripts.EcoSystem.Calendar
         [SerializeField] private Vector3 _shakeRotationValue = new Vector3(0f, 0f, 25f);
         [SerializeField] private float _shakeDuration = .2f;
         
+        [SerializeField] private RectTransform _rect;
+        public RectTransform RectTransform => _rect;
+        
         private LocalEvents _localEvents;
         private ICatalogue _calendar;
         private Sequence _sequence;
@@ -38,6 +41,7 @@ namespace Scripts.EcoSystem.Calendar
             _iconStartPosition = _miniCalendarIcon.transform.position;
             _textStartPosition = _currentDay.transform.position;
             
+            _openCalendarButton.gameObject.SetActive(true);
             _openCalendarButton.targetGraphic.raycastTarget = true;
             _miniCalendarIcon.raycastTarget = false;
             _currentDay.raycastTarget = false;

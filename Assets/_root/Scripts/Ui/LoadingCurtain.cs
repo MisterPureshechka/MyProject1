@@ -1,31 +1,62 @@
+using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class LoadingCurtain : MonoBehaviour
 {
+    [Header("Refs")]
     public CanvasGroup Curtain;
 
-    public void Show()
+    [Header("Timings")]
+    public float FadeDuration = 0.5f;
+    public float DelayBeforeHide = 2f; 
+    public float DelayAfterShow  = 2f;
+
+    private void Start()
     {
-        gameObject.SetActive(true);
-        Curtain.alpha = 1;
+        Curtain.alpha = 1f;
     }
 
-    public void Hide()
+    public IEnumerator ShowRoutine()
     {
-        StartCoroutine(FadeIn());
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+
+       yield return new WaitForEndOfFrame();
+       yield return FadeRoutine(1);
     }
 
-    private IEnumerator FadeIn()
+    public IEnumerator HideRoutine()
     {
-        yield return new WaitForSeconds(2f);
-        
-        while (Curtain.alpha > 0)
+        if (!gameObject.activeSelf) yield break;
+
+        yield return new WaitForSeconds(DelayBeforeHide);   
+        yield return FadeRoutine(0f);                       
+
+        if (Mathf.Approximately(Curtain.alpha, 0f))
+            gameObject.SetActive(false);
+    }
+
+    private IEnumerator FadeRoutine(float targetAlpha)
+    {
+        float start = Curtain.alpha;
+        float t = 0f;
+
+        targetAlpha = Mathf.Clamp01(targetAlpha);
+
+        while (t < FadeDuration)
         {
-            Curtain.alpha -= 0.03f;
-            yield return new WaitForSeconds(0.01f);
+            t += Time.deltaTime;
+            Curtain.alpha = Mathf.Lerp(start, targetAlpha, t / FadeDuration);
+            yield return null;
         }
-        
+
+        Curtain.alpha = targetAlpha;
+    }
+
+    private void Awake()
+    {
+        if (Curtain != null) Curtain.alpha = 0f;
         gameObject.SetActive(false);
     }
 }

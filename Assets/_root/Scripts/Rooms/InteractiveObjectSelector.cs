@@ -1,6 +1,7 @@
 using System;
 using Core;
 using DG.Tweening;
+using Scripts.ClickLogic;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
 using Scripts.Tasks;
@@ -21,6 +22,7 @@ namespace Scripts.Rooms
         
         private bool _onMouseStay = false;
         private bool _isSupported;
+        private bool _isRoomState;
 
         public InteractiveObjectSelector(Camera camera, InputController inputController, InteractiveObjectRegisterer iORegisterer, LocalEvents localEvents)
         {
@@ -31,10 +33,18 @@ namespace Scripts.Rooms
 
             _localEvents.OnMousePositionChange += OnMouseOverIO;
             _localEvents.OnMouseClickWorld += OnMouseClickIO;
+            _localEvents.OnClickStateChange += ClickStateChangeListener;
         }
-        
+
+        private void ClickStateChangeListener(ClickState state)
+        {
+            _isRoomState = state == ClickState.Room;
+        }
+
         private void OnMouseOverIO(Vector2 mousePosition)
         {
+            if(!_isRoomState) return;
+            
             Vector2 worldPosition = _camera.ScreenToWorldPoint(mousePosition);
 
             RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero);
@@ -78,6 +88,8 @@ namespace Scripts.Rooms
 
             if (hit.collider == null)
             {
+                if(!_isRoomState) _localEvents.TriggerEmptyClick();
+
                 if (_currentInteractiveObject != null)
                 {
                     _currentInteractiveObject.OnCursorExit?.Invoke();
@@ -91,9 +103,12 @@ namespace Scripts.Rooms
 
             if (_iORegisterer.IsObjectRegistered(clickedObject))
             {
-                var interactiveObj = _iORegisterer.GetInteractiveObject(clickedObject);
+                if (_isRoomState)
+                {
+                    var interactiveObj = _iORegisterer.GetInteractiveObject(clickedObject);
 
-                _localEvents.TriggerMouseClickedIO(interactiveObj.IOType, interactiveObj.Position);
+                    _localEvents.TriggerMouseClickedIO(interactiveObj.IOType, interactiveObj.Position);
+                }
             }
             else
             {
@@ -101,7 +116,6 @@ namespace Scripts.Rooms
                 
                 if (_currentInteractiveObject != null)
                 {
-                    _localEvents.TriggerEmptyClick();
                     _currentInteractiveObject.OnCursorExit?.Invoke();
                     _currentInteractiveObject = null;
                     _onMouseStay = false;
@@ -122,7 +136,7 @@ namespace Scripts.Rooms
         public void CleanUp()
         {
             _localEvents.OnMousePositionChange -= OnMouseOverIO;
-            //_localEvents.OnGetSupportedType -= SupportedTypeListener;
+            _localEvents.OnClickStateChange -= ClickStateChangeListener;
             _localEvents.OnMouseClickWorld -= OnMouseClickIO;
         }
     }

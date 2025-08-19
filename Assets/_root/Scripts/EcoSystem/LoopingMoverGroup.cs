@@ -1,9 +1,11 @@
+using System;
 using Core;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-public class LoopingMoverGroup 
+public class LoopingMoverGroup : ICleanUp
 {
-    private readonly SpriteRenderer[] _objects;
+    private SpriteRenderer[] _objects;
     private readonly float _spacing;
     private readonly float _rightBoundX;
 
@@ -21,6 +23,8 @@ public class LoopingMoverGroup
 
     public void MoveObjectsLoop(float deltaTime, float speed)
     {
+        if(_objects == null) return;
+        
         foreach (var obj in _objects)
         {
             obj.transform.position += Vector3.right * speed * deltaTime;
@@ -51,5 +55,10 @@ public class LoopingMoverGroup
                 result = obj.transform;
         }
         return result;
+    }
+
+    public void CleanUp()
+    {
+        _objects = null;
     }
 }

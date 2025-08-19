@@ -1,5 +1,6 @@
 using Core;
 using Scripts.GlobalStateMachine;
+using UnityEngine;
 
 namespace Scripts.EcoSystem
 {
@@ -12,12 +13,12 @@ namespace Scripts.EcoSystem
 
         private float _starsSpeed;
 
-        public SkyLogic(LocalEvents localEvents, SkyView skyView)
+        public SkyLogic(LoopingMoverGroup loopingMoverGroup, LocalEvents localEvents, SkyView skyView)
         {
             _localEvents = localEvents;
             _skyView = skyView;
 
-            _moverGroup = new LoopingMoverGroup(skyView.StarsPrefabs, 3f, 5f);
+            _moverGroup = loopingMoverGroup;
 
             _localEvents.OnDayTimeChange += ChangeSky;
             _localEvents.OnNormalizeNightTimeChange += ChangeStars;
@@ -43,6 +44,8 @@ namespace Scripts.EcoSystem
             _localEvents.OnNormalizeNightTimeChange -= ChangeStars;
             _localEvents.OnActiveSprint -= SpeedUp;
             _localEvents.OnSprintExit -= SpeedDown;
+            
+            if(_skyView != null) Object.Destroy(_skyView.gameObject);
         }
 
         public void Execute(float deltatime)
@@ -59,5 +62,6 @@ namespace Scripts.EcoSystem
         {
             _starsSpeed = 0.01f;
         }
+        
     }
 }

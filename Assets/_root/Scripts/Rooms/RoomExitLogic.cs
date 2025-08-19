@@ -1,3 +1,4 @@
+using UnityEngine;
 using Core;
 using Scripts.GlobalStateMachine;
 
@@ -7,11 +8,13 @@ namespace Scripts.Rooms
     {
         private readonly GameStateMachine _gameStateMachine;
         private LocalEvents _localEvents;
+        private readonly IRoomView _roomView;
 
-        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents)
+        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents, IRoomView roomView)
         {
             _gameStateMachine = gameStateMachine;
             _localEvents = localEvents;
+            _roomView = roomView;
 
             _localEvents.OnHeroGetIO += TryExitRoom;
         }
@@ -25,6 +28,7 @@ namespace Scripts.Rooms
         public void CleanUp()
         {
             _localEvents.OnHeroGetIO -= TryExitRoom;
+            if(_roomView != null) Object.Destroy(_roomView.Transform.gameObject);
         }
     }
 }

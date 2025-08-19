@@ -35,15 +35,31 @@ namespace Scripts.EcoSystem.Calendar
 
         private List<DayUI> _days = new();
         private List<MonthUI> _months = new();
-        private List<CalendarEvent> _allEvents = new();
-        private List<List<CalendarEvent>> _permanentEvents = new();
+        private List<CalendarEvent> _allEvents;
+        private List<List<CalendarEvent>> _permanentEvents;
+        
         private bool _isVisible;
         private LocalEvents _localEvents;
 
-        public void Init(LocalEvents localEvents)
+        public void Init(LocalEvents localEvents, List<CalendarEvent> calendarEvents, List<List<CalendarEvent>> permanentEvents)
         {
             _localEvents = localEvents;
+            
             _localEvents.OnCalendarNoteAdded += CreatePermanentEvents;
+            _localEvents.OnCalendarEventCreated += CreateEvent;
+            
+            _allEvents = calendarEvents;
+            _permanentEvents = permanentEvents;
+            
+            _leftButton.onClick.AddListener(OnLeftButtonClicked);
+            _rightButton.onClick.AddListener(OnRightButtonClicked);
+            _closeButton.onClick.AddListener(OnCloseButtonClicked);
+            
+            _calendarPanel.localPosition = _hidePosition;
+            
+            //CreateTempEvent();
+            SetDays();
+            ShowMonth(_currentMonth, _currentYear);
         }
 
         private void Awake()
@@ -51,20 +67,6 @@ namespace Scripts.EcoSystem.Calendar
             _startScale = transform.localScale;
         }
         
-
-        private void Start()
-        {
-            _leftButton.onClick.AddListener(OnLeftButtonClicked);
-            _rightButton.onClick.AddListener(OnRightButtonClicked);
-            _closeButton.onClick.AddListener(OnCloseButtonClicked);
-            
-            _calendarPanel.localPosition = _hidePosition;
-            
-            CreateTempEvent();
-            SetDays();
-            ShowMonth(_currentMonth, _currentYear);
-        }
-
         private void OnCloseButtonClicked()
         {
             _localEvents.TriggerHideCatalogue(this);
@@ -74,31 +76,67 @@ namespace Scripts.EcoSystem.Calendar
         {
             var permanentEvent = new List<CalendarEvent>();
 
+            var hour = 9;
+            var minute = 0;
+
             for (int i = 0; i < 12; i++)
             {
-                int rawMonth = _currentMonth + i;                // может выйти за 12
-                int year = _currentYear + (rawMonth - 1) / 12;   // добавляем годы
-                int month = ((rawMonth - 1) % 12) + 1;           // нормализуем в диапазон 1..12
+                int rawMonth = _currentMonth + i;
+                int year  = _currentYear + (rawMonth - 1) / 12;
+                int month = ((rawMonth - 1) % 12) + 1;
 
                 int maxDay = CalendarExtentions.GetDaysInMonth(month, year);
                 int clampedDay = Mathf.Clamp(day, 1, maxDay);
 
-                permanentEvent.Add(new CalendarEvent
+                var calendarEvent = new CalendarEvent
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Day = clampedDay,
-                    Month = month,   // 1..12 — как ждут твои GetMonthName/GetMiniMonthName
+                    Month = month,
                     Year = year,
                     Message = message
-                });
+                };
+                permanentEvent.Add(calendarEvent);
+                
+                var notification = new Notification(Guid.NewGuid().ToString(), NotificationType.Calendar, message, message, year, month, clampedDay, hour, minute);
+                
+                CreateEventNotification(calendarEvent);
+                _localEvents.TriggerNewNotificationCreated(notification);
             }
 
             _permanentEvents.Add(permanentEvent);
         }
 
+        private void CreateEvent(CalendarEvent eventToCreate)
+        {
+            _allEvents.Add(eventToCreate);
+            CreateEventNotification(eventToCreate);
+        }
+
+        private void CreateEventNotification(CalendarEvent calendarEvent)
+        {
+            var notification = new Notification(
+                Guid.NewGuid().ToString(), NotificationType.Calendar, calendarEvent.Message, calendarEvent.Message, 
+                calendarEvent.Year, calendarEvent.Month, calendarEvent.Day, 10, 0);
+                
+            _localEvents.TriggerNewNotificationCreated(notification);
+        }
+
         private void CreateTempEvent()
         {
+            var meetingEvent = new CalendarEvent
+            {
+                Id = Guid.NewGuid().ToString(),
+                Day = 15,
+                Message = "Meeting",
+                Month = 9,
+                Year = 2025
+            };
+            _allEvents.Add(meetingEvent);
+            
             _allEvents.Add(new CalendarEvent
             {
+                Id = Guid.NewGuid().ToString(),
                 Day = 15,
                 Message = "Meeting",
                 Month = 9,
@@ -106,6 +144,7 @@ namespace Scripts.EcoSystem.Calendar
             });
             _allEvents.Add(new CalendarEvent
             {
+                Id = Guid.NewGuid().ToString(),
                 Day = 15,
                 Message = "NetWorking",
                 Month = 9,
@@ -114,6 +153,7 @@ namespace Scripts.EcoSystem.Calendar
             
             _allEvents.Add(new CalendarEvent
             {
+                Id = Guid.NewGuid().ToString(),
                 Day = 17,
                 Message = "Conference",
                 Month = 9,
@@ -122,6 +162,7 @@ namespace Scripts.EcoSystem.Calendar
             
             _allEvents.Add(new CalendarEvent
             {
+                Id = Guid.NewGuid().ToString(),
                 Day = 18,
                 Message = "Meet up with family",
                 Month = 9,
@@ -130,6 +171,7 @@ namespace Scripts.EcoSystem.Calendar
             
             _allEvents.Add(new CalendarEvent
             {
+                Id = Guid.NewGuid().ToString(),
                 Day = 5,
                 Message = "Meet up with family",
                 Month = 10,
@@ -137,6 +179,7 @@ namespace Scripts.EcoSystem.Calendar
             });
             _allEvents.Add(new CalendarEvent
             {
+                Id = Guid.NewGuid().ToString(),
                 Day = 5,
                 Message = "Chill",
                 Month = 10,
@@ -145,6 +188,7 @@ namespace Scripts.EcoSystem.Calendar
             
             _allEvents.Add(new CalendarEvent
             {
+                Id = Guid.NewGuid().ToString(),
                 Day = 4,
                 Message = "Meet up with family",
                 Month = 9,
@@ -213,6 +257,8 @@ namespace Scripts.EcoSystem.Calendar
                                 eventInstance.UpdateEventInfo(ev.Message, _colors[_currentColorId]);
                                 dayUI.AddEvent(eventInstance);
                                 _currentColorId = (_currentColorId + 1) % _colors.Length;
+                                
+                                Debug.Log(ev.Message + " Created");
                             }
                         }
                     }
@@ -261,10 +307,12 @@ namespace Scripts.EcoSystem.Calendar
             _leftButton?.onClick.RemoveAllListeners();
             _rightButton?.onClick.RemoveAllListeners();
             _localEvents.OnCalendarNoteAdded -= CreatePermanentEvents;
+            _localEvents.OnCalendarEventCreated -= CreateEvent;
         }
 
         public void Show(Action onComplete = null)
         {
+            ShowMonth(_currentMonth, _currentYear);
             _isVisible = true;
             gameObject.SetActive(true);
             _calendarPanel.DOLocalMoveY(_showPosition.y, 0.4f).SetEase(Ease.OutSine)

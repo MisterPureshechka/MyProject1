@@ -1,25 +1,26 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Scripts.Data;
 using Scripts.Progress;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.GlobalStateMachine
 {
-    public class GameStateMachine 
+    public class GameStateMachine
     {
         private BaseState _currentBaseState;
-        private readonly Controllers _controllers;
         private readonly GameData _gameData;
         private readonly GameProgress _gameProgress;
         private readonly LoadingCurtain _loadingCurtain;
-        
+        private readonly ICoroutineRunner _runner;
+
         private readonly Dictionary<Type, BaseState> _cachedStates = new();
 
-        public GameStateMachine(Controllers controllers, GameData gameData, GameProgress gameProgress,
-            LoadingCurtain loadingCurtain)
+        public GameStateMachine(ICoroutineRunner runner, GameData gameData, GameProgress gameProgress, LoadingCurtain loadingCurtain)
         {
-            _controllers = controllers;
+            _runner = runner;
             _gameData = gameData;
             _gameProgress = gameProgress;
             _loadingCurtain = loadingCurtain;
@@ -27,23 +28,29 @@ namespace Scripts.GlobalStateMachine
 
         public void EnterState<T>() where T : BaseState
         {
+            _runner.StartCoroutine(EnterStateRoutine<T>());
+        }
+
+        private IEnumerator EnterStateRoutine<T>() where T : BaseState
+        {
+            if (_loadingCurtain != null)
+                yield return _loadingCurtain.ShowRoutine();
+
             _currentBaseState?.Exit();
-            _loadingCurtain?.Show();
 
             if (!_cachedStates.TryGetValue(typeof(T), out var state))
             {
-                state = Activator.CreateInstance(typeof(T), this, _controllers, _gameProgress, _gameData) as BaseState;
+                var controllers = new Controllers();
+                state = Activator.CreateInstance(typeof(T), this, controllers, _gameProgress, _gameData) as BaseState;
                 _cachedStates[typeof(T)] = state;
             }
 
-            _currentBaseState = state;
-
-            if (_currentBaseState != null)
-                _currentBaseState.Enter();
-            else
-                Debug.LogError($"{typeof(T)} not found");
-
-            _loadingCurtain?.Hide();
+            _currentBaseState = state ?? throw new Exception($"{typeof(T)} not found");
+            _currentBaseState.Enter();
+            yield return new WaitForSeconds(1f); //сюда
+            
+            if (_loadingCurtain != null)
+                yield return _loadingCurtain.HideRoutine();
         }
 
         public void Update(float deltaTime)

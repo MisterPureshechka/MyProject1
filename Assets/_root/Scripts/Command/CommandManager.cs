@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _root.Notification;
 using NUnit.Framework;
 using Scripts.GlobalStateMachine;
 using Scripts.Rooms;
@@ -22,6 +23,22 @@ namespace Scripts.Tasks
             LoadAllCommands();
             //_localEvents.OnActiveState += SwitchSprintCommandState;
             _localEvents.OnSprintClosed += SprintCloseListener;
+            _localEvents.OnCalendarEventCreated += AddCommand;
+        }
+
+        private void AddCommand(CalendarEvent calendarEvent)
+        {
+            var eventCommand = new Command
+            {
+                CommandName = $"Go to {calendarEvent.Name}",
+                OnExecute = () =>
+                {
+                    Debug.Log($"You went to {calendarEvent.Name}");
+                    _localEvents.TriggerWalkToIO(InteractiveObjectType.Door);
+                },
+            };
+            
+            Commands[InteractiveObjectType.Door].Add(eventCommand);
         }
 
         private void SprintCloseListener(SprintType obj)

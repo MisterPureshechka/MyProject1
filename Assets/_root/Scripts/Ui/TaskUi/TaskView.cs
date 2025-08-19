@@ -260,8 +260,12 @@ namespace Scripts.Ui.TaskUi
 
         public void StopFx()
         {
-            _fxImage.gameObject.SetActive(false);
-            _fxImage.transform.localRotation = Quaternion.identity;
+            if (_fxImage)
+            {
+                _fxImage.gameObject.SetActive(false);
+                _fxImage.transform.localRotation = Quaternion.identity;
+            }
+           
             _fxTextSequence?.Kill();
             _fxText.gameObject.SetActive(false);
         }

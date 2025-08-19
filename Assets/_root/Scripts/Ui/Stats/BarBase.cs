@@ -24,19 +24,16 @@ namespace _root.Scripts.Ui.Stats
         {
             _localEvents.TriggerMouseEnterStat(MetaType);
             _localEvents.TriggerMouseMoveStat(eventData.position);
-            Debug.Log($"Вошел в: {MetaType}");
         }
 
         public void OnPointerMove(PointerEventData eventData)
         {
             _localEvents.TriggerMouseMoveStat(eventData.position);
-            Debug.Log($"Курсор поверх: {MetaType}");
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             _localEvents.TriggerMouseExitStat(); 
-            Debug.Log($"Вышел из: {MetaType}");
         }
     }
 }

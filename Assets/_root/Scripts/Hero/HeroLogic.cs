@@ -118,7 +118,7 @@ namespace Scripts.Hero
         private void WalkToSprint(SprintType sprintType)
         {
             ChangeState(WalkToSprintState);
-            _localEvents.TriggerHeroWalkToIO();
+            _localEvents.TriggerHeroWalkToSprint();
         }
 
         private void WalkToIO(InteractiveObjectType interactiveObjectType)

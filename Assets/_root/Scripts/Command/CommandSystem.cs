@@ -1,4 +1,6 @@
+using _root;
 using Core;
+using Scripts.ClickLogic;
 using Scripts.GlobalStateMachine;
 using Scripts.Rooms;
 using Scripts.Ui;
@@ -31,7 +33,7 @@ namespace Scripts.Tasks
             _localEvents.OnClickEmpty += ClosePanel;
             _localEvents.OnSprintContinue += ClosePanel;
             _localEvents.OnSprintCreated += ClosePanel;
-            _localEvents.OnHeroWalkToIO += ClosePanel;
+            _localEvents.OnHeroWalkToSprint += ClosePanel;
             
         }
 
@@ -40,6 +42,7 @@ namespace Scripts.Tasks
             _commandPanelView.gameObject.SetActive(true);
             _commandPanelView.ShowCommands(_commandManager.GetCommandsForSprint(type));
             UpdatePanelPosition(position);
+            _localEvents.TriggerClickStateChange(ClickState.UI);
             _localEvents.TriggerOpenPanel();
         }
         
@@ -52,6 +55,7 @@ namespace Scripts.Tasks
         private void ClosePanel(SprintType type)
         {
             _localEvents.TriggerClosePanel();
+            _localEvents.TriggerClickStateChange(ClickState.Room);
             _commandPanelView.gameObject.SetActive(false);
         }
         
@@ -68,7 +72,8 @@ namespace Scripts.Tasks
             _localEvents.OnTaskCatalogShow -= ClosePanel;
             _localEvents.OnClickEmpty -= ClosePanel;
             
-            Object.Destroy(_commandPanelView.gameObject);
+            if(_commandPanelView != null)
+                Object.Destroy(_commandPanelView.gameObject);
         }
     }
 }

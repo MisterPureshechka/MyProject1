@@ -1,6 +1,11 @@
 using System;
+using _root;
+using _root.Notification;
 using Core;
 using Scripts.Catalogues;
+using Scripts.ClickLogic;
+using Scripts.Job;
+using Scripts.Messenger;
 using Scripts.Meta;
 using Scripts.Rooms;
 using Scripts.Tasks;
@@ -13,23 +18,28 @@ namespace Scripts.GlobalStateMachine
     {
         public Action OnClosePanel { get; set; }
         public void TriggerClosePanel() => OnClosePanel?.Invoke();
-        
+        public Action<ClickState> OnClickStateChange { get; set; }
+        public void TriggerClickStateChange(ClickState state) => OnClickStateChange?.Invoke(state);
         public Action OnOpenPanel { get; set; }
         public void TriggerOpenPanel() => OnOpenPanel?.Invoke();
-
         public Action<SprintType> OnHeroGetSprint { get; set; }
         public void TriggerHeroGetSprint(SprintType iOType) => OnHeroGetSprint?.Invoke(iOType);
-        
         public Action<InteractiveObjectType> OnHeroGetIO { get; set; }
         public void TriggerHeroGetIO(InteractiveObjectType IOType) => OnHeroGetIO?.Invoke(IOType);
         
         public Action<Vector2> OnMouseClickWorld {get; set;}
         public void TriggerMouseClickedWorld(Vector2 pos) => OnMouseClickWorld?.Invoke(pos);
+        
+        public Action<Vector2> OnMouseClickedUI;
+
+        public void TriggerMouseClickedUI(Vector2 screenPos)
+        {
+            OnMouseClickedUI?.Invoke(screenPos);
+        }
 
         public Action<InteractiveObjectType, Vector2> OnMouseClickIO { get; set; }
         public void TriggerMouseClickedIO(InteractiveObjectType iOType, Vector2 pos) => OnMouseClickIO?.Invoke(iOType, pos);
-        
-        public Action<Vector2> OnMousePositionChange;
+        public Action<Vector2> OnMousePositionChange { get; set; }
         public void TriggerMousePositionChange(Vector2 pos) => OnMousePositionChange?.Invoke(pos);
 
         public Action<bool> OnGetSupportedType { get; set; }
@@ -42,7 +52,11 @@ namespace Scripts.GlobalStateMachine
         public void TriggerGetHeroPos(Vector3 pos) => OnGetHeroPos?.Invoke(pos);
         
         public Action OnClickEmpty {get; set;}
-        public void TriggerEmptyClick() => OnClickEmpty?.Invoke();
+        public void TriggerEmptyClick()
+        {
+            Debug.Log("EmptyClick!!!!!!!!!!!");
+            OnClickEmpty?.Invoke();
+        }
 
         public Action<SprintType> OnTaskCatalogShow { get; set; }
         public void TriggerAllTaskShow(SprintType type) => OnTaskCatalogShow?.Invoke(type);
@@ -79,10 +93,15 @@ namespace Scripts.GlobalStateMachine
         public void TriggerWalkToSprint(SprintType sprintType) => OnWalkToSprint?.Invoke(sprintType);
         
         public Action<InteractiveObjectType> OnWalkToIO { get; set; }
-        public void TriggerWalkToIO(InteractiveObjectType ioType) => OnWalkToIO?.Invoke(ioType);
-        
         public Action OnHeroWalkToIO { get; set; }
-        public void TriggerHeroWalkToIO() => OnHeroWalkToIO?.Invoke();
+        public void TriggerWalkToIO(InteractiveObjectType ioType)
+        {
+            OnWalkToIO?.Invoke(ioType);
+            OnHeroWalkToIO?.Invoke();
+        }
+
+        public Action OnHeroWalkToSprint { get; set; }
+        public void TriggerHeroWalkToSprint() => OnHeroWalkToSprint?.Invoke();
 
         public Action<SprintType> OnAutoSprintCreated { get; set; }
         public void TriggerCreateAutoSprint(SprintType type) => OnAutoSprintCreated?.Invoke(type);
@@ -128,7 +147,7 @@ namespace Scripts.GlobalStateMachine
         public Action OnMiniCalendarButtonClick;
         public void TriggerMiniCalendarButtonOpen() => OnMiniCalendarButtonClick?.Invoke();
         
-        public Action<ICatalogue> OnCatalogueShow;
+        public Action<ICatalogue> OnCatalogueShow {get; set;}
         public void TriggerShowCatalogue(ICatalogue catalogue) => OnCatalogueShow?.Invoke(catalogue);
 
         public Action<ICatalogue> OnCatalogueHide;
@@ -141,15 +160,25 @@ namespace Scripts.GlobalStateMachine
         public void TriggerUpdateItem(int id, UpgradeType upgradeType) => OnUpgradeItem?.Invoke(id, upgradeType);
         public Action OnNewNotificatiom { get; set; }
         public void TriggerNewNotification() => OnNewNotificatiom?.Invoke();
-
         public Action<Vector2> OnMouseMoveStat { get; set; }
         public void TriggerMouseMoveStat(Vector2 eventDataPosition) => OnMouseMoveStat?.Invoke(eventDataPosition);
         public Action<MetaType> OnMouseEnterStat { get; set; }
         public void TriggerMouseEnterStat(MetaType metaType) => OnMouseEnterStat?.Invoke(metaType);
         public Action<string, int> OnCalendarNoteAdded { get; set; }
         public void TriggerCalendarNoteAdded(string note, int day) => OnCalendarNoteAdded?.Invoke(note, day);
+        public Action<CalendarEvent> OnCalendarEventCreated { get; set; }
+        public void TriggerCalendarEventCreated(CalendarEvent calendarEvent) => OnCalendarEventCreated?.Invoke(calendarEvent);
+        public  Action<Notification> OnNewNotificationCreated { get; set; }
+        public void TriggerNewNotificationCreated(Notification notification) => OnNewNotificationCreated?.Invoke(notification);
 
-        
-        
+        public Action<IDevJob> OnNewJobFound { get; set; }
+        public void TriggerNewJobFound(IDevJob job) => OnNewJobFound?.Invoke(job);
+        public Action<IMessageSender> OnNewMessageAddToMessenger { get; set; }
+        public void TriggerNewMessageAddToMassanger(IMessageSender sender) => OnNewMessageAddToMessenger?.Invoke(sender);
+        public Action<string> OnMessageReaded { get; set; }
+        public void TriggerMessegeReaded(string id) => OnMessageReaded?.Invoke(id);
+
+        public Action OnMessangerButtonClick { get; set; }
+        public void TriggerMessengerButtonClick() => OnMessangerButtonClick?.Invoke();
     }
 }

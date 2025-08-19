@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using _root.Notification;
 using Core;
 using Scripts.GlobalStateMachine;
 using Scripts.Progress;
@@ -12,6 +14,9 @@ namespace Scripts.EcoSystem.Calendar
         private readonly MiniCalendarView _miniCalendarView;
         private readonly CalendarCatalogue _calendarCatalogue;
         private readonly ProgressDataAdapter _progressDataAdapter;
+        
+        private List<CalendarEvent> _allEvents = new();
+        private List<List<CalendarEvent>> _permanentEvents = new();
 
         private GameDate _currentDate;
 
@@ -23,7 +28,7 @@ namespace Scripts.EcoSystem.Calendar
             _calendarCatalogue = calendarCatalogue;
             _progressDataAdapter = progressDataAdapter;
 
-            _calendarCatalogue.Init(_localEvents);
+            _calendarCatalogue.Init(_localEvents, _allEvents, _permanentEvents);
             _miniCalendarView.Init(_localEvents, _calendarCatalogue);
             LoadOrCreateNewDay();
 

@@ -5,6 +5,7 @@ namespace _root.Notification
     public interface INotification 
     {
         string Id { get; set; }
+        NotificationType Type { get; set; }
         string Title { get; set; }
         string Message { get; set; }
         

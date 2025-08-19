@@ -42,6 +42,7 @@ namespace Scripts.Ui
 
         public void CleanUp()
         {
+            _views.Clear();
         }
 
         public void Execute(float deltaTime) 

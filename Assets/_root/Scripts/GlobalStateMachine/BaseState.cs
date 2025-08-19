@@ -1,26 +1,28 @@
+using System;
 using Scripts.Data;
 using Scripts.Progress;
 
 namespace Scripts.GlobalStateMachine
 {
-    public abstract class BaseState : IState
+    public abstract class BaseState : IState, IDisposable
     {
         protected readonly GameStateMachine _gameStateMachine;
         protected readonly Controllers _controllers;
         protected readonly GameProgress _gameProgress;
         protected readonly GameData _gameData;
 
-        protected BaseState(GameStateMachine gameStateMachine, Controllers controllers, GameProgress gameProgress, GameData gameData)
+        protected BaseState(GameStateMachine gsm, Controllers controllers, GameProgress progress, GameData data)
         {
-            _gameStateMachine = gameStateMachine;
+            _gameStateMachine = gsm;
             _controllers = controllers;
-            _gameProgress = gameProgress;
-            _gameData = gameData;
+            _gameProgress = progress;
+            _gameData = data;
         }
 
         public abstract void Enter();
-        public abstract void Exit();
-        
-        public abstract void Update(float deltaTime);
+        public virtual void Update(float dt) { }
+        public virtual void Exit() 
+        { _controllers?.Dispose(); }
+        public void Dispose() => Exit();
     }
 }

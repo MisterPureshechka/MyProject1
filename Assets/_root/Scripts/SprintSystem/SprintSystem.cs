@@ -71,6 +71,7 @@ namespace Scripts.Tasks
             
             _localEvents.OnSprintClosed += ExitSprint;
             _localEvents.OnHeroGetSprint += StartOrCreateSprint;
+            _localEvents.OnHeroWalkToSprint += ExitSprint;
             _localEvents.OnHeroWalkToIO += ExitSprint;
             _localEvents.OnHeroGetRootIO += HeroGetRootIOListener;
 
@@ -220,7 +221,6 @@ namespace Scripts.Tasks
                 var nextTask = _pendingTasks[^1];
                 _pendingTasks.RemoveAt(_pendingTasks.Count - 1);
                 _activeTasks.Add(nextTask);
-                Debug.Log($"[SprintSystemTest] Added to active: {nextTask}");
             }
             
             float health = _progressDataAdapter.GetStats(MetaType.Health);

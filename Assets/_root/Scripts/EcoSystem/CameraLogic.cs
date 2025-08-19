@@ -1,5 +1,6 @@
 using Core;
 using DG.Tweening;
+using Scripts.ClickLogic;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
 using TMPro;
@@ -19,6 +20,8 @@ namespace Scripts.EcoSystem
         private readonly TextMeshProUGUI _tempStat;
         private CameraState _cameraState = CameraState.MainRoom;
         private Sequence _sequence;
+
+        private bool _isRoomClickState;
         
         private enum CameraState
         {
@@ -46,11 +49,17 @@ namespace Scripts.EcoSystem
             
             _localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
             _localEvents.OnMouseOverToilet += MoveCameraToToilet;
+            _localEvents.OnClickStateChange += ChangeClickState;
+        }
+
+        private void ChangeClickState(ClickState state)
+        {
+            _isRoomClickState = state == ClickState.Room;
         }
 
         private void MoveCameraToToilet()
         {
-            if (_cameraState == CameraState.Toilet) return;
+            if (_cameraState == CameraState.Toilet || !_isRoomClickState) return;
             
             _isMoveFinished = false;
             _cameraState = CameraState.Toilet;
@@ -68,7 +77,7 @@ namespace Scripts.EcoSystem
         
         private void HandleCameraReturnByCursor()
         {
-            if (!_isMoveFinished)
+            if (!_isMoveFinished || !_isRoomClickState)
                 return;
 
             var screenWidth = Screen.width;
@@ -77,11 +86,11 @@ namespace Scripts.EcoSystem
             switch (_cameraState)
             {
                 case CameraState.Kitchen:
-                    if (mouseX < screenWidth / 2f)
+                    if (mouseX < screenWidth * 0.25f)
                         ResetCameraPos();
                     break;
                 case CameraState.Toilet:
-                    if (mouseX > screenWidth / 2f)
+                    if (mouseX > screenWidth * 0.75f)
                         ResetCameraPos();
                     break;
             }
@@ -89,7 +98,7 @@ namespace Scripts.EcoSystem
 
         private void MoveCameraToKitchen()
         {
-            if (_cameraState == CameraState.Kitchen) return;
+            if (_cameraState == CameraState.Kitchen || !_isRoomClickState) return;
 
             _isMoveFinished = false;
             _cameraState = CameraState.Kitchen;
@@ -98,7 +107,7 @@ namespace Scripts.EcoSystem
             var result = new Vector3(targetPos.x, targetPos.y, _cameraDefaultPosition.z);
 
             var config = _interactiveObjectConfig;
-            _camera.transform.DOKill(); // Остановить текущую анимацию
+            _camera.transform.DOKill(); 
 
             _camera.transform.DOMove(result, config.CameraMoveDuration).SetEase(config.CameraMoveEase).OnComplete(() =>
             {
@@ -121,7 +130,7 @@ namespace Scripts.EcoSystem
 
         private void ResetCameraPos()
         {
-            if (_cameraState == CameraState.MainRoom) return;
+            if (_cameraState == CameraState.MainRoom || !_isRoomClickState) return;
 
             _isMoveFinished = false;
             _cameraState = CameraState.MainRoom;

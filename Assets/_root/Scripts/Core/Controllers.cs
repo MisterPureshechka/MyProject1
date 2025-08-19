@@ -1,102 +1,52 @@
+using System;
 using System.Collections.Generic;
 using Core;
 using UnityEngine;
 
-public class Controllers : IInitialization, IExecute, IFixedExecute, ICleanUp
+public class Controllers : IInitialization, IExecute, IFixedExecute, ICleanUp, IDisposable
+{
+    private readonly List<IInitialization> _initialize = new();
+    private readonly List<IExecute> _execute = new();
+    private readonly List<IFixedExecute> _fixedExecute = new();
+    private readonly List<ICleanUp> _cleanup = new();
+    private bool _disposed;
+
+    public Controllers Add(IController c)
     {
-        private List<IInitialization> _initializeControllers;
-        private List<IFixedExecute> _fixedExecuteControllers;
-        private List<IExecute> _executeControllers;
-        private List<ICleanUp> _cleanUpControllers;
+        if (c is IInitialization i) _initialize.Add(i);
+        if (c is IExecute e) _execute.Add(e);
+        if (c is IFixedExecute f) _fixedExecute.Add(f);
+        if (c is ICleanUp cl) _cleanup.Add(cl);
+        return this;
+    }
 
-        public Controllers()
+    public void Initialization() { for (int i=0;i<_initialize.Count;i++) _initialize[i].Initialize(); }
+    public void Execute(float dt) { for (int i=0;i<_execute.Count;i++) _execute[i].Execute(dt); }
+    public void FixedExecute(float fdt) { for (int i=0;i<_fixedExecute.Count;i++) _fixedExecute[i].FixedExecute(fdt); }
+
+    public void CleanUp()
+    {
+        for (int i=_cleanup.Count-1; i>=0; i--)
         {
-            _initializeControllers = new List<IInitialization>();
-            _executeControllers = new List<IExecute>();
-            _fixedExecuteControllers = new List<IFixedExecute>();
-            _cleanUpControllers = new List<ICleanUp>();
-        }
-
-        public Controllers Add(IController controller)
-        {
-            if (controller is IInitialization initializeController)
-            {
-                _initializeControllers.Add(initializeController);
-            }
-
-            if (controller is IExecute executeController)
-            {
-                _executeControllers.Add(executeController);
-            }
-
-            if (controller is IFixedExecute lateExecuteController)
-            {
-                _fixedExecuteControllers.Add(lateExecuteController);
-            }
-
-            if (controller is ICleanUp cleanupController)
-            {
-                _cleanUpControllers.Add(cleanupController);
-            }
-
-            return this;
-        }
-
-        public void Initialization()
-        {
-            for (var index = 0; index < _initializeControllers.Count; ++index)
-            {
-                _initializeControllers[index].Initialize();
-            }
-        }
-
-        public void Execute(float deltaTime)
-        {
-            for (var index = 0; index < _executeControllers.Count; ++index)
-            {
-                _executeControllers[index].Execute(deltaTime);
-            }
-        }
-        
-
-        public void FixedExecute(float fixedDeltaTime)
-        {
-            for (var index = 0; index < _fixedExecuteControllers.Count; ++index)
-            {
-                _fixedExecuteControllers[index].FixedExecute(fixedDeltaTime);
-            }
-        }
-
-        public void CleanUp()
-        {
-            for (var index = 0; index < _cleanUpControllers.Count; ++index)
-            {
-                _cleanUpControllers[index].CleanUp();
-            }
-            
-            foreach (var VARIABLE in _executeControllers)
-            {
-                Debug.Log(VARIABLE.GetType().Name);
-            }
-            
-            foreach (var VARIABLE in _cleanUpControllers)
-            {
-                Debug.Log(VARIABLE.GetType().Name);
-            }
-            
-            foreach (var VARIABLE in _initializeControllers)
-            {
-                Debug.Log(VARIABLE.GetType().Name);
-            }
-            
-            foreach (var VARIABLE in _fixedExecuteControllers)
-            {
-                Debug.Log(VARIABLE.GetType().Name);
-            }
-        }
-
-        public void Initialize()
-        {
-            
+            try { _cleanup[i].CleanUp(); }
+            catch (Exception ex) { Debug.LogException(ex); }
         }
     }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _disposed = true;
+        CleanUp();
+        _initialize.Clear();
+        _execute.Clear();
+        _fixedExecute.Clear();
+        _cleanup.Clear();
+    }
+
+    public void Initialize()
+    {
+        
+    }
+}
+    

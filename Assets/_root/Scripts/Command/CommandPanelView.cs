@@ -9,7 +9,7 @@ namespace Scripts.Tasks
         [SerializeField] private Transform _commandsContainer;
         [SerializeField] private RectTransform _panelRect;
 
-        [SerializeField] private Vector2 _offset = new Vector2(0f, 400f);
+        [SerializeField] private Vector2 _offset = new Vector2(0f, 0);
         
         public void ShowCommands(List<Command> commands)
         {

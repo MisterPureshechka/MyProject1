@@ -1,3 +1,4 @@
+using Scripts.Messenger;
 using UnityEngine;
 
 namespace Scripts.Data
@@ -9,5 +10,6 @@ namespace Scripts.Data
         [field: SerializeField] public HeroConfig HeroConfig { get; private set; }
         [field: SerializeField] public InteractiveObjectConfig InteractiveObjectConfig { get; private set; }
         [field: SerializeField] public MetadataConfig MetadataConfig { get; private set; }
+        [field: SerializeField] public MessengerConfig MessengerConfig { get; private set; }
     }
 }

@@ -71,13 +71,10 @@ namespace Scripts.Ui.TaskUi
             {
                 if (taskView != null)
                 {
-                    var defaultScale = taskView.transform.localScale;
                     await Task.Delay(TimeSpan.FromSeconds(interval));
                     taskView.UpdateProgress(task.Progress, value);
                     taskView.AnimateTextFx(value, interval);
                     if(task.IsCompleted) taskView.StopFx();
-                    
-                    taskView.transform.eulerAngles = Vector3.zero;
                 }
             }
         }

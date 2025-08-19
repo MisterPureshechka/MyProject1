@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 100.0,
+                    "Value": 91.51266479492188,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -115,7 +115,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 11.320521354675293,
+                    "Value": 11.166914939880371,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -126,7 +126,7 @@
                 "Key": "CurrentDay",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 7.0,
+                    "Value": 10.0,
                     "MaxValue": 31.0,
                     "DisplayName": "Day",
                     "Tooltip": "",
@@ -137,7 +137,7 @@
                 "Key": "CurrentMonth",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 9.0,
+                    "Value": 12.0,
                     "MaxValue": 12.0,
                     "DisplayName": "Month",
                     "Tooltip": "Читай",
@@ -159,7 +159,7 @@
                 "Key": "WalletAmount",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 100.0,
+                    "Value": 350.0,
                     "MaxValue": 100000000.0,
                     "DisplayName": "Wallet Amount",
                     "Tooltip": "",

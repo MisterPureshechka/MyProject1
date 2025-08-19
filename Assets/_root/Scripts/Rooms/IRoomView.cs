@@ -11,5 +11,6 @@ namespace Scripts.Rooms
         ISideRoom[] SideRooms { get; }
         Vector3 InitialPosition { get; }
         float RoomSize { get; }
+        Collider2D Collider { get; }
     }
 }

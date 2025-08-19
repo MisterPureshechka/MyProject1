@@ -618,6 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isLeftSide: 1
+  _collider: {fileID: 1765915157099871833}
 --- !u!1 &958263829940350756
 GameObject:
   m_ObjectHideFlags: 0
@@ -3599,6 +3600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isLeftSide: 0
+  _collider: {fileID: 2034189162900033193}
 --- !u!1 &5733914224059562786
 GameObject:
   m_ObjectHideFlags: 0

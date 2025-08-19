@@ -36,6 +36,7 @@ namespace Scripts.Rooms
 
         public Vector3 InitialPosition => _initialTransform.position;
         public float RoomSize => _roomCollider.bounds.size.x;
+        public Collider2D Collider => _roomCollider;
         
         public void SetSortingOrder()
         {

@@ -38,7 +38,7 @@ namespace Scripts.EcoSystem
 
             foreach (var bloomView in _bloomViews)
             {
-                if (bloomView.IsHeroInside) continue;
+                if (bloomView.IsHeroInside || bloomView == null) continue;
 
                 bloomView.SpriteRenderer.DOFade(_currentBloomIntensity, 0.5f);
             }
@@ -50,6 +50,8 @@ namespace Scripts.EcoSystem
 
             foreach (var bloomView in _bloomViews)
             {
+                if (bloomView == null) continue;
+                
                 bloomView.OnHeroEnter += EnterHeroCallback;
                 bloomView.OnHeroExit += ExitHeroCallback;
             }

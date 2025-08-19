@@ -54,9 +54,9 @@ namespace Scripts.Tasks
                 _allDevTasks[type] = new List<IDevTask>();
             }
 
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 20f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Base Mechanics", 20f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Project Architecture", 20f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Base Mechanics", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Project Architecture", 100f));
 
             _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Character Design", 100f));
             _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, DevTaskType.Art, "Environment Art", 100f));

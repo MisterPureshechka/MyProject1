@@ -8,6 +8,7 @@ namespace _root.Notification
 {
     public class NotificationView : MonoBehaviour
     {
+        [SerializeField] private RectTransform _root;
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _bubbleImage;
         [SerializeField] private Button _button;
@@ -43,14 +44,15 @@ namespace _root.Notification
             mat.SetFloat(ShaderUtilities.ID_UnderlayDilate, 50f);
         }
 
-        public void Notify(string message)
+        public void Notify(string message, Vector2 position)
         {
-            gameObject.SetActive(true);
+            _root.gameObject.SetActive(true);
             _isHidden = false;
             _localEvents.TriggerNewNotification();
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
+            _root.position = position;
             Vector2 startSize = _startScaleValue;
             
             _bubbleImage.gameObject.SetActive(true);
@@ -125,14 +127,6 @@ namespace _root.Notification
             );
             
             
-        }
-
-        private void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                Notify("You pressed space button!");
-            }
         }
 
         private void OnDestroy()

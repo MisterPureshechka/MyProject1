@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core;
 using Scripts.GlobalStateMachine;
+using Scripts.Job;
 using Scripts.Progress;
 using UnityEngine;
 
@@ -20,8 +21,8 @@ namespace Scripts.Wallet
         
         private TransactionLibrary _transactionLibrary;
         
-        private List<Transaction> _transactions = new();
-        
+        private List<Transaction> _icomeAndExpenses = new();
+        private Transaction _currentJobIncome;
 
         public WalletLogic(ProgressDataAdapter progressDataAdapter, GameProgress gameProgress, LocalEvents localEvents)
         {
@@ -40,6 +41,15 @@ namespace Scripts.Wallet
 
             _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
             _localEvents.OnWalletUpdate += UpdateWallet;
+            _localEvents.OnNewJobFound += AddOrSwitchIncome;
+        }
+
+        private void AddOrSwitchIncome(IDevJob obj)
+        {
+            // if (_currentJobIncome != null)
+            // {
+            //     _currentJobIncome.
+            // }
         }
 
         private void UpdateMiniWallet()
@@ -49,17 +59,17 @@ namespace Scripts.Wallet
 
         private void UpdateWallet()
         {
-            ApplyTransaction(_transactionLibrary.All[0]);
-            ApplyTransaction(_transactionLibrary.All[1]);
-            ApplyTransaction(_transactionLibrary.All[2]);
+            // ApplyTransaction(_transactionLibrary.All[0]);
+            // ApplyTransaction(_transactionLibrary.All[1]);
+            // ApplyTransaction(_transactionLibrary.All[2]);
             
-            _walletCatalogue.UpdateInfo(_transactions, _walletAmount);
+            _walletCatalogue.UpdateInfo(_icomeAndExpenses, _walletAmount);
         }
 
         private void ApplyTransaction(Transaction transaction)
         {
             _localEvents.TriggerCalendarNoteAdded(transaction.Description, transaction.DayForTransaction);
-            _transactions.Add(transaction);
+            _icomeAndExpenses.Add(transaction);
         }
         
         public bool TrySpend(int value)
