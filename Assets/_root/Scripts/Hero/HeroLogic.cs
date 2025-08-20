@@ -24,6 +24,7 @@ namespace Scripts.Hero
         public HeroWalkState WalkState { get; private set; }
         public HeroWalkToSprint WalkToSprintState { get; private set; }
         public HeroWalkToIO WalkToIOState { get; private set; }
+        public HeroWalkToExit WalkToExitState { get; private set; }
         public HeroWalkToRootIOState WalkToRootIOState { get; private set; }
         public HeroDevState DevState { get; private set; }
         public HeroSleepState SleepState { get; private set; }
@@ -85,6 +86,7 @@ namespace Scripts.Hero
             HeroToiletState = new HeroToiletState(this);
             HeroBathState = new HeroBathState(this);
             WalkToIOState = new HeroWalkToIO(this, _localEvents);
+            WalkToExitState = new HeroWalkToExit(this, _localEvents);
             
             _heroStateMachine.Init(IdleState);
 
@@ -98,6 +100,13 @@ namespace Scripts.Hero
             _localEvents.OnSprintComplete += SprintCompleteListener;
             _localEvents.OnHeroGetRootIO += ChangeStateByIOType;
             _localEvents.OnWalkToIO += WalkToIO;
+            _localEvents.OnHeroWalkToExit += WalkToExit;
+        }
+
+        private void WalkToExit(InteractiveObjectType iO, Action onExit)
+        {
+            ChangeState(WalkToExitState);
+            WalkToExitState.SetCompletion(onExit);
         }
 
         private void SprintCratedListener(SprintType obj)

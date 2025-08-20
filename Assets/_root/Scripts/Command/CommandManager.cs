@@ -34,7 +34,8 @@ namespace Scripts.Tasks
                 OnExecute = () =>
                 {
                     Debug.Log($"You went to {calendarEvent.Name}");
-                    _localEvents.TriggerWalkToIO(InteractiveObjectType.Door);
+                    _localEvents.TriggerHeroWalkToExit(InteractiveObjectType.Door, calendarEvent.OnExit);
+                    //Add on come back
                 },
             };
             

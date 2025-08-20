@@ -30,6 +30,8 @@ namespace _root.Notification
 
         private LocalEvents _localEvents;
         private bool _isHidden;
+        
+        private DOTweenTMPAnimator _animator;
 
         private Sequence _sequence;
 
@@ -73,20 +75,20 @@ namespace _root.Notification
             
             _text.text = message;
             
-            var animator = new DOTweenTMPAnimator(_text);
+            _animator = new DOTweenTMPAnimator(_text);
             
             var delay = _letterDelay + _scaleDuration;
             
-            for (int i = 0; i < animator.textInfo.characterCount; i++)
+            for (int i = 0; i < _animator.textInfo.characterCount; i++)
             {
-                animator.DOScaleChar(i, Vector3.zero, 0f);
+                _animator.DOScaleChar(i, Vector3.zero, 0f);
             }
 
-            for (int i = 0; i < animator.textInfo.characterCount; i++)
+            for (int i = 0; i < _animator.textInfo.characterCount; i++)
             {
-                animator.DOOffsetChar(i, new Vector2(0, _dropOffsetY), 0f).SetDelay(i * delay + _bubbleScaleDuration/2);
-                animator.DOScaleChar(i, Vector3.one, _scaleDuration).SetDelay(i * delay + _bubbleScaleDuration/2);
-                animator.DOOffsetChar(i, Vector2.zero, _dropDuration)
+                _animator.DOOffsetChar(i, new Vector2(0, _dropOffsetY), 0f).SetDelay(i * delay + _bubbleScaleDuration/2);
+                _animator.DOScaleChar(i, Vector3.one, _scaleDuration).SetDelay(i * delay + _bubbleScaleDuration/2);
+                _animator.DOOffsetChar(i, Vector2.zero, _dropDuration)
                     .SetEase(_letterEase)
                     .SetDelay(i * delay + _bubbleScaleDuration/2);
             }
@@ -99,18 +101,20 @@ namespace _root.Notification
             
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
-            var animator = new DOTweenTMPAnimator(_text);
+            
+            _animator.Dispose();
+            _animator = new DOTweenTMPAnimator(_text);
             
             var delay = _letterDelay + _letterHideDuration;
             var delayMultiplier = 0;
             
-            for (int i = 0; i < animator.textInfo.characterCount; i++)
+            for (int i = 0; i < _animator.textInfo.characterCount; i++)
             {
-                animator.DOOffsetChar(i, new Vector2(0, _dropOffsetY), _dropDuration).SetDelay(i * delay);
-                animator.DOScaleChar(i, Vector3.zero, 0).SetDelay(i * delay + _dropDuration);
+                _animator.DOOffsetChar(i, new Vector2(0, _dropOffsetY), _dropDuration).SetDelay(i * delay);
+                _animator.DOScaleChar(i, Vector3.zero, 0).SetDelay(i * delay + _dropDuration);
             }
             
-            var hideDuration = animator.textInfo.characterCount * (delay + _letterHideDuration);
+            var hideDuration = _animator.textInfo.characterCount * (delay + _letterHideDuration);
             
             float targetWidth = _startScaleValue.x; 
             
@@ -132,6 +136,7 @@ namespace _root.Notification
         private void OnDestroy()
         {
             _button.onClick.RemoveAllListeners();
+            _animator.Dispose();
         }
 
         public void Init(LocalEvents localEvents)

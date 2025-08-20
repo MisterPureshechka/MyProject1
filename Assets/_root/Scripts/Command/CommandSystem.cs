@@ -34,6 +34,7 @@ namespace Scripts.Tasks
             _localEvents.OnSprintContinue += ClosePanel;
             _localEvents.OnSprintCreated += ClosePanel;
             _localEvents.OnHeroWalkToSprint += ClosePanel;
+            _localEvents.OnHeroWalkToIO += ClosePanel;
             
         }
 
@@ -71,6 +72,7 @@ namespace Scripts.Tasks
             _localEvents.OnMouseClickIO -= ShowCommandsByType;
             _localEvents.OnTaskCatalogShow -= ClosePanel;
             _localEvents.OnClickEmpty -= ClosePanel;
+            _localEvents.OnHeroWalkToIO -= ClosePanel;
             
             if(_commandPanelView != null)
                 Object.Destroy(_commandPanelView.gameObject);

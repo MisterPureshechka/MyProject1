@@ -2,6 +2,7 @@ using System;
 
 namespace _root.Notification
 {
+    [Serializable]
     public class CalendarEvent
     {
         public string Id;
@@ -12,5 +13,7 @@ namespace _root.Notification
         public int Hour;
         public int Minute;
         public string Message;
+        public string ComeBackMessage;
+        public Action OnExit;
     }
 }

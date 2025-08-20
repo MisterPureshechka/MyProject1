@@ -27,6 +27,9 @@ namespace Scripts.GlobalStateMachine
         public Action<InteractiveObjectType> OnHeroGetIO { get; set; }
         public void TriggerHeroGetIO(InteractiveObjectType IOType) => OnHeroGetIO?.Invoke(IOType);
         
+        public Action OnHeroGetExit { get; set; }
+        public void TriggerHeroGetExit() => OnHeroGetExit?.Invoke();
+        
         public Action<Vector2> OnMouseClickWorld {get; set;}
         public void TriggerMouseClickedWorld(Vector2 pos) => OnMouseClickWorld?.Invoke(pos);
         
@@ -36,6 +39,9 @@ namespace Scripts.GlobalStateMachine
         {
             OnMouseClickedUI?.Invoke(screenPos);
         }
+
+        public Action<CalendarEvent> OnSaveComeBackAction { get; set; }
+        public void TriggerSaveComeBackAction() => OnSaveComeBackAction?.Invoke(null);
 
         public Action<InteractiveObjectType, Vector2> OnMouseClickIO { get; set; }
         public void TriggerMouseClickedIO(InteractiveObjectType iOType, Vector2 pos) => OnMouseClickIO?.Invoke(iOType, pos);
@@ -180,5 +186,8 @@ namespace Scripts.GlobalStateMachine
 
         public Action OnMessangerButtonClick { get; set; }
         public void TriggerMessengerButtonClick() => OnMessangerButtonClick?.Invoke();
+
+        public Action<InteractiveObjectType, Action> OnHeroWalkToExit { get; set; }
+        public void TriggerHeroWalkToExit(InteractiveObjectType door, Action calendarEventOnExit) => OnHeroWalkToExit?.Invoke(door, calendarEventOnExit);
     }
 }

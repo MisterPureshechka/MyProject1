@@ -52,7 +52,7 @@ namespace Scripts.Messenger
                 
                     name: "HR1",
                     message: "We have job for you!",
-                    onAccept: CreateEvent 
+                    onAccept: CreateJobInterview 
                 );
 
                 var notification = new Notification(
@@ -73,7 +73,7 @@ namespace Scripts.Messenger
             }
         }
 
-        private void CreateEvent()
+        private void CreateJobInterview()
         {
             var calendarEvent = new CalendarEvent();
             var currentDate = _calendarLogic.GetCurrentDate();
@@ -86,8 +86,15 @@ namespace Scripts.Messenger
             calendarEvent.Hour = 20;
             calendarEvent.Minute = 0;
             calendarEvent.Message = $"Time to go to {calendarEvent.Name}";
+            calendarEvent.ComeBackMessage = "It was nice to see you!";
+            calendarEvent.OnExit = CheckSkillsToGetJob;
             
             _localEvents.TriggerCalendarEventCreated(calendarEvent);
+        }
+
+        private void CheckSkillsToGetJob()
+        {
+            Debug.Log("CheckSkillsToGetJob");
         }
 
         private void ScheguleTime()

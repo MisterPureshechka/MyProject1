@@ -42,7 +42,6 @@ namespace Scripts.Tasks
                 out Vector2 localPoint
             );
 
-            // Кладём локальную позицию
             _panelRect.localPosition = ClampToCanvas(localPoint);
         }
 

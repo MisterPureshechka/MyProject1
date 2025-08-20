@@ -115,7 +115,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 11.166914939880371,
+                    "Value": 18.550521850585939,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -126,7 +126,7 @@
                 "Key": "CurrentDay",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 10.0,
+                    "Value": 21.0,
                     "MaxValue": 31.0,
                     "DisplayName": "Day",
                     "Tooltip": "",

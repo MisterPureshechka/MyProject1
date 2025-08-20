@@ -103,12 +103,9 @@ namespace Scripts.Rooms
 
             if (_iORegisterer.IsObjectRegistered(clickedObject))
             {
-                if (_isRoomState)
-                {
-                    var interactiveObj = _iORegisterer.GetInteractiveObject(clickedObject);
+                var interactiveObj = _iORegisterer.GetInteractiveObject(clickedObject);
 
-                    _localEvents.TriggerMouseClickedIO(interactiveObj.IOType, interactiveObj.Position);
-                }
+                _localEvents.TriggerMouseClickedIO(interactiveObj.IOType, interactiveObj.Position);
             }
             else
             {
