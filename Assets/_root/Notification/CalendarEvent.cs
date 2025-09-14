@@ -14,6 +14,13 @@ namespace _root.Notification
         public int Minute;
         public string Message;
         public string ComeBackMessage;
-        public Action OnExit;
+        public CalendarEventType EventType;
     }
+
+    public enum CalendarEventType
+    {
+        JobInterview,
+        Job,
+    }
+        
 }

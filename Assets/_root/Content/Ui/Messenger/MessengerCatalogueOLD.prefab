@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8836612862306471371}
   - component: {fileID: 1837028130131386160}
   m_Layer: 5
-  m_Name: MessengerCatalogue
+  m_Name: MessengerCatalogueOLD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,6 +304,7 @@ GameObject:
   - component: {fileID: 5830373779176836384}
   - component: {fileID: 7483323157742786575}
   - component: {fileID: 7057862208914472475}
+  - component: {fileID: 8800374835941733173}
   m_Layer: 5
   m_Name: DiclineButton
   m_TagString: Untagged
@@ -413,6 +414,49 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8800374835941733173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 703057166547712467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e801c938b24fcd989aa3b23c80d0ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 7057862208914472475}
+  _endToZeroCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _shakeStrengthPos: {x: 5, y: 0}
+  _shakeStrengthRot: {x: 0, y: 0, z: 25}
+  _shakeDuration: 0.2
+  _vibrato: 10
+  _randomness: 90
+  _fadeOut: 1
 --- !u!1 &763784392877594080
 GameObject:
   m_ObjectHideFlags: 0
@@ -1647,6 +1691,7 @@ GameObject:
   - component: {fileID: 6144167074326632254}
   - component: {fileID: 3056233619204121071}
   - component: {fileID: 4741462640690752006}
+  - component: {fileID: 1421530960742927126}
   m_Layer: 5
   m_Name: AcceptButton
   m_TagString: Untagged
@@ -1756,6 +1801,49 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1421530960742927126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7998546290719568137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e801c938b24fcd989aa3b23c80d0ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 4741462640690752006}
+  _endToZeroCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _shakeStrengthPos: {x: 5, y: 0}
+  _shakeStrengthRot: {x: 0, y: 0, z: 25}
+  _shakeDuration: 0.2
+  _vibrato: 10
+  _randomness: 90
+  _fadeOut: 1
 --- !u!1 &8212722079830024443
 GameObject:
   m_ObjectHideFlags: 0

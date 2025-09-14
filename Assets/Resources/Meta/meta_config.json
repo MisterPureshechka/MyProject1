@@ -120,6 +120,21 @@
     "DisplayName": "Wallet Amount",
     "Tooltip": "",
     "ProgressDelta": 1
+  },
+  "CurrentFlatIndex": {
+    "MetaType": "System",
+    "Value": 0,
+    "MaxValue": 999,
+    "DisplayName": "Current Flat Index",
+    "Tooltip": "",
+    "ProgressDelta": 0
+  },
+  "CurrentJobIndex": 
+  { "MetaType": "System", 
+    "Value": 0, 
+    "MaxValue": 999, 
+    "DisplayName": "Current Job Index", 
+    "Tooltip": "", 
+    "ProgressDelta": 0
   }
-  
 }

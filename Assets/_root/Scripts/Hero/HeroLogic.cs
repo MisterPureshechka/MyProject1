@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _root.Notification;
 using Core;
 using DG.Tweening;
 using NUnit.Framework;
@@ -103,10 +104,11 @@ namespace Scripts.Hero
             _localEvents.OnHeroWalkToExit += WalkToExit;
         }
 
-        private void WalkToExit(InteractiveObjectType iO, Action onExit)
+        private void WalkToExit(InteractiveObjectType iO, CalendarEventType eventType)
         {
             ChangeState(WalkToExitState);
-            WalkToExitState.SetCompletion(onExit);
+            WalkToExitState.SetEventType(eventType);
+            _localEvents.TriggerHeroWalkToIO();
         }
 
         private void SprintCratedListener(SprintType obj)

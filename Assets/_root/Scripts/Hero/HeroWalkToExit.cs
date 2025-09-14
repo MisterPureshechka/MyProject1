@@ -1,4 +1,5 @@
 using System;
+using _root.Notification;
 using Scripts.GlobalStateMachine;
 using Scripts.Rooms;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Scripts.Hero
         private Vector3 _playerPosition;
         private Vector3 _targetPosition;
         
-        private Action _onComplete;
+        private CalendarEventType _eventType;
 
         public HeroWalkToExit(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
         {
@@ -40,14 +41,14 @@ namespace Scripts.Hero
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
                 _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
-                _onComplete?.Invoke();
+                _localEvents.TriggerEventOnExit(_eventType);
                 _localEvents.TriggerHeroGetExit();
             }
         }
 
-        public void SetCompletion(Action onComplete)
+        public void SetEventType(CalendarEventType eventType)
         {
-            _onComplete = onComplete;
+            _eventType = eventType;
         }
 
         public override void Exit()

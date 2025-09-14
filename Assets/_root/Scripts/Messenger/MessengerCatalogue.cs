@@ -10,18 +10,14 @@ namespace Scripts.Messenger
 {
     public class MessengerCatalogue : MonoBehaviour, ICatalogue
     {
-        // [SerializeField] private SenderDataBase _senderDataBase;
-        // [SerializeField] private SenderIconView _senderIconView;
-        // [SerializeField] private RectTransform _senderIconsRect;
-
         [field: SerializeField] public Button CloseButton;
         
         [SerializeField] private RectTransform _messengerRect;
         [SerializeField] private TextMeshProUGUI _senderName;
         [SerializeField] private TextMeshProUGUI _senderText;
         [SerializeField] private TextMeshProUGUI _date;
-        [SerializeField] private Button _acceptButton;
-        [SerializeField] private Button _declineButton;
+        [SerializeField] private MessengerAcceptButton _acceptButton;
+        [SerializeField] private MessengerAcceptButton _declineButton;
         [SerializeField] private GameObject _buttonsPanel;
         
         [Space]
@@ -72,21 +68,42 @@ namespace Scripts.Messenger
         }
 
 
-        public void ShowMessage(IMessageSender sender)
+        public void ShowMessage(
+            IMessageSender sender,
+            MessangerButtonState state,
+            Action onAcceptPressed = null,
+            Action onDeclinePressed = null)
         {
             _senderName.text = sender.Name;
             _senderText.text = sender.Message;
 
-            _acceptButton.onClick.RemoveAllListeners();
-            _declineButton.onClick.RemoveAllListeners();
+            _acceptButton.Button.onClick.RemoveAllListeners();
+            _declineButton.Button.onClick.RemoveAllListeners();
 
             bool requiresDecision = sender.OnAccept != null;
+            _buttonsPanel.SetActive(requiresDecision);
 
             if (requiresDecision)
             {
-                _acceptButton.onClick.AddListener(() =>
+                LoadButtonState(state);
+
+                _acceptButton.Button.onClick.AddListener(() =>
                 {
-                    sender.OnAccept?.Invoke();
+                    if (state == MessangerButtonState.None) {
+                        sender.OnAccept?.Invoke();
+                    }
+                    _acceptButton.SwitchToggle();
+                    _declineButton.DisableButton();
+                    Shake();
+                    onAcceptPressed?.Invoke();
+                });
+
+                _declineButton.Button.onClick.AddListener(() =>
+                {
+                    _declineButton.SwitchToggle();
+                    _acceptButton.DisableButton();
+                    onDeclinePressed?.Invoke();
+                    Shake();
                 });
             }
             else
@@ -95,13 +112,10 @@ namespace Scripts.Messenger
             }
 
             var animator = new DOTweenTMPAnimator(_senderText);
-            
             var delay = _letterDelay + _scaleDuration;
-            
+
             for (int i = 0; i < animator.textInfo.characterCount; i++)
-            {
                 animator.DOScaleChar(i, Vector3.zero, 0f);
-            }
 
             var startDelay = _isFisrtTimeShow ? 0 : 0.6f;
 
@@ -109,12 +123,35 @@ namespace Scripts.Messenger
             {
                 animator.DOOffsetChar(i, new Vector2(0, _dropOffsetY), 0f).SetDelay(i * delay + _bubbleScaleDuration/2 + startDelay);
                 animator.DOScaleChar(i, Vector3.one, _scaleDuration).SetDelay(i * delay + _bubbleScaleDuration/2 + startDelay);
-                animator.DOOffsetChar(i, Vector2.zero, _dropDuration)
-                    .SetEase(_letterEase)
-                    .SetDelay(i * delay + _bubbleScaleDuration/2 + startDelay);
+                animator.DOOffsetChar(i, Vector2.zero, _dropDuration).SetEase(_letterEase).SetDelay(i * delay + _bubbleScaleDuration/2 + startDelay);
             }
 
             _isFisrtTimeShow = false;
+        }
+
+
+        private void LoadButtonState(MessangerButtonState state)
+        {
+            Debug.LogWarning("Loading button state " + state);
+            switch (state)
+            {
+                case MessangerButtonState.Accepted:
+                    _acceptButton.SwitchToggleImmediate(true);
+                    _declineButton.DisableButton();
+                    break;
+                case MessangerButtonState.Declined:
+                    _declineButton.SwitchToggleImmediate(true);
+                    _acceptButton.DisableButton();
+                    break;
+                case MessangerButtonState.None:
+                    _declineButton.ResetButton();
+                    _acceptButton.ResetButton();
+                    break;
+                default:
+                    _declineButton.ResetButton();
+                    _acceptButton.ResetButton();
+                    break;
+            }
         }
 
         public void Show(Action onComplete = null)
@@ -127,6 +164,19 @@ namespace Scripts.Messenger
             _sequence.OnComplete(() =>
             {
                 _isFisrtTimeShow = true;
+                onComplete?.Invoke();
+            });
+        }
+        
+        public void Shake(Action onComplete = null)
+        {
+            _sequence?.Kill();
+            _sequence = DOTween.Sequence();
+            
+            _messengerRect.gameObject.SetActive(true);
+            _sequence.Append(_messengerRect.transform.DOShakePosition(0.2f, new Vector3(1f,1f,0), 50, 90f).SetEase(Ease.OutSine));
+            _sequence.OnComplete(() =>
+            {
                 onComplete?.Invoke();
             });
         }

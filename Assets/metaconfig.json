@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 91.51266479492188,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -115,7 +115,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 18.550521850585939,
+                    "Value": 15.316463470458985,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -126,7 +126,7 @@
                 "Key": "CurrentDay",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 21.0,
+                    "Value": 8.0,
                     "MaxValue": 31.0,
                     "DisplayName": "Day",
                     "Tooltip": "",
@@ -137,7 +137,7 @@
                 "Key": "CurrentMonth",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 12.0,
+                    "Value": 9.0,
                     "MaxValue": 12.0,
                     "DisplayName": "Month",
                     "Tooltip": "Читай",
@@ -164,6 +164,28 @@
                     "DisplayName": "Wallet Amount",
                     "Tooltip": "",
                     "ProgressDelta": 1.0
+                }
+            },
+            {
+                "Key": "CurrentFlatIndex",
+                "Value": {
+                    "MetaType": 4,
+                    "Value": 0.0,
+                    "MaxValue": 999.0,
+                    "DisplayName": "Current Flat Index",
+                    "Tooltip": "",
+                    "ProgressDelta": 0.0
+                }
+            },
+            {
+                "Key": "CurrentJobIndex",
+                "Value": {
+                    "MetaType": 4,
+                    "Value": 0.0,
+                    "MaxValue": 999.0,
+                    "DisplayName": "Current Job Index",
+                    "Tooltip": "",
+                    "ProgressDelta": 0.0
                 }
             }
         ]

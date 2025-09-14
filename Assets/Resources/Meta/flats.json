@@ -1,0 +1,6 @@
+{
+  "flats": [
+    { "ID": "apt_1", "Description": "Studio near park", "MonthPayment": 350, "DayToPay": 10 },
+    { "ID": "apt_2", "Description": "1BR downtown",     "MonthPayment": 500, "DayToPay": 20 }
+  ]
+}

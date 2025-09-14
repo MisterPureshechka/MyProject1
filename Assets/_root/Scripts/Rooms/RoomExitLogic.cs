@@ -42,6 +42,7 @@ namespace Scripts.Rooms
         public void CleanUp()
         {
             _localEvents.OnHeroGetExit -= TryExitRoom;
+            Object.Destroy(_roomView.Transform.gameObject);
         }
     }
 }

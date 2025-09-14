@@ -10,6 +10,7 @@ using Scripts.Meta;
 using Scripts.Rooms;
 using Scripts.Tasks;
 using Scripts.Upgrade;
+using Scripts.Wallet;
 using UnityEngine;
 
 namespace Scripts.GlobalStateMachine
@@ -105,7 +106,7 @@ namespace Scripts.GlobalStateMachine
             OnWalkToIO?.Invoke(ioType);
             OnHeroWalkToIO?.Invoke();
         }
-
+        public void TriggerHeroWalkToIO() => OnHeroWalkToIO?.Invoke();
         public Action OnHeroWalkToSprint { get; set; }
         public void TriggerHeroWalkToSprint() => OnHeroWalkToSprint?.Invoke();
 
@@ -176,18 +177,25 @@ namespace Scripts.GlobalStateMachine
         public void TriggerCalendarEventCreated(CalendarEvent calendarEvent) => OnCalendarEventCreated?.Invoke(calendarEvent);
         public  Action<Notification> OnNewNotificationCreated { get; set; }
         public void TriggerNewNotificationCreated(Notification notification) => OnNewNotificationCreated?.Invoke(notification);
-
         public Action<IDevJob> OnNewJobFound { get; set; }
         public void TriggerNewJobFound(IDevJob job) => OnNewJobFound?.Invoke(job);
         public Action<IMessageSender> OnNewMessageAddToMessenger { get; set; }
         public void TriggerNewMessageAddToMassanger(IMessageSender sender) => OnNewMessageAddToMessenger?.Invoke(sender);
+        public Action<IScheduleMessageSender> OnScheduleMessageAdded { get; set; }
+        public void TriggerScheduleMessageAdded(IScheduleMessageSender sender) => OnScheduleMessageAdded?.Invoke(sender);
         public Action<string> OnMessageReaded { get; set; }
         public void TriggerMessegeReaded(string id) => OnMessageReaded?.Invoke(id);
-
         public Action OnMessangerButtonClick { get; set; }
         public void TriggerMessengerButtonClick() => OnMessangerButtonClick?.Invoke();
-
-        public Action<InteractiveObjectType, Action> OnHeroWalkToExit { get; set; }
-        public void TriggerHeroWalkToExit(InteractiveObjectType door, Action calendarEventOnExit) => OnHeroWalkToExit?.Invoke(door, calendarEventOnExit);
+        public Action<InteractiveObjectType, CalendarEventType> OnHeroWalkToExit { get; set; }
+        public void TriggerHeroWalkToExit(InteractiveObjectType door, CalendarEventType eventType) => OnHeroWalkToExit?.Invoke(door, eventType);
+        public Action<CalendarEventType> OnExitEventType { get; set; }
+        public void TriggerEventOnExit(CalendarEventType eventType) => OnExitEventType?.Invoke(eventType);
+        public Action<int> OnWalletAmountIncrease { get; set; }
+        public void TriggerIncreaseWalletAmount(int currentJobSalary) => OnWalletAmountIncrease?.Invoke(currentJobSalary);
+        public Action<int> OnPayDay { get; set; }
+        public void TriggerRentPayDay(int currentFlatMonthPayment) => OnPayDay?.Invoke(currentFlatMonthPayment);
+        public Action<Transaction> OnNewTransaction { get; set; }
+        public void TriggerNewTransaction(Transaction transaction) => OnNewTransaction?.Invoke(transaction);
     }
 }

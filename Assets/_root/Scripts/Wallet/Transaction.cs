@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.Serialization;
 
 namespace Scripts.Wallet
 {
@@ -9,6 +10,6 @@ namespace Scripts.Wallet
         public string Name;
         public string Description;
         public int Amount;
-        public int DayForTransaction;
+        public int[] DaysForTransaction;
     }
 }

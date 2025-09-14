@@ -347,6 +347,7 @@ namespace Scripts.Tasks
             _localEvents.OnHeroGetSprint -= StartOrCreateSprint;
             _localEvents.OnSprintClosed -= ExitSprint;
             _localEvents.OnHeroGetRootIO -= HeroGetRootIOListener;
+            _localEvents.OnHeroWalkToIO -= ExitSprint;
         }
 
         public void Execute(float deltatime)

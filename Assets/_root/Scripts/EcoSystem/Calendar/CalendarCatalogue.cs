@@ -257,8 +257,6 @@ namespace Scripts.EcoSystem.Calendar
                                 eventInstance.UpdateEventInfo(ev.Message, _colors[_currentColorId]);
                                 dayUI.AddEvent(eventInstance);
                                 _currentColorId = (_currentColorId + 1) % _colors.Length;
-                                
-                                Debug.Log(ev.Message + " Created");
                             }
                         }
                     }

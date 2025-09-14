@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using _root.Notification;
 using Core;
+using Scripts.EcoSystem;
+using Scripts.EcoSystem.Calendar;
 using Scripts.GlobalStateMachine;
 using UnityEngine;
 
@@ -9,21 +12,27 @@ namespace Scripts.Messenger
     {
         private LocalEvents _localEvents;
         private readonly MessengerConfig _config;
+        private readonly CalendarLogic _calendarLogic;
+        private readonly TimeLogic _timeLogic;
         private MessengerCatalogue _messengerCatalogue;
         private MiniMessageButton _miniMessageButton;
         
         private readonly List<IMessageSender> _messages = new();
+        private readonly List<IScheduleMessageSender> _scheduledMessages = new();
         private Dictionary<string, IMessageSender> _messageMap = new();
         private Dictionary<string, IMessageSender> _messageToDeleteMap = new();
+        private readonly Dictionary<string, MessangerButtonState> _buttonStates = new();
         private int _cursor = -1;
 
         private readonly bool _wrapNavigation = false;     
         private readonly bool _openNewestOnShow = true;  
 
-        public MessengerLogic(LocalEvents localEvents, MessengerConfig config)
+        public MessengerLogic(LocalEvents localEvents, MessengerConfig config, CalendarLogic calendarLogic, TimeLogic timeLogic)
         {
             _localEvents = localEvents;
             _config = config;
+            _calendarLogic = calendarLogic;
+            _timeLogic = timeLogic;
 
             _messengerCatalogue = Object.FindAnyObjectByType<MessengerCatalogue>(FindObjectsInactive.Include);
             if (_messengerCatalogue == null) Debug.LogError("Messenger catalogue could not be found");
@@ -37,14 +46,54 @@ namespace Scripts.Messenger
             _messengerCatalogue.CloseButton.onClick.AddListener(HideMessageCatalogue);
             _messengerCatalogue.NextButton.onClick.AddListener(ShowNextMessage);
             _messengerCatalogue.PreviousButton.onClick.AddListener(ShowPreviousMessage);
-            
+
+            _localEvents.OnNewMinute += HandleMessageTime;
             _localEvents.OnNewMessageAddToMessenger += AddMessageToMessenger;
+            _localEvents.OnScheduleMessageAdded += AddScheduleMessage;
+        }
+        
+        private void AddScheduleMessage(IScheduleMessageSender sm)
+        {
+            _scheduledMessages.Add(sm);
         }
 
-       private void AddMessageToMessenger(IMessageSender sender)
+        private void HandleMessageTime()
+        {
+            if (_scheduledMessages.Count == 0) return;
+
+            var now = _calendarLogic.GetCurrentDate();
+            int ch  = _timeLogic.CurrentHour;
+            int cm  = _timeLogic.CurrentMinute;
+
+            for (int i = _scheduledMessages.Count - 1; i >= 0; i--)
+            {
+                var sm = _scheduledMessages[i];
+                if (IsDue(sm, now.Year, now.Month, now.Day, ch, cm))
+                {
+                    
+                    AddMessageToMessenger(sm);
+
+                    _scheduledMessages.RemoveAt(i);
+                }
+            }
+        }
+        
+        private static bool IsDue(IScheduleMessageSender sm, int y, int m, int d, int h, int min)
+        {
+            if (y != sm.Year)   return y > sm.Year;
+            if (m != sm.Month)  return m > sm.Month;
+            if (d != sm.Day)    return d > sm.Day;
+            if (h != sm.Hour)   return h > sm.Hour;
+            return min >= sm.Minute;
+        }
+        
+        private void AddMessageToMessenger(IMessageSender sender)
         {
             _messages.Add(sender);
             _messageMap.Add(sender.Id, sender);
+            
+            if (!_buttonStates.ContainsKey(sender.Id))
+                _buttonStates[sender.Id] = MessangerButtonState.None;
 
             if (_cursor == -1) _cursor = 0;
 
@@ -55,31 +104,42 @@ namespace Scripts.Messenger
         private void ShowMessageCatalogue()
         {
             _localEvents.TriggerMessengerButtonClick();
-            
             if (_messages.Count == 0) return;
-
             if (_openNewestOnShow) _cursor = 0;
 
             _localEvents.OnCatalogueShow(_messengerCatalogue);
-            _messengerCatalogue.ShowMessage(_messages[_cursor]);
-            
-            _localEvents.TriggerMessegeReaded(_messages[_cursor].Id);
-            _messageToDeleteMap.Add(_messages[_cursor].Id, _messages[_cursor]);
+
+            var msg = _messages[_cursor];
+            var id = msg.Id;
+
+            _messengerCatalogue.ShowMessage(
+                msg,
+                GetState(id),
+                onAcceptPressed: () => { _buttonStates[id] = MessangerButtonState.Accepted; },
+                onDeclinePressed: () => { _buttonStates[id] = MessangerButtonState.Declined; }
+            );
+
+            _localEvents.TriggerMessegeReaded(id);
+            _messageToDeleteMap[id] = msg;
 
             UpdateNavButtons();
         }
+        
+        private MessangerButtonState GetState(string id) =>
+            _buttonStates.TryGetValue(id, out var s) ? s : MessangerButtonState.None;
+
 
         private void HideMessageCatalogue()
         {
             _localEvents.OnCatalogueHide(_messengerCatalogue);
-
             if (_messageToDeleteMap == null || _messageToDeleteMap.Count == 0) return;
 
             _messages.RemoveAll(m => m != null && _messageToDeleteMap.ContainsKey(m.Id));
-
             foreach (var kv in _messageToDeleteMap)
+            {
                 _messageMap.Remove(kv.Key);
-
+                _buttonStates.Remove(kv.Key); // <-- очистка состояния
+            }
             _messageToDeleteMap.Clear();
 
             if (_cursor >= _messages.Count) _cursor = _messages.Count - 1;
@@ -89,39 +149,51 @@ namespace Scripts.Messenger
             UpdateNavButtons();
         }
 
+
         private void ShowNextMessage()
         {
-            if (_messages.Count == 0) 
-            { 
-                _messengerCatalogue.ShowNextButton(false); 
-                _messengerCatalogue.ShowPreviousButton(false); 
-                return; 
-            }
-            
-            Debug.Log("Next pressed");
-
+            if (_messages.Count == 0) { _messengerCatalogue.ShowNextButton(false); _messengerCatalogue.ShowPreviousButton(false); return; }
             if (_cursor < _messages.Count - 1) _cursor++;
             else if (_wrapNavigation) _cursor = 0;
             else return;
 
-            _messengerCatalogue.ShowMessage(_messages[_cursor]);
-            _localEvents.TriggerMessegeReaded(_messages[_cursor].Id);
-            _messageToDeleteMap.Add(_messages[_cursor].Id, _messages[_cursor]);
-            _messageMap.Remove(_messages[_cursor].Id);
+            var msg = _messages[_cursor];
+            var id = msg.Id;
+
+            _messengerCatalogue.ShowMessage(
+                msg,
+                GetState(id),
+                onAcceptPressed: () => { _buttonStates[id] = MessangerButtonState.Accepted; },
+                onDeclinePressed: () => { _buttonStates[id] = MessangerButtonState.Declined; }
+            );
+
+            _messengerCatalogue.Shake();
+
+            _localEvents.TriggerMessegeReaded(id);
+            if (!_messageToDeleteMap.ContainsKey(id)) _messageToDeleteMap[id] = msg;
+            _messageMap.Remove(id);
             UpdateNavButtons();
         }
 
         private void ShowPreviousMessage()
         {
             if (_messages.Count == 0) return;
-
-            Debug.Log("Previews pressed");
-            
             if (_cursor > 0) _cursor--;
             else if (_wrapNavigation) _cursor = _messages.Count - 1;
             else return;
 
-            _messengerCatalogue.ShowMessage(_messages[_cursor]);
+            var msg = _messages[_cursor];
+            var id = msg.Id;
+
+            _messengerCatalogue.ShowMessage(
+                msg,
+                GetState(id),
+                onAcceptPressed: () => { _buttonStates[id] = MessangerButtonState.Accepted; },
+                onDeclinePressed: () => { _buttonStates[id] = MessangerButtonState.Declined; }
+            );
+            
+            _messengerCatalogue.Shake();
+
             UpdateNavButtons();
         }
 
@@ -158,7 +230,7 @@ namespace Scripts.Messenger
                 if (removedIndex >= _messages.Count)
                     _cursor = _messages.Count - 1; 
 
-                _messengerCatalogue.ShowMessage(_messages[_cursor]);
+                //_messengerCatalogue.ShowMessage(_messages[_cursor]);
             }
 
             UpdateUnreadUI();
@@ -176,7 +248,6 @@ namespace Scripts.Messenger
         {
             if (_messengerCatalogue == null) return;
 
-            // Нет писем или курсор невалиден — обе кнопки спрятать
             if (_messages.Count <= 1 || _cursor < 0)
             {
                 _messengerCatalogue.ShowPreviousButton(false);
@@ -184,7 +255,6 @@ namespace Scripts.Messenger
                 return;
             }
 
-            // При круговой навигации показываем обе, если писем > 1
             if (_wrapNavigation)
             {
                 bool show = _messages.Count > 1;
@@ -193,7 +263,6 @@ namespace Scripts.Messenger
                 return;
             }
 
-            // Обычная навигация: прячем по краям
             bool isFirst = _cursor == 0;
             bool isLast  = _cursor == _messages.Count - 1;
 
@@ -206,6 +275,7 @@ namespace Scripts.Messenger
             _localEvents.OnNewMessageAddToMessenger -= AddMessageToMessenger;
             _miniMessageButton.Button.onClick.RemoveAllListeners();
             _messengerCatalogue.CloseButton.onClick.RemoveAllListeners();
+            _localEvents.OnScheduleMessageAdded -= AddScheduleMessage;
         }
     }
 }

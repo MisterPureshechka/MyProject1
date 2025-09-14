@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using Core;
 using Scripts.GlobalStateMachine;
 using Scripts.Job;
 using Scripts.Progress;
+using Scripts.Utils;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Scripts.Wallet
 {
@@ -42,14 +45,46 @@ namespace Scripts.Wallet
             _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
             _localEvents.OnWalletUpdate += UpdateWallet;
             _localEvents.OnNewJobFound += AddOrSwitchIncome;
+            _localEvents.OnWalletAmountIncrease += IncreaseWalletAmount;
+            _localEvents.OnPayDay += DecreaseWalletAmount;
+            _localEvents.OnNewTransaction += ApplyTransaction;
         }
 
-        private void AddOrSwitchIncome(IDevJob obj)
+        private void DecreaseWalletAmount(int value)
         {
-            // if (_currentJobIncome != null)
-            // {
-            //     _currentJobIncome.
-            // }
+            _walletAmount -= value;
+            
+            _progressDataAdapter.TryUpdateValue("WalletAmount", -value);
+            
+            UpdateWallet();
+        }
+
+        private void IncreaseWalletAmount(int amount)
+        {
+            _walletAmount += amount;
+            
+            _progressDataAdapter.TryUpdateValue("WalletAmount", amount);
+            
+            Debug.Log($"[Salary] +{amount}. Баланс = " +
+                      _progressDataAdapter.GetProgressData().Metadata.GetValue("WalletAmount"));
+
+            UpdateWallet();
+        }
+
+        private void AddOrSwitchIncome(IDevJob job)
+        {
+            var transaction = new Transaction
+            {
+                Amount = job.Salary,
+                Description = job.Description,
+                Name = job.JobTitle,
+                DaysForTransaction = job.SalaryDays
+            };
+            _currentJobIncome = transaction;
+            
+            ApplyTransaction(transaction);
+            UpdateWallet();
+            Debug.Log($"Income added: {_walletAmount}");
         }
 
         private void UpdateMiniWallet()
@@ -59,17 +94,21 @@ namespace Scripts.Wallet
 
         private void UpdateWallet()
         {
-            // ApplyTransaction(_transactionLibrary.All[0]);
-            // ApplyTransaction(_transactionLibrary.All[1]);
-            // ApplyTransaction(_transactionLibrary.All[2]);
-            
             _walletCatalogue.UpdateInfo(_icomeAndExpenses, _walletAmount);
+            UpdateMiniWallet();
         }
 
         private void ApplyTransaction(Transaction transaction)
         {
-            _localEvents.TriggerCalendarNoteAdded(transaction.Description, transaction.DayForTransaction);
+            foreach (var dayForTransaction in transaction.DaysForTransaction)
+            {
+                _localEvents.TriggerCalendarNoteAdded(transaction.Description, dayForTransaction);
+            }
+            
+            Debug.Log($" {transaction.Description} Added to icome and expenses: {transaction.Amount}");
+            
             _icomeAndExpenses.Add(transaction);
+            UpdateWallet();
         }
         
         public bool TrySpend(int value)
@@ -91,6 +130,10 @@ namespace Scripts.Wallet
         {
             _localEvents.OnWalletUpdate -= UpdateWallet;
             _walletButtonView.Button.onClick.RemoveAllListeners();
+            _localEvents.OnNewJobFound -= AddOrSwitchIncome;
+            _localEvents.OnWalletAmountIncrease -= IncreaseWalletAmount;
+            _localEvents.OnPayDay -= DecreaseWalletAmount;
+            _localEvents.OnNewTransaction -= ApplyTransaction;
         }
     }
 }

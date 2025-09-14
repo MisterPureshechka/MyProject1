@@ -5,21 +5,25 @@ namespace Scripts.Job
 {
     public class DevJob : IDevJob
     {
-        public string Name { get; }
+        public string CompanyName { get; set; }
+        public string HRName { get; set; }
+        public string JobTitle { get; }
         public int Salary { get; }
-        public int SalaryDay { get; }
+        public int[] SalaryDays { get; }
         public string Description { get; }
         public int WorkStartTime { get; }
         public Dictionary<DevTaskType, float> KnowledgeToGetJob { get; }
 
-        public DevJob(string name, int salary, int salaryDay, string description, int workStartTime, Dictionary<DevTaskType, float> knowledgeToGetJob)
+        public DevJob(string companyName, string hrName, string jobTitle, int salary, int[] salaryDays, string description, int workStartTime, Dictionary<DevTaskType, float> knowledgeToGetJob)
         {
-            Name = name;
+            CompanyName = companyName;
+            HRName = hrName;
+            JobTitle = jobTitle;
             Salary = salary;
             Description = description;
             WorkStartTime = workStartTime;
             KnowledgeToGetJob = knowledgeToGetJob;
-            SalaryDay = salaryDay;
+            SalaryDays = salaryDays;
         }
 
         public bool TryGetJob(Dictionary<DevTaskType, float> currentKnowledge)

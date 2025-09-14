@@ -21,7 +21,6 @@ namespace Scripts.Tasks
         {
             _localEvents = localEvents;
             LoadAllCommands();
-            //_localEvents.OnActiveState += SwitchSprintCommandState;
             _localEvents.OnSprintClosed += SprintCloseListener;
             _localEvents.OnCalendarEventCreated += AddCommand;
         }
@@ -33,9 +32,7 @@ namespace Scripts.Tasks
                 CommandName = $"Go to {calendarEvent.Name}",
                 OnExecute = () =>
                 {
-                    Debug.Log($"You went to {calendarEvent.Name}");
-                    _localEvents.TriggerHeroWalkToExit(InteractiveObjectType.Door, calendarEvent.OnExit);
-                    //Add on come back
+                    _localEvents.TriggerHeroWalkToExit(InteractiveObjectType.Door, calendarEvent.EventType);
                 },
             };
             
@@ -105,7 +102,7 @@ namespace Scripts.Tasks
                 new Command()
                 {
                     CommandName = "Go to work",
-                    OnExecute = () => _localEvents.TriggerWalkToIO(InteractiveObjectType.Door),
+                    OnExecute = () => _localEvents.TriggerHeroWalkToExit(InteractiveObjectType.Door, CalendarEventType.Job),
                 }
             };
             

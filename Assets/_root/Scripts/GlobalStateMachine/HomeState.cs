@@ -1,4 +1,5 @@
 using _root.Notification;
+using _root.RealEstate;
 using Scripts.Animator;
 using Scripts.Catalogues;
 using Scripts.Data;
@@ -7,6 +8,7 @@ using Scripts.EcoSystem.Calendar;
 using Scripts.Hero;
 using Scripts.Job;
 using Scripts.Messenger;
+using Scripts.Messenger.ComeBackLogic;
 using Scripts.OnlineShop;
 using Scripts.Progress;
 using Scripts.Rooms;
@@ -95,13 +97,15 @@ namespace Scripts.GlobalStateMachine
 
             var notificationSystem = new NotificationSystem(new NotificationLibrary(), calendarLogic, localEvents, timeLogic);
             var roomShaker = new RoomShaker(home, localEvents, _gameData.InteractiveObjectConfig);
-            
-            var jobMessageGenerator = new JobMessageGenerator(calendarLogic, localEvents, _gameData.MessengerConfig, timeLogic);
-            var messanger = new MessengerLogic(localEvents, _gameData.MessengerConfig);
+
+            var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary(), localEvents, calendarLogic);
+            var comeBackStore = new ComeBackStore();
+            var jobMessageGenerator = new JobMessageGenerator(calendarLogic, localEvents, _gameData.MessengerConfig, timeLogic, comeBackStore, jobLogic);
+            var messenger = new MessengerLogic(localEvents, _gameData.MessengerConfig, calendarLogic, timeLogic);
             var clickLogic = new ClickLogic.ClickLogic(localEvents);
             var roomColliderController = new RoomColliderController(home, localEvents);
 
-            //var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary());
+            var rentLogic = new RentLogic(localEvents, calendarLogic, progressDataAdapter);
 
             var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home);
 
@@ -141,12 +145,13 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(upgradeLogic);
             _controllers.Add(notificationSystem);
             _controllers.Add(roomShaker);
-            //_controllers.Add(jobLogic);
+            _controllers.Add(jobLogic);
             _controllers.Add(roomExitLogic);
             _controllers.Add(jobMessageGenerator);
-            _controllers.Add(messanger);
+            _controllers.Add(messenger);
             _controllers.Add(clickLogic);
             _controllers.Add(roomColliderController);
+            _controllers.Add(rentLogic);
         }
 
         public override void Update(float deltaTime)

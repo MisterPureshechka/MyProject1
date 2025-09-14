@@ -13,9 +13,8 @@ namespace _root.Notification
         public int Day { get; set; }
         public int Hour { get; set; }
         public int Minute { get; set; }
-        public Action AddCommand { get; set; }
 
-        public Notification(string id, NotificationType notificationType, string title, string message, int year, int month, int day, int hour, int minute, Action addCommand = null)
+        public Notification(string id, NotificationType notificationType, string title, string message, int year, int month, int day, int hour, int minute)
         {
             Id = id;
             Type = notificationType;
@@ -26,7 +25,6 @@ namespace _root.Notification
             Day = day;
             Hour = hour;
             Minute = minute;
-            AddCommand = addCommand;
         }
     }
 }

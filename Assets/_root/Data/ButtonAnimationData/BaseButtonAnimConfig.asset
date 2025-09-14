@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87af41c0191b46a49f031c6d3f1c6090, type: 3}
+  m_Name: BaseButtonAnimConfig
+  m_EditorClassIdentifier: 
+  OnEnterScaleEase: 3
+  OnClickScaleEase: 1
+  ShakeStrengthPos: {x: 2, y: 2}
+  ShakeStrengthRot: {x: 0, y: 0, z: 15}
+  OnEnterScaleValue: 1.1
+  OnEnterScaleDuration: 0.1
+  ShakeDuration: 0.1
+  Vibrato: 100
+  Randomness: 100
+  FadeOut: 1
+  OnClickScaleToValue: 1.3
+  OnClickDuration: 0.075
+  UsePunchScale: 0
+  PunchAmount: 0.1
