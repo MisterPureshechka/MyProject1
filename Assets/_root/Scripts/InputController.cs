@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core;
 using Scripts.GlobalStateMachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -14,13 +15,20 @@ namespace Scripts
         private readonly List<RaycastResult> _uiHits = new List<RaycastResult>(8);
         private PointerEventData _ped;
 
+        private bool _isGameState;
+        
         public InputController(LocalEvents localEvents)
         {
             _localEvents = localEvents;
+            _isGameState = true;
+            
+            _localEvents.OnExitEvent += _ => _isGameState = false;
         }
 
         public void Execute(float deltatime)
         {
+            if(!_isGameState) return;
+            
             UpdateMousePosition(Input.mousePosition);
 
 #if UNITY_EDITOR || UNITY_STANDALONE

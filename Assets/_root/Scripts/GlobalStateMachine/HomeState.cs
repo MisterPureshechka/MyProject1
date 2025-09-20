@@ -12,6 +12,7 @@ using Scripts.Messenger.ComeBackLogic;
 using Scripts.OnlineShop;
 using Scripts.Progress;
 using Scripts.Rooms;
+using Scripts.Sleep;
 using Scripts.Stat;
 using Scripts.Tasks;
 using Scripts.Ui;
@@ -60,7 +61,7 @@ namespace Scripts.GlobalStateMachine
             var roomSize = homeInitializer.GetRoomSize();
             var heroMovementLogic =
                 new HeroMovementLogic(camera, interactiveObjectRegister, inputController, localEvents);
-            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress, localEvents);
+            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress, localEvents, interactiveObjectRegister);
 
             var interactiveObjectSelector = new InteractiveObjectSelector(camera, inputController, interactiveObjectRegister, localEvents);
 
@@ -98,7 +99,7 @@ namespace Scripts.GlobalStateMachine
             var notificationSystem = new NotificationSystem(new NotificationLibrary(), calendarLogic, localEvents, timeLogic);
             var roomShaker = new RoomShaker(home, localEvents, _gameData.InteractiveObjectConfig);
 
-            var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary(), localEvents, calendarLogic);
+            var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary(), localEvents, calendarLogic, timeLogic);
             var comeBackStore = new ComeBackStore();
             var jobMessageGenerator = new JobMessageGenerator(calendarLogic, localEvents, _gameData.MessengerConfig, timeLogic, comeBackStore, jobLogic);
             var messenger = new MessengerLogic(localEvents, _gameData.MessengerConfig, calendarLogic, timeLogic);
@@ -107,7 +108,8 @@ namespace Scripts.GlobalStateMachine
 
             var rentLogic = new RentLogic(localEvents, calendarLogic, progressDataAdapter);
 
-            var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home);
+            var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home, progressDataAdapter, _gameProgress);
+            var sleepLogic = new SleepLogic(_gameStateMachine, localEvents, progressDataAdapter, _gameProgress, calendarLogic, timeLogic);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -152,6 +154,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(clickLogic);
             _controllers.Add(roomColliderController);
             _controllers.Add(rentLogic);
+            _controllers.Add(sleepLogic);
         }
 
         public override void Update(float deltaTime)

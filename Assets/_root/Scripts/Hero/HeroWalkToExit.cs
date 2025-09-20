@@ -1,6 +1,7 @@
 using System;
 using _root.Notification;
 using Scripts.GlobalStateMachine;
+using Scripts.Job;
 using Scripts.Rooms;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Scripts.Hero
         private Vector3 _playerPosition;
         private Vector3 _targetPosition;
         
-        private CalendarEventType _eventType;
+        private ExitEvent _event;
 
         public HeroWalkToExit(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
         {
@@ -24,7 +25,7 @@ namespace Scripts.Hero
         {
             _targetIO = _heroLogic.GetTargetIO();
             
-            _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
+            _targetPosition = _heroLogic.GetIOPositionByType(InteractiveObjectType.Door);
             
             _heroLogic.FlipHero(_heroLogic.HeroPosition().x > _targetPosition.x);
             _heroLogic.PlayAnimation(HeroAnimationState.Walk, true);
@@ -41,14 +42,15 @@ namespace Scripts.Hero
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
                 _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
-                _localEvents.TriggerEventOnExit(_eventType);
+                _localEvents.TriggerExitEventWhenExit(_event);
                 _localEvents.TriggerHeroGetExit();
+                _heroLogic.SaveInitPos(InteractiveObjectType.Door);
             }
         }
 
-        public void SetEventType(CalendarEventType eventType)
+        public void SetEventType(ExitEvent exitEvent)
         {
-            _eventType = eventType;
+            _event = exitEvent;
         }
 
         public override void Exit()

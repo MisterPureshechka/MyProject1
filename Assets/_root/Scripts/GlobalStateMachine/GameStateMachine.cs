@@ -47,7 +47,7 @@ namespace Scripts.GlobalStateMachine
 
             _currentBaseState = state ?? throw new Exception($"{typeof(T)} not found");
             _currentBaseState.Enter();
-            yield return new WaitForSeconds(1f); //сюда
+            yield return new WaitForSeconds(1f);
             
             if (_loadingCurtain != null)
                 yield return _loadingCurtain.HideRoutine();

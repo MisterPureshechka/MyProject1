@@ -15,9 +15,12 @@ namespace Scripts.Messenger.ComeBackLogic
 
         public string CompanyName;
         public string HRName;
+        public string JobId;
         public string JobTitle;
         public int Salary;
         public int[] SalaryDays;
         public int WorkStart;
+        public string Message;
+        public int HoursBeforeComeBack;
     }
 }

@@ -89,6 +89,14 @@
     "Tooltip": "",
     "ProgressDelta": 1
   },
+  "GameMinute": {
+    "MetaType": "System",
+    "Value": 0,
+    "MaxValue": 59,
+    "DisplayName": "Current Time",
+    "Tooltip": "",
+    "ProgressDelta": 1
+  },
   "CurrentDay": {
     "MetaType": "System",
     "Value": 7,
@@ -131,10 +139,34 @@
   },
   "CurrentJobIndex": 
   { "MetaType": "System", 
-    "Value": 0, 
+    "Value": 1, 
     "MaxValue": 999, 
     "DisplayName": "Current Job Index", 
     "Tooltip": "", 
+    "ProgressDelta": 0
+  },
+  "HeroState": {
+    "MetaType": "System",
+    "Value": 0,
+    "MaxValue": 100,
+    "DisplayName": "Текущий стейт героя",
+    "Tooltip": "Idle=0, Walk=1, ...",
+    "ProgressDelta": 0
+  },
+  "HeroStatePayload": {
+    "MetaType": "System",
+    "Value": 0,
+    "MaxValue": 100,
+    "DisplayName": "Пэйлоад стейта",
+    "Tooltip": "Напр. SprintType",
+    "ProgressDelta": 0
+    },
+  "InitialPosX": {
+    "MetaType": "System",
+    "Value": 0,
+    "MaxValue": 100,
+    "DisplayName": "Hero Initial Pos",
+    "Tooltip": "Hero Pos When Start",
     "ProgressDelta": 0
   }
 }

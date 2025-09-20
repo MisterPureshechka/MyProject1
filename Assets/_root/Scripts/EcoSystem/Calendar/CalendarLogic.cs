@@ -103,6 +103,12 @@ namespace Scripts.EcoSystem.Calendar
             }
         }
 
+        public bool IsWeekend()
+        {
+            var date = _currentDate;
+            return CalendarExtentions.IsWeekend(date.Day, date.Month, date.Year);
+        }
+
         public GameDate GetCurrentDate() => _currentDate;
         
         public void CleanUp()

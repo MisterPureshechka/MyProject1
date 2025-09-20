@@ -54,7 +54,7 @@ namespace Scripts.Wallet
         {
             _walletAmount -= value;
             
-            _progressDataAdapter.TryUpdateValue("WalletAmount", -value);
+            _progressDataAdapter.TryUpdateValue(WalletKey, -value);
             
             UpdateWallet();
         }
@@ -63,16 +63,19 @@ namespace Scripts.Wallet
         {
             _walletAmount += amount;
             
-            _progressDataAdapter.TryUpdateValue("WalletAmount", amount);
+            _progressDataAdapter.TryUpdateValue(WalletKey, amount);
             
             Debug.Log($"[Salary] +{amount}. Баланс = " +
-                      _progressDataAdapter.GetProgressData().Metadata.GetValue("WalletAmount"));
+                      _progressDataAdapter.GetProgressData().Metadata.GetValue(WalletKey));
 
             UpdateWallet();
         }
-
+        
         private void AddOrSwitchIncome(IDevJob job)
         {
+            if (_currentJobIncome != null)
+                RemoveIncomeTransaction(_currentJobIncome);
+
             var transaction = new Transaction
             {
                 Amount = job.Salary,
@@ -80,12 +83,20 @@ namespace Scripts.Wallet
                 Name = job.JobTitle,
                 DaysForTransaction = job.SalaryDays
             };
+
             _currentJobIncome = transaction;
-            
             ApplyTransaction(transaction);
+
             UpdateWallet();
-            Debug.Log($"Income added: {_walletAmount}");
         }
+        
+        private void RemoveIncomeTransaction(Transaction transaction)
+        {
+            if (transaction == null) return;
+
+            _icomeAndExpenses.Remove(transaction);
+        }
+
 
         private void UpdateMiniWallet()
         {

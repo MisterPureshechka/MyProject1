@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using _root.Notification;
 using Core;
 using DG.Tweening;
-using NUnit.Framework;
 using Scripts.Animator;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
+using Scripts.Job;
 using Scripts.Meta;
 using Scripts.Progress;
 using Scripts.Rooms;
@@ -19,65 +17,81 @@ namespace Scripts.Hero
 {
     public class HeroLogic : IExecute, ICleanUp
     {
-        private readonly HeroStateMachine _heroStateMachine;
-        
-        public HeroIdleState IdleState { get; private set; }
-        public HeroWalkState WalkState { get; private set; }
-        public HeroWalkToSprint WalkToSprintState { get; private set; }
-        public HeroWalkToIO WalkToIOState { get; private set; }
-        public HeroWalkToExit WalkToExitState { get; private set; }
-        public HeroWalkToRootIOState WalkToRootIOState { get; private set; }
-        public HeroDevState DevState { get; private set; }
-        public HeroSleepState SleepState { get; private set; }
-        public HeroEatState EatState { get; private set; }
-        public HeroPlayState PlayState { get; private set; }
-        public HeroReadState ReadState { get; private set; }
-        public HeroChillState ChillState { get; private set; }
-        public HeroAwaitState HeroAwaitState { get; private set; }
-        public HeroToiletState HeroToiletState { get; private set; }
-        public HeroBathState HeroBathState { get; private set; }
+        private const float Offset = 1f;
+        private readonly GameProgress _gameProgress;
 
         private readonly HeroConfig _heroConfig;
         private readonly HeroMovementLogic _heroMovementLogic;
-        private readonly HeroView _heroView;
         private readonly SpriteRenderer _heroSprite;
-        private readonly SpriteAnimator _spriteAnimator;
-        private readonly ProgressDataAdapter _progressData;
-        private readonly GameProgress _gameProgress;
+        private readonly HeroStateMachine _heroStateMachine;
+        private readonly HeroView _heroView;
+        private readonly InteractiveObjectRegisterer _interactiveObjectRegister;
         private readonly LocalEvents _localEvents;
+        private readonly ProgressDataAdapter _progressData;
 
         private readonly float _roomSize;
+        private readonly SpriteAnimator _spriteAnimator;
         private readonly float _yPos;
+        private IInteractiveObject _exit;
+        
+        public HeroIdleState IdleState { get; }
+        public HeroWalkState WalkState { get; }
+        public HeroWalkToSprint WalkToSprintState { get; }
+        public HeroWalkToIO WalkToIOState { get; }
+        public HeroWalkToExit WalkToExitState { get; }
+        public HeroWalkToRootIOState WalkToRootIOState { get; }
+        public HeroWalkToBedState WalkToBedState { get; }
+        public HeroDevState DevState { get; }
+        public HeroSleepState SleepState { get; }
+        public HeroEatState EatState { get; }
+        public HeroPlayState PlayState { get; }
+        public HeroReadState ReadState { get; }
+        public HeroChillState ChillState { get; }
+        public HeroAwaitState HeroAwaitState { get; }
+        public HeroToiletState HeroToiletState { get; }
+        public HeroBathState HeroBathState { get; }
+        public HeroWakeUpState WakeUpState { get; private set; }
 
         private bool _isAwait;
-        
-        private const float Offset = 1f;
-        
-        private Vector3 _targetPosition;
-        private IInteractiveObject _targetIO;
         private Sequence _sequence;
+
+        private Dictionary<HeroStateId, HeroBaseState> _stateFromId;
+        private IInteractiveObject _targetIO;
+
+        private readonly Vector3 _initialPosition;
+        private Vector3 _targetPosition;
 
         public HeroLogic(HeroConfig heroConfig, HeroMovementLogic heroMovementLogic, HeroView heroView,
             Vector3 initialPosition, float roomSize, SpriteAnimator spriteAnimator, ProgressDataAdapter progressData,
-            GameProgress gameProgress, LocalEvents localEvents)
+            GameProgress gameProgress, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegister)
         {
             _heroConfig = heroConfig;
             _heroMovementLogic = heroMovementLogic;
             _heroView = heroView;
+            if (_heroView == null)
+            {
+                _heroView = Object.FindObjectOfType<HeroView>();
+                ;
+            }
+
             _roomSize = roomSize;
             _spriteAnimator = spriteAnimator;
             _progressData = progressData;
             _gameProgress = gameProgress;
             _localEvents = localEvents;
+            _interactiveObjectRegister = interactiveObjectRegister;
             _yPos = initialPosition.y;
             _heroSprite = heroView.HeroSprite;
+            _initialPosition = LoadInitPos();
+            _heroView.transform.position = _initialPosition;
             
+
             _heroStateMachine = new HeroStateMachine();
             IdleState = new HeroIdleState(this);
             WalkState = new HeroWalkState(this);
             DevState = new HeroDevState(this, _progressData, _localEvents);
             EatState = new HeroEatState(this, _progressData);
-            SleepState = new HeroSleepState(this, _progressData);
+            SleepState = new HeroSleepState(this, _localEvents);
             WalkToSprintState = new HeroWalkToSprint(this, _localEvents);
             WalkToRootIOState = new HeroWalkToRootIOState(this, _localEvents);
             ReadState = new HeroReadState(this, _progressData);
@@ -88,8 +102,11 @@ namespace Scripts.Hero
             HeroBathState = new HeroBathState(this);
             WalkToIOState = new HeroWalkToIO(this, _localEvents);
             WalkToExitState = new HeroWalkToExit(this, _localEvents);
-            
-            _heroStateMachine.Init(IdleState);
+            SleepState = new HeroSleepState(this, _localEvents);
+            WalkToBedState = new HeroWalkToBedState(this);
+            WakeUpState = new HeroWakeUpState(this);
+
+            _heroStateMachine.Init(LoadLastState());
 
             _heroMovementLogic.OnClickI0 += GetTargetIO;
             _localEvents.OnClosePanel += PanelCloseCallback;
@@ -101,14 +118,158 @@ namespace Scripts.Hero
             _localEvents.OnSprintComplete += SprintCompleteListener;
             _localEvents.OnHeroGetRootIO += ChangeStateByIOType;
             _localEvents.OnWalkToIO += WalkToIO;
-            _localEvents.OnHeroWalkToExit += WalkToExit;
+            _localEvents.OnExitEvent += WalkToExit;
+            _localEvents.OnHeroGoToBed += WalkToBed;
         }
 
-        private void WalkToExit(InteractiveObjectType iO, CalendarEventType eventType)
+        public void CleanUp()
+        {
+            _heroMovementLogic.OnClickI0 -= GetTargetIO;
+            _localEvents.OnClosePanel -= PanelCloseCallback;
+            _localEvents.OnOpenPanel -= PanelOpenListener;
+            _localEvents.OnMouseClickWorld -= OnCLickWorld;
+            _localEvents.OnSprintCreated -= ChangeStateByIOType;
+            _localEvents.OnTaskCatalogHide -= TaskCatalogHideListener;
+            _localEvents.OnSprintComplete -= SprintCompleteListener;
+            _localEvents.OnHeroGetRootIO -= ChangeStateByIOType;
+
+            Object.Destroy(_heroView.gameObject);
+        }
+
+        public void Execute(float deltatime)
+        {
+            _heroStateMachine.CurrentState.Update(deltatime);
+        }
+
+        private Vector3 LoadInitPos()
+        {
+            var meta = _progressData.GetProgressData().Metadata;
+            meta.TryGetValue(Consts.InitialPosX, out var data);
+
+            if (data != null)
+            {
+                Debug.LogError("InitialPos is - " + NormalizeVector(new Vector3(data.Value, 0, 0)));
+                return NormalizeVector(new Vector3(data.Value, 0, 0));
+            }
+
+            Debug.LogError("InitialPos is null ");
+            
+            return NormalizeVector(_interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Door).Position);
+        }
+
+        public void SaveInitPos(InteractiveObjectType iOType = InteractiveObjectType.None)
+        {
+            var meta = _progressData.GetProgressData().Metadata;
+            
+            meta.TryGetValue(Consts.InitialPosX, out var data);
+
+            if (data != null)
+            {
+                data.Value = _interactiveObjectRegister.GetRootByIOType(iOType).Position.x;
+            }
+        }
+
+        private void BuildStateMap()
+        {
+            _stateFromId = new Dictionary<HeroStateId, HeroBaseState>
+            {
+                [HeroStateId.Idle] = IdleState,
+                [HeroStateId.Walk] = WalkState,
+                [HeroStateId.WalkToSprint] = WalkToSprintState,
+                [HeroStateId.WalkToIO] = WalkToIOState,
+                [HeroStateId.WalkToExit] = WalkToExitState,
+                [HeroStateId.WalkToRootIO] = WalkToRootIOState,
+                [HeroStateId.WalkToBed] = WalkToBedState,
+                [HeroStateId.Dev] = DevState,
+                [HeroStateId.Eat] = EatState,
+                [HeroStateId.Sleep] = SleepState,
+                [HeroStateId.Play] = PlayState,
+                [HeroStateId.Read] = ReadState,
+                [HeroStateId.Chill] = ChillState,
+                [HeroStateId.Await] = HeroAwaitState,
+                [HeroStateId.Toilet] = HeroToiletState,
+                [HeroStateId.Bath] = HeroBathState,
+                [HeroStateId.WakeUp] = WakeUpState,
+            };
+        }
+
+        private HeroStateId IdOf(HeroBaseState s)
+        {
+            if (s == IdleState) return HeroStateId.Idle;
+            if (s == WalkState) return HeroStateId.Walk;
+            if (s == WalkToSprintState) return HeroStateId.WalkToSprint;
+            if (s == WalkToIOState) return HeroStateId.WalkToIO;
+            if (s == WalkToExitState) return HeroStateId.WalkToExit;
+            if (s == WalkToRootIOState) return HeroStateId.WalkToRootIO;
+            if (s == WalkToBedState) return HeroStateId.WalkToBed;
+            if (s == DevState) return HeroStateId.Dev;
+            if (s == EatState) return HeroStateId.Eat;
+            if (s == SleepState) return HeroStateId.Sleep;
+            if (s == PlayState) return HeroStateId.Play;
+            if (s == ReadState) return HeroStateId.Read;
+            if (s == ChillState) return HeroStateId.Chill;
+            if (s == HeroAwaitState) return HeroStateId.Await;
+            if (s == HeroToiletState) return HeroStateId.Toilet;
+            if (s == HeroBathState) return HeroStateId.Bath;
+            if (s == WakeUpState) return HeroStateId.WakeUp;
+            return HeroStateId.Idle;
+        }
+
+        private void SetMeta(string key, float value)
+        {
+            var meta = _progressData.GetProgressData().Metadata;
+            if (meta.TryGetValue(key, out var data))
+                data.Value = value;
+            else
+                meta.Add(key, new Meta.Metadata
+                {
+                    MetaType = MetaType.System,
+                    Value = value, MaxValue = 100,
+                    DisplayName = key, Tooltip = "",
+                    ProgressDelta = 0
+                });
+        }
+
+        public void SaveHeroState(HeroBaseState state, int? payload = null)
+        {
+            SetMeta(Consts.HeroStateKey, (int)IdOf(state));
+            if (payload.HasValue)
+                SetMeta(Consts.HeroStatePayloadKey, payload.Value);
+            _gameProgress.SaveProgress(_progressData.GetProgressData());
+        }
+
+        private HeroBaseState LoadLastState()
+        {
+            BuildStateMap();
+
+            var meta = _progressData.GetProgressData().Metadata;
+
+            if (meta.TryGetValue(Consts.HeroStateKey, out var stateData))
+            {
+                var id = Mathf.RoundToInt(stateData.Value);
+                if (_stateFromId != null && _stateFromId.TryGetValue((HeroStateId)id, out var state))
+                {
+                    Debug.LogError("Hero state Load - " + state);
+                    return state;
+                }
+            }
+
+            Debug.LogError("Hero state Load error");
+
+            return IdleState;
+        }
+
+        private void WalkToExit(ExitEvent exitEvent)
         {
             ChangeState(WalkToExitState);
-            WalkToExitState.SetEventType(eventType);
+            WalkToExitState.SetEventType(exitEvent);
             _localEvents.TriggerHeroWalkToIO();
+        }
+
+        private void WalkToBed()
+        {
+            ChangeState(WalkToBedState);
+            _localEvents.TriggerHeroWalkToSprint();
         }
 
         private void SprintCratedListener(SprintType obj)
@@ -134,14 +295,14 @@ namespace Scripts.Hero
 
         private void WalkToIO(InteractiveObjectType interactiveObjectType)
         {
-           ChangeState(WalkToIOState);
+            ChangeState(WalkToIOState);
         }
 
         private void ChangeStateByIOType(SprintType iOType)
         {
             switch (iOType)
             {
-                case SprintType.None :
+                case SprintType.None:
                     ChangeState(IdleState);
                     break;
                 case SprintType.Dev:
@@ -170,7 +331,7 @@ namespace Scripts.Hero
                     break;
             }
         }
-        
+
         public void TriggerHeroGetIO(SprintType iOType)
         {
             _localEvents.TriggerHeroGetSprint(iOType);
@@ -183,16 +344,16 @@ namespace Scripts.Hero
 
         private void MouseListener(Vector3 pos)
         {
-            if(_isAwait) return;
-            
-            var roomSize = (_roomSize - Offset)/2;
-            
+            if (_isAwait) return;
+
+            var roomSize = (_roomSize - Offset) / 2;
+
             if (pos.x > -roomSize && pos.x < roomSize)
             {
                 _targetPosition = new Vector3(pos.x, _yPos, 0);
-            
+
                 _heroStateMachine.ChangeState(WalkState);
-                
+
                 FlipHero(_heroView.transform.position.x > _targetPosition.x);
             }
         }
@@ -206,35 +367,36 @@ namespace Scripts.Hero
 
         public void PlayTransitionAnimation(HeroAnimationState from, HeroAnimationState to)
         {
-            var fromSequence = _heroConfig.Sequences.Find(f => f.HeroAnimationState == from);   
+            var fromSequence = _heroConfig.Sequences.Find(f => f.HeroAnimationState == from);
             var toSequence = _heroConfig.Sequences.Find(t => t.HeroAnimationState == to);
-            
-            _spriteAnimator.StartAnimation(_heroSprite, fromSequence.Sprites, false, toSequence.Speed, () =>
-            {
-                _spriteAnimator.StartAnimation(_heroSprite, toSequence.Sprites, true, toSequence.Speed);
-            });
+
+            _spriteAnimator.StartAnimation(_heroSprite, fromSequence.Sprites, false, toSequence.Speed,
+                () => { _spriteAnimator.StartAnimation(_heroSprite, toSequence.Sprites, true, toSequence.Speed); });
         }
 
         private void GetTargetIO(IInteractiveObject iO)
         {
-            if(_isAwait) return;
-            
+            if (_isAwait) return;
+
             _targetIO = iO;
             _targetPosition = NormalizeVector(iO.Position);
-            // _heroStateMachine.ChangeState(WalkToIOState);
-            // FlipHero(_heroView.transform.position.x > _targetPosition.x);
+        }
+
+        public Vector3 GetIOPositionByType(InteractiveObjectType iOType)
+        {
+            var ioPos = NormalizeVector(_interactiveObjectRegister.GetRootByIOType(iOType).Position);
+
+            return ioPos;
         }
 
         private void PanelCloseCallback()
         {
             _isAwait = false;
-            //ChangeState(IdleState);
         }
 
         private void PanelOpenListener()
         {
             _isAwait = true;
-            /////ChangeState(HeroAwaitState);
         }
 
         public Vector3 NormalizeVector(Vector3 vector)
@@ -259,14 +421,9 @@ namespace Scripts.Hero
 
         public void MoveHero(Vector3 from, Vector3 to, float deltaTime)
         {
-            Vector3 newPosition = Vector3.MoveTowards(from, to, _heroConfig.WalkSpeed * deltaTime);
-            
+            var newPosition = Vector3.MoveTowards(from, to, _heroConfig.WalkSpeed * deltaTime);
+
             _heroView.transform.position = newPosition;
-        }
-        
-        public void Execute(float deltatime)
-        {
-            _heroStateMachine.CurrentState.Update(deltatime);
         }
 
         public Vector3 HeroPosition()
@@ -303,20 +460,6 @@ namespace Scripts.Hero
         {
             var position = _heroView.transform.position;
             _heroView.transform.position = new Vector3(position.x, _yPos, position.z);
-        }
-
-        public void CleanUp()
-        {
-            _heroMovementLogic.OnClickI0 -= GetTargetIO;
-            _localEvents.OnClosePanel -= PanelCloseCallback;
-            _localEvents.OnOpenPanel -= PanelOpenListener;
-            _localEvents.OnMouseClickWorld -= OnCLickWorld;
-            _localEvents.OnSprintCreated -= ChangeStateByIOType;
-            _localEvents.OnTaskCatalogHide -= TaskCatalogHideListener;
-            _localEvents.OnSprintComplete -= SprintCompleteListener;
-            _localEvents.OnHeroGetRootIO -= ChangeStateByIOType;
-            
-            Object.Destroy(_heroView.gameObject);
         }
 
         public void TiggerSprintExit()

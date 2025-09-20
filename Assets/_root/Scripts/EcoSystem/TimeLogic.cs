@@ -1,7 +1,7 @@
+using System;
 using Core;
 using Scripts.GlobalStateMachine;
 using Scripts.Progress;
-using Scripts.Tasks;
 using Scripts.Utils;
 using UnityEngine;
 
@@ -14,23 +14,55 @@ namespace Scripts.EcoSystem
         private readonly LocalEvents _localEvents;
 
         float _currentHour;
+        float _currentMinute;
         
         private float _timeMultiplier;
-        private float _realSecondsPerDay = 24f;
+        private float _realSecondsPerDay = 2400f;
         private int _lastMinute = -1;
+        private int _lastHour = -1;
 
         public TimeLogic(ProgressDataAdapter progressDataAdapter, TimeView timeView, LocalEvents localEvents)
         {
             _progressDataAdapter = progressDataAdapter;
             _timeView = timeView;
             _localEvents = localEvents;
-            _currentHour = _progressDataAdapter.GetProgressData().Metadata.GetValue("GameTime");
+            
+            var meta = _progressDataAdapter.GetProgressData().Metadata;
+            
+            int hour   = meta.TryGetValue(Consts.GameHourKey, out var h)   ? Convert.ToInt32(h.Value) : 0;
+            int minute = meta.TryGetValue(Consts.GameMinuteKey, out var m) ? Convert.ToInt32(m.Value) : 0;
+
+            hour   = Mathf.Clamp(hour, 0, 23);
+            minute = Mathf.Clamp(minute, 0, 59);
+
+            _currentHour = hour + minute / 60f;
+
+            _lastHour   = Mathf.FloorToInt(_currentHour);
+            _lastMinute = Mathf.FloorToInt((_currentHour % 1f) * 60);
+            
+            Debug.Log($"Current hour intimeLogic: {_currentHour}:{_currentMinute}");
+            
+            _lastHour = Mathf.FloorToInt(_currentHour);  
             
             SetTimeSpeed();
             _localEvents.OnActiveSprint += SpeedUpTime;
             _localEvents.OnSprintExit += SpeedDownTime;
+            _localEvents.OnNewHour += SaveHour;
+            _localEvents.OnNewMinute += SaveMinute;
         }
-        
+
+        private void SaveHour()
+        {
+            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue(Consts.GameHourKey, out var hourData))
+                hourData.Value = CurrentHour;
+        }
+
+        private void SaveMinute()
+        {
+            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue(Consts.GameMinuteKey, out var minuteData))
+                minuteData.Value = CurrentMinute;
+        }
+
         private void SetTimeSpeed()
         {
             _timeMultiplier = 24f / _realSecondsPerDay;
@@ -38,13 +70,13 @@ namespace Scripts.EcoSystem
         
         private void SpeedUpTime()
         {
-            _realSecondsPerDay = 24f;
+            _realSecondsPerDay = 240f;
             SetTimeSpeed();
         }
 
         private void SpeedDownTime()
         {
-            _realSecondsPerDay = 24f;
+            _realSecondsPerDay = 2400f;
             SetTimeSpeed();
         }
 
@@ -53,11 +85,6 @@ namespace Scripts.EcoSystem
             CalculateTime(deltatime);
 
             _timeView.UpdateTimeText(_currentHour);
-            
-            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue("GameTime", out var metadata))
-            {
-                metadata.Value = _currentHour;
-            }
         }
 
         private void CalculateTime(float deltatime)
@@ -68,6 +95,13 @@ namespace Scripts.EcoSystem
             {
                 _localEvents.TriggerNewDay();
                 _currentHour = 0;
+            }
+            
+            int hourNow = CurrentHour;              // FloorToInt(_currentHour)
+            if (hourNow != _lastHour)
+            {
+                _lastHour = hourNow;
+                _localEvents.TriggerNewHour();
             }
             
             if (CurrentMinute != _lastMinute)
@@ -125,7 +159,9 @@ namespace Scripts.EcoSystem
         public void CleanUp()
         {
             _localEvents.OnActiveSprint -= SpeedUpTime;
-            _localEvents.OnSprintExit -= SpeedDownTime;
+            _localEvents.OnSprintExit   -= SpeedDownTime;
+            _localEvents.OnNewHour      -= SaveHour;
+            _localEvents.OnNewMinute    -= SaveMinute;
         }
     }
 }

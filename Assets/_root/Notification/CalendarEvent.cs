@@ -15,12 +15,15 @@ namespace _root.Notification
         public string Message;
         public string ComeBackMessage;
         public CalendarEventType EventType;
+        public int HoursBeforeComeBack;
     }
 
     public enum CalendarEventType
     {
+        JobOffer,        // прямой оффер
+        JobMessageRead,  // пометка «прочитано»
         JobInterview,
-        Job,
+        Job
     }
         
 }

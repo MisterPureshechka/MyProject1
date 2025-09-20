@@ -3,45 +3,100 @@ using _root.Notification;
 using UnityEngine;
 using Core;
 using Scripts.GlobalStateMachine;
+using Scripts.Job;
+using Scripts.Progress;
+using Scripts.Utils;
 
 namespace Scripts.Rooms
 {
     public class RoomExitLogic : ICleanUp
     {
+        
         private readonly GameStateMachine _gameStateMachine;
         private LocalEvents _localEvents;
         private readonly IRoomView _roomView;
+        private readonly ProgressDataAdapter _progressDataAdapter;
 
         private List<CalendarEvent> _events;
+        private GameProgress _gameProgress;
 
-        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents, IRoomView roomView)
+        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents, IRoomView roomView, ProgressDataAdapter progressDataAdapter, GameProgress gameProgress)
         {
             _gameStateMachine = gameStateMachine;
             _localEvents = localEvents;
             _roomView = roomView;
+            _progressDataAdapter = progressDataAdapter;
+            _gameProgress = gameProgress;
 
-            _localEvents.OnHeroGetExit += TryExitRoom;
-            _localEvents.OnSaveComeBackAction += SaveComeBackAction;
-
+            _localEvents.OnExitEventWhenExit += TryExitRoom;
         }
-
-        private void TryLoadEvents()
+        
+        private void TryExitRoom(ExitEvent exitEvent)
         {
+            _progressDataAdapter.TryUpdateValue(Consts.GameHourKey, exitEvent?.HoursBeforeComeBack ?? 0);
             
-        }
+            foreach (var kv in exitEvent.KnowledgeToUpdateAfter)
+                Debug.Log($"  Knowledge: {kv.Key} -> {kv.Value}");
+            
+            ChangeStatOnExit(exitEvent);
+            
+            _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
 
-        private void SaveComeBackAction(CalendarEvent savedEvent)
-        {
-            _events.Add(savedEvent);
-        }
-
-        private void TryExitRoom()
-        {
             _gameStateMachine.EnterState<LoadProgressState>();
         }
+
+        private void ChangeStatOnExit(ExitEvent exitEvent)
+        {
+            if (exitEvent.HealthToUpdateAfter != null)
+            {
+                foreach (var kv in exitEvent.HealthToUpdateAfter)
+                    Debug.Log($"  Health: {kv.Key} -> {kv.Value}");
+            }
+            else
+            {
+                Debug.Log(" ------> HealthToUpdateAfter == null");
+            }
+
+            if (exitEvent.KnowledgeToUpdateAfter != null)
+            {
+                foreach (var kv in exitEvent.KnowledgeToUpdateAfter)
+                    Debug.Log($" ------> Knowledge: {kv.Key} -> {kv.Value}");
+            }
+            else
+            {
+                Debug.Log(" ------> KnowledgeToUpdateAfter == null");
+            }
+            if (exitEvent.HealthToUpdateAfter != null)
+            {
+                foreach (var kv in exitEvent.HealthToUpdateAfter)
+                {
+                    Debug.Log("Health to update = " + kv.Key + " : " + kv.Value);
+                    _progressDataAdapter.TryUpdateValue(kv.Key.ToString(), kv.Value);
+                }
+            }
+            else
+            {
+                Debug.Log("exitEvent.HealthToUpdateAfter == null");
+            }
+
+            if (exitEvent.KnowledgeToUpdateAfter != null)
+            {
+                foreach (var kv in exitEvent.KnowledgeToUpdateAfter)
+                {
+                    Debug.Log("Knowledge to update = " + kv.Key + " : " + kv.Value);
+                    _progressDataAdapter.TryUpdateValue(kv.Key.ToString(), kv.Value);
+                }
+            }
+            else
+            {
+                Debug.Log("exitEvent.KnowledgeToUpdateAfter == null");
+            }
+        }
+
+        
         public void CleanUp()
         {
-            _localEvents.OnHeroGetExit -= TryExitRoom;
+            _localEvents.OnExitEventWhenExit -= TryExitRoom;
             Object.Destroy(_roomView.Transform.gameObject);
         }
     }

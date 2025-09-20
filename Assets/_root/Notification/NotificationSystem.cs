@@ -49,7 +49,6 @@ namespace _root.Notification
 
         public void AddNotification(Notification notification)
         {
-            Debug.Log($"Add notification: {notification.Title} at {notification.Day}/{notification.Month}/{notification.Year}");
             _notifications.Add(notification);
         }
 

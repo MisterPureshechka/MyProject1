@@ -64,6 +64,13 @@ namespace Scripts.EcoSystem.Calendar
             return dow == 0 ? 6 : dow - 1;
         }
         
+        public static bool IsWeekend(int day, int month, int year)
+        {
+            // GetDayOfWeek возвращает 0..6 для Mon..Sun
+            int dow = GetDayOfWeek(day, month, year);
+            return dow >= 5; // 5 = Sat, 6 = Sun
+        }
+        
         public static readonly int[] DaysInMonths = 
         {
             31, // Январь

@@ -31,6 +31,11 @@ public class Controllers : IInitialization, IExecute, IFixedExecute, ICleanUp, I
             try { _cleanup[i].CleanUp(); }
             catch (Exception ex) { Debug.LogException(ex); }
         }
+        
+        _initialize.Clear();
+        _execute.Clear();
+        _fixedExecute.Clear();
+        _cleanup.Clear();
     }
 
     public void Dispose()

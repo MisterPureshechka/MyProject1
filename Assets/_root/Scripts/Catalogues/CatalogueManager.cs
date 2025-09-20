@@ -1,6 +1,7 @@
 using Core;
 using Scripts.ClickLogic;
 using Scripts.GlobalStateMachine;
+using Scripts.Job;
 using UnityEngine;
 
 namespace Scripts.Catalogues
@@ -17,6 +18,7 @@ namespace Scripts.Catalogues
             _localEvents = localEvents;
             _localEvents.OnCatalogueShow += ShowCatalogue;
             _localEvents.OnCatalogueHide += CloseCurrentCatalogue;
+            _localEvents.OnExitEvent += CloseCurrentCatalogue;
         }
 
         public void ShowCatalogue(ICatalogue newCatalogue)
@@ -66,10 +68,25 @@ namespace Scripts.Catalogues
             }
         }
 
+        public void CloseCurrentCatalogue(ExitEvent exitEvent)
+        {
+            if (_currentCatalogue != null)
+            {
+                _isTransition = true;
+                _currentCatalogue.Hide(() =>
+                {
+                    _localEvents.TriggerClickStateChange(ClickState.Room);
+                    _currentCatalogue = null;
+                    _isTransition = false;
+                });
+            }
+        }
+
         public void CleanUp()
         {
             _localEvents.OnCatalogueShow -= ShowCatalogue;
             _localEvents.OnCatalogueHide -= CloseCurrentCatalogue;
+            _localEvents.OnExitEvent -= CloseCurrentCatalogue;
         }
     }
 

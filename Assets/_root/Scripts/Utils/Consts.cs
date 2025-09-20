@@ -5,6 +5,12 @@ namespace Scripts.Utils
         public const string BASE_PATH = "/metaconfig.json";
         
         public const string PlayerKey = "Player";
+        public const string GameHourKey = "GameTime";
+        public const string GameMinuteKey = "GameMinute";
+        
+        public const string HeroStateKey = "HeroState";
+        public const string HeroStatePayloadKey = "HeroStatePayload";
+        public const string InitialPosX = "InitialPosX";
         
         public const string CurrentDayKey = "CurrentDay";
         public const string CurrentMonthKey = "CurrentMonth";

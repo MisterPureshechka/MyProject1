@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using _root.Notification;
 using NUnit.Framework;
 using Scripts.GlobalStateMachine;
+using Scripts.Job;
 using Scripts.Rooms;
 using UnityEngine;
 
@@ -22,17 +23,17 @@ namespace Scripts.Tasks
             _localEvents = localEvents;
             LoadAllCommands();
             _localEvents.OnSprintClosed += SprintCloseListener;
-            _localEvents.OnCalendarEventCreated += AddCommand;
+            _localEvents.OnExitEventCreated += AddCommand;
         }
 
-        private void AddCommand(CalendarEvent calendarEvent)
+        private void AddCommand(ExitEvent exitEvent)
         {
             var eventCommand = new Command
             {
-                CommandName = $"Go to {calendarEvent.Name}",
+                CommandName = $"Go to {exitEvent.EventTitle}",
                 OnExecute = () =>
                 {
-                    _localEvents.TriggerHeroWalkToExit(InteractiveObjectType.Door, calendarEvent.EventType);
+                    _localEvents.TriggerExitEvent(exitEvent);
                 },
             };
             
@@ -97,12 +98,12 @@ namespace Scripts.Tasks
 
             };
 
-            var doorCommand = new List<Command>
+            var bedCommand = new List<Command>
             {
                 new Command()
                 {
-                    CommandName = "Go to work",
-                    OnExecute = () => _localEvents.TriggerHeroWalkToExit(InteractiveObjectType.Door, CalendarEventType.Job),
+                    CommandName = "Go to sleep",
+                    OnExecute = _localEvents.TriggerHeroGoToBed,
                 }
             };
             
@@ -111,7 +112,8 @@ namespace Scripts.Tasks
             Commands.Add(InteractiveObjectType.Chair, chillCommands);
             Commands.Add(InteractiveObjectType.TV, playCommand);
             Commands.Add(InteractiveObjectType.Bath, bathCommand);
-            Commands.Add(InteractiveObjectType.Door, doorCommand);
+            Commands.Add(InteractiveObjectType.Door, new List<Command>());
+            Commands.Add(InteractiveObjectType.Bed, bedCommand);
         }
 
         private void CreateDevCommands()

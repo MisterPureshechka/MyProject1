@@ -7,6 +7,7 @@ using Scripts.GlobalStateMachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 using Random = Unity.Mathematics.Random;
 
 namespace Scripts.EcoSystem.Calendar
@@ -122,95 +123,33 @@ namespace Scripts.EcoSystem.Calendar
             _localEvents.TriggerNewNotificationCreated(notification);
         }
 
-        private void CreateTempEvent()
-        {
-            var meetingEvent = new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 15,
-                Message = "Meeting",
-                Month = 9,
-                Year = 2025
-            };
-            _allEvents.Add(meetingEvent);
-            
-            _allEvents.Add(new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 15,
-                Message = "Meeting",
-                Month = 9,
-                Year = 2025
-            });
-            _allEvents.Add(new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 15,
-                Message = "NetWorking",
-                Month = 9,
-                Year = 2025
-            });
-            
-            _allEvents.Add(new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 17,
-                Message = "Conference",
-                Month = 9,
-                Year = 2025
-            });
-            
-            _allEvents.Add(new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 18,
-                Message = "Meet up with family",
-                Month = 9,
-                Year = 2025
-            });
-            
-            _allEvents.Add(new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 5,
-                Message = "Meet up with family",
-                Month = 10,
-                Year = 2025
-            });
-            _allEvents.Add(new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 5,
-                Message = "Chill",
-                Month = 10,
-                Year = 2025
-            });
-            
-            _allEvents.Add(new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Day = 4,
-                Message = "Meet up with family",
-                Month = 9,
-                Year = 2025
-            });
-        }
-
         private void SetDays()
         {
+            _dayNames.text = "";
+            
             for (int i = 1; i <= 7; i++)
             {
                 string space = i == 7 ? "" : " ";
                 _dayNames.text += CalendarExtentions.GetMiniDayName(i) + space;
             }
-            
-            _days.Clear();
+
+            ClearDays();
 
             for (int i = 0; i < 42; i++) 
             {
                 var dayInstance = Instantiate(_dayUiPrefab, _daysHolder).GetComponent<DayUI>();
                 _days.Add(dayInstance);
             }
+        }
+
+        private void ClearDays()
+        {
+            foreach (var dayInstance in _days)
+            {
+                Object.Destroy(dayInstance.gameObject);
+            }
+            
+            _days.Clear();
         }
         
         private void ShowMonth(int month, int year)

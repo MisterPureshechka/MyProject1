@@ -157,7 +157,7 @@ namespace Scripts.GlobalStateMachine
         public Action<ICatalogue> OnCatalogueShow {get; set;}
         public void TriggerShowCatalogue(ICatalogue catalogue) => OnCatalogueShow?.Invoke(catalogue);
 
-        public Action<ICatalogue> OnCatalogueHide;
+        public Action<ICatalogue> OnCatalogueHide {get; set;}
         public Action OnWalletUpdate { get; set; }
         public void TriggerWalletUpdate() => OnWalletUpdate?.Invoke();
         public Action OnNewMinute {get; set;}
@@ -187,15 +187,32 @@ namespace Scripts.GlobalStateMachine
         public void TriggerMessegeReaded(string id) => OnMessageReaded?.Invoke(id);
         public Action OnMessangerButtonClick { get; set; }
         public void TriggerMessengerButtonClick() => OnMessangerButtonClick?.Invoke();
-        public Action<InteractiveObjectType, CalendarEventType> OnHeroWalkToExit { get; set; }
-        public void TriggerHeroWalkToExit(InteractiveObjectType door, CalendarEventType eventType) => OnHeroWalkToExit?.Invoke(door, eventType);
-        public Action<CalendarEventType> OnExitEventType { get; set; }
-        public void TriggerEventOnExit(CalendarEventType eventType) => OnExitEventType?.Invoke(eventType);
+        public Action<int> OnHeroWalkToExit { get; set; }
+        public void TriggerHeroWalkToExit(int hoursBeforeComeBack) => OnHeroWalkToExit?.Invoke(hoursBeforeComeBack);
+       
         public Action<int> OnWalletAmountIncrease { get; set; }
         public void TriggerIncreaseWalletAmount(int currentJobSalary) => OnWalletAmountIncrease?.Invoke(currentJobSalary);
         public Action<int> OnPayDay { get; set; }
         public void TriggerRentPayDay(int currentFlatMonthPayment) => OnPayDay?.Invoke(currentFlatMonthPayment);
         public Action<Transaction> OnNewTransaction { get; set; }
         public void TriggerNewTransaction(Transaction transaction) => OnNewTransaction?.Invoke(transaction);
+
+        public Action<ExitEvent> OnExitEvent { get; set; }
+        public void TriggerExitEvent(ExitEvent jobExitEvent) => OnExitEvent?.Invoke(jobExitEvent);
+
+        public Action<ExitEvent> OnExitEventWhenExit { get; set; }
+        public void TriggerExitEventWhenExit(ExitEvent exitEvent) => OnExitEventWhenExit?.Invoke(exitEvent);
+
+        public Action OnNewHour { get; set; }
+        public void TriggerNewHour() => OnNewHour?.Invoke();
+        
+        public Action<ExitEvent> OnExitEventCreated { get; set; }
+        public void TriggerExitEventCreated(ExitEvent exitEvent) => OnExitEventCreated?.Invoke(exitEvent);
+
+        public Action OnHeroGoToBed { get; set; }
+        public void TriggerHeroGoToBed() => OnHeroGoToBed?.Invoke();
+
+        public Action OnHeroSleepState { get; set; }
+        public void TriggerSleepState() => OnHeroSleepState?.Invoke();
     }
 }

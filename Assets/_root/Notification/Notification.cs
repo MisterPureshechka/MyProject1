@@ -26,5 +26,6 @@ namespace _root.Notification
             Hour = hour;
             Minute = minute;
         }
+        
     }
 }

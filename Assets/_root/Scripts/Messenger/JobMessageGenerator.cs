@@ -44,8 +44,6 @@ namespace Scripts.Messenger
             _localEvents.OnNewDay += ScheguleTime;
             _localEvents.OnNewMinute += TryToGenerate;
             _localEvents.OnMessageReaded += RemoveMessageFromMap;
-            _localEvents.OnExitEventType += ExitRoomListener;
-            
             TryLoadEvents();
         }
         
@@ -56,60 +54,56 @@ namespace Scripts.Messenger
 
             await Task.Delay(1000);
 
-            foreach (var record in records)
+            var readIds = new HashSet<string>();
+            foreach (var r in records)
+                if (r.EventType == CalendarEventType.JobMessageRead && !string.IsNullOrEmpty(r.EventId))
+                    readIds.Add(r.EventId);
+
+            foreach (var r in records)
             {
-                if (record.EventType != CalendarEventType.JobInterview) continue;
+                if (r.EventType != CalendarEventType.JobOffer) continue;
+                if (string.IsNullOrEmpty(r.EventId) || readIds.Contains(r.EventId)) continue;
 
-                var daysText = string.Join(", ", record.SalaryDays);
+                var devJob = _jobLogic.FindJob(r.CompanyName, r.JobTitle);
+                if (devJob == null)
+                {
+                    Debug.LogWarning($"[JobMsg] Job not found: {r.CompanyName} / {r.JobTitle}");
+                    continue;
+                }
 
-                string text = record.Success
-                    ? $"Congratulations! {record.CompanyName} offers you a {record.JobTitle} position.\n" +
-                      $"Salary: {record.Salary}$ (paid on {daysText} days of each month).\n" +
-                      $"Start at {record.WorkStart}:00."
-                    : $"Thanks for your time. {record.CompanyName} ({record.HRName}) will keep your CV.";
+                var daysText = string.Join(", ", devJob.SalaryDays ?? Array.Empty<int>());
+                var msgText =
+                    $"Congratulations! {devJob.CompanyName} offers you a {devJob.JobTitle} position.\n" +
+                    $"Salary: {devJob.Salary}$ (paid on {daysText} days of each month).\n" +
+                    $"Start at {devJob.WorkStartTime}:00.\n\n" +
+                    $"{devJob.HoursBeforeComeBack} hours working day.\n\n" +
+                    $"Accept to join {devJob.CompanyName}.";
 
-                int y = record.Year, m = record.Month, d = record.Day;
-                int h = record.Hour, min = record.Minute + 1;
+                var msg = new SimpleMessageSender(
+                    name: devJob.HRName ?? "HR",
+                    message: msgText,
+                    onAccept: () => _jobLogic.GetJob(devJob)
+                )
+                {
+                    Id = r.EventId
+                };
+
+                int y = r.Year, m = r.Month, d = r.Day;
+                int h = r.Hour, min = r.Minute + 1;
                 Normalize(ref y, ref m, ref d, ref h, ref min);
 
-                var devJob = BuildJobFromRecord(record);
-
-                var message = new ScheduleMessageSender
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = record.HRName,
-                    Message = text,
-                    Year = y, Month = m, Day = d, Hour = h, Minute = min,
-                    OnAccept = record.Success ? () => _jobLogic.GetJob(devJob) : null 
-                };
-                
-                
                 var notif = new Notification(
-                    message.Id,
-                    NotificationType.Message,
-                    $"New message from {record.CompanyName}",
-                    $"New message from {record.CompanyName}",
-                    y, m, d, h, m
+                    msg.Id, NotificationType.Message,
+                    "Job offer", $"Offer from {devJob.CompanyName}",
+                    y, m, d, h, min
                 );
-            
+
                 _localEvents.TriggerNewNotificationCreated(notif);
-                _localEvents.TriggerScheduleMessageAdded(message);
+                _messageMap[msg.Id] = msg;
+                _localEvents.TriggerNewMessageAddToMassanger(msg);
             }
         }
-        
-        private IDevJob BuildJobFromRecord(ComeBackRecord record)
-        {
-            return new DevJob(
-                record.CompanyName,
-                record.HRName,
-                record.JobTitle,
-                record.Salary,
-                record.SalaryDays,
-                $"{record.JobTitle} at {record.CompanyName}",
-                record.WorkStart,
-                null 
-            );
-        }
+
 
 
         private void Normalize(ref int y, ref int m, ref int d, ref int h, ref int min)
@@ -119,11 +113,48 @@ namespace Scripts.Messenger
         }
 
 
+        private void AppendOfferRecord(IJob job, IMessageSender message)
+        {
+            var now = _calendarLogic.GetCurrentDate();
+
+            _comeBackStore.Append(new ComeBackRecord
+            {
+                EventId = message.Id,
+                EventType = CalendarEventType.JobOffer,  
+                CompanyName = job.CompanyName,
+                HRName = job.HRName,
+                JobId = MakeJobId(job), 
+                JobTitle = job.JobTitle,
+                Salary = job.Salary,
+                SalaryDays = job.SalaryDays,
+                WorkStart = job.WorkStartTime,
+                Message = message.Message,
+                Year = now.Year, Month = now.Month, Day = now.Day,
+                Hour = _hourToGenerate, Minute = _minuteToGenerate,
+                HoursBeforeComeBack = job.HoursBeforeComeBack,
+            });
+        }
+        
+        private static string MakeJobId(IJob job) =>
+            $"{job.CompanyName}|{job.JobTitle}".ToLowerInvariant().Replace(" ", "_");
+
         private void RemoveMessageFromMap(string id)
         {
             _messageMap.Remove(id);
             Debug.Log("Message removed from map. Now -" + _messageMap.Count);
+
+            _comeBackStore.Append(new ComeBackRecord
+            {
+                EventId = id,
+                EventType = CalendarEventType.JobMessageRead,
+                Year = _calendarLogic.GetCurrentDate().Year,
+                Month = _calendarLogic.GetCurrentDate().Month,
+                Day = _calendarLogic.GetCurrentDate().Day,
+                Hour = _timeLogic.CurrentHour,
+                Minute = _timeLogic.CurrentMinute,
+            });
         }
+
 
         private void TryToGenerate()
         {
@@ -131,90 +162,39 @@ namespace Scripts.Messenger
             if (_timeLogic.CurrentHour != _hourToGenerate) return;
             if (_timeLogic.CurrentMinute != _minuteToGenerate) return;
 
-            var job = _jobLogic.LoadJob();          
+            var job = _jobLogic.LoadJob();
             _lastOfferedJob = job;
 
+            var daysText = string.Join(", ", job.SalaryDays ?? Array.Empty<int>());
             var msgText =
-                $"Hi! I am {job.HRName} from {job.CompanyName}. \n" +
-                $"We have an opened {job.JobTitle} position.\n" +
-                $"Do you want to visit our office tomorrow?";
+                $"Congratulations! {job.CompanyName} offers you a {job.JobTitle} position.\n" +
+                $"Salary: {job.Salary}$ (paid on {daysText} days of each month).\n" +
+                $"Start at {job.WorkStartTime}:00.\n\n" +
+                $"{job.HoursBeforeComeBack} hours working day.\n\n" +
+                $"We will be happy you to join {job.CompanyName}!";
 
             var message = new SimpleMessageSender(
-                name: $"{job.HRName}",
+                name: job.HRName,
                 message: msgText,
-                onAccept: () => CreateJobInterview(job)  
+                onAccept: () => _jobLogic.GetJob((IDevJob)job)   
             );
 
             var now = _calendarLogic.GetCurrentDate();
             var notification = new Notification(
                 message.Id,
                 NotificationType.Message,
-                "New job message",
+                "Job offer",
                 $"Offer from {job.CompanyName}",
                 now.Year, now.Month, now.Day,
                 _hourToGenerate, _minuteToGenerate + 1
             );
 
             _localEvents.TriggerNewNotificationCreated(notification);
-            _messageMap.Add(message.Id, message);
+
+            _messageMap[message.Id] = message;
             _localEvents.TriggerNewMessageAddToMassanger(message);
-        }
 
-
-        private void CreateJobInterview(IJob job)
-        {
-            _lastInterviewJob = job;
-
-            var currentDate = _calendarLogic.GetCurrentDate();
-            var calendarEvent = new CalendarEvent
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = $"Interview interview {job.CompanyName}",
-                Month = currentDate.Month,
-                Day = currentDate.Day + 1,
-                Year = currentDate.Year,
-                Hour = 20,
-                Minute = 0,
-                Message = $"Time to go to the interview at {job.CompanyName}",
-                ComeBackMessage = "" // заполним при возврате
-            };
-
-            _localEvents.TriggerCalendarEventCreated(calendarEvent);
-        }
-        
-        private void ExitRoomListener(CalendarEventType eventType)
-        {
-            if(eventType != CalendarEventType.JobInterview) return;
-
-            CheckSkillsToGetJob();
-        } 
-
-        private void CheckSkillsToGetJob()
-        {
-            var now = _calendarLogic.GetCurrentDate();
-            var job = _lastInterviewJob; 
-
-            bool success = true;
-
-            int y = now.Year, m = now.Month, d = now.Day + Random.Range(1, 3); 
-            int h = _timeLogic.CurrentHour + Random.Range(1, 3);
-            int min = _timeLogic.CurrentMinute + Random.Range(1, 30);
-            Normalize(ref y, ref m, ref d, ref h, ref min);
-
-            _comeBackStore.Append(new ComeBackRecord
-            {
-                EventId = Guid.NewGuid().ToString(),
-                EventType = CalendarEventType.JobInterview,
-                Success = success,
-                Year = y, Month = m, Day = d, Hour = h, Minute = min,
-
-                CompanyName = job.CompanyName,
-                HRName = job.HRName,
-                JobTitle = job.JobTitle,
-                Salary = job.Salary,
-                SalaryDays = job.SalaryDays,
-                WorkStart = job.WorkStartTime
-            });
+            AppendOfferRecord(job, message);
         }
 
 
@@ -229,7 +209,6 @@ namespace Scripts.Messenger
             _localEvents.OnNewDay -= ScheguleTime;
             _localEvents.OnNewMinute -= TryToGenerate;
             _localEvents.OnMessageReaded -= RemoveMessageFromMap;
-            _localEvents.OnExitEventType -= ExitRoomListener;
         }
     }
 }

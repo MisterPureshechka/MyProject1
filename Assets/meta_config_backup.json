@@ -5,7 +5,7 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 100.0,
+                    "Value": 97.93413543701172,
                     "MaxValue": 100.0,
                     "DisplayName": "Энергия",
                     "Tooltip": "Используется при работе",
@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 100.0,
+                    "Value": 98.95918273925781,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -27,7 +27,7 @@
                 "Key": "Mood",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 100.0,
+                    "Value": 99.38497161865235,
                     "MaxValue": 100.0,
                     "DisplayName": "Настроение",
                     "Tooltip": "Улучшается отдыхом",
@@ -38,7 +38,7 @@
                 "Key": "Shower",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 100.0,
+                    "Value": 98.95918273925781,
                     "MaxValue": 100.0,
                     "DisplayName": "Гигиена",
                     "Tooltip": "Ухудшается при активности",
@@ -60,7 +60,7 @@
                 "Key": "Programming",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 10.0,
+                    "Value": 13.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -93,7 +93,7 @@
                 "Key": "GameDesign",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 5.0,
+                    "Value": 6.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -115,8 +115,19 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 9.0,
+                    "Value": 18.0,
                     "MaxValue": 24.0,
+                    "DisplayName": "Current Time",
+                    "Tooltip": "",
+                    "ProgressDelta": 1.0
+                }
+            },
+            {
+                "Key": "GameMinute",
+                "Value": {
+                    "MetaType": 4,
+                    "Value": 14.0,
+                    "MaxValue": 59.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
                     "ProgressDelta": 1.0
@@ -126,7 +137,7 @@
                 "Key": "CurrentDay",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 7.0,
+                    "Value": 11.0,
                     "MaxValue": 31.0,
                     "DisplayName": "Day",
                     "Tooltip": "",
@@ -181,10 +192,43 @@
                 "Key": "CurrentJobIndex",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 0.0,
+                    "Value": 1.0,
                     "MaxValue": 999.0,
                     "DisplayName": "Current Job Index",
                     "Tooltip": "",
+                    "ProgressDelta": 0.0
+                }
+            },
+            {
+                "Key": "HeroState",
+                "Value": {
+                    "MetaType": 4,
+                    "Value": 0.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Текущий стейт героя",
+                    "Tooltip": "Idle=0, Walk=1, ...",
+                    "ProgressDelta": 0.0
+                }
+            },
+            {
+                "Key": "HeroStatePayload",
+                "Value": {
+                    "MetaType": 4,
+                    "Value": 0.0,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Пэйлоад стейта",
+                    "Tooltip": "Напр. SprintType",
+                    "ProgressDelta": 0.0
+                }
+            },
+            {
+                "Key": "InitialPosX",
+                "Value": {
+                    "MetaType": 4,
+                    "Value": -2.190999984741211,
+                    "MaxValue": 100.0,
+                    "DisplayName": "Hero Initial Pos",
+                    "Tooltip": "Hero Pos When Start",
                     "ProgressDelta": 0.0
                 }
             }
