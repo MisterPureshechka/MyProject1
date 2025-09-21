@@ -39,6 +39,8 @@ namespace Scripts.Hero
         public HeroWalkToSprint WalkToSprintState { get; }
         public HeroWalkToIO WalkToIOState { get; }
         public HeroWalkToExit WalkToExitState { get; }
+        public HeroExitState ExitState { get; }
+        public HeroEnterState EnterState { get; }
         public HeroWalkToRootIOState WalkToRootIOState { get; }
         public HeroWalkToBedState WalkToBedState { get; }
         public HeroDevState DevState { get; }
@@ -105,6 +107,8 @@ namespace Scripts.Hero
             SleepState = new HeroSleepState(this, _localEvents);
             WalkToBedState = new HeroWalkToBedState(this);
             WakeUpState = new HeroWakeUpState(this);
+            ExitState = new HeroExitState(this, _localEvents);
+            EnterState = new HeroEnterState(this, _localEvents);
 
             _heroStateMachine.Init(LoadLastState());
 
@@ -190,28 +194,32 @@ namespace Scripts.Hero
                 [HeroStateId.Toilet] = HeroToiletState,
                 [HeroStateId.Bath] = HeroBathState,
                 [HeroStateId.WakeUp] = WakeUpState,
+                [HeroStateId.Exit] = ExitState,
+                [HeroStateId.Enter] = EnterState,
             };
         }
 
-        private HeroStateId IdOf(HeroBaseState s)
+        private HeroStateId IdOf(HeroBaseState state)
         {
-            if (s == IdleState) return HeroStateId.Idle;
-            if (s == WalkState) return HeroStateId.Walk;
-            if (s == WalkToSprintState) return HeroStateId.WalkToSprint;
-            if (s == WalkToIOState) return HeroStateId.WalkToIO;
-            if (s == WalkToExitState) return HeroStateId.WalkToExit;
-            if (s == WalkToRootIOState) return HeroStateId.WalkToRootIO;
-            if (s == WalkToBedState) return HeroStateId.WalkToBed;
-            if (s == DevState) return HeroStateId.Dev;
-            if (s == EatState) return HeroStateId.Eat;
-            if (s == SleepState) return HeroStateId.Sleep;
-            if (s == PlayState) return HeroStateId.Play;
-            if (s == ReadState) return HeroStateId.Read;
-            if (s == ChillState) return HeroStateId.Chill;
-            if (s == HeroAwaitState) return HeroStateId.Await;
-            if (s == HeroToiletState) return HeroStateId.Toilet;
-            if (s == HeroBathState) return HeroStateId.Bath;
-            if (s == WakeUpState) return HeroStateId.WakeUp;
+            if (state == IdleState) return HeroStateId.Idle;
+            if (state == WalkState) return HeroStateId.Walk;
+            if (state == WalkToSprintState) return HeroStateId.WalkToSprint;
+            if (state == WalkToIOState) return HeroStateId.WalkToIO;
+            if (state == WalkToExitState) return HeroStateId.WalkToExit;
+            if (state == WalkToRootIOState) return HeroStateId.WalkToRootIO;
+            if (state == WalkToBedState) return HeroStateId.WalkToBed;
+            if (state == DevState) return HeroStateId.Dev;
+            if (state == EatState) return HeroStateId.Eat;
+            if (state == SleepState) return HeroStateId.Sleep;
+            if (state == PlayState) return HeroStateId.Play;
+            if (state == ReadState) return HeroStateId.Read;
+            if (state == ChillState) return HeroStateId.Chill;
+            if (state == HeroAwaitState) return HeroStateId.Await;
+            if (state == HeroToiletState) return HeroStateId.Toilet;
+            if (state == HeroBathState) return HeroStateId.Bath;
+            if (state == WakeUpState) return HeroStateId.WakeUp;
+            if (state == ExitState) return HeroStateId.Exit;
+            if (state == EnterState) return HeroStateId.Enter;
             return HeroStateId.Idle;
         }
 

@@ -35,9 +35,6 @@ namespace Scripts.Rooms
         {
             _progressDataAdapter.TryUpdateValue(Consts.GameHourKey, exitEvent?.HoursBeforeComeBack ?? 0);
             
-            foreach (var kv in exitEvent.KnowledgeToUpdateAfter)
-                Debug.Log($"  Knowledge: {kv.Key} -> {kv.Value}");
-            
             ChangeStatOnExit(exitEvent);
             
             _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
@@ -50,46 +47,25 @@ namespace Scripts.Rooms
             if (exitEvent.HealthToUpdateAfter != null)
             {
                 foreach (var kv in exitEvent.HealthToUpdateAfter)
-                    Debug.Log($"  Health: {kv.Key} -> {kv.Value}");
-            }
-            else
-            {
-                Debug.Log(" ------> HealthToUpdateAfter == null");
-            }
-
-            if (exitEvent.KnowledgeToUpdateAfter != null)
-            {
-                foreach (var kv in exitEvent.KnowledgeToUpdateAfter)
-                    Debug.Log($" ------> Knowledge: {kv.Key} -> {kv.Value}");
-            }
-            else
-            {
-                Debug.Log(" ------> KnowledgeToUpdateAfter == null");
-            }
-            if (exitEvent.HealthToUpdateAfter != null)
-            {
-                foreach (var kv in exitEvent.HealthToUpdateAfter)
                 {
-                    Debug.Log("Health to update = " + kv.Key + " : " + kv.Value);
                     _progressDataAdapter.TryUpdateValue(kv.Key.ToString(), kv.Value);
                 }
             }
             else
             {
-                Debug.Log("exitEvent.HealthToUpdateAfter == null");
+                Debug.LogError("exitEvent.HealthToUpdateAfter == null");
             }
 
             if (exitEvent.KnowledgeToUpdateAfter != null)
             {
                 foreach (var kv in exitEvent.KnowledgeToUpdateAfter)
                 {
-                    Debug.Log("Knowledge to update = " + kv.Key + " : " + kv.Value);
                     _progressDataAdapter.TryUpdateValue(kv.Key.ToString(), kv.Value);
                 }
             }
             else
             {
-                Debug.Log("exitEvent.KnowledgeToUpdateAfter == null");
+                Debug.LogError("exitEvent.KnowledgeToUpdateAfter == null");
             }
         }
 

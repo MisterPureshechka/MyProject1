@@ -7,8 +7,6 @@ namespace Scripts.Tasks
 {
     public class EatTask : IEatTask
     {
-        private const string Food = "Food";
-        
         private readonly ProgressDataAdapter _progressDataAdapter;
         
         private float _lastUpdateTime;
@@ -37,18 +35,19 @@ namespace Scripts.Tasks
         
         public ITask Clone()
         {
-            return new EatTask(this._progressDataAdapter, this.Type, this.Title, this.Progress)
+            return new EatTask(_progressDataAdapter, Type, Title, Progress)
             {
-                Id = this.Id  
+                Id = Id  
             };
         }
         
         public void ApplyProgress(float interval = 0f)
         {
+            interval = 0.5f;
             if (Time.time - _lastUpdateTime < interval) 
                 return;
             
-            float delta = _progressDataAdapter.GetProgressData().Metadata.GetProgressDelta(Food);
+            float delta = 1;
             
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);

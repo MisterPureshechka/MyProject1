@@ -23,7 +23,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Junior Programmer",
                 300, new[] { 10, 20 }, "Fix UI bugs and simple gameplay tasks",
                 10,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float> { { DevTaskType.Programming, 10f } },
                 new Dictionary<DevTaskType, float> { { DevTaskType.Programming, 2f } },
                 8
@@ -33,7 +38,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Gameplay Programmer",
                 500, new[] { 5, 28 }, "Implement and maintain gameplay systems",
                 10,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Programming, 25f },
@@ -51,7 +61,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Tools Programmer",
                 550, new[] { 1, 25 }, "Editor tools and pipelines",
                 11,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Programming, 30f },
@@ -69,7 +84,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Technical Artist",
                 600, new[] { 10, 25 }, "Shaders, VFX, content pipeline",
                 9,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Art, 40f },
@@ -87,7 +107,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "VFX Artist",
                 500, new[] { 12, 20 }, "Particles and real-time effects",
                 12,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Art, 35f },
@@ -105,7 +130,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "UI/UX Designer",
                 450, new[] { 11, 15 }, "UI flows, wireframes, assets",
                 11,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Art, 30f },
@@ -123,7 +153,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Level Designer",
                 480, new[] { 10, 28 }, "Blockouts, encounters, pacing",
                 10,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.GameDesign, 30f },
@@ -141,7 +176,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Game Designer",
                 620, new[] { 10, 28 }, "Systems, balance, documentation",
                 10,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.GameDesign, 45f },
@@ -159,7 +199,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Sound Designer",
                 500, new[] { 13, 20 }, "SFX creation and integration",
                 13,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.SoundDesign, 40f },
@@ -177,7 +222,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Composer",
                 650, new[] { 13, 20 }, "Music production for levels and bosses",
                 13,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.SoundDesign, 55f },
@@ -195,7 +245,12 @@ namespace Scripts.Job
                 "Journey & Journey", "Sarah Cole", "Technical Designer",
                 700, new[] { 9, 28 }, "Scripting + system design",
                 9,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.GameDesign, 35f },
@@ -213,7 +268,12 @@ namespace Scripts.Job
                 "UbiHard", "Sarah Cole", "Community Manager",
                 400, new[] { 12, 15 }, "Community, socials, feedback loops",
                 12,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Marketing, 30f },
@@ -231,7 +291,12 @@ namespace Scripts.Job
                 "MadTech Co.", "Sarah Cole", "Marketing Specialist",
                 550, new[] { 11, 25 }, "Campaigns, stores, assets",
                 11,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Marketing, 45f }
@@ -247,7 +312,12 @@ namespace Scripts.Job
                 "Wild Shark Games", "Elice Dowson", "3D Artist",
                 520, new[] { 10, 25 }, "Modeling, UVs, materials",
                 10,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Art, 45f }
@@ -263,7 +333,12 @@ namespace Scripts.Job
                 "PCMonsters", "John Bond", "Graphics Programmer",
                 800, new[] { 9, 28 }, "Rendering, performance, shaders",
                 9,
-                new Dictionary<HealthStatType, float>(),
+                new Dictionary<HealthStatType, float>
+                {
+                    { HealthStatType.Mood, -20f },
+                    { HealthStatType.Energy, -30f },
+                    { HealthStatType.Food, -25f }
+                },
                 new Dictionary<DevTaskType, float>
                 {
                     { DevTaskType.Programming, 60f },

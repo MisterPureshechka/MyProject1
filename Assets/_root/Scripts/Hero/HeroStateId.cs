@@ -19,5 +19,7 @@ namespace Scripts.Hero
         Toilet = 14,
         Bath = 15,
         WakeUp = 16,
+        Exit = 17,
+        Enter = 18,
     }
 }

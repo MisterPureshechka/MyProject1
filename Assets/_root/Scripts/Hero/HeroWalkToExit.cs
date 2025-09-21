@@ -41,10 +41,8 @@ namespace Scripts.Hero
 
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
-                _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
+                _heroLogic.ChangeState(_heroLogic.ExitState);
                 _localEvents.TriggerExitEventWhenExit(_event);
-                _localEvents.TriggerHeroGetExit();
-                _heroLogic.SaveInitPos(InteractiveObjectType.Door);
             }
         }
 

@@ -89,6 +89,7 @@ namespace Scripts.Job
 
             if (_timeLogic.CurrentHour == _currentJob.WorkStartTime)
             {
+                
                 var exitEvent = new ExitEvent
                 {
                     EventTime = _currentJob.WorkStartTime,
@@ -96,10 +97,6 @@ namespace Scripts.Job
                     HealthToUpdateAfter = _currentJob.HealthToUpdateAfter,
                     KnowledgeToUpdateAfter = _currentJob.KnowledgeToUpdateAfter,
                 };
-                
-                
-                foreach (var kv in exitEvent.KnowledgeToUpdateAfter)
-                    Debug.Log($" ------------->>>> Knowledge: {kv.Key} -> {kv.Value}");
                 
                 _localEvents.TriggerExitEventCreated(exitEvent);
                 
