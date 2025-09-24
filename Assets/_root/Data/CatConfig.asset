@@ -13,54 +13,74 @@ MonoBehaviour:
   m_Name: CatConfig
   m_EditorClassIdentifier: 
   <Sequences>k__BackingField:
-  - HeroAnimationState: 0
+  - CatAnimationState: 0
     Sprites:
-    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 1883681264, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 251842307, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1858942615, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -346401708, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 810218243, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -401917150, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 840710828, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -192857247, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    Speed: 10
+  - CatAnimationState: 1
+    Sprites: []
     Speed: 5
-  - HeroAnimationState: 1
+  - CatAnimationState: 2
     Sprites:
-    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 1127849844, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1533016559, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 888967187, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -797134473, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1359423249, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -691812447, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
     Speed: 5
-  - HeroAnimationState: 2
+  - CatAnimationState: 5
     Sprites:
-    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    Speed: 5
-  - HeroAnimationState: 4
+    - {fileID: -1350710000, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1681611980, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -29613171, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -517870651, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1334829512, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    Speed: 20
+  - CatAnimationState: 4
     Sprites:
-    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
-    Speed: 5
-  <WalkSpeed>k__BackingField: 1
+    - {fileID: 168273216, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 302387287, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1799144351, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1318442052, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    Speed: 10
+  - CatAnimationState: 6
+    Sprites:
+    - {fileID: 1799743052, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 932902585, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1994603873, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1143063421, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1339943904, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1073581382, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 448438844, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1009307837, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    Speed: 15
+  - CatAnimationState: 3
+    Sprites:
+    - {fileID: 1908160639, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1403532245, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1227531353, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1266989985, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 1518419157, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -56565877, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 75212742, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: -1868435144, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    Speed: 10
+  - CatAnimationState: 7
+    Sprites:
+    - {fileID: -1725748555, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 599070641, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    - {fileID: 168910693, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+    Speed: 20
+  <WalkSpeed>k__BackingField: 0.5
   <JumpSpeed>k__BackingField: 5
-  <JumpHeight>k__BackingField: 0.1
+  <JumpHeight>k__BackingField: 0
+  <JumpDownDuration>k__BackingField: 0.4
+  <JumpDownHeight>k__BackingField: 0.05
