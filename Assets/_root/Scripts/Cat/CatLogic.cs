@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Core;
 using DG.Tweening;
 using Scripts.Animator;
@@ -15,7 +17,8 @@ namespace Scripts.Cat
         private CatStateMachine _catStateMachine;
         private CatView _catView;
         private CatPositionRegisterer _catPositionRegisterer;
-        private CatTargetPosition[] _catTargetPositions;
+        private List<CatTargetPosition> _allCatTargetPositions;
+        private List<CatTargetPosition> _availableTargetPositions;
         private CatConfig _catConfig;
         private float _yPos;
         private CatTargetPosition _currentTargetPosition;
@@ -42,7 +45,7 @@ namespace Scripts.Cat
             _catConfig = catConfig;
             _yPos = initialPos.y;
             _catSpriteRenderer = _catView.CatSprite;
-            _catTargetPositions = _catPositionRegisterer.GetPositions();
+            _allCatTargetPositions = _catPositionRegisterer.GetPositions().ToList();
 
             _catView.CatTransform.position = _initialPos;
             _spriteAnimator = new SpriteAnimator();
@@ -153,13 +156,25 @@ namespace Scripts.Cat
 
         public CatTargetPosition GetNewTargetPosition()
         {
-            if (_catTargetPositions.Length == 0 || _catTargetPositions == null)
+            if (_allCatTargetPositions == null || _allCatTargetPositions.Count == 0)
             {
-                Debug.LogWarning("MoveCatToPosition: moveToPosition is null");
+                Debug.LogWarning("Can't find cat target!");
+                return null;
             }
-            
-            _currentTargetPosition = _catTargetPositions[Random.Range(0, _catTargetPositions.Length)];
-            return _currentTargetPosition;
+
+            if (_availableTargetPositions == null || _availableTargetPositions.Count == 0)
+            {
+                _availableTargetPositions = new List<CatTargetPosition>(_allCatTargetPositions);
+                _availableTargetPositions.Remove(_currentTargetPosition);
+            }
+
+            int index = Random.Range(0, _availableTargetPositions.Count);
+            var newTarget = _availableTargetPositions[index];
+
+            _availableTargetPositions.RemoveAt(index);
+
+            _currentTargetPosition = newTarget;
+            return newTarget;
         }
 
         public CatTargetPosition GetCurrentTargetPosition()

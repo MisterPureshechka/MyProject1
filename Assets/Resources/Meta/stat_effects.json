@@ -7,7 +7,7 @@
   },
   "Eat": {
     "Energy": 0.0005,
-    "Food": 0.005,
+    "Food": 0.01,
     "Shower": -0.0005
   },
   "Chill": {
