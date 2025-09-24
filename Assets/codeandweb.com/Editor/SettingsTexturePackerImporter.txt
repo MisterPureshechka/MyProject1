@@ -1,9 +1,9 @@
 version: 2
 tpsheetFileNames:
-- Assets/_root/Content/Cat/Spites/cat_atlas-cat.tpsheet
+- Assets/_root/Content/Cat/Spites/cat_atlas-cat-cat.tpsheet
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
 textureFileNames:
-- Assets/_root/Content/Cat/Spites/cat_atlas-cat.png
+- Assets/_root/Content/Cat/Spites/cat_atlas-cat-cat.png
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.png
 normalmapFileNames:
 - 

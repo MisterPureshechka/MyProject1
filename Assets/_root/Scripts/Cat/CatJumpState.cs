@@ -1,3 +1,4 @@
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.Cat
@@ -15,6 +16,7 @@ namespace Scripts.Cat
             _catLogic.PlayTransitionAnimation(CatAnimationState.StartJumpUp, CatAnimationState.JumpUp, false, () =>
             {
                 _catLogic.JumpToPosition(_targetPosition.JumpToTransform.position);
+                _catLogic.SetSortingOrder(Consts.WindowSortingOrder);
             }, () =>
             {
                 _catLogic.ChangeState(_catLogic.SeatState);
