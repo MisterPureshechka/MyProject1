@@ -1,0 +1,11 @@
+version: 2
+tpsheetFileNames:
+- Assets/_root/Content/Cat/Spites/cat_atlas-cat.tpsheet
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
+textureFileNames:
+- Assets/_root/Content/Cat/Spites/cat_atlas-cat.png
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.png
+normalmapFileNames:
+- 
+- Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
+enableDebugOutput: 0

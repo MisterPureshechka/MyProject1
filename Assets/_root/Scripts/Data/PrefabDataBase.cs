@@ -1,3 +1,4 @@
+using Scripts.Cat;
 using Scripts.Hero;
 using Scripts.OnlineShop;
 using Scripts.Rooms;
@@ -10,6 +11,7 @@ namespace Scripts.Data
     [CreateAssetMenu(fileName = "PrefabDataBase", menuName = "ScriptableObjects/PrefabDataBase")]
     public class PrefabDataBase : ScriptableObject
     {
+        [field: SerializeField] public CatView CatPrefab { get; private set; }
         [field: SerializeField] public TaskPanelButtonView TaskPanelButton { get; private set; }
         [field: SerializeField] public GameObject Hero { get; private set; }
         [field: SerializeField] public GameObject Menu { get; private set; }

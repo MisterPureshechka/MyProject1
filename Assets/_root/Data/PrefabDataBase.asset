@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cebe807bccac4e3bb632e06e60890536, type: 3}
   m_Name: PrefabDataBase
   m_EditorClassIdentifier: 
+  <CatPrefab>k__BackingField: {fileID: 8619167069927732892, guid: cad70792368b546359f4dcd42b690ed0, type: 3}
   <TaskPanelButton>k__BackingField: {fileID: 312371767978753470, guid: a7ec14ac354db4de09ce21985f5b7217, type: 3}
   <Hero>k__BackingField: {fileID: 43456105368433275, guid: 12896e55c276742a0a80955d2fd42443, type: 3}
   <Menu>k__BackingField: {fileID: 982093011933107053, guid: e0e34e5326d5d411cac392602ddcc1c9, type: 3}

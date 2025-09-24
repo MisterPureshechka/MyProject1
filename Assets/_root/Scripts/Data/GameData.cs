@@ -1,3 +1,4 @@
+using Scripts.Cat;
 using Scripts.Messenger;
 using UnityEngine;
 
@@ -11,5 +12,6 @@ namespace Scripts.Data
         [field: SerializeField] public InteractiveObjectConfig InteractiveObjectConfig { get; private set; }
         [field: SerializeField] public MetadataConfig MetadataConfig { get; private set; }
         [field: SerializeField] public MessengerConfig MessengerConfig { get; private set; }
+        [field: SerializeField] public CatConfig CatConfig { get; private set; }
     }
 }

@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bad4f8b3be24b59aa25c6e53e849004, type: 3}
+  m_Name: CatConfig
+  m_EditorClassIdentifier: 
+  <Sequences>k__BackingField:
+  - HeroAnimationState: 0
+    Sprites:
+    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    Speed: 5
+  - HeroAnimationState: 1
+    Sprites:
+    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    Speed: 5
+  - HeroAnimationState: 2
+    Sprites:
+    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    Speed: 5
+  - HeroAnimationState: 4
+    Sprites:
+    - {fileID: -664640426, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 652365881, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 389339833, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -983349248, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 17788335, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 102366816, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 1827691487, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: 980770308, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    - {fileID: -1655314103, guid: 82cef07bb467244e5b99dc8bbe25377e, type: 3}
+    Speed: 5
+  <WalkSpeed>k__BackingField: 1
+  <JumpSpeed>k__BackingField: 5
+  <JumpHeight>k__BackingField: 0.1

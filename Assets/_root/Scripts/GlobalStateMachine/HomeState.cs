@@ -1,6 +1,7 @@
 using _root.Notification;
 using _root.RealEstate;
 using Scripts.Animator;
+using Scripts.Cat;
 using Scripts.Catalogues;
 using Scripts.Data;
 using Scripts.EcoSystem;
@@ -111,6 +112,10 @@ namespace Scripts.GlobalStateMachine
             var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home, progressDataAdapter, _gameProgress);
             var sleepLogic = new SleepLogic(_gameStateMachine, localEvents, progressDataAdapter, _gameProgress, calendarLogic, timeLogic);
 
+            var catFactory = new CatFactory(_gameData.PrefabDataBase);
+            var catPositionRegisterer = new CatPositionRegisterer();
+            var catLogic = new CatLogic(localEvents, initialPos, catFactory.CreateCat(), catPositionRegisterer, _gameData.CatConfig);
+
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
             statController.RegisterView(hud.PassionBar);
@@ -155,6 +160,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(roomColliderController);
             _controllers.Add(rentLogic);
             _controllers.Add(sleepLogic);
+            _controllers.Add(catLogic);
         }
 
         public override void Update(float deltaTime)
