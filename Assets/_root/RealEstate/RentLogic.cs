@@ -67,7 +67,7 @@ namespace _root.RealEstate
                 Name = "Apartment",
             };
             
-            Debug.Log("transaction created in rent logic");
+//            Debug.Log("transaction created in rent logic");
             
             _localEvents.TriggerNewTransaction(flatTransaction);
             TrySaveCurrentFlatIndex(index);

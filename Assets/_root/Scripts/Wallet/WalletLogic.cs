@@ -116,7 +116,7 @@ namespace Scripts.Wallet
                 _localEvents.TriggerCalendarNoteAdded(transaction.Description, dayForTransaction);
             }
             
-            Debug.Log($" {transaction.Description} Added to icome and expenses: {transaction.Amount}");
+//            Debug.Log($" {transaction.Description} Added to icome and expenses: {transaction.Amount}");
             
             _icomeAndExpenses.Add(transaction);
             UpdateWallet();

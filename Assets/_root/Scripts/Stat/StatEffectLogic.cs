@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core;
 using Scripts.GlobalStateMachine;
+using Scripts.Perks;
 using Scripts.Progress;
 using Scripts.Tasks;
 using Scripts.Utils;
@@ -14,12 +15,15 @@ namespace Scripts.Stat
         private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly LocalEvents _localEvents;
         private readonly Dictionary<string, Dictionary<string, float>> _effects;
+        private IPerkService _perkService;
         private DevTaskType _activeReadTaskType;
+        
 
-        public StatEffectLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
+        public StatEffectLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents, IPerkService perkService)
         {
             _progressDataAdapter = progressDataAdapter;
             _localEvents = localEvents;
+            _perkService = perkService;
 
             _effects = StatEffectLoader.Load(); 
             _localEvents.OnActiveSprintByType += OnSprintActivated;
@@ -38,9 +42,10 @@ namespace Scripts.Stat
                 string knowledgeKey = _activeReadTaskType.ToString(); 
     
                 if (_effects.TryGetValue("ReadKnowledgeEffect", out var effectDict) &&
-                    effectDict.TryGetValue(knowledgeKey, out float delta))
+                    effectDict.TryGetValue(knowledgeKey, out float baseDelta))
                 {
-                    _progressDataAdapter.TryUpdateValue(knowledgeKey, delta);
+                    float mult = _perkService.GetEffectMultiplier("ReadKnowledgeEffect");
+                    _progressDataAdapter.TryUpdateValue(knowledgeKey, baseDelta * mult);
                 }
                 else
                 {
@@ -60,9 +65,9 @@ namespace Scripts.Stat
             foreach (var pair in statChanges)
             {
                 string statKey = pair.Key;
-                float delta = pair.Value;
-
-                _progressDataAdapter.TryUpdateValue(statKey, delta);
+                float baseDelta = pair.Value;
+                float mult = _perkService.GetEffectMultiplier($"{actionKey}.{statKey}");
+                _progressDataAdapter.TryUpdateValue(statKey, baseDelta * mult);
             }
         }
 

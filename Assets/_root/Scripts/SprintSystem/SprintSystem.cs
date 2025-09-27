@@ -4,6 +4,8 @@ using Core;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
 using Scripts.Meta;
+using Scripts.Passion;
+using Scripts.Perks;
 using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Ui;
@@ -29,6 +31,7 @@ namespace Scripts.Tasks
         private readonly LocalEvents _localEvents;
         private readonly InteractiveObjectRegisterer _interactiveObjectRegisterer;
         private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly PerkService _perkService;
         private readonly TaskLibrary _taskLibrary;
         private readonly DevTaskCatalogue _devTaskCatalogue;
         private readonly ReadTaskCatalogue _readTaskCatalogue;
@@ -42,7 +45,7 @@ namespace Scripts.Tasks
         private float _interval;
 
 
-        public SprintSystem(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer, ProgressDataAdapter progressDataAdapter)
+        public SprintSystem(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer, ProgressDataAdapter progressDataAdapter, PerkService perkService)
         {
             _tempStat = canvas.transform.Find("TempStat").GetComponent<TextMeshProUGUI>();
             _sprintView = sprintView;
@@ -50,6 +53,7 @@ namespace Scripts.Tasks
             _localEvents = localEvents;
             _interactiveObjectRegisterer = interactiveObjectRegisterer;
             _progressDataAdapter = progressDataAdapter;
+            _perkService = perkService;
             _taskLibrary = taskLibrary;
 
             _effects = StatEffectLoader.Load();
@@ -120,6 +124,8 @@ namespace Scripts.Tasks
                 await Task.Yield();
             
             _currentSprintType = sprintType;
+            
+            _perkService.OnSprintStart(_currentSprintType);
             
             if (_currentSprint.ShouldPersistTasksOnExit)
             {
@@ -214,9 +220,11 @@ namespace Scripts.Tasks
 
         private void ApplyProgressToCurrentTask()
         {
-            const int MaxActiveTasks = 2; 
+            int baseMaxActive = 1; 
+            int maxActiveTasks = _perkService.ModifyMaxActiveTasks(_currentSprint.Type, baseMaxActive);
 
-            while (_activeTasks.Count < MaxActiveTasks && _pendingTasks.Count > 0)
+
+            while (_activeTasks.Count < maxActiveTasks && _pendingTasks.Count > 0)
             {
                 var nextTask = _pendingTasks[^1];
                 _pendingTasks.RemoveAt(_pendingTasks.Count - 1);
@@ -234,17 +242,21 @@ namespace Scripts.Tasks
             _localEvents.TriggerActiveSprintByType(_currentSprint.Type);
             
             float interval = Mathf.Lerp(maxInterval, minInterval, healthPercent);
+            interval = _perkService.ModifyInterval(_currentSprint.Type, interval);
             
             for (int i = _activeTasks.Count - 1; i >= 0; i--) 
             {
                 var task = _activeTasks[i];
                 
-                task.ApplyProgress(interval);
+                float taskInterval = _perkService.ModifyTaskInterval(task, interval);
+                task.ApplyProgress(taskInterval);
                 
                 if (task.Progress <= 0f)
                 {
                     CheckSprintCompletion();
                     _activeTasks.RemoveAt(i);
+                    _localEvents.TriggerPassionIncrease(PassionIncreaseType.TaskComplete);
+                    _perkService.OnTaskCompleted(_currentSprint.Type, task);
                 }
             }
         }
@@ -274,6 +286,8 @@ namespace Scripts.Tasks
 
         private async void CompleteSprint()
         {
+            _perkService.OnSprintEnd(_currentSprintType);
+            _localEvents.TriggerPassionIncrease(PassionIncreaseType.SprintComplete);
             _isActiveState = false;
             _localEvents.TriggerSprintExit();
             _localEvents.TriggerSprintComplete(_currentSprint.Type);

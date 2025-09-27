@@ -7,6 +7,7 @@ using Scripts.ClickLogic;
 using Scripts.Job;
 using Scripts.Messenger;
 using Scripts.Meta;
+using Scripts.Passion;
 using Scripts.Rooms;
 using Scripts.Tasks;
 using Scripts.Upgrade;
@@ -214,5 +215,8 @@ namespace Scripts.GlobalStateMachine
 
         public Action OnHeroSleepState { get; set; }
         public void TriggerSleepState() => OnHeroSleepState?.Invoke();
+        
+        public Action<PassionIncreaseType> OnPassionIncrease { get; set; }
+        public void TriggerPassionIncrease(PassionIncreaseType type) => OnPassionIncrease?.Invoke(type);
     }
 }

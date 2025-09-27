@@ -152,7 +152,6 @@ namespace Scripts.Hero
 
             if (data != null)
             {
-                Debug.LogError("InitialPos is - " + NormalizeVector(new Vector3(data.Value, 0, 0)));
                 return NormalizeVector(new Vector3(data.Value, 0, 0));
             }
 
@@ -257,12 +256,9 @@ namespace Scripts.Hero
                 var id = Mathf.RoundToInt(stateData.Value);
                 if (_stateFromId != null && _stateFromId.TryGetValue((HeroStateId)id, out var state))
                 {
-                    Debug.LogError("Hero state Load - " + state);
                     return state;
                 }
             }
-
-            Debug.LogError("Hero state Load error");
 
             return IdleState;
         }

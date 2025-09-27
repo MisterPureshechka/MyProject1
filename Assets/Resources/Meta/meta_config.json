@@ -39,7 +39,6 @@
     "Tooltip": "Ухудшается редким использованием",
     "ProgressDelta": 10
   },
-  
   "Programming": {
     "MetaType": "Knowledge",
     "Value": 10,
@@ -54,7 +53,7 @@
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",
-    "ProgressDelta": 1
+    "ProgressDelta": 2
   },
   "Marketing": {
     "MetaType": "Knowledge",
@@ -80,7 +79,14 @@
     "Tooltip": "Читай",
     "ProgressDelta": 1
   },
-
+  "Passion": {
+    "MetaType": "Passion",
+    "Value": 25,
+    "MaxValue": 100,
+    "DisplayName": "Passion",
+    "Tooltip": "Nobody knows how that work",
+    "ProgressDelta": 1
+  },
   "GameTime": {
     "MetaType": "System",
     "Value": 9,

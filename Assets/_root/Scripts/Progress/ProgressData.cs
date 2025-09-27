@@ -10,6 +10,7 @@ namespace Scripts.Progress
     public class ProgressData
     {
         public SerializedDictionary<string, Meta.Metadata> Metadata = new();
+        public List<string> ActivePerkIds = new();
         
         public ProgressData(SerializedDictionary<string, Meta.Metadata> metadata) 
         {

@@ -1,6 +1,7 @@
 using Scripts.Cat;
 using Scripts.Hero;
 using Scripts.OnlineShop;
+using Scripts.Perks;
 using Scripts.Rooms;
 using Scripts.Tasks;
 using Scripts.Ui.TaskUi;
@@ -16,7 +17,7 @@ namespace Scripts.Data
         [field: SerializeField] public GameObject Hero { get; private set; }
         [field: SerializeField] public GameObject Menu { get; private set; }
         [field: SerializeField] public HomeView Home { get; private set; }
-        
+
         [field: SerializeField] public TaskPanelView TaskPanelPrefab { get; private set; }
         [field: SerializeField] public TaskView TaskPrefab { get; private set; }
         [field: SerializeField] public SprintView SprintPrefab { get; private set; }
@@ -28,5 +29,6 @@ namespace Scripts.Data
         [field: SerializeField] public TopPanelButtonView OnlineShopTopPanelButton { get; private set; }
         [field: SerializeField] public ShopItemView ShopItemView { get; private set; }
         [field: SerializeField] public Sprite[] ChairSprites { get; private set; }
+        [field: SerializeField] public PerksCatalogue PerksCatalogue { get; private set; }
     }
 }

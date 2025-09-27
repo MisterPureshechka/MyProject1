@@ -11,6 +11,8 @@ using Scripts.Job;
 using Scripts.Messenger;
 using Scripts.Messenger.ComeBackLogic;
 using Scripts.OnlineShop;
+using Scripts.Passion;
+using Scripts.Perks;
 using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Sleep;
@@ -77,15 +79,17 @@ namespace Scripts.GlobalStateMachine
             var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(FindObjectsInactive.Include), Object.FindAnyObjectByType<CalendarCatalogue>(FindObjectsInactive.Include), progressDataAdapter);
 
             var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
+
+            var perkService = new PerkService(uiFactory, canvas, localEvents, progressDataAdapter, _gameProgress);
             
             var hud = Object.FindAnyObjectByType<HUDView>(FindObjectsInactive.Include);
             var statController = new StatsController(progressDataAdapter, localEvents);
-            var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents);
+            var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents, perkService);
 
             var sideRoomChecker = new SideRoomChecker(home, localEvents);
 
             var taskLibrary = new TaskLibrary(progressDataAdapter, localEvents);
-            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter);
+            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter, perkService);
 
             var fader = new FaderLogic(localEvents);
 
@@ -118,8 +122,9 @@ namespace Scripts.GlobalStateMachine
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
-            statController.RegisterView(hud.PassionBar);
             statController.UpdateAllViews();
+
+            var passionLogic = new PassionLogic(localEvents, progressDataAdapter, _gameProgress, hud.PassionBar);
 
             var statsDebuger = Object.FindObjectOfType<StatsDebuger>();
             statsDebuger.Init(progressStat);
@@ -161,6 +166,8 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(rentLogic);
             _controllers.Add(sleepLogic);
             _controllers.Add(catLogic);
+            _controllers.Add(passionLogic);
+            _controllers.Add(perkService);
         }
 
         public override void Update(float deltaTime)

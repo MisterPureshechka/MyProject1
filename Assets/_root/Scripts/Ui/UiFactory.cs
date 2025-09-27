@@ -1,5 +1,6 @@
 using System;
 using Scripts.Data;
+using Scripts.Perks;
 using Scripts.Tasks;
 using Scripts.Ui.TaskUi;
 using Unity.VisualScripting;
@@ -51,6 +52,13 @@ namespace Scripts.Ui
             var instance = Object.Instantiate(_gameData.PrefabDataBase.devTaskCatalogue, canvasTransform);
 
             return instance.GetComponent<DevTaskCatalogue>();
+        }
+
+        public PerksCatalogue GetPerksCatalogue(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.PerksCatalogue, canvasTransform);
+            
+            return instance.GetComponent<PerksCatalogue>();
         }
 
         public TaskPanelButtonView GetTaskPanelButtonView(Transform to)

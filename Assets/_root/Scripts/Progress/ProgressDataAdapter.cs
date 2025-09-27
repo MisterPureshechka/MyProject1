@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Scripts.Meta;
 using UnityEngine;
 
@@ -10,6 +11,21 @@ namespace Scripts.Progress
         public ProgressDataAdapter(ProgressData progressData)
         {
             _progressData = progressData;
+            if (_progressData.ActivePerkIds == null)
+                _progressData.ActivePerkIds = new List<string>();
+        }
+        
+        public List<string> GetActivePerkIds()
+        {
+            return new List<string>(_progressData.ActivePerkIds ?? new List<string>());
+        }
+
+        public void SetActivePerkIds(IEnumerable<string> ids)
+        {
+            _progressData.ActivePerkIds ??= new List<string>();
+            _progressData.ActivePerkIds.Clear();
+            if (ids == null) return;
+            _progressData.ActivePerkIds.AddRange(ids);
         }
 
         public float GetStats(MetaType metaType)
