@@ -1,5 +1,6 @@
 using _root.Notification;
 using _root.RealEstate;
+using _root.Scripts.Ui.Stats;
 using Scripts.Animator;
 using Scripts.Cat;
 using Scripts.Catalogues;
@@ -87,6 +88,7 @@ namespace Scripts.GlobalStateMachine
             var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents, perkService);
 
             var sideRoomChecker = new SideRoomChecker(home, localEvents);
+            var healthStatLogic = new HealthStatLogic(Object.FindAnyObjectByType<HealthStatPanel>(FindObjectsInactive.Include), progressDataAdapter, localEvents);
 
             var taskLibrary = new TaskLibrary(progressDataAdapter, localEvents);
             var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter, perkService);
@@ -168,6 +170,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(catLogic);
             _controllers.Add(passionLogic);
             _controllers.Add(perkService);
+            _controllers.Add(healthStatLogic);
         }
 
         public override void Update(float deltaTime)

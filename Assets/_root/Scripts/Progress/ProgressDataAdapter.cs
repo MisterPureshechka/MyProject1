@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Scripts.Meta;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace Scripts.Progress
     public class ProgressDataAdapter
     {
         private readonly ProgressData _progressData;
+
+        public Action OnHealthStatUpdated { get; set; }
 
         public ProgressDataAdapter(ProgressData progressData)
         {
@@ -70,8 +73,9 @@ namespace Scripts.Progress
                 Debug.LogWarning($"[ProgressDataAdapter] Cannot update unknown key: '{key}'");
                 return false;
             }
-
+            
             metadata.ChangeValue(delta); 
+            OnHealthStatUpdated?.Invoke();
 
             return true;
         }

@@ -30,3 +30,4 @@ MonoBehaviour:
   <ChairSprites>k__BackingField:
   - {fileID: 1022842692, guid: 71977a2907e994699ba45972d75a629a, type: 3}
   - {fileID: -1039978742, guid: 71977a2907e994699ba45972d75a629a, type: 3}
+  <PerksCatalogue>k__BackingField: {fileID: 3046452568117150549, guid: 5b683c5bc0fc14341bb97b7793d28cb1, type: 3}

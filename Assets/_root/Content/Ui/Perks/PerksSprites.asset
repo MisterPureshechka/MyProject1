@@ -12,4 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 811811bda320444d8258b8e2444359c6, type: 3}
   m_Name: PerksSprites
   m_EditorClassIdentifier: 
-  PerkSprites: []
+  PerkSprites:
+  - Name: BookWorm
+    Sprite: {fileID: -1073581382, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+  - Name: Multitasker
+    Sprite: {fileID: 263095325, guid: 60cddd604c532406f9eaafdbcc4c1139, type: 3}
+  - Name: For eyes being
+    Sprite: {fileID: 1608918451, guid: e79b85263f29a4c458adc993cd5e955b, type: 3}
+  - Name: Hunger over
+    Sprite: {fileID: -1565948325, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
+  - Name: QuickBreak
+    Sprite: {fileID: -1073581382, guid: c64c266e3f2c349d58fefda96db0b249, type: 3}
+  - Name: DevBerserk
+    Sprite: {fileID: -1637628170, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}
+  - Name: Gamer
+    Sprite: {fileID: -1260349053, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}

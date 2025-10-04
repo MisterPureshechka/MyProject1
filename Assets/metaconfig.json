@@ -137,7 +137,7 @@
                 "Key": "GameMinute",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 1.0,
+                    "Value": 14.0,
                     "MaxValue": 59.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
