@@ -1055,16 +1055,6 @@ MonoBehaviour:
     - {fileID: 415426367, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1628142807, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1058786484, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-  - HeroAnimationState: 5
-    MoodState: 2
-    Sprites:
-    - {fileID: -228054364, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 1923870810, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -11527426, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -2121174336, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 415426367, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -1628142807, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 1058786484, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 6
     MoodState: 2
     Sprites:
@@ -1248,25 +1238,6 @@ MonoBehaviour:
     - {fileID: 1436406083, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 10
     MoodState: 1
-    Sprites:
-    - {fileID: -1079517146, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -1774604192, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -1126838367, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -562496135, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -459447533, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -257007730, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -130262612, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -261790312, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 473557153, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -582855833, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 1972343519, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 331153106, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -247722836, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 1297014798, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: -920774611, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-    - {fileID: 1436406083, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
-  - HeroAnimationState: 10
-    MoodState: 2
     Sprites:
     - {fileID: -1079517146, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1774604192, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}

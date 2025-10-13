@@ -8,7 +8,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
-            _heroLogic.PlayAnimation(HeroAnimationState.Toilet, true);
+            _heroLogic.PlayAnimation(HeroAnimationState.Toilet, false);
             _heroLogic.FlipHero(false);
         }
 

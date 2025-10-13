@@ -74,7 +74,6 @@ namespace Scripts.Hero
             if (_heroView == null)
             {
                 _heroView = Object.FindObjectOfType<HeroView>();
-                ;
             }
 
             _roomSize = roomSize;

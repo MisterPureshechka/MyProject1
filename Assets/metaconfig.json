@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 44.000892639160159,
+                    "Value": 67.61466217041016,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -60,7 +60,7 @@
                 "Key": "Programming",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 10.146417617797852,
+                    "Value": 10.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -71,7 +71,7 @@
                 "Key": "Art",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 5.601245403289795,
+                    "Value": 5.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -126,7 +126,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 18.0,
+                    "Value": 0.0,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -137,7 +137,7 @@
                 "Key": "GameMinute",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 44.0,
+                    "Value": 41.0,
                     "MaxValue": 59.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -148,7 +148,7 @@
                 "Key": "CurrentDay",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 10.0,
+                    "Value": 8.0,
                     "MaxValue": 31.0,
                     "DisplayName": "Day",
                     "Tooltip": "",
@@ -214,7 +214,7 @@
                 "Key": "HeroState",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 16.0,
+                    "Value": 0.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Текущий стейт героя",
                     "Tooltip": "Idle=0, Walk=1, ...",
@@ -236,7 +236,7 @@
                 "Key": "InitialPosX",
                 "Value": {
                     "MetaType": 4,
-                    "Value": -2.190999984741211,
+                    "Value": 0.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Hero Initial Pos",
                     "Tooltip": "Hero Pos When Start",
@@ -245,9 +245,5 @@
             }
         ]
     },
-    "ActivePerkIds": [
-        "Multitasker",
-        "For eyes being",
-        "Hunger over"
-    ]
+    "ActivePerkIds": []
 }

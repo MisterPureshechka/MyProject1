@@ -45,7 +45,7 @@ namespace Scripts.Hero
 
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
-                _heroLogic.PlaceHero(_targetIO.RootObjectPosition != null ? _targetIO.RootObjectPosition.position : _targetIO.Position);
+                _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
                 _localEvents.TriggerHeroGetRootIO(_targetIO.SprintType);
             }
         }

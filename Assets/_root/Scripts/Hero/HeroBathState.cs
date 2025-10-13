@@ -8,8 +8,8 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
-            _heroLogic.PlayAnimation(HeroAnimationState.Bath, true);
-            _heroLogic.PlaceHero(_heroLogic.GetTargetIO().RootObjectPosition.position);
+            _heroLogic.PlayAnimation(HeroAnimationState.Bath, false);
+            _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_heroLogic.GetTargetIO().RootObjectPosition.position));
             _heroLogic.FlipHero(false);
         }
 

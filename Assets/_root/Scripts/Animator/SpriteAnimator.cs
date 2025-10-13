@@ -18,27 +18,30 @@ namespace Scripts.Animator
 
             
 
-            public void UpdateAnimation(float deltatime)
+            public void UpdateAnimation(float deltaTime)
             {
                 if (Sleep) return;
-                
-                Counter += deltatime * Speed;
+
+                Counter += deltaTime * Speed;
+
+                if (Sprites == null || Sprites.Count == 0)
+                {
+                    Sleep = true;
+                    return;
+                }
 
                 if (Loop)
                 {
-                    while (Counter > Sprites.Count)
-                    {
-                        Counter -= Sprites.Count;
-                    }
-
+                    Counter = Mathf.Repeat(Counter, Sprites.Count); 
                 }
-                else if (Counter > Sprites.Count)
+                else if (Counter >= Sprites.Count) 
                 {
-                    Counter = 0;
+                    Counter = Sprites.Count - 1;
                     Sleep = true;
                     OnAnimationEnd?.Invoke();
                 }
             }
+
         }
 
         private Dictionary<SpriteRenderer, Animation> _activeSpriteAnimation = new Dictionary<SpriteRenderer, Animation>();

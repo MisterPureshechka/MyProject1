@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CatPrefab>k__BackingField: {fileID: 8619167069927732892, guid: cad70792368b546359f4dcd42b690ed0, type: 3}
   <TaskPanelButton>k__BackingField: {fileID: 312371767978753470, guid: a7ec14ac354db4de09ce21985f5b7217, type: 3}
-  <Hero>k__BackingField: {fileID: 43456105368433275, guid: 63784e1f983364810961f267b2656cef, type: 3}
+  <Hero>k__BackingField: {fileID: 43456105368433275, guid: 12896e55c276742a0a80955d2fd42443, type: 3}
   <Menu>k__BackingField: {fileID: 982093011933107053, guid: e0e34e5326d5d411cac392602ddcc1c9, type: 3}
   <Home>k__BackingField: {fileID: 2389769002547125902, guid: bd39dad7a181d4b6d85971ae698ab9a8, type: 3}
   <TaskPanelPrefab>k__BackingField: {fileID: 8908130472114095729, guid: d49f5e88cbf40407e9f7cdf8ef08af17, type: 3}

@@ -213,6 +213,8 @@ namespace Scripts.Hero
 
             if (_headIndex == null || _headIndex.Count == 0)
                 BuildHeadIndex();
+            
+            _heroView.HeadSprite.gameObject.SetActive(true);
 
             if (!_headIndex.TryGetValue((animationState, headState), out var sequence))
             {
@@ -220,6 +222,7 @@ namespace Scripts.Hero
 
                 if (sequence == null)
                 {
+                    _heroView.HeadSprite.gameObject.SetActive(false);
                     Debug.LogWarning($"No Head sequence found for {animationState} / {headState}");
                     return;
                 }
