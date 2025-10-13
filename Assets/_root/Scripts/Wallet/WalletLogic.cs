@@ -29,25 +29,25 @@ namespace Scripts.Wallet
 
         public WalletLogic(ProgressDataAdapter progressDataAdapter, GameProgress gameProgress, LocalEvents localEvents)
         {
-            _progressDataAdapter = progressDataAdapter;
-            _gameProgress = gameProgress;
-            _localEvents = localEvents;
-            _walletButtonView = Object.FindAnyObjectByType<WalletButtonView>();
-            _walletAmount = (int)_progressDataAdapter.GetMetadata(WalletKey).Value;
-            _walletCatalogue = Object.FindAnyObjectByType<WalletCatalogue>(FindObjectsInactive.Include);
-            _walletCatalogue.Init(_localEvents);
-            
-            _transactionLibrary = TransactionLibrary.LoadFromResources();
-            
-            UpdateMiniWallet();
-            UpdateWallet();
-
-            _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
-            _localEvents.OnWalletUpdate += UpdateWallet;
-            _localEvents.OnNewJobFound += AddOrSwitchIncome;
-            _localEvents.OnWalletAmountIncrease += IncreaseWalletAmount;
-            _localEvents.OnPayDay += DecreaseWalletAmount;
-            _localEvents.OnNewTransaction += ApplyTransaction;
+            // _progressDataAdapter = progressDataAdapter;
+            // _gameProgress = gameProgress;
+            // _localEvents = localEvents;
+            // _walletButtonView = Object.FindAnyObjectByType<WalletButtonView>();
+            // _walletAmount = (int)_progressDataAdapter.GetMetadata(WalletKey).Value;
+            // _walletCatalogue = Object.FindAnyObjectByType<WalletCatalogue>(FindObjectsInactive.Include);
+            // _walletCatalogue.Init(_localEvents);
+            //
+            // _transactionLibrary = TransactionLibrary.LoadFromResources();
+            //
+            // UpdateMiniWallet();
+            // UpdateWallet();
+            //
+            // _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
+            // _localEvents.OnWalletUpdate += UpdateWallet;
+            // _localEvents.OnNewJobFound += AddOrSwitchIncome;
+            // _localEvents.OnWalletAmountIncrease += IncreaseWalletAmount;
+            // _localEvents.OnPayDay += DecreaseWalletAmount;
+            // _localEvents.OnNewTransaction += ApplyTransaction;
         }
 
         private void DecreaseWalletAmount(int value)
@@ -100,7 +100,7 @@ namespace Scripts.Wallet
 
         private void UpdateMiniWallet()
         {
-            _walletButtonView.UpdateWallet(_walletAmount);
+            //_walletButtonView.UpdateWallet(_walletAmount);
         }
 
         private void UpdateWallet()

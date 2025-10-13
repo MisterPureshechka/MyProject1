@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: HeroConfig
   m_EditorClassIdentifier: 
   <WalkSpeed>k__BackingField: 0.9
+  <AnimationSpeed>k__BackingField: 15
   <Sequences>k__BackingField:
   - HeroAnimationState: 0
     Sprites:
     - {fileID: 21300000, guid: 436866a74707a46c1a2714b47c6fb0e5, type: 3}
-    Speed: 1
   - HeroAnimationState: 1
     Sprites:
     - {fileID: 1299985238, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
@@ -33,7 +33,6 @@ MonoBehaviour:
     - {fileID: 368757856, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
     - {fileID: -2095683767, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
     - {fileID: 897720930, guid: eaee18b2d06bc4e18b19cd5b12ee3ddb, type: 3}
-    Speed: 11
   - HeroAnimationState: 2
     Sprites:
     - {fileID: 1451083518, guid: 52886323637c84902ab5af5512decf75, type: 3}
@@ -66,15 +65,12 @@ MonoBehaviour:
     - {fileID: -2088403843, guid: 52886323637c84902ab5af5512decf75, type: 3}
     - {fileID: -1805652408, guid: 52886323637c84902ab5af5512decf75, type: 3}
     - {fileID: 772051951, guid: 52886323637c84902ab5af5512decf75, type: 3}
-    Speed: 5
   - HeroAnimationState: 3
     Sprites:
     - {fileID: 21300000, guid: f970c9dfb8f9f4e34b44e16876d2148d, type: 3}
-    Speed: 5
   - HeroAnimationState: 5
     Sprites:
     - {fileID: 21300000, guid: 42e57646880a14601ae9ec4ec2f8b67a, type: 3}
-    Speed: 5
   - HeroAnimationState: 4
     Sprites:
     - {fileID: 21300000, guid: 698f8e7ebd5ca47a797edced256148ec, type: 3}
@@ -84,11 +80,9 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 05eb9dd141c8b4f71bb97c753e80463f, type: 3}
     - {fileID: 21300000, guid: 05eb9dd141c8b4f71bb97c753e80463f, type: 3}
     - {fileID: 21300000, guid: fc686336f8e814a46b771b18b152a49e, type: 3}
-    Speed: 15
   - HeroAnimationState: 9
     Sprites:
     - {fileID: 21300000, guid: 67d39295dae3b4dbb9fb0b589dc4c5cc, type: 3}
-    Speed: 5
   - HeroAnimationState: 8
     Sprites:
     - {fileID: 21300000, guid: 107c73d849222430980c570999369262, type: 3}
@@ -96,9 +90,235 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e7a61a95908eb418780a6d05a2475f1f, type: 3}
     - {fileID: 21300000, guid: 107c73d849222430980c570999369262, type: 3}
     - {fileID: 21300000, guid: 733eb6d66012845ee91e52bbe90c2e4f, type: 3}
-    Speed: 1
   - HeroAnimationState: 6
     Sprites:
     - {fileID: 21300000, guid: 563de05f3d2ad4437ba203c89cf098fe, type: 3}
     - {fileID: 21300000, guid: 6e4395b843b31471794a76958d8cb94a, type: 3}
-    Speed: 3
+  <EyesSequences>k__BackingField:
+  - HeroAnimationState: 1
+    MoodState: 0
+    Sprites:
+    - {fileID: 1616002921, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1490644974, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -2118183002, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1858803605, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1336592088, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 80754822, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 258707671, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -884848512, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -774054198, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 553303619, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -265097742, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1432958413, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    MoodState: 1
+    Sprites:
+    - {fileID: -1389437003, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1671752044, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1446114613, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1784845825, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -877265946, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -441559708, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1525685674, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 279994643, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1316395262, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -398489597, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1329300064, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1537283697, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    MoodState: 2
+    Sprites:
+    - {fileID: -1058945601, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 438334450, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -199651118, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -967034209, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1391312133, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -304953497, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1532808361, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -635119597, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1822489348, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1499020245, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1970279328, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -2078703434, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  <HeadSequences>k__BackingField:
+  - HeroAnimationState: 1
+    HeadState: 0
+    Sprites:
+    - {fileID: 1038250488, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1344784079, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1888263728, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -938816019, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 880115255, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -453947870, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1342971699, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 2024109808, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1044395976, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1828844797, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 279704173, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -713595477, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    HeadState: 1
+    Sprites:
+    - {fileID: -494996337, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1186928537, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 977690645, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 248951067, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1018710288, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1471450078, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1992908819, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1367356011, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 279016849, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1968720955, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1950610194, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1477742415, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  <BodySequences>k__BackingField:
+  - HeroAnimationState: 1
+    MoodState: 2
+    Sprites:
+    - {fileID: -2035404673, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -220098382, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 994083, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -621665390, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 505272461, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1703837254, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 905462862, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -2089498936, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1447710697, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 32375822, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -987974922, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -696637629, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    MoodState: 1
+    Sprites:
+    - {fileID: -1988882091, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 367193781, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 514731584, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1725412289, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1629267076, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 253926906, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -667572757, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 50136172, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1214223802, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1259074756, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -42434860, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -120984832, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    MoodState: 0
+    Sprites:
+    - {fileID: -104252064, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1131658411, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -925558281, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1541380029, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1391852713, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 901668612, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 79295796, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1689188806, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1899333818, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1286245405, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1015060154, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 690497725, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  <PantsSequences>k__BackingField:
+  - HeroAnimationState: 1
+    MoodState: 0
+    Sprites:
+    - {fileID: -1356328373, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 773678663, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1972982371, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 176767088, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -838007598, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1579153184, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 14399789, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1022749043, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -956108777, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 153541823, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 100229994, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 578561980, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    MoodState: 1
+    Sprites:
+    - {fileID: -1356328373, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 773678663, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1972982371, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 176767088, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -838007598, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1579153184, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 14399789, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1022749043, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -956108777, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 153541823, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 100229994, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 578561980, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    MoodState: 2
+    Sprites:
+    - {fileID: -1356328373, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 773678663, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1972982371, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 176767088, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -838007598, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1579153184, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 14399789, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1022749043, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -956108777, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 153541823, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 100229994, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 578561980, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  <BackHandSequences>k__BackingField:
+  - HeroAnimationState: 1
+    BackHandState: 1
+    Sprites:
+    - {fileID: -1544367305, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1383618570, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 815011236, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1080139052, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1654589056, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -571603427, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1875482877, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 466261610, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1401329370, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 225025693, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -71354124, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 642430870, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    BackHandState: 2
+    Sprites:
+    - {fileID: 1653326769, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 53172908, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -948840663, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 912252566, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -437328309, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 2051681800, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1665922946, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -114849170, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1060096439, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1554727829, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -378809641, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1313888216, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - HeroAnimationState: 1
+    BackHandState: 0
+    Sprites:
+    - {fileID: 209123498, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 331151400, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1637440220, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1399846573, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1368131876, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1988614512, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -373381799, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -675813650, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -263352390, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 150604622, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -893684451, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1181624299, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  BackHandWithCoffeeSprites:
+  - {fileID: 323027412, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: -2100055237, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 1365417195, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 1005710158, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 883711852, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 283199348, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 870921920, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: -81080294, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 1719151868, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 1013455024, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: -242802729, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+  - {fileID: 1194201166, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}

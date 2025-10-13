@@ -22,7 +22,6 @@ namespace Scripts.Hero
 
         private readonly HeroConfig _heroConfig;
         private readonly HeroMovementLogic _heroMovementLogic;
-        private readonly SpriteRenderer _heroSprite;
         private readonly HeroStateMachine _heroStateMachine;
         private readonly HeroView _heroView;
         private readonly InteractiveObjectRegisterer _interactiveObjectRegister;
@@ -31,6 +30,7 @@ namespace Scripts.Hero
 
         private readonly float _roomSize;
         private readonly SpriteAnimator _spriteAnimator;
+        private readonly HeroAnimator _heroAnimator;
         private readonly float _yPos;
         private IInteractiveObject _exit;
         
@@ -63,11 +63,12 @@ namespace Scripts.Hero
         private readonly Vector3 _initialPosition;
         private Vector3 _targetPosition;
 
-        public HeroLogic(HeroConfig heroConfig, HeroMovementLogic heroMovementLogic, HeroView heroView,
+        public HeroLogic(HeroConfig heroConfig, HeroAnimator heroAnimator, HeroMovementLogic heroMovementLogic, HeroView heroView,
             Vector3 initialPosition, float roomSize, SpriteAnimator spriteAnimator, ProgressDataAdapter progressData,
             GameProgress gameProgress, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegister)
         {
             _heroConfig = heroConfig;
+            _heroAnimator = heroAnimator;
             _heroMovementLogic = heroMovementLogic;
             _heroView = heroView;
             if (_heroView == null)
@@ -83,7 +84,6 @@ namespace Scripts.Hero
             _localEvents = localEvents;
             _interactiveObjectRegister = interactiveObjectRegister;
             _yPos = initialPosition.y;
-            _heroSprite = heroView.HeroSprite;
             _initialPosition = LoadInitPos();
             _heroView.transform.position = _initialPosition;
             
@@ -364,18 +364,11 @@ namespace Scripts.Hero
 
         public void PlayAnimation(HeroAnimationState animationState, bool isLoop)
         {
-            var sequence = _heroConfig.Sequences.Find(s => s.HeroAnimationState == animationState);
-            if (sequence != null)
-                _spriteAnimator.StartAnimation(_heroSprite, sequence?.Sprites, isLoop, sequence.Speed);
+            _heroAnimator.StartAnimation(animationState, isLoop);
         }
 
         public void PlayTransitionAnimation(HeroAnimationState from, HeroAnimationState to)
         {
-            var fromSequence = _heroConfig.Sequences.Find(f => f.HeroAnimationState == from);
-            var toSequence = _heroConfig.Sequences.Find(t => t.HeroAnimationState == to);
-
-            _spriteAnimator.StartAnimation(_heroSprite, fromSequence.Sprites, false, toSequence.Speed,
-                () => { _spriteAnimator.StartAnimation(_heroSprite, toSequence.Sprites, true, toSequence.Speed); });
         }
 
         private void GetTargetIO(IInteractiveObject iO)
@@ -410,7 +403,7 @@ namespace Scripts.Hero
 
         public void ChangeSortingOrder(int sortingOrder)
         {
-            _heroSprite.sortingOrder = sortingOrder;
+            _heroView.SetSortingOrder(sortingOrder);
         }
 
         private SprintType GetTargetType(IInteractiveObject iO)
@@ -420,7 +413,7 @@ namespace Scripts.Hero
 
         public void FlipHero(bool isLeft)
         {
-            _heroSprite.flipX = isLeft;
+            _heroView.FlipX(isLeft);
         }
 
         public void MoveHero(Vector3 from, Vector3 to, float deltaTime)

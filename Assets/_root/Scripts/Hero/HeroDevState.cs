@@ -20,7 +20,7 @@ namespace Scripts.Hero
             _heroLogic.PlayAnimation(HeroAnimationState.Dev, true);
             //_heroLogic.PlayTransitionAnimation(HeroAnimationState.Read, HeroAnimationState.Dev);
             _heroLogic.FlipHero(false);
-            _heroLogic.ChangeSortingOrder(Consts.HeroSortingOrder - 2);
+            _heroLogic.ChangeSortingOrder(-4);
         }
 
         public override void Update(float deltaTime)
@@ -32,7 +32,7 @@ namespace Scripts.Hero
         {
             base.Exit();
             _heroLogic.TiggerSprintExit();
-            _heroLogic.ChangeSortingOrder(Consts.HeroSortingOrder);
+            _heroLogic.ChangeSortingOrder(4);
         }
     }
 }

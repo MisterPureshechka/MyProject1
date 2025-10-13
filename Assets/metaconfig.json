@@ -5,7 +5,7 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 92.17030334472656,
+                    "Value": 88.11053466796875,
                     "MaxValue": 100.0,
                     "DisplayName": "Энергия",
                     "Tooltip": "Используется при работе",
@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 84.60354614257813,
+                    "Value": 81.56619262695313,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -27,7 +27,7 @@
                 "Key": "Mood",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 75.18760681152344,
+                    "Value": 73.8887939453125,
                     "MaxValue": 100.0,
                     "DisplayName": "Настроение",
                     "Tooltip": "Улучшается отдыхом",
@@ -38,7 +38,7 @@
                 "Key": "Shower",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 94.87245178222656,
+                    "Value": 91.83509826660156,
                     "MaxValue": 100.0,
                     "DisplayName": "Гигиена",
                     "Tooltip": "Ухудшается при активности",
@@ -126,7 +126,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 22.0,
+                    "Value": 10.0,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -137,7 +137,7 @@
                 "Key": "GameMinute",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 14.0,
+                    "Value": 17.0,
                     "MaxValue": 59.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -148,7 +148,7 @@
                 "Key": "CurrentDay",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 7.0,
+                    "Value": 8.0,
                     "MaxValue": 31.0,
                     "DisplayName": "Day",
                     "Tooltip": "",

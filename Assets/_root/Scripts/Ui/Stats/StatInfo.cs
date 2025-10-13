@@ -23,22 +23,22 @@ namespace _root.Scripts.Ui.Stats
 
         public void UpdateInfo()
         {
-            var meta = _adapter.GetMetadata(_key);
-            if (meta == null) return;
-
-            float value = meta.Value;
-            float max = Mathf.Max(1f, meta.MaxValue);
-            float norm = Mathf.Clamp01(value / max);
-
-            _valueText.text = Mathf.RoundToInt(norm * 100f) + "%";
-            _progressBar.UpdateProgressBar(norm);
+            // var meta = _adapter.GetMetadata(_key);
+            // if (meta == null) return;
+            //
+            // float value = meta.Value;
+            // float max = Mathf.Max(1f, meta.MaxValue);
+            // float norm = Mathf.Clamp01(value / max);
+            //
+            // _valueText.text = Mathf.RoundToInt(norm * 100f) + "%";
+            // _progressBar.UpdateProgressBar(norm);
         }
 
         public void UpdateInfo(string title, float value)
         {
-            _title.text = title;
-            _valueText.text = value.ToString("F1") + "%";
-            _progressBar.UpdateProgressBar(Mathf.Clamp01(value / 100f));
+            // _title.text = title;
+            // _valueText.text = value.ToString("F1") + "%";
+            // _progressBar.UpdateProgressBar(Mathf.Clamp01(value / 100f));
         }
     }
 }

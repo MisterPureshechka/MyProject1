@@ -49,6 +49,8 @@ namespace Scripts.GlobalStateMachine
             var heroFactory = new HeroFactory(_gameData.PrefabDataBase);
             var initialPos = homeInitializer.GetInitialPosition();
             var hero = heroFactory.CreateHero(initialPos);
+            
+            var heroAnimator = new HeroAnimator(_gameData.HeroConfig, hero);
 
             var interactiveObjectRegister = new InteractiveObjectRegisterer(home.InteractiveObjects);
             var camera = Camera.main;
@@ -65,7 +67,7 @@ namespace Scripts.GlobalStateMachine
             var roomSize = homeInitializer.GetRoomSize();
             var heroMovementLogic =
                 new HeroMovementLogic(camera, interactiveObjectRegister, inputController, localEvents);
-            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress, localEvents, interactiveObjectRegister);
+            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroAnimator, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress, localEvents, interactiveObjectRegister);
 
             var interactiveObjectSelector = new InteractiveObjectSelector(camera, inputController, interactiveObjectRegister, localEvents);
 
@@ -132,6 +134,7 @@ namespace Scripts.GlobalStateMachine
             statsDebuger.Init(progressStat);
 
             _controllers.Add(inputController);
+            _controllers.Add(heroAnimator);
             _controllers.Add(heroLogic);
             _controllers.Add(interactiveObjectRegister);
             _controllers.Add(heroMovementLogic);
