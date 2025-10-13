@@ -8,7 +8,7 @@ namespace Scripts.Hero
 
         public override void Enter()
         {
-            _heroLogic.PlayAnimation(HeroAnimationState.Chill, true);
+            _heroLogic.PlayAnimation(HeroAnimationState.WakeUp, false);
             _heroLogic.SaveHeroState(_heroLogic.IdleState);
         }
 

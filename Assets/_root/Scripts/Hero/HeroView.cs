@@ -10,6 +10,7 @@ namespace Scripts.Hero
         [field: SerializeField] public SpriteRenderer BodySprite { get; private set; }
         [field: SerializeField] public SpriteRenderer PantsSprite { get; private set; }
         [field: SerializeField] public SpriteRenderer BackHandSprite { get; private set; }
+        [field: SerializeField] public Transform Transform { get; private set; }
         
         public void FlipX(bool isLeft)
         {

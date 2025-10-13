@@ -145,12 +145,33 @@ namespace Scripts.Hero
 
         public void StartAnimation(HeroAnimationState animationState, bool isLoop)
         {
-            var baseSpeed = _heroConfig.AnimationSpeed;
+            var baseSpeed = GetSpeedByType(animationState);
             ChangeEyesState(animationState, _moodState, baseSpeed, isLoop);
             ChangeHeadState(animationState, _headState, baseSpeed, isLoop);
             ChangeBodyState(animationState, _moodState, baseSpeed,  isLoop);
             ChangePantsState(animationState, baseSpeed, isLoop);
             ChangeBackHand(animationState, _moodState, baseSpeed, isLoop);
+        }
+
+        private float GetSpeedByType(HeroAnimationState animationState)
+        {
+            switch (animationState)
+            {
+                case HeroAnimationState.Walk:
+                    return _heroConfig.AnimationSpeed;
+                case HeroAnimationState.Chill:
+                    return _heroConfig.ChillSpeed;
+                case HeroAnimationState.Eat:
+                    return _heroConfig.EatSpeed;
+                case HeroAnimationState.Idle:
+                    return _heroConfig.IdleSpeed;
+                case HeroAnimationState.Read:
+                    return _heroConfig.ReadSpeed;
+                case HeroAnimationState.Dev:
+                    return _heroConfig.WorkSpeed;
+                default:
+                    return _heroConfig.AnimationSpeed;
+            }
         }
         
         private void ChangeEyesState(HeroAnimationState animationState, MoodState moodState, float animationSpeed, bool isLoop)
@@ -160,6 +181,8 @@ namespace Scripts.Hero
                 Debug.LogWarning("No Head sequences configured.");
                 return;
             }
+            
+            _heroView.EyesSprite.gameObject.SetActive(true);
 
             if (_eyesIndex == null || _eyesIndex.Count == 0)
                 BuildHeadIndex();
@@ -167,9 +190,11 @@ namespace Scripts.Hero
             if (!_eyesIndex.TryGetValue((animationState, moodState), out var sequence))
             {
                 sequence = _heroConfig.EyesSequences.Find(s => s.HeroAnimationState == animationState);
-
+                
+                
                 if (sequence == null)
                 {
+                    _heroView.EyesSprite.gameObject.SetActive(false);
                     Debug.LogWarning($"No Head sequence found for {animationState} / {moodState}");
                     return;
                 }
@@ -232,8 +257,15 @@ namespace Scripts.Hero
         {
             var sequence = _heroConfig.PantsSequences.Find(s => s.HeroAnimationState == animationState);
             if (sequence != null)
+            {
+                _heroView.PantsSprite.gameObject.SetActive(true);
                 _spriteAnimator.StartAnimation(_heroView.PantsSprite, sequence?.Sprites, isLoop, animationSpeed);
-            if (sequence == null) Debug.LogWarning($"No sequence found for {animationState}");
+            }
+            else
+            {
+                _heroView.PantsSprite.gameObject.SetActive(false);
+            }
+            
         }
         
         private void ChangeBackHand(HeroAnimationState animationState, MoodState mood, float animationSpeed, bool isLoop)
@@ -246,6 +278,8 @@ namespace Scripts.Hero
 
             if (_backHandIndex == null || _backHandIndex.Count == 0)
                 BuildBackHandIndex();
+            
+            _heroView.BackHandSprite.gameObject.SetActive(true);
 
             if (!_backHandIndex.TryGetValue((animationState, mood), out var sequence))
             {
@@ -253,14 +287,22 @@ namespace Scripts.Hero
 
                 if (sequence == null)
                 {
+                    _heroView.BackHandSprite.gameObject.SetActive(false);
                     Debug.LogWarning($"No BackHand sequence found for {animationState} / {mood}");
                     return;
                 }
             }
 
-            var resultSprites = _isWithCoffee && _heroConfig.BackHandWithCoffeeSprites != null &&
-                                _heroConfig.BackHandWithCoffeeSprites.Count > 0
-                ? _heroConfig.BackHandWithCoffeeSprites
+            var coffeeSprites = _heroConfig.BackHandWithCoffeeSprites;
+
+            if (animationState == HeroAnimationState.Idle)
+            {
+                coffeeSprites = _heroConfig.IdleBackHandWithCoffeeSprites;
+            }
+
+            var resultSprites = _isWithCoffee && coffeeSprites != null &&
+                                coffeeSprites.Count > 0
+                ? coffeeSprites
                 : sequence.Sprites;
 
             _spriteAnimator.StartAnimation(_heroView.BackHandSprite, resultSprites, isLoop, animationSpeed);

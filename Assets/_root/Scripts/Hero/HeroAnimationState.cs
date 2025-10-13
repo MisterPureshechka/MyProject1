@@ -12,6 +12,8 @@ namespace Scripts.Hero
         DrinkCoffee,
         Toilet,
         Bath,
+        WakeUp,
+        GoToBed
         
     }
 }

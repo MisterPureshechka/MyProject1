@@ -450,7 +450,7 @@ namespace Scripts.Hero
 
         public void PlaceHero(Vector3 targetPosition)
         {
-            _heroView.transform.position = targetPosition;
+            _heroView.Transform.position = targetPosition;
         }
 
         public void ResetHeroPosition()

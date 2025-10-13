@@ -10,8 +10,13 @@ namespace Scripts.Data
     [CreateAssetMenu(fileName = "HeroConfig", menuName = "ScriptableObjects/HeroConfig", order = 1)]
     public class HeroConfig : ScriptableObject
     {
+        [field: SerializeField] public float ReadSpeed { get; private set; }
         [field: SerializeField] public float WalkSpeed { get; private set; }
         [field: SerializeField] public float AnimationSpeed { get; private set; }
+        [field: SerializeField] public float ChillSpeed { get; private set; }
+        [field: SerializeField] public float IdleSpeed { get; private set; }
+        [field: SerializeField] public float EatSpeed { get; private set; }
+        [field: SerializeField] public float WorkSpeed { get; private set; }
         [field: SerializeField] public List<HeroSpriteSequence> Sequences { get; private set; }
         [field: SerializeField] public List<HeroEyesSequence> EyesSequences { get; private set; }
         [field: SerializeField] public List<HeroHeadSequence> HeadSequences { get; private set; }
@@ -20,6 +25,7 @@ namespace Scripts.Data
         [field: SerializeField] public List<HeroBackHandSequence> BackHandSequences { get; private set; }
         
         [field: SerializeField] public List<Sprite> BackHandWithCoffeeSprites;
+        [field: SerializeField] public List<Sprite> IdleBackHandWithCoffeeSprites;
     }
 
     [Serializable]

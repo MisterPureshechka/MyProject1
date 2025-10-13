@@ -29,6 +29,8 @@ namespace Scripts.Hero
                 _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
             }
             
+            //_targetPosition = _targetIO.RootObjectPosition != null ? _targetIO.RootObjectPosition.position : _targetIO.Position;
+            
             _heroLogic.FlipHero(_heroLogic.HeroPosition().x > _targetPosition.x);
             _heroLogic.PlayAnimation(HeroAnimationState.Walk, true);
         }
@@ -43,7 +45,7 @@ namespace Scripts.Hero
 
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
-                _heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
+                _heroLogic.PlaceHero(_targetIO.RootObjectPosition != null ? _targetIO.RootObjectPosition.position : _targetIO.Position);
                 _localEvents.TriggerHeroGetRootIO(_targetIO.SprintType);
             }
         }

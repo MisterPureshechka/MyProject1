@@ -5,7 +5,7 @@
                 "Key": "Energy",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 88.11053466796875,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Энергия",
                     "Tooltip": "Используется при работе",
@@ -16,7 +16,7 @@
                 "Key": "Food",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 81.56619262695313,
+                    "Value": 44.000892639160159,
                     "MaxValue": 100.0,
                     "DisplayName": "Еда",
                     "Tooltip": "Нужно есть регулярно",
@@ -27,7 +27,7 @@
                 "Key": "Mood",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 73.8887939453125,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Настроение",
                     "Tooltip": "Улучшается отдыхом",
@@ -38,7 +38,7 @@
                 "Key": "Shower",
                 "Value": {
                     "MetaType": 0,
-                    "Value": 91.83509826660156,
+                    "Value": 100.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Гигиена",
                     "Tooltip": "Ухудшается при активности",
@@ -60,7 +60,7 @@
                 "Key": "Programming",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 10.146398544311524,
+                    "Value": 10.146417617797852,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -71,7 +71,7 @@
                 "Key": "Art",
                 "Value": {
                     "MetaType": 1,
-                    "Value": 5.036649703979492,
+                    "Value": 5.601245403289795,
                     "MaxValue": 100.0,
                     "DisplayName": "Познания в программировании",
                     "Tooltip": "Читай",
@@ -126,7 +126,7 @@
                 "Key": "GameTime",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 10.0,
+                    "Value": 18.0,
                     "MaxValue": 24.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -137,7 +137,7 @@
                 "Key": "GameMinute",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 17.0,
+                    "Value": 44.0,
                     "MaxValue": 59.0,
                     "DisplayName": "Current Time",
                     "Tooltip": "",
@@ -148,7 +148,7 @@
                 "Key": "CurrentDay",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 8.0,
+                    "Value": 10.0,
                     "MaxValue": 31.0,
                     "DisplayName": "Day",
                     "Tooltip": "",
@@ -214,7 +214,7 @@
                 "Key": "HeroState",
                 "Value": {
                     "MetaType": 4,
-                    "Value": 0.0,
+                    "Value": 16.0,
                     "MaxValue": 100.0,
                     "DisplayName": "Текущий стейт героя",
                     "Tooltip": "Idle=0, Walk=1, ...",

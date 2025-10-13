@@ -14,7 +14,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
-            _heroLogic.PlayAnimation(HeroAnimationState.Idle, true);
+            _heroLogic.PlayAnimation(HeroAnimationState.GoToBed, false);
             _heroLogic.SaveHeroState(_heroLogic.WakeUpState);
             _heroLogic.SaveInitPos(InteractiveObjectType.Bed);
             _localEvents.TriggerSleepState();
