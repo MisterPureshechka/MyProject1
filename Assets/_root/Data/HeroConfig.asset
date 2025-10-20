@@ -438,7 +438,19 @@ MonoBehaviour:
     - {fileID: -1656859627, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 4
     MoodState: 2
-    Sprites: []
+    Sprites:
+    - {fileID: -1600756649, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1631805066, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1683266373, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1067323286, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1809927321, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1825176085, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1561650845, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1264639424, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1779099617, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1107485207, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: 1723986910, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
+    - {fileID: -1656859627, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 10
     MoodState: 0
     Sprites:
@@ -531,7 +543,7 @@ MonoBehaviour:
     - {fileID: -1050222914, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   <HeadSequences>k__BackingField:
   - HeroAnimationState: 1
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: 1038250488, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1344784079, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -546,7 +558,7 @@ MonoBehaviour:
     - {fileID: 279704173, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -713595477, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 1
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: -494996337, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1186928537, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -561,7 +573,7 @@ MonoBehaviour:
     - {fileID: 1950610194, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1477742415, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 0
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: 988702601, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 56626054, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -572,7 +584,7 @@ MonoBehaviour:
     - {fileID: -1076643830, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1915060561, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 0
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: 1237438218, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -761913641, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -583,7 +595,7 @@ MonoBehaviour:
     - {fileID: 743666852, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1818459225, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 2
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: -1458287402, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1976788549, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -596,7 +608,7 @@ MonoBehaviour:
     - {fileID: -1770918565, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1404659398, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 2
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: -1328006212, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1609224012, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -609,7 +621,7 @@ MonoBehaviour:
     - {fileID: -637082772, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1484298725, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 3
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: -201378209, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1383051754, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -627,7 +639,7 @@ MonoBehaviour:
     - {fileID: 1284527463, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1293807757, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 3
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: 1097194741, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1026302590, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -645,7 +657,7 @@ MonoBehaviour:
     - {fileID: -2088749042, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -464338268, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 4
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: -619126275, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1034244842, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -660,7 +672,7 @@ MonoBehaviour:
     - {fileID: 608101671, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1343758177, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 4
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: -1120347296, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1824878825, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -675,7 +687,7 @@ MonoBehaviour:
     - {fileID: 2055879238, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1131998440, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 5
-    HeadState: 0
+    cleanState: 0
     Sprites:
     - {fileID: 541583823, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 654312222, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -685,7 +697,7 @@ MonoBehaviour:
     - {fileID: -1483997246, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 767784381, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 5
-    HeadState: 1
+    cleanState: 1
     Sprites:
     - {fileID: 1536521278, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1173658702, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -695,7 +707,7 @@ MonoBehaviour:
     - {fileID: -1645300615, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1766820741, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 6
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: 1470568441, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1271127402, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -712,7 +724,7 @@ MonoBehaviour:
     - {fileID: 1708111178, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -879409762, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 6
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: 581139466, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 423484972, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -729,7 +741,7 @@ MonoBehaviour:
     - {fileID: 1017882197, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 107099334, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 8
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: 1842305593, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -221418661, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -744,7 +756,7 @@ MonoBehaviour:
     - {fileID: 1571475204, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -1148790082, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 8
-    HeadState: 0
+    cleanState: 0
     Sprites:
     - {fileID: 182867332, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1116853810, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -759,7 +771,7 @@ MonoBehaviour:
     - {fileID: -1873692942, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1189943550, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 10
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: 187128695, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -560456512, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -778,7 +790,7 @@ MonoBehaviour:
     - {fileID: -379198287, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -953866631, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 11
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: -820640613, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1281398079, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -797,7 +809,7 @@ MonoBehaviour:
     - {fileID: 1169419565, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -2006467432, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 11
-    HeadState: 0
+    cleanState: 1
     Sprites:
     - {fileID: 507188920, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: -359119240, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
@@ -808,7 +820,7 @@ MonoBehaviour:
     - {fileID: 2027975908, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 1996851238, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
   - HeroAnimationState: 11
-    HeadState: 1
+    cleanState: 0
     Sprites:
     - {fileID: 2069607355, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}
     - {fileID: 673903314, guid: 1fb898e695ee542f3b66ee4f0cd5eefc, type: 3}

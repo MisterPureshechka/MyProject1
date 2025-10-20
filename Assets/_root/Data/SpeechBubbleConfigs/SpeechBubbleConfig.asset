@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: SpeechBubbleConfig
+  m_EditorClassIdentifier: Assembly-CSharp:_root.Notification:TextBubbleConfig
+  BubbleVibrato: 50
+  BubbleStartSize: 0.5
+  GrowDuration: 0.1
+  HideDuration: 0.1
+  YOffset: 170
+  AutoHideDelay: 10
+  CharacterDelay: 0.03
+  RandomDelay: 0.01
+  CharMoveY: 2
+  CharAnimDuration: 0.05
+  StartAlpha: 0

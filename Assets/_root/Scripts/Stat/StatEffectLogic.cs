@@ -17,7 +17,16 @@ namespace Scripts.Stat
         private readonly Dictionary<string, Dictionary<string, float>> _effects;
         private IPerkService _perkService;
         private DevTaskType _activeReadTaskType;
+
+        private bool _hasCoffee;
+        private bool _isLowEnergy;
         
+        private const string EnergyKey = "Energy";
+        private const string MoodKey   = "Mood";
+
+        private const float CoffeeEnergyNegMult   = 0.5f; 
+        private const float LowEnergyMoodNegMult  = 10.0f; 
+        private const float LowEnergyMoodPosMult  = 0.75f;
 
         public StatEffectLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents, IPerkService perkService)
         {
@@ -27,9 +36,22 @@ namespace Scripts.Stat
 
             _effects = StatEffectLoader.Load(); 
             _localEvents.OnActiveSprintByType += OnSprintActivated;
-            _localEvents.OnReadTaskUpdate += ReadTaskUpdateListener; 
+            _localEvents.OnReadTaskUpdate += ReadTaskUpdateListener;
+
+            _localEvents.OnTakeCoffee += TakeCoffee;
+            _localEvents.OnLowEnergy += SetLowEnergy;
         }
-        
+
+        private void SetLowEnergy(bool isLowEnergy)
+        {
+            _isLowEnergy = isLowEnergy;
+        }
+
+        private void TakeCoffee(bool hasCoffee)
+        {
+            _hasCoffee = hasCoffee;
+        }
+
         private void ReadTaskUpdateListener(DevTaskType readTask)
         {
             _activeReadTaskType = readTask;
@@ -64,16 +86,33 @@ namespace Scripts.Stat
 
             foreach (var pair in statChanges)
             {
-                string statKey = pair.Key;
-                float baseDelta = pair.Value;
-                float mult = _perkService.GetEffectMultiplier($"{actionKey}.{statKey}");
-                _progressDataAdapter.TryUpdateValue(statKey, baseDelta * mult);
+                string statKey   = pair.Key;
+                float baseDelta  = pair.Value;
+                float perkMult   = _perkService.GetEffectMultiplier($"{actionKey}.{statKey}");
+                float finalDelta = baseDelta; // начнём с базового
+
+                if (_hasCoffee && statKey == EnergyKey && baseDelta < 0f)
+                {
+                    finalDelta *= CoffeeEnergyNegMult; 
+                }
+
+                if (_isLowEnergy && statKey == MoodKey)
+                {
+                    if (baseDelta < 0f)
+                        finalDelta *= LowEnergyMoodNegMult;  
+                    else if (baseDelta > 0f)
+                        finalDelta *= LowEnergyMoodPosMult;  
+                }
+
+                _progressDataAdapter.TryUpdateValue(statKey, finalDelta * perkMult);
             }
         }
 
         public void CleanUp()
         {
             _localEvents.OnActiveSprintByType -= OnSprintActivated;
+            _localEvents.OnReadTaskUpdate -= ReadTaskUpdateListener;
+            _localEvents.OnTakeCoffee -= TakeCoffee;
         }
     }
 }

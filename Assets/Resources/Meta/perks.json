@@ -1,6 +1,6 @@
 {
   "Bookworm": {
-    "Name": "Книжный червь",
+    "Name": "Book worm",
     "Description": "Чтение книг идёт в 2 раза быстрее",
     "Effects": {
       "ReadKnowledgeEffect": 10.0,
@@ -9,7 +9,7 @@
   },
 
   "Multitasker": {
-    "Name": "Мультизадачник",
+    "Name": "MultiTasker",
     "Description": "Можно вести на 1 задачу больше в Dev спринте",
     "Effects": {
       "Dev.MaxActiveTasks": 2,
@@ -26,32 +26,32 @@
   },
 
   "Hunger over": {
-    "Name": "Hungerover",
-    "Description": "Можно читать по 2 главы одновременно",
+    "Name": "Fast food",
+    "Description": "Eat faster",
     "Effects": {
       "TaskInterval.Eat": 0.5
     }
   },
 
   "QuickBreak": {
-    "Name": "Быстрый отдых",
-    "Description": "Отдых даёт больше энергии",
+    "Name": "Deep Dive Chill",
+    "Description": "Energy refresh faster",
     "Effects": {
       "Chill.Energy": 1.25
     }
   },
 
   "DevBerserk": {
-    "Name": "Берсерк кодинга",
-    "Description": "Скорость выполнения Dev задач выше на 20%",
+    "Name": "Code Berserk",
+    "Description": "All game dev tasks closing 20% more faster",
     "Effects": {
       "Dev.Interval": 0.8
     }
   },
 
   "Gamer": {
-    "Name": "Игроман",
-    "Description": "Игры приносят в 2 раза больше настроения",
+    "Name": "Gamemoodfication",
+    "Description": "Playing games refill mood faster",
     "Effects": {
       "Play.Mood": 2.0
     }

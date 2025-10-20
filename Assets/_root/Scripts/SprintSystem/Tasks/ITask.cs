@@ -5,7 +5,7 @@ namespace Scripts.Tasks
     public interface ITask : IPanelItem
     {
         string Id { get; }
-        float Progress { get;  } 
+        float Progress { get; set; } 
         float MaxProgress { get;  } 
         bool IsCompleted { get; }
         void ApplyProgress(float interval = 0f);

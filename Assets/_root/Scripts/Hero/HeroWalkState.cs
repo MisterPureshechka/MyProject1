@@ -15,6 +15,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
+            _heroLogic.SetWalking(true);
             _targetPosition = _heroLogic.GetTargetPosition();
             _heroLogic.PlayAnimation(HeroAnimationState.Walk, true);
         }
@@ -35,6 +36,7 @@ namespace Scripts.Hero
 
         public override void Exit()
         {
+            _heroLogic.SetWalking(false);
             base.Exit();
         }
     }

@@ -7,6 +7,7 @@ using Scripts.Catalogues;
 using Scripts.Data;
 using Scripts.EcoSystem;
 using Scripts.EcoSystem.Calendar;
+using Scripts.GameDev;
 using Scripts.Hero;
 using Scripts.Job;
 using Scripts.Messenger;
@@ -50,7 +51,11 @@ namespace Scripts.GlobalStateMachine
             var initialPos = homeInitializer.GetInitialPosition();
             var hero = heroFactory.CreateHero(initialPos);
             
-            var heroAnimator = new HeroAnimator(_gameData.HeroConfig, hero);
+            var heroAnimator = new HeroAnimator(_gameData.HeroConfig, hero, localEvents);
+            var eyesMoodStateLogic = new EyesMoodLogic(progressDataAdapter, localEvents);
+            var bodyMoodStateLogic = new BodyStateLogic(progressDataAdapter, localEvents);
+            var cleanStateLogic = new ShowerStateLogic(progressDataAdapter, localEvents, hero);
+            var coffeeLogic = new CoffeeLogic(localEvents);
 
             var interactiveObjectRegister = new InteractiveObjectRegisterer(home.InteractiveObjects);
             var camera = Camera.main;
@@ -59,6 +64,8 @@ namespace Scripts.GlobalStateMachine
             var canvas = Object.FindAnyObjectByType<Canvas>();
             var timeView = Object.FindAnyObjectByType<TimeView>();
             var timeLogic = new TimeLogic(progressDataAdapter, timeView, localEvents);
+            
+            var speechBubble = new SpeechBubbleLogic(Object.FindAnyObjectByType<SpeechBubbleView>(FindObjectsInactive.Include), localEvents, hero, camera);
             
             var spriteAnimator = new SpriteAnimator();
             
@@ -86,14 +93,20 @@ namespace Scripts.GlobalStateMachine
             var perkService = new PerkService(uiFactory, canvas, localEvents, progressDataAdapter, _gameProgress);
             
             var hud = Object.FindAnyObjectByType<HUDView>(FindObjectsInactive.Include);
+            hud.gameObject.SetActive(true);
             var statController = new StatsController(progressDataAdapter, localEvents);
             var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents, perkService);
-
+            
             var sideRoomChecker = new SideRoomChecker(home, localEvents);
             var healthStatLogic = new HealthStatLogic(Object.FindAnyObjectByType<HealthStatPanel>(FindObjectsInactive.Include), progressDataAdapter, localEvents);
+            var skillStatLogic =
+                new SkillStatLogic(Object.FindAnyObjectByType<SkillStatPanel>(FindObjectsInactive.Include),
+                    progressDataAdapter, localEvents);
 
+            var gameDevProgress = new GameDevProgress(progressDataAdapter); //надо диспозить
             var taskLibrary = new TaskLibrary(progressDataAdapter, localEvents);
-            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter, perkService);
+            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter, perkService, gameDevProgress);
+            var gameDevProgressPanelLogic = new GameDevProgressPanelLogic(Object.FindAnyObjectByType<GameDevProgressPanel>(FindObjectsInactive.Include), gameDevProgress, taskLibrary, localEvents);
 
             var fader = new FaderLogic(localEvents);
 
@@ -174,6 +187,13 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(passionLogic);
             _controllers.Add(perkService);
             _controllers.Add(healthStatLogic);
+            _controllers.Add(skillStatLogic);
+            _controllers.Add(gameDevProgressPanelLogic);
+            _controllers.Add(eyesMoodStateLogic);
+            _controllers.Add(bodyMoodStateLogic);
+            _controllers.Add(cleanStateLogic);
+            _controllers.Add(coffeeLogic);
+            _controllers.Add(speechBubble);
         }
 
         public override void Update(float deltaTime)

@@ -18,6 +18,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
+            _heroLogic.SetWalking(true);
             _targetIO = _heroLogic.GetTargetIO();
             
             if (_targetIO.RootObjectPosition != null)
@@ -52,6 +53,7 @@ namespace Scripts.Hero
 
         public override void Exit()
         {
+            _heroLogic.SetWalking(false);
             base.Exit();
         }
     }

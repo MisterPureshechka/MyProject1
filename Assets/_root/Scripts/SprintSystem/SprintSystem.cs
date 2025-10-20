@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core;
 using Scripts.Data;
+using Scripts.GameDev;
 using Scripts.GlobalStateMachine;
 using Scripts.Meta;
 using Scripts.Passion;
@@ -36,6 +37,8 @@ namespace Scripts.Tasks
         private readonly DevTaskCatalogue _devTaskCatalogue;
         private readonly ReadTaskCatalogue _readTaskCatalogue;
         
+        private readonly DevSprintSaveService _devSave;
+        
         private TextMeshProUGUI _tempStat;
         
         private SprintType _currentSprintType;
@@ -43,9 +46,12 @@ namespace Scripts.Tasks
 
         private bool _isActiveState;
         private float _interval;
+        
+        private GameDevProgress _gameDevProgress;
+        private const string currentGameName = "New Game";
 
 
-        public SprintSystem(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer, ProgressDataAdapter progressDataAdapter, PerkService perkService)
+        public SprintSystem(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer, ProgressDataAdapter progressDataAdapter, PerkService perkService, GameDevProgress gameDevProgress)
         {
             _tempStat = canvas.transform.Find("TempStat").GetComponent<TextMeshProUGUI>();
             _sprintView = sprintView;
@@ -55,6 +61,15 @@ namespace Scripts.Tasks
             _progressDataAdapter = progressDataAdapter;
             _perkService = perkService;
             _taskLibrary = taskLibrary;
+
+            _gameDevProgress = gameDevProgress;
+            _gameDevProgress.CreateOrSelectGame(currentGameName);
+            
+            _devSave = new DevSprintSaveService(_progressDataAdapter, _taskLibrary);
+            
+            var devRestored = _devSave.Load();
+            if (devRestored.Count > 0)
+                _savedTasks[SprintType.Dev] = devRestored;
 
             _effects = StatEffectLoader.Load();
             
@@ -79,7 +94,7 @@ namespace Scripts.Tasks
             _localEvents.OnHeroWalkToIO += ExitSprint;
             _localEvents.OnHeroGetRootIO += HeroGetRootIOListener;
 
-            _sprints[SprintType.Dev] = new DevSprint(12, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Pc));
+            _sprints[SprintType.Dev] = new DevSprint(24, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Pc));
             _sprints[SprintType.Chill] = new ChillSprint(1, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Chair));
             _sprints[SprintType.Eat] = new EatSprint(1, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Fridge));
             _sprints[SprintType.Read] = new ReadSprint(10, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Books));
@@ -253,6 +268,11 @@ namespace Scripts.Tasks
                 
                 if (task.Progress <= 0f)
                 {
+                    if (task is IDevTask dev)
+                    {
+                        _gameDevProgress.CompleteTask(currentGameName, dev);
+                        _localEvents.TriggerDevTaskComplete(dev.Type);
+                    }
                     CheckSprintCompletion();
                     _activeTasks.RemoveAt(i);
                     _localEvents.TriggerPassionIncrease(PassionIncreaseType.TaskComplete);
@@ -291,6 +311,10 @@ namespace Scripts.Tasks
             _isActiveState = false;
             _localEvents.TriggerSprintExit();
             _localEvents.TriggerSprintComplete(_currentSprint.Type);
+            
+            if (_currentSprintType == SprintType.Dev)
+                _devSave.Clear();
+            
             await Task.Delay(500);
             await _sprintView.ClearTasks();
             _pendingTasks.Clear();
@@ -337,6 +361,13 @@ namespace Scripts.Tasks
             _localEvents.TriggerSprintExit();
             _isActiveState = false;
             if (_currentSprint == null) return;
+            
+            if (_currentSprint.Type == SprintType.Dev && _currentSprint.ShouldPersistTasksOnExit)
+            {
+                var all = _currentSprint.GetTasks();
+                _savedTasks[SprintType.Dev] = new List<ITask>(all);
+                _devSave.Save(_savedTasks[SprintType.Dev]);   
+            }
             
             if (_currentSprint.ShouldPersistTasksOnExit)
             {

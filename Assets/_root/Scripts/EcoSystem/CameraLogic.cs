@@ -44,11 +44,11 @@ namespace Scripts.EcoSystem
             _positionKeys = new Vector2[positionKeys.Length];
             
             for (int i = 0; i < positionKeys.Length; i++)
-                _positionKeys[i] = _interactiveObjectConfig.CameraSideMomePositionKeys[i];
+                _positionKeys[i] = new Vector2(_interactiveObjectConfig.CameraSideMomePositionKeys[i].x, _cameraDefaultPosition.y);
             
             
-            _localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
-            _localEvents.OnMouseOverToilet += MoveCameraToToilet;
+            //_localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
+            //_localEvents.OnMouseOverToilet += MoveCameraToToilet;
             _localEvents.OnClickStateChange += ChangeClickState;
         }
 

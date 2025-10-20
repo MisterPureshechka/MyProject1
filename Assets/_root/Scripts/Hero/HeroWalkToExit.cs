@@ -23,6 +23,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
+            _heroLogic.SetWalking(true);
             _targetIO = _heroLogic.GetTargetIO();
             
             _targetPosition = _heroLogic.GetIOPositionByType(InteractiveObjectType.Door);
@@ -53,6 +54,7 @@ namespace Scripts.Hero
 
         public override void Exit()
         {
+            _heroLogic.SetWalking(false);
             base.Exit();
         }
     }

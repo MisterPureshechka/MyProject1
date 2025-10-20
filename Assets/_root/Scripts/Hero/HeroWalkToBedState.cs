@@ -15,6 +15,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
+            _heroLogic.SetWalking(true);
             _targetPosition = _heroLogic.GetIOPositionByType(InteractiveObjectType.Bed);
             
             _heroLogic.FlipHero(_heroLogic.HeroPosition().x > _targetPosition.x);
@@ -38,6 +39,7 @@ namespace Scripts.Hero
 
         public override void Exit()
         {
+            _heroLogic.SetWalking(false);
             base.Exit();
         }
     }

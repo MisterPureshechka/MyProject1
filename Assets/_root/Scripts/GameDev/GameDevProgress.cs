@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Scripts.Progress;
 using Scripts.Tasks;
 
@@ -7,38 +8,112 @@ namespace Scripts.GameDev
 {
     public class GameDevProgress
     {
-        private ProgressDataAdapter _progressDataAdapter;
-        
-        private Dictionary<string, int> _completedTaskTitleCounter = new();
-        private Dictionary<DevTaskType, int> _completedTaskTypeCounter = new();
+        private const string Key = "Dev.Progress";
 
-        public GameDevProgress()
+        private readonly ProgressDataAdapter _adapter;                 
+        private readonly Dictionary<string, GameProgressData> _games = new();
+
+        public GameDevProgress(ProgressDataAdapter adapter)
         {
-            GetOrCreateDevTypeCounter();
+            _adapter = adapter;
+            Load(); 
         }
 
-        private void GetOrCreateDevTypeCounter()
+        public void CreateOrSelectGame(string gameName)
         {
-            foreach (DevTaskType type in Enum.GetValues(typeof(DevTaskType)))
-            {
-                _completedTaskTypeCounter[type] = 0;
-            }
+            if (!_games.ContainsKey(gameName))
+                _games[gameName] = new GameProgressData(gameName);
         }
 
-        public void CompleteTaskByTitle(IDevTask task)
+        public void CompleteTask(string gameName, IDevTask task, bool countByTitle = true)
         {
-            var title = task.Title;
-            
-            if(_completedTaskTitleCounter.ContainsKey(title))
+            if (!_games.TryGetValue(gameName, out var gameData))
             {
-                _completedTaskTitleCounter[title]++;
-            }
-            else
-            {
-                _completedTaskTitleCounter.Add(title, 1);
+                gameData = new GameProgressData(gameName);
+                _games[gameName] = gameData;
             }
 
-            _completedTaskTypeCounter[task.Type]++;
+            // учёт
+            if (countByTitle)
+            {
+                if (gameData.CompletedByTitle.ContainsKey(task.Title))
+                    gameData.CompletedByTitle[task.Title]++;
+                else
+                    gameData.CompletedByTitle[task.Title] = 1;
+            }
+
+            gameData.CompletedByType[task.Type]++;
+
+            Save(); // сразу сохраняем снапшот в Custom
+        }
+
+        public GameProgressData GetGameProgress(string gameName)
+        {
+            _games.TryGetValue(gameName, out var gameData);
+            return gameData;
+        }
+
+        public Dictionary<string, GameProgressData> GetAllGames() => _games;
+
+        // ---------- Persist ----------
+
+        private void Save()
+        {
+            var snap = new GameDevProgressSnapshot();
+
+            foreach (var (name, data) in _games)
+            {
+                var gs = new GameProgressSnapshot { GameName = name };
+
+                // Title -> count
+                foreach (var kv in data.CompletedByTitle)
+                    gs.CompletedByTitle[kv.Key] = kv.Value;
+
+                // DevTaskType -> count (как string)
+                foreach (var kv in data.CompletedByType)
+                    gs.CompletedByType[kv.Key.ToString()] = kv.Value;
+
+                snap.Games[name] = gs;
+            }
+
+            string json = JsonConvert.SerializeObject(snap, Formatting.Indented);
+            _adapter.SaveCustomJson(Key, json);
+        }
+
+        private void Load()
+        {
+            string json = _adapter.LoadCustomJson(Key);
+            if (string.IsNullOrEmpty(json)) return;
+
+            GameDevProgressSnapshot snap;
+            try { snap = JsonConvert.DeserializeObject<GameDevProgressSnapshot>(json); }
+            catch { return; }
+
+            if (snap?.Games == null) return;
+
+            _games.Clear();
+
+            foreach (var (name, gs) in snap.Games)
+            {
+                var data = new GameProgressData(gs.GameName ?? name);
+
+                // Title -> count
+                if (gs.CompletedByTitle != null)
+                    foreach (var kv in gs.CompletedByTitle)
+                        data.CompletedByTitle[kv.Key] = kv.Value;
+
+                // string -> enum
+                if (gs.CompletedByType != null)
+                {
+                    foreach (var kv in gs.CompletedByType)
+                    {
+                        if (Enum.TryParse<DevTaskType>(kv.Key, out var type))
+                            data.CompletedByType[type] = kv.Value;
+                    }
+                }
+
+                _games[data.GameName] = data;
+            }
         }
     }
 }

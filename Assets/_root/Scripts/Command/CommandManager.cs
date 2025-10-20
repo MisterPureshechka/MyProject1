@@ -106,6 +106,15 @@ namespace Scripts.Tasks
                     OnExecute = _localEvents.TriggerHeroGoToBed,
                 }
             };
+
+            var coffeeCommand = new List<Command>()
+            {
+                new Command()
+                {
+                    CommandName = "Grab a coffee",
+                    OnExecute = () => _localEvents.TriggerWalkToIO(InteractiveObjectType.CoffeeMachine),
+                }
+            };
             
             Commands.Add(InteractiveObjectType.Fridge, eatCommands);
             Commands.Add(InteractiveObjectType.Toilet, toiletCommand);
@@ -114,6 +123,7 @@ namespace Scripts.Tasks
             Commands.Add(InteractiveObjectType.Bath, bathCommand);
             Commands.Add(InteractiveObjectType.Door, new List<Command>());
             Commands.Add(InteractiveObjectType.Bed, bedCommand);
+            Commands.Add(InteractiveObjectType.CoffeeMachine, coffeeCommand);
         }
 
         private void CreateDevCommands()

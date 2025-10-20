@@ -41,7 +41,7 @@
   },
   "Programming": {
     "MetaType": "Knowledge",
-    "Value": 10,
+    "Value": 4,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",
@@ -49,7 +49,7 @@
   },
   "Art": {
     "MetaType": "Knowledge",
-    "Value": 5,
+    "Value": 2,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",
@@ -57,7 +57,7 @@
   },
   "Marketing": {
     "MetaType": "Knowledge",
-    "Value": 5,
+    "Value": 0,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",
@@ -65,7 +65,7 @@
   },
   "GameDesign": {
     "MetaType": "Knowledge",
-    "Value": 5,
+    "Value": 3,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",
@@ -73,7 +73,7 @@
   },
   "SoundDesign": {
     "MetaType": "Knowledge",
-    "Value": 3,
+    "Value": 0,
     "MaxValue": 100,
     "DisplayName": "Познания в программировании",
     "Tooltip": "Читай",

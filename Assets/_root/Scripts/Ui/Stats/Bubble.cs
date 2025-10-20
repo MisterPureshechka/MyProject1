@@ -16,4 +16,10 @@ public class Bubble : MonoBehaviour
     {
         _image.enabled = false;              
     }
+    
+    public void SetFull()
+    {
+        _image.enabled = true;
+        _image.sprite = _fullSprite;
+    }
 }

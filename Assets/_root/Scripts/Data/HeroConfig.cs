@@ -47,7 +47,7 @@ namespace Scripts.Data
     public sealed class HeroHeadSequence
     {
         public HeroAnimationState HeroAnimationState;
-        public HeadState HeadState;
+        [FormerlySerializedAs("HeadState")] public CleanState cleanState;
         public List<Sprite> Sprites;
     }
     
@@ -75,10 +75,11 @@ namespace Scripts.Data
         public List<Sprite> Sprites;
     }
     
-    public enum HeadState
+    public enum CleanState
     {
-        Dirty,
         Clean,
+        Dirty,
+        SmellsLikeShit
     }
 
     public enum MoodState

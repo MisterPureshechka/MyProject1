@@ -18,6 +18,7 @@ namespace Scripts.Hero
         
         public override void Enter()
         {
+            _heroLogic.SetWalking(true);
             _targetIO = _heroLogic.GetTargetIO();
             
             _targetPosition = _heroLogic.NormalizeVector(_targetIO.Position);
@@ -36,17 +37,15 @@ namespace Scripts.Hero
 
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
-                //_heroLogic.PlaceHero(_heroLogic.NormalizeVector(_targetPosition));
-                //_heroLogic.ChangeStateByIOType(_targetIO.SprintType);
                 _heroLogic.ChangeState(_heroLogic.HeroAwaitState);
                 _localEvents.TriggerHeroGetIO(_targetIO.IOType);
-                
-                // _heroLogic.TriggerIOBySprintType(_targetIO.SprintType);
+                Debug.Log("-------> HerogetIo " + _targetIO.IOType);
             }
         }
 
         public override void Exit()
         {
+            _heroLogic.SetWalking(false);
             base.Exit();
         }
     }

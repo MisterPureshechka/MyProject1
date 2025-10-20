@@ -19,10 +19,10 @@ namespace _root.Scripts.Ui.Stats
             _localEvents = localEvents;
 
             InitPanel();
-            _progressDataAdapter.OnHealthStatUpdated += UpdateStats;
+            _progressDataAdapter.OnStatUpdated += UpdateStats;
         }
 
-        public void InitPanel()
+        private void InitPanel()
         {
             var healthStats = new Dictionary<string, Metadata>();
             foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
@@ -41,7 +41,7 @@ namespace _root.Scripts.Ui.Stats
 
         public void CleanUp()
         {
-            _progressDataAdapter.OnHealthStatUpdated -= UpdateStats;
+            _progressDataAdapter.OnStatUpdated -= UpdateStats;
         }
     }
 }

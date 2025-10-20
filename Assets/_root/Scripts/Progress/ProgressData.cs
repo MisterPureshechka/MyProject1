@@ -11,6 +11,7 @@ namespace Scripts.Progress
     {
         public SerializedDictionary<string, Meta.Metadata> Metadata = new();
         public List<string> ActivePerkIds = new();
+        public Dictionary<string, string> Custom = new();
         
         public ProgressData(SerializedDictionary<string, Meta.Metadata> metadata) 
         {

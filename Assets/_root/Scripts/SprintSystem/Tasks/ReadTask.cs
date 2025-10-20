@@ -16,7 +16,7 @@ namespace Scripts.Tasks
         private bool _hasProgressChanged;
         public string Title { get; }
         public string Id { get; }
-        public float Progress { get; private set; }
+        public float Progress { get;  set; }
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 

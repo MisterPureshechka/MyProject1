@@ -4,6 +4,7 @@ using _root.Notification;
 using Core;
 using Scripts.Catalogues;
 using Scripts.ClickLogic;
+using Scripts.Data;
 using Scripts.Job;
 using Scripts.Messenger;
 using Scripts.Meta;
@@ -152,6 +153,15 @@ namespace Scripts.GlobalStateMachine
         public Action OnNewDay;
         public void TriggerNewDay() => OnNewDay?.Invoke();
 
+        public Action OnNotEnoughFood;
+        public void TriggerNotEnoughFood() => OnNotEnoughFood?.Invoke();
+        
+        public Action OnNotEnoughEnergy;
+        public void TriggerNotEnoughEnergy() => OnNotEnoughEnergy?.Invoke();
+        
+        public Action OnNotEnoughMood;
+        public void TriggerNotEnoughMood() => OnNotEnoughMood?.Invoke();
+        
         public Action OnMiniCalendarButtonClick;
         public void TriggerMiniCalendarButtonOpen() => OnMiniCalendarButtonClick?.Invoke();
         
@@ -218,5 +228,27 @@ namespace Scripts.GlobalStateMachine
         
         public Action<PassionIncreaseType> OnPassionIncrease { get; set; }
         public void TriggerPassionIncrease(PassionIncreaseType type) => OnPassionIncrease?.Invoke(type);
+        
+        public Action<DevTaskType> OnDevTaskComplete { get; set; }
+        public void TriggerDevTaskComplete(DevTaskType devTaskType) => OnDevTaskComplete?.Invoke(devTaskType);
+
+        public Action<MoodState> OnMoodStateChange { get; set; }
+        public void TriggerEyesMoodChanged(MoodState currentMoodState) => OnMoodStateChange?.Invoke(currentMoodState);
+        public Action<MoodState> OnBodyStateChange { get; set; }
+        public void TriggerBodyMoodChanged(MoodState currentMoodState) => OnBodyStateChange?.Invoke(currentMoodState);
+        public Action<CleanState> OnCleanStateChange { get; set; }
+        public void TriggerCleanStateChange(CleanState currentCleanState) => OnCleanStateChange?.Invoke(currentCleanState);
+        
+        public Action<bool> OnTakeCoffee { get; set; }
+        public void TriggerCoffee(bool hasCoffee) => OnTakeCoffee?.Invoke(hasCoffee);
+
+        public Action OnHeroWokeUp { get; set; }
+        public void TriggerHeroWokeUp() => OnHeroWokeUp?.Invoke();
+
+        public Action<bool> OnLowEnergy { get; set; }
+        public void TriggerLowEnergy(bool isLow) => OnLowEnergy?.Invoke(isLow);
+        
+        public Action OnBlockSprint { get; set; }
+        public void TriggerBlockSprint() => OnBlockSprint?.Invoke();
     }
 }

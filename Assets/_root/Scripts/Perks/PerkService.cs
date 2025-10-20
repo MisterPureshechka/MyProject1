@@ -37,6 +37,8 @@ namespace Scripts.Perks
             _perksCatalogue.OnApplySelectedPerks += ApplyCatalogueSelection;
             
             LoadPerks();
+
+            _localEvents.OnHeroWokeUp += ShowCatalogue;
         }
 
         private void LoadPerks()
@@ -125,6 +127,8 @@ namespace Scripts.Perks
             foreach (var id in selectedSet)
                 if (_allPerks.ContainsKey(id))
                     _activePerks.Add(id);
+            
+            Debug.Log($"Selected perks: {string.Join(", ", selectedSet)}");
 
             PersistAndRebuildCache();
         }

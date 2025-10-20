@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478fc76749384354818cd4abde4f8f99, type: 3}
+  m_Name: TextConfig
+  m_EditorClassIdentifier: 
+  <Duration>k__BackingField: 0.2
+  <RotatateToValue>k__BackingField: 45
+  <ScaleToValue>k__BackingField: 2
+  <Vibrato>k__BackingField: 100
+  <Randomness>k__BackingField: 0
+  <FadeOut>k__BackingField: 1

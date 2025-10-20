@@ -26,7 +26,7 @@ namespace Scripts.GlobalStateMachine
             var canvas = Object.FindObjectOfType<Canvas>();
             
             _menu = Object.Instantiate(_gameData.PrefabDataBase.Menu, canvas.transform);
-            _menu.transform.SetAsFirstSibling();
+            _menu.transform.SetAsLastSibling();
             
             _newGameButton = _menu.GetComponentInChildren<Button>();
             _newGameButton.onClick.AddListener(ChangeState);

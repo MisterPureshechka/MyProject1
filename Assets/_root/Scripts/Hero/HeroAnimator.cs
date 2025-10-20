@@ -2,45 +2,70 @@ using System.Collections.Generic;
 using Core;
 using Scripts.Animator;
 using Scripts.Data;
+using Scripts.GlobalStateMachine;
 using UnityEngine;
 
 namespace Scripts.Hero
 {
-    public class HeroAnimator : IExecute
+    public class HeroAnimator : IExecute, ICleanUp
     {
         private SpriteAnimator _spriteAnimator;
         private HeroConfig _heroConfig;
         
         private HeroView _heroView;
+        private readonly LocalEvents _localEvents;
 
         private bool _isWithCoffee;
-        private MoodState _moodState;
-        private HeadState _headState;
+        private MoodState _bodyState;
+        private MoodState _faceMoodState;
+        private CleanState _cleanState;
         
         private Dictionary<(HeroAnimationState, MoodState), HeroBackHandSequence> _backHandIndex;
         private Dictionary<(HeroAnimationState, MoodState), HeroBodySequence> _bodyIndex;
         private Dictionary<(HeroAnimationState, MoodState), HeroEyesSequence> _eyesIndex;
-        private Dictionary<(HeroAnimationState, HeadState), HeroHeadSequence> _headIndex;
+        private Dictionary<(HeroAnimationState, CleanState), HeroHeadSequence> _headIndex;
+        
+        private HeroAnimationState _currentAnimState = HeroAnimationState.Idle;
 
-        public HeroAnimator(HeroConfig heroConfig, HeroView heroView)
+        public HeroAnimator(HeroConfig heroConfig, HeroView heroView, LocalEvents localEvents)
         {
             _spriteAnimator = new SpriteAnimator();
             _heroConfig = heroConfig;
             _heroView = heroView;
-
-            _moodState = MoodState.Sad;
-            _headState = HeadState.Dirty;
-            _isWithCoffee = true;
-            
-            Debug.Log($"_moodState = {_moodState}");
-            Debug.Log($"_headState = {_headState}");
+            _localEvents = localEvents;
             
             BuildBackHandIndex();
             BuildBodyIndex();
             BuildHeadIndex();
             BuildEyesSequence();
+
+            _localEvents.OnMoodStateChange += ChangeFaceMoodState;
+            _localEvents.OnBodyStateChange += BodyStateChange;
+            _localEvents.OnCleanStateChange += ChangeCleanState;
+            _localEvents.OnTakeCoffee += ChangeCoffeeState;
         }
-        
+
+        private void ChangeCoffeeState(bool hasCoffee)
+        {
+            _isWithCoffee = hasCoffee;
+            //StartAnimation(HeroAnimationState.Idle, true);
+        }
+
+        private void ChangeCleanState(CleanState state)
+        {
+            _cleanState = state;
+        }
+
+        private void BodyStateChange(MoodState state)
+        {
+            _bodyState = state;
+        }
+
+        private void ChangeFaceMoodState(MoodState state)
+        {
+            _faceMoodState = state;
+        }
+
         private void BuildEyesSequence()
         {
             _eyesIndex = new Dictionary<(HeroAnimationState, MoodState), HeroEyesSequence>();
@@ -57,9 +82,9 @@ namespace Scripts.Hero
         
         private void BuildHeadIndex()
         {
-            _headIndex = new Dictionary<(HeroAnimationState, HeadState), HeroHeadSequence>();
+            _headIndex = new Dictionary<(HeroAnimationState, CleanState), HeroHeadSequence>();
             foreach (var s in _heroConfig.HeadSequences)
-                _headIndex[(s.HeroAnimationState, s.HeadState)] = s;
+                _headIndex[(s.HeroAnimationState, s.cleanState)] = s;
         }
 
         private void BuildBodyIndex()
@@ -75,15 +100,15 @@ namespace Scripts.Hero
             
             if (Input.GetKeyDown(KeyCode.H))
             {
-                if (_headState == HeadState.Dirty)
+                if (_cleanState == CleanState.Dirty)
                 {
-                    _headState = HeadState.Clean;
+                    _cleanState = CleanState.Clean;
                     StartAnimation(HeroAnimationState.Walk, true);
                     return;
                 }
                 else
                 {
-                    _headState = HeadState.Dirty;
+                    _cleanState = CleanState.Dirty;
                     StartAnimation(HeroAnimationState.Walk, true);
                 }
             }
@@ -103,39 +128,39 @@ namespace Scripts.Hero
                 Debug.Log($"_isWith coffee changed to = {_isWithCoffee}");
             }
 
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                if (_moodState == MoodState.Sad)
-                {
-                    _moodState = MoodState.Normal;
-                    Debug.Log($"_moodState changed to = {_moodState}");
-                    StartAnimation(HeroAnimationState.Walk, true);
-                    return;
-                }
-
-                if (_moodState == MoodState.Normal)
-                {
-                    _moodState = MoodState.Happy;
-                    Debug.Log($"_moodState changed to = {_moodState}");
-                    StartAnimation(HeroAnimationState.Walk, true);
-                    return;
-                }
-
-                if (_moodState == MoodState.Happy)
-                {
-                    _moodState = MoodState.Sad;
-                    Debug.Log($"_moodState changed to = {_moodState}");
-                    StartAnimation(HeroAnimationState.Walk, true);
-                }
-                
-            }
+            // if (Input.GetKeyDown(KeyCode.L))
+            // {
+            //     if (_moodState == MoodState.Sad)
+            //     {
+            //         _moodState = MoodState.Normal;
+            //         Debug.Log($"_moodState changed to = {_moodState}");
+            //         StartAnimation(HeroAnimationState.Walk, true);
+            //         return;
+            //     }
+            //
+            //     if (_moodState == MoodState.Normal)
+            //     {
+            //         _moodState = MoodState.Happy;
+            //         Debug.Log($"_moodState changed to = {_moodState}");
+            //         StartAnimation(HeroAnimationState.Walk, true);
+            //         return;
+            //     }
+            //
+            //     if (_moodState == MoodState.Happy)
+            //     {
+            //         _moodState = MoodState.Sad;
+            //         Debug.Log($"_moodState changed to = {_moodState}");
+            //         StartAnimation(HeroAnimationState.Walk, true);
+            //     }
+            //     
+            // }
 
            
         }
 
-        public void ChangeHairState(HeadState state)
+        public void ChangeHairState(CleanState state)
         {
-            _headState = state;
+            _cleanState = state;
         }
 
         private void IsWithCoffee(bool value)
@@ -145,12 +170,13 @@ namespace Scripts.Hero
 
         public void StartAnimation(HeroAnimationState animationState, bool isLoop)
         {
+            _currentAnimState = animationState;
             var baseSpeed = GetSpeedByType(animationState);
-            ChangeEyesState(animationState, _moodState, baseSpeed, isLoop);
-            ChangeHeadState(animationState, _headState, baseSpeed, isLoop);
-            ChangeBodyState(animationState, _moodState, baseSpeed,  isLoop);
-            ChangePantsState(animationState, baseSpeed, isLoop);
-            ChangeBackHand(animationState, _moodState, baseSpeed, isLoop);
+            ChangeEyesState(_currentAnimState, _faceMoodState, _bodyState, baseSpeed, isLoop);
+            ChangeHeadState(_currentAnimState, _cleanState, baseSpeed, isLoop);
+            ChangeBodyState(_currentAnimState, _bodyState, _faceMoodState, baseSpeed,  isLoop);
+            ChangePantsState(_currentAnimState, baseSpeed, isLoop);
+            ChangeBackHand(_currentAnimState, _bodyState, baseSpeed, isLoop);
         }
 
         private float GetSpeedByType(HeroAnimationState animationState)
@@ -174,7 +200,7 @@ namespace Scripts.Hero
             }
         }
         
-        private void ChangeEyesState(HeroAnimationState animationState, MoodState moodState, float animationSpeed, bool isLoop)
+        private void ChangeEyesState(HeroAnimationState animationState, MoodState moodState, MoodState bodyState, float animationSpeed, bool isLoop)
         {
             if (_heroConfig == null || _heroConfig.EyesSequences == null || _heroConfig.EyesSequences.Count == 0)
             {
@@ -185,7 +211,12 @@ namespace Scripts.Hero
             _heroView.EyesSprite.gameObject.SetActive(true);
 
             if (_eyesIndex == null || _eyesIndex.Count == 0)
-                BuildHeadIndex();
+                BuildEyesSequence();
+
+            if (bodyState == MoodState.Sad && moodState == MoodState.Happy)
+            {
+                moodState = MoodState.Normal;
+            }
 
             if (!_eyesIndex.TryGetValue((animationState, moodState), out var sequence))
             {
@@ -203,8 +234,10 @@ namespace Scripts.Hero
             _spriteAnimator.StartAnimation(_heroView.EyesSprite, sequence.Sprites, isLoop, animationSpeed);
         }
 
-        private void ChangeHeadState(HeroAnimationState animationState, HeadState headState, float animationSpeed, bool isLoop)
+        private void ChangeHeadState(HeroAnimationState animationState, CleanState cleanState, float animationSpeed, bool isLoop)
         {
+            Debug.LogWarning($"Head state changed to {animationState} / {cleanState}");
+            
             if (_heroConfig == null || _heroConfig.HeadSequences == null || _heroConfig.HeadSequences.Count == 0)
             {
                 Debug.LogWarning("No Head sequences configured.");
@@ -216,14 +249,19 @@ namespace Scripts.Hero
             
             _heroView.HeadSprite.gameObject.SetActive(true);
 
-            if (!_headIndex.TryGetValue((animationState, headState), out var sequence))
+            // if (cleanState == CleanState.SmellsLikeShit)
+            // {
+            //     cleanState = CleanState.Dirty;
+            // }
+
+            if (!_headIndex.TryGetValue((animationState, cleanState), out var sequence))
             {
                 sequence = _heroConfig.HeadSequences.Find(s => s.HeroAnimationState == animationState);
 
                 if (sequence == null)
                 {
                     _heroView.HeadSprite.gameObject.SetActive(false);
-                    Debug.LogWarning($"No Head sequence found for {animationState} / {headState}");
+                    Debug.LogWarning($"No Head sequence found for {animationState} / {cleanState}");
                     return;
                 }
             }
@@ -231,7 +269,7 @@ namespace Scripts.Hero
             _spriteAnimator.StartAnimation(_heroView.HeadSprite, sequence.Sprites, isLoop, animationSpeed);
         }
         
-        private void ChangeBodyState(HeroAnimationState animationState, MoodState moodState, float animationSpeed, bool isLoop)
+        private void ChangeBodyState(HeroAnimationState animationState, MoodState bodyState, MoodState moodState, float animationSpeed, bool isLoop)
         {
             if (_heroConfig == null || _heroConfig.BodySequences == null || _heroConfig.BodySequences.Count == 0)
             {
@@ -240,15 +278,20 @@ namespace Scripts.Hero
             }
 
             if (_bodyIndex == null || _bodyIndex.Count == 0)
-                BuildHeadIndex();
+                BuildBodyIndex();
 
-            if (!_bodyIndex.TryGetValue((animationState, moodState), out var sequence))
+            if (moodState == MoodState.Sad && bodyState == MoodState.Happy)
+            {
+                bodyState = MoodState.Normal;
+            }
+
+            if (!_bodyIndex.TryGetValue((animationState, bodyState), out var sequence))
             {
                 sequence = _heroConfig.BodySequences.Find(s => s.HeroAnimationState == animationState);
 
                 if (sequence == null)
                 {
-                    Debug.LogWarning($"No Head sequence found for {animationState} / {moodState}");
+                    Debug.LogWarning($"No Head sequence found for {animationState} / {bodyState}");
                     return;
                 }
             }
@@ -311,6 +354,13 @@ namespace Scripts.Hero
             _spriteAnimator.StartAnimation(_heroView.BackHandSprite, resultSprites, isLoop, animationSpeed);
         }
 
+        public void CleanUp()
+        {
+            _localEvents.OnMoodStateChange -= ChangeFaceMoodState;
+            _localEvents.OnBodyStateChange -= BodyStateChange;
+            _localEvents.OnCleanStateChange -= ChangeCleanState;
+            _localEvents.OnTakeCoffee -= ChangeCoffeeState;
+        }
     }
 
     

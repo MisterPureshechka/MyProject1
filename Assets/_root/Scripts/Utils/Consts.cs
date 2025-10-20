@@ -19,7 +19,7 @@ namespace Scripts.Utils
         
         public const int BackGroundSortingOrder = -10;
         public const int HeroSortingOrder = 10;
-        public const int CatSortingOrder = 11;
+        public const int CatSortingOrder = 10;
         public const int ChairSortingOrder = 9;
         public const int WindowSortingOrder = 1;
         public const int DafaultSortingOrder = 0;
