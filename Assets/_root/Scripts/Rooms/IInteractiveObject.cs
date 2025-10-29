@@ -7,7 +7,8 @@ namespace Scripts.Rooms
 {
     public interface IInteractiveObject : ISortedLayer
     {
-        SpriteRenderer spriteRenderer { get; }
+        SpriteRenderer SpriteRenderer { get; }
+        SpriteRenderer OutLine { get; }
         SprintType SprintType { get; }
         Vector3 Position { get; }
         Transform RootObjectPosition { get; }

@@ -21,5 +21,6 @@ namespace Scripts.Hero
         WakeUp = 16,
         Exit = 17,
         Enter = 18,
+        Clean = 19,
     }
 }

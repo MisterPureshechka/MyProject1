@@ -22,7 +22,11 @@ namespace Scripts.GlobalStateMachine
         public Action OnClosePanel { get; set; }
         public void TriggerClosePanel() => OnClosePanel?.Invoke();
         public Action<ClickState> OnClickStateChange { get; set; }
-        public void TriggerClickStateChange(ClickState state) => OnClickStateChange?.Invoke(state);
+        public void TriggerClickStateChange(ClickState state)
+        {
+            //OnClickStateChange?.Invoke(state);
+        }
+
         public Action OnOpenPanel { get; set; }
         public void TriggerOpenPanel() => OnOpenPanel?.Invoke();
         public Action<SprintType> OnHeroGetSprint { get; set; }
@@ -63,9 +67,11 @@ namespace Scripts.GlobalStateMachine
         public Action OnClickEmpty {get; set;}
         public void TriggerEmptyClick()
         {
-            Debug.Log("EmptyClick!!!!!!!!!!!");
             OnClickEmpty?.Invoke();
         }
+        
+        public Action OnCommandPanelClosed { get; set; }
+        public void TriggerCommandPanelClosed() => OnCommandPanelClosed?.Invoke();
 
         public Action<SprintType> OnTaskCatalogShow { get; set; }
         public void TriggerAllTaskShow(SprintType type) => OnTaskCatalogShow?.Invoke(type);
@@ -99,8 +105,10 @@ namespace Scripts.GlobalStateMachine
         public void TriggerSprintClosed(SprintType sprintType) => OnSprintClosed?.Invoke(sprintType);
 
         public Action<SprintType> OnWalkToSprint { get; set; }
-        public void TriggerWalkToSprint(SprintType sprintType) => OnWalkToSprint?.Invoke(sprintType);
-        
+        public void TriggerWalkToSprint(SprintType sprintType)
+        {
+            OnWalkToSprint?.Invoke(sprintType);
+        }
         public Action<InteractiveObjectType> OnWalkToIO { get; set; }
         public Action OnHeroWalkToIO { get; set; }
         public void TriggerWalkToIO(InteractiveObjectType ioType)
@@ -176,6 +184,9 @@ namespace Scripts.GlobalStateMachine
         public void TriggerHideCatalogue(ICatalogue catalogue) => OnCatalogueHide?.Invoke(catalogue);
         public  Action<int, UpgradeType> OnUpgradeItem { get; set; }
         public void TriggerUpdateItem(int id, UpgradeType upgradeType) => OnUpgradeItem?.Invoke(id, upgradeType);
+        
+        public  Action<InteractiveObjectType> OnUpgradeItemByType{ get; set; }
+        public void TriggerUpgradeItemByType(InteractiveObjectType iOType) => OnUpgradeItemByType?.Invoke(iOType);
         public Action OnNewNotificatiom { get; set; }
         public void TriggerNewNotification() => OnNewNotificatiom?.Invoke();
         public Action<Vector2> OnMouseMoveStat { get; set; }
@@ -250,5 +261,25 @@ namespace Scripts.GlobalStateMachine
         
         public Action OnBlockSprint { get; set; }
         public void TriggerBlockSprint() => OnBlockSprint?.Invoke();
+
+        public Action<InteractiveObjectType, bool> OnIODirty { get; set; }
+        public void TriggerIODirty(InteractiveObjectType iO, bool isDirty) => OnIODirty?.Invoke(iO, isDirty);
+        
+        public Action<InteractiveObjectType, bool, int> OnUpgradeOffer { get; set; }
+        public void TriggerUpgradeOffer(InteractiveObjectType type, bool available, int price)
+            => OnUpgradeOffer?.Invoke(type, available, price);
+        
+        public Action<InteractiveObjectType, int> OnPurchaseUpgradeRequested;
+        public void TriggerPurchaseUpgradeRequested(InteractiveObjectType type, int price)
+            => OnPurchaseUpgradeRequested?.Invoke(type, price);
+
+        public Action<InteractiveObjectType, bool> OnPurchaseUpgradeResult;
+        public void TriggerPurchaseUpgradeResult(InteractiveObjectType type, bool success)
+            => OnPurchaseUpgradeResult?.Invoke(type, success);
+        
+        public Action<InteractiveObjectType, int> OnPurchaseFailed;
+        public void TriggerPurchaseFailed(InteractiveObjectType type, int price)
+            => OnPurchaseFailed?.Invoke(type, price);
+
     }
 }

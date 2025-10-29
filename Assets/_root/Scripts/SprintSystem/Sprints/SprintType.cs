@@ -14,5 +14,9 @@ namespace Scripts.Tasks
         Toilet,
         Coffee,
         GoOut,
+        CleanPc,
+        CleanBath,
+        CleanFridge,
+        
     }
 }

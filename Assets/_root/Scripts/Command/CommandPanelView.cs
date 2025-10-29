@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Scripts.GlobalStateMachine;
 using UnityEngine;
 
 namespace Scripts.Tasks
@@ -6,20 +8,37 @@ namespace Scripts.Tasks
     public class CommandPanelView : MonoBehaviour
     {
         [SerializeField] private GameObject _commandButtonPrefab;
+        [SerializeField] private GameObject _purchaseCommandButtonPrefab;
         [SerializeField] private Transform _commandsContainer;
         [SerializeField] private RectTransform _panelRect;
 
         [SerializeField] private Vector2 _offset = new Vector2(0f, 0);
-        
-        public void ShowCommands(List<Command> commands)
+
+        public void ShowAllCommands(List<Command> commands, List<PurchaseCommand> purchaseCommands, LocalEvents localEvents)
         {
             ClearCommands();
+            
+            ShowCommands(commands);
+            ShowPurchaseCommands(purchaseCommands, localEvents);
+        }
         
+        private void ShowCommands(List<Command> commands)
+        {
             foreach (var command in commands)
             {
                 var button = Instantiate(_commandButtonPrefab, _commandsContainer);
                 var buttonComp = button.GetComponent<CommandButtonView>();
                 buttonComp.Init(command.CommandName, command.OnExecute);
+            }
+        }
+
+        private void ShowPurchaseCommands(List<PurchaseCommand> commands, LocalEvents localEvents)
+        {
+            foreach (var command in commands)
+            {
+                var button = Instantiate(_purchaseCommandButtonPrefab, _commandsContainer);
+                var buttonComp = button.GetComponent<PurchaseCommandButtonView>();
+                buttonComp.Init(command.CommandName, command.Price, command.IoType, localEvents, command.OnExecute);
             }
         }
 

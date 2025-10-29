@@ -78,7 +78,7 @@ namespace Scripts.Ui
             }
         }
         
-        private void AnimateOnClick()
+        public void AnimateOnClick()
         {
             if (_rect == null || _config == null) return;
 

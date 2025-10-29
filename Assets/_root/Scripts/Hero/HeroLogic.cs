@@ -60,9 +60,8 @@ namespace Scripts.Hero
         public HeroAwaitState HeroAwaitState { get; }
         public HeroToiletState HeroToiletState { get; }
         public HeroBathState HeroBathState { get; }
+        public HeroCleanState CleanState { get; }
         public HeroWakeUpState WakeUpState { get; private set; }
-
-        private Dictionary<SprintType, IInteractiveObject> _sprintToIOMap;
 
         private bool _isAwait;
         private Sequence _sequence;
@@ -73,6 +72,10 @@ namespace Scripts.Hero
         private readonly Vector3 _initialPosition;
         private Vector3 _targetPosition;
         private bool _isWalking;
+        
+        private Dictionary<SprintType, IInteractiveObject> _sprintToIOMap;
+        private SprintType _lastRequestedSprintType = SprintType.None;
+        
 
         public HeroLogic(HeroConfig heroConfig, HeroAnimator heroAnimator, HeroMovementLogic heroMovementLogic, HeroView heroView,
             Vector3 initialPosition, float roomSize, SpriteAnimator spriteAnimator, ProgressDataAdapter progressData,
@@ -118,6 +121,7 @@ namespace Scripts.Hero
             WalkToBedState = new HeroWalkToBedState(this);
             WakeUpState = new HeroWakeUpState(this, _localEvents);
             ExitState = new HeroExitState(this, _localEvents);
+            CleanState = new HeroCleanState(this);
             EnterState = new HeroEnterState(this, _localEvents);
 
             _heroStateMachine.Init(LoadLastState());
@@ -135,10 +139,20 @@ namespace Scripts.Hero
             _localEvents.OnExitEvent += WalkToExit;
             _localEvents.OnHeroGoToBed += WalkToBed;
             _localEvents.OnTakeCoffee += TakeCoffee;
-
-            _sprintToIOMap = GetSprintToIOMap();
+            
+            _sprintToIOMap = new Dictionary<SprintType, IInteractiveObject>
+            {
+                [SprintType.Dev]    = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.Pc),
+                [SprintType.Play]   = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.TV),
+                [SprintType.Eat]    = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.Fridge),
+                [SprintType.Shower] = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.Bath),
+                [SprintType.Read]   = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.Books),
+                [SprintType.Toilet] = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.Toilet),
+                [SprintType.Chill]  = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.Sofa),
+                [SprintType.CleanPc] = _interactiveObjectRegister.GetIOByType(InteractiveObjectType.Pc),
+            };
         }
-
+        
         private void TakeCoffee(bool hasCoffee)
         {
             if (hasCoffee)
@@ -176,9 +190,9 @@ namespace Scripts.Hero
                 return NormalizeVector(new Vector3(data.Value, 0, 0));
             }
 
-            Debug.LogError("InitialPos is null ");
+            Debug.LogError("InitialPos is null!");
             
-            return NormalizeVector(_interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Door).Position);
+            return NormalizeVector(_interactiveObjectRegister.GetIOByType(InteractiveObjectType.Door).Position);
         }
 
         public void SaveInitPos(InteractiveObjectType iOType = InteractiveObjectType.None)
@@ -189,7 +203,7 @@ namespace Scripts.Hero
 
             if (data != null)
             {
-                data.Value = _interactiveObjectRegister.GetRootByIOType(iOType).Position.x;
+                data.Value = _interactiveObjectRegister.GetIOByType(iOType).Position.x;
             }
         }
 
@@ -216,6 +230,7 @@ namespace Scripts.Hero
                 [HeroStateId.WakeUp] = WakeUpState,
                 [HeroStateId.Exit] = ExitState,
                 [HeroStateId.Enter] = EnterState,
+                [HeroStateId.Clean] = CleanState,
             };
         }
 
@@ -240,23 +255,10 @@ namespace Scripts.Hero
             if (state == WakeUpState) return HeroStateId.WakeUp;
             if (state == ExitState) return HeroStateId.Exit;
             if (state == EnterState) return HeroStateId.Enter;
+            if(state == CleanState) return HeroStateId.Clean;
             return HeroStateId.Idle;
         }
 
-        private Dictionary<SprintType, IInteractiveObject> GetSprintToIOMap()
-        {
-            Dictionary<SprintType, IInteractiveObject> map = new();
-
-            map[SprintType.Dev] = _interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Pc);
-            map[SprintType.Play] = _interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.TV);
-            map[SprintType.Eat] = _interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Fridge);
-            map[SprintType.Shower] = _interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Shower);
-            map[SprintType.Read] = _interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Books);
-            map[SprintType.Toilet] = _interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Toilet);
-            map[SprintType.Chill] = _interactiveObjectRegister.GetRootByIOType(InteractiveObjectType.Chair);
-            
-            return map;
-        }
 
         private void SetMeta(string key, float value)
         {
@@ -314,6 +316,7 @@ namespace Scripts.Hero
 
         private void SprintCratedListener(SprintType obj)
         {
+            WalkToRootIOState.SetDesiredSprintType(_lastRequestedSprintType); 
             ChangeState(WalkToRootIOState);
         }
 
@@ -329,6 +332,17 @@ namespace Scripts.Hero
 
         private void WalkToSprint(SprintType sprintType)
         {
+            if (_sprintToIOMap.TryGetValue(sprintType, out var io))
+            {
+                _targetIO = io;
+                _targetPosition = NormalizeVector(io.Position);
+
+                _lastRequestedSprintType = sprintType;               
+                WalkToSprintState.SetDesiredSprintType(sprintType);   
+                WalkToRootIOState.SetDesiredSprintType(sprintType);
+            }
+            else return;
+            
             if (!CheckStat(sprintType))
             {
                 _localEvents.TriggerBlockSprint();
@@ -338,6 +352,7 @@ namespace Scripts.Hero
                 }
                 return;
             }
+            
             _localEvents.TriggerHeroWalkToSprint();
             ChangeState(WalkToSprintState);
         }
@@ -406,8 +421,6 @@ namespace Scripts.Hero
 
         private void ChangeStateBySprintType(SprintType sprintType)
         {
-            _targetIO = _sprintToIOMap[sprintType];
-            
             switch (sprintType)
             {
                 case SprintType.None:
@@ -434,6 +447,9 @@ namespace Scripts.Hero
                 case SprintType.Shower:
                     ChangeState(HeroBathState);
                     break;
+                case SprintType.CleanPc:
+                    ChangeState(CleanState);
+                    break;
                 default:
                     ChangeState(IdleState);
                     break;
@@ -455,7 +471,7 @@ namespace Scripts.Hero
 
         public Vector3 GetIOPositionByType(InteractiveObjectType iOType)
         {
-            var ioPos = NormalizeVector(_interactiveObjectRegister.GetRootByIOType(iOType).Position);
+            var ioPos = NormalizeVector(_interactiveObjectRegister.GetIOByType(iOType).Position);
 
             return ioPos;
         }

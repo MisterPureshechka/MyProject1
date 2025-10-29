@@ -18,7 +18,7 @@ namespace Scripts.Rooms
             _config = config;
             _io = io;
 
-            _spriteRenderer = _io.spriteRenderer;
+            _spriteRenderer = _io.OutLine;
 
             _io.OnCursorEnter += AnimateCursorEnter;
             _io.OnCursorExit += AnimateCursorExit;

@@ -38,12 +38,12 @@ namespace Scripts.Rooms
 
         private void ClickStateChangeListener(ClickState state)
         {
-            _isRoomState = state == ClickState.Room;
+            //_isRoomState = state == ClickState.Room;
         }
 
         private void OnMouseOverIO(Vector2 mousePosition)
         {
-            if(!_isRoomState) return;
+            //if(!_isRoomState) return;
             
             Vector2 worldPosition = _camera.ScreenToWorldPoint(mousePosition);
 
@@ -88,7 +88,8 @@ namespace Scripts.Rooms
 
             if (hit.collider == null)
             {
-                if(!_isRoomState) _localEvents.TriggerEmptyClick();
+                //if(!_isRoomState) _localEvents.TriggerEmptyClick();
+                _localEvents.TriggerEmptyClick();
 
                 if (_currentInteractiveObject != null)
                 {

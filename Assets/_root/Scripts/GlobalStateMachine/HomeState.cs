@@ -62,14 +62,13 @@ namespace Scripts.GlobalStateMachine
             var cameraLogic = new CameraLogic(camera, localEvents, _gameData.InteractiveObjectConfig);
             
             var canvas = Object.FindAnyObjectByType<Canvas>();
-            var timeView = Object.FindAnyObjectByType<TimeView>();
-            var timeLogic = new TimeLogic(progressDataAdapter, timeView, localEvents);
+            
             
             var speechBubble = new SpeechBubbleLogic(Object.FindAnyObjectByType<SpeechBubbleView>(FindObjectsInactive.Include), localEvents, hero, camera);
             
             var spriteAnimator = new SpriteAnimator();
             
-            var inputController = new InputController(localEvents);
+            var inputController = new InputController(canvas, localEvents);
 
             var roomSize = homeInitializer.GetRoomSize();
             var heroMovementLogic =
@@ -97,6 +96,9 @@ namespace Scripts.GlobalStateMachine
             var statController = new StatsController(progressDataAdapter, localEvents);
             var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents, perkService);
             
+            var timeView = Object.FindAnyObjectByType<TimeView>(FindObjectsInactive.Include);
+            var timeLogic = new TimeLogic(progressDataAdapter, timeView, localEvents);
+            
             var sideRoomChecker = new SideRoomChecker(home, localEvents);
             var healthStatLogic = new HealthStatLogic(Object.FindAnyObjectByType<HealthStatPanel>(FindObjectsInactive.Include), progressDataAdapter, localEvents);
             var skillStatLogic =
@@ -113,7 +115,7 @@ namespace Scripts.GlobalStateMachine
             var wallet = new WalletLogic(progressDataAdapter, _gameProgress, localEvents);
             var onlineShopController = new OnlineShopController(Object.FindAnyObjectByType<OnlineShopView>(FindObjectsInactive.Include),
                 localEvents, _gameData.PrefabDataBase, new ShopItemsLibrary(), wallet);
-            var upgradeLogic = new UpgradeLogic(localEvents, progressDataAdapter);
+            var upgradeLogic = new UpgradeLogicOLD(localEvents, progressDataAdapter);
             
             var tooltipLogic = new TooltipStatLogic(progressDataAdapter, uiFactory.GetTooltip(canvas.transform), _gameData.PrefabDataBase, localEvents, canvas);
             var catalogueManager = new CatalogueManager(localEvents);
@@ -127,11 +129,19 @@ namespace Scripts.GlobalStateMachine
             var messenger = new MessengerLogic(localEvents, _gameData.MessengerConfig, calendarLogic, timeLogic);
             var clickLogic = new ClickLogic.ClickLogic(localEvents);
             var roomColliderController = new RoomColliderController(home, localEvents);
+            
+            var upgradeAndCleanLogic = new UpgradeLogic(
+                progressDataAdapter, 
+                localEvents, 
+                _gameData.UpgradableConfig, 
+                interactiveObjectRegister.GetIOByType(InteractiveObjectType.Pc).SpriteRenderer, 
+                interactiveObjectRegister.GetIOByType(InteractiveObjectType.Chair).SpriteRenderer
+                );
 
             var rentLogic = new RentLogic(localEvents, calendarLogic, progressDataAdapter);
 
             var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home, progressDataAdapter, _gameProgress);
-            var sleepLogic = new SleepLogic(_gameStateMachine, localEvents, progressDataAdapter, _gameProgress, calendarLogic, timeLogic);
+            var sleepLogic = new SleepLogic(_gameStateMachine, localEvents, progressDataAdapter, _gameProgress, timeLogic);
 
             var catFactory = new CatFactory(_gameData.PrefabDataBase);
             var catPositionRegisterer = new CatPositionRegisterer();
@@ -142,9 +152,7 @@ namespace Scripts.GlobalStateMachine
             statController.UpdateAllViews();
 
             var passionLogic = new PassionLogic(localEvents, progressDataAdapter, _gameProgress, hud.PassionBar);
-
-            var statsDebuger = Object.FindObjectOfType<StatsDebuger>();
-            statsDebuger.Init(progressStat);
+            
 
             _controllers.Add(inputController);
             _controllers.Add(heroAnimator);
@@ -153,7 +161,6 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(heroMovementLogic);
             _controllers.Add(interactiveObjectSelector);
             _controllers.Add(iOGlobalAnimator);
-            _controllers.Add(statsDebuger); //temp
             _controllers.Add(spriteAnimator);
             _controllers.Add(bloomLogic);
             _controllers.Add(statController);
@@ -194,6 +201,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(cleanStateLogic);
             _controllers.Add(coffeeLogic);
             _controllers.Add(speechBubble);
+            _controllers.Add(upgradeAndCleanLogic);
         }
 
         public override void Update(float deltaTime)

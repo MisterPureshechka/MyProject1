@@ -36,9 +36,6 @@ namespace Scripts.EcoSystem
             _localEvents = localEvents;
             _interactiveObjectConfig = interactiveObjectConfig;
             
-            var canvas = GameObject.Find("Canvas");
-            _tempStat = canvas.transform.Find("TempStat").GetComponent<TextMeshProUGUI>();
-            
             _cameraDefaultPosition = _camera.transform.position;
             var positionKeys = _interactiveObjectConfig.CameraSideMomePositionKeys;
             _positionKeys = new Vector2[positionKeys.Length];
@@ -47,8 +44,8 @@ namespace Scripts.EcoSystem
                 _positionKeys[i] = new Vector2(_interactiveObjectConfig.CameraSideMomePositionKeys[i].x, _cameraDefaultPosition.y);
             
             
-            //_localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
-            //_localEvents.OnMouseOverToilet += MoveCameraToToilet;
+            _localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
+            _localEvents.OnMouseOverToilet += MoveCameraToToilet;
             _localEvents.OnClickStateChange += ChangeClickState;
         }
 
@@ -119,6 +116,12 @@ namespace Scripts.EcoSystem
         public void Execute(float deltaTime)
         {
             HandleCameraReturnByCursor();
+
+            float x = Input.GetAxisRaw("Horizontal");
+            float y = Input.GetAxisRaw("Vertical");
+            
+            _camera.transform.position += new Vector3(x, y, 0) * 0.1f;
+            
         }
         
         public void UpdateStats()

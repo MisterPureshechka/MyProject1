@@ -77,6 +77,12 @@ namespace Scripts.Ui.TaskUi
                 case SprintType.Shower:
                     _spriteImage.sprite = _taskSprites[5];
                     break;
+                case SprintType.CleanPc:
+                    _spriteImage.sprite = _taskSprites[5];
+                    break;
+                case SprintType.Play:
+                    _spriteImage.sprite = _taskSprites[6];
+                    break;
             }
             
             _spriteImage.color = Color.white;
@@ -167,7 +173,7 @@ namespace Scripts.Ui.TaskUi
             _fxTextSequence?.Kill();
             _fxTextSequence = DOTween.Sequence();
             
-            if (_currentSprintType == SprintType.Shower)
+            if (_currentSprintType == SprintType.Shower || _currentSprintType == SprintType.CleanPc)
             {
                 var offset = Random.Range(-_offset, _offset);
         

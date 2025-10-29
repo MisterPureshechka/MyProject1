@@ -9,11 +9,20 @@ namespace Scripts.Tasks
     {
         [SerializeField] private TextMeshProUGUI _text;
         [field: SerializeField] public Button TaskPannelButton;
-
+        
         public void Init(string info, Action onExecute = null)
         {
             _text.text = info;
-            TaskPannelButton.onClick.AddListener(() => onExecute?.Invoke());
+            _text.raycastTarget = false;
+
+            if (TaskPannelButton.targetGraphic != null)
+                TaskPannelButton.targetGraphic.raycastTarget = true;
+            
+            TaskPannelButton.onClick.RemoveAllListeners();
+            TaskPannelButton.onClick.AddListener(() =>
+            {
+                onExecute?.Invoke();
+            });
         }
     }
 }

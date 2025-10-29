@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using _root.Notification;
-using NUnit.Framework;
 using Scripts.GlobalStateMachine;
 using Scripts.Job;
 using Scripts.Rooms;
@@ -12,11 +10,14 @@ namespace Scripts.Tasks
     {
         private readonly LocalEvents _localEvents;
         public Dictionary<InteractiveObjectType, List<Command>> Commands = new();
+        public Dictionary<InteractiveObjectType, List<PurchaseCommand>> PurchaseCommands = new();
         
         private List<Command> _devCommands = new();
 
         private Command _createSprintCommand;
         private Command _continueSprintCommand;
+        
+        private Command _cleanCommand;
 
         public CommandManager(LocalEvents localEvents)
         {
@@ -24,6 +25,106 @@ namespace Scripts.Tasks
             LoadAllCommands();
             _localEvents.OnSprintClosed += SprintCloseListener;
             _localEvents.OnExitEventCreated += AddCommand;
+            _localEvents.OnIODirty += AddOrRemoveCleanCommand;
+            _localEvents.OnUpgradeOffer += UpgradeAvailableListener;
+        }
+        
+        
+        private static InteractiveObjectType GetPurchaseHost(InteractiveObjectType type)
+        {
+            switch (type)
+            {
+                case InteractiveObjectType.Pc:
+                case InteractiveObjectType.Chair:
+                    return InteractiveObjectType.Pc; 
+                default:
+                    return type;
+            }
+        }
+        
+        private void OnPurchaseResult(InteractiveObjectType type, bool success, int price)
+        {
+            if (success) return;
+
+            // если покупка не удалась, найдём кнопку нужного типа и обновим текст
+            var host = GetPurchaseHost(type);
+            if (!PurchaseCommands.TryGetValue(host, out var list)) return;
+
+            var command = list.Find(c => c.IoType == type);
+            if (command == null) return;
+
+            // триггерим обновление UI (на примере события — CommandSystem/CommandPanelView)
+            _localEvents.TriggerPurchaseFailed(type, price);
+        }
+
+        private void UpgradeAvailableListener(InteractiveObjectType type, bool available, int price)
+        {
+            var host = GetPurchaseHost(type);
+
+            if (!PurchaseCommands.TryGetValue(host, out var list))
+            {
+                list = new List<PurchaseCommand>();
+                PurchaseCommands[host] = list;
+            }
+
+            list.RemoveAll(c => c.IoType == type);
+
+            if (!available) return;
+
+            string title = type switch
+            {
+                InteractiveObjectType.Pc    => "Upgrade PC",
+                InteractiveObjectType.Chair => "Upgrade Chair",
+                InteractiveObjectType.TV    => "Upgrade TV",
+                _                           => $"Upgrade {type}"
+            };
+
+            list.Add(new PurchaseCommand
+            {
+                CommandName = title,
+                Price       = price,
+                IoType      = type,
+                OnExecute   = () =>
+                {
+                    _localEvents.TriggerPurchaseUpgradeRequested(type, price);
+                },
+            });
+        }
+
+
+        private void AddOrRemoveCleanCommand(InteractiveObjectType iO, bool isDirty)
+        {
+            if (!Commands.TryGetValue(iO, out var list))
+            {
+                list = new List<Command>();
+                Commands[iO] = list;
+            }
+
+            list.RemoveAll(c => c.CommandName.StartsWith("Clean "));
+
+            if (!isDirty) return;
+
+            switch (iO)
+            {
+                case InteractiveObjectType.Pc:
+                    list.Add(new Command {
+                        CommandName = "Clean up PC",
+                        OnExecute   = () => _localEvents.TriggerWalkToSprint(SprintType.CleanPc)
+                    });
+                    break;
+                case InteractiveObjectType.Sofa:
+                    list.Add(new Command {
+                        CommandName = "Clean Sofa",
+                        OnExecute   = () => _localEvents.TriggerWalkToSprint(SprintType.CleanFridge)
+                    });
+                    break;
+                case InteractiveObjectType.Bath:
+                    list.Add(new Command {
+                        CommandName = "Clean Bath",
+                        OnExecute   = () => _localEvents.TriggerWalkToSprint(SprintType.CleanBath)
+                    });
+                    break;
+            }
         }
 
         private void AddCommand(ExitEvent exitEvent)
@@ -46,7 +147,7 @@ namespace Scripts.Tasks
             _devCommands.Remove(_continueSprintCommand);
             _devCommands.Add(_createSprintCommand);
         }
-
+        
         private void LoadAllCommands()
         {
             CreateDevCommands();
@@ -55,7 +156,7 @@ namespace Scripts.Tasks
             var eatCommands = new List<Command>
             {
                 new Command { 
-                    CommandName = "Перекусить", 
+                    CommandName = "Eat", 
                     OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Eat),
                 },
             };
@@ -65,7 +166,7 @@ namespace Scripts.Tasks
             {
                 new Command
                 {
-                    CommandName = "Отдохнусть",
+                    CommandName = "Chill",
                     OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Chill),
                 }
             };
@@ -74,7 +175,7 @@ namespace Scripts.Tasks
             {
                 new Command
                 {
-                    CommandName = "Поиграть",
+                    CommandName = "Play games",
                     OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Play),
                 }
             };
@@ -83,7 +184,7 @@ namespace Scripts.Tasks
             {
                 new Command
                 {
-                    CommandName = "Справить нужду",
+                    CommandName = "Use",
                     OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Toilet),
                 }
             };
@@ -118,7 +219,7 @@ namespace Scripts.Tasks
             
             Commands.Add(InteractiveObjectType.Fridge, eatCommands);
             Commands.Add(InteractiveObjectType.Toilet, toiletCommand);
-            Commands.Add(InteractiveObjectType.Chair, chillCommands);
+            Commands.Add(InteractiveObjectType.Sofa, chillCommands);
             Commands.Add(InteractiveObjectType.TV, playCommand);
             Commands.Add(InteractiveObjectType.Bath, bathCommand);
             Commands.Add(InteractiveObjectType.Door, new List<Command>());
@@ -131,7 +232,11 @@ namespace Scripts.Tasks
             _createSprintCommand = new Command
             {
                 CommandName = "Create Sprint",
-                OnExecute = () => _localEvents.TriggerWalkToSprint(SprintType.Dev),
+                OnExecute = () =>
+                {
+                    _localEvents.TriggerWalkToSprint(SprintType.Dev);
+                },
+                
             };
             _devCommands.Add(_createSprintCommand);
             _continueSprintCommand = new Command
@@ -142,7 +247,7 @@ namespace Scripts.Tasks
             
             Commands.Add(InteractiveObjectType.Pc, _devCommands);
         }
-
+    
         private void CreateReadCommands()
         {
             var readCommands = new List<Command>
@@ -166,6 +271,12 @@ namespace Scripts.Tasks
             return new List<Command>();
         }
 
+        public List<PurchaseCommand> GetPurchasesForSprint(InteractiveObjectType iOType)
+        {
+            var host = GetPurchaseHost(iOType);
+            return PurchaseCommands.TryGetValue(host, out var cmds) ? cmds : new List<PurchaseCommand>();
+        }
+
         private void SwitchSprintCommandState(bool hasActiveState, InteractiveObjectType iOType)
         {
             if (iOType == InteractiveObjectType.Pc)
@@ -185,8 +296,10 @@ namespace Scripts.Tasks
 
         public void CleanUp()
         {
-            //_localEvents.OnActiveState -= SwitchSprintCommandState;
             _localEvents.OnSprintClosed -= SprintCloseListener;
+            _localEvents.OnExitEventCreated -= AddCommand;
+            _localEvents.OnIODirty -= AddOrRemoveCleanCommand;
+            _localEvents.OnUpgradeOffer -= UpgradeAvailableListener;
         }
 
     }

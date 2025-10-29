@@ -4,6 +4,7 @@ using Core;
 using Scripts.GlobalStateMachine;
 using Scripts.Job;
 using Scripts.Progress;
+using Scripts.Rooms;
 using Scripts.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -29,25 +30,32 @@ namespace Scripts.Wallet
 
         public WalletLogic(ProgressDataAdapter progressDataAdapter, GameProgress gameProgress, LocalEvents localEvents)
         {
-            // _progressDataAdapter = progressDataAdapter;
-            // _gameProgress = gameProgress;
-            // _localEvents = localEvents;
-            // _walletButtonView = Object.FindAnyObjectByType<WalletButtonView>();
-            // _walletAmount = (int)_progressDataAdapter.GetMetadata(WalletKey).Value;
-            // _walletCatalogue = Object.FindAnyObjectByType<WalletCatalogue>(FindObjectsInactive.Include);
-            // _walletCatalogue.Init(_localEvents);
-            //
-            // _transactionLibrary = TransactionLibrary.LoadFromResources();
-            //
-            // UpdateMiniWallet();
-            // UpdateWallet();
-            //
-            // _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
-            // _localEvents.OnWalletUpdate += UpdateWallet;
-            // _localEvents.OnNewJobFound += AddOrSwitchIncome;
-            // _localEvents.OnWalletAmountIncrease += IncreaseWalletAmount;
-            // _localEvents.OnPayDay += DecreaseWalletAmount;
-            // _localEvents.OnNewTransaction += ApplyTransaction;
+            _progressDataAdapter = progressDataAdapter;
+            _gameProgress = gameProgress;
+            _localEvents = localEvents;
+            _walletButtonView = Object.FindAnyObjectByType<WalletButtonView>();
+            _walletAmount = (int)_progressDataAdapter.GetMetadata(WalletKey).Value;
+            _walletCatalogue = Object.FindAnyObjectByType<WalletCatalogue>(FindObjectsInactive.Include);
+            _walletCatalogue.Init(_localEvents);
+            
+            _transactionLibrary = TransactionLibrary.LoadFromResources();
+            
+            UpdateMiniWallet();
+            UpdateWallet();
+            
+            _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
+            _localEvents.OnWalletUpdate += UpdateWallet;
+            _localEvents.OnNewJobFound += AddOrSwitchIncome;
+            _localEvents.OnWalletAmountIncrease += IncreaseWalletAmount;
+            _localEvents.OnPayDay += DecreaseWalletAmount;
+            _localEvents.OnNewTransaction += ApplyTransaction;
+            _localEvents.OnPurchaseUpgradeRequested += OnPurchaseUpgradeRequested;
+        }
+        
+        private void OnPurchaseUpgradeRequested(InteractiveObjectType type, int price)
+        {
+            bool success = TrySpend(price);
+            _localEvents.TriggerPurchaseUpgradeResult(type, success);
         }
 
         private void DecreaseWalletAmount(int value)
@@ -100,7 +108,7 @@ namespace Scripts.Wallet
 
         private void UpdateMiniWallet()
         {
-            //_walletButtonView.UpdateWallet(_walletAmount);
+            _walletButtonView.UpdateWallet(_walletAmount);
         }
 
         private void UpdateWallet()
@@ -116,26 +124,24 @@ namespace Scripts.Wallet
                 _localEvents.TriggerCalendarNoteAdded(transaction.Description, dayForTransaction);
             }
             
-//            Debug.Log($" {transaction.Description} Added to icome and expenses: {transaction.Amount}");
-            
             _icomeAndExpenses.Add(transaction);
             UpdateWallet();
         }
         
         public bool TrySpend(int value)
         {
-            if (_walletAmount >= value)
-            {
-                _walletAmount -= value;
-                UpdateMiniWallet();
-                UpdateWallet();
-                _progressDataAdapter.GetMetadata(WalletKey).Value -= value;
-                _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
-                return true;
-            }
+            if (value <= 0) return true;
+            if (_walletAmount < value) return false;
 
-            return false;
+            _walletAmount -= value;
+            _progressDataAdapter.TryUpdateValue(WalletKey, -value);
+            _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
+
+            UpdateMiniWallet();
+            UpdateWallet();
+            return true;
         }
+
         
         public void CleanUp()
         {
@@ -145,6 +151,7 @@ namespace Scripts.Wallet
             _localEvents.OnWalletAmountIncrease -= IncreaseWalletAmount;
             _localEvents.OnPayDay -= DecreaseWalletAmount;
             _localEvents.OnNewTransaction -= ApplyTransaction;
+            _localEvents.OnPurchaseUpgradeRequested -= OnPurchaseUpgradeRequested;
         }
     }
 }

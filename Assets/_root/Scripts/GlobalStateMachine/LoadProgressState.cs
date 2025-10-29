@@ -23,7 +23,7 @@ namespace Scripts.GlobalStateMachine
         private void LoadProgressOrInitNew()
         {
             var progress = _gameProgress.LoadProgress();
-
+            
             if (progress == null)
             {
                 Debug.Log("Progress is null, creating new progress from meta_config.json.");

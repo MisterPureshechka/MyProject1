@@ -36,6 +36,12 @@
     "Energy": 0.002,
     "Food": -0.001
   },
+  "CleanPc": {
+    "Toilet": 0.005,
+    "Energy": 0.002,
+    "Food": -0.001,
+    "Mood": 0.005
+  },
 
   "ReadKnowledgeEffect": {
     "Programming": 0.00001,

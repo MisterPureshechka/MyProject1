@@ -30,19 +30,29 @@ namespace Scripts.Tasks
 
             _localEvents.OnMouseClickIO += ShowCommandsByType;
             _localEvents.OnTaskCatalogShow += ClosePanel;
+            _localEvents.OnCommandPanelClosed += ClosePanel;
             _localEvents.OnClickEmpty += ClosePanel;
             _localEvents.OnSprintContinue += ClosePanel;
             _localEvents.OnSprintCreated += ClosePanel;
             _localEvents.OnHeroWalkToSprint += ClosePanel;
             _localEvents.OnHeroWalkToIO += ClosePanel;
             _localEvents.OnBlockSprint += ClosePanel;
-
+            _localEvents.OnPurchaseUpgradeResult += TryClosePanel;
         }
+
+        private void TryClosePanel(InteractiveObjectType iOType, bool succeed)
+        {
+            if (succeed)
+            {
+                ClosePanel();
+            }
+        }
+
 
         private void ShowCommandsByType(InteractiveObjectType type, Vector2 position) 
         {
             _commandPanelView.gameObject.SetActive(true);
-            _commandPanelView.ShowCommands(_commandManager.GetCommandsForSprint(type));
+            _commandPanelView.ShowAllCommands(_commandManager.GetCommandsForSprint(type), _commandManager.GetPurchasesForSprint(type), _localEvents);
             UpdatePanelPosition(position);
             _localEvents.TriggerClickStateChange(ClickState.UI);
             _localEvents.TriggerOpenPanel();
@@ -77,6 +87,7 @@ namespace Scripts.Tasks
             _localEvents.OnBlockSprint -= ClosePanel;
             if(_commandPanelView != null)
                 Object.Destroy(_commandPanelView.gameObject);
+            _localEvents.OnCommandPanelClosed -= ClosePanel;
         }
     }
 }

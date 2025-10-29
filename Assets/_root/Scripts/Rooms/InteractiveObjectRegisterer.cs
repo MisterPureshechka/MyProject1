@@ -28,7 +28,7 @@ namespace Scripts.Rooms
             }
         }
 
-        public IInteractiveObject GetRootByIOType(InteractiveObjectType type)
+        public IInteractiveObject GetIOByType(InteractiveObjectType type)
         {
             _interactiveObjectByTypeHash.TryGetValue(type, out var result);
             return result;

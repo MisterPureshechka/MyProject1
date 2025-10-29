@@ -37,6 +37,8 @@ namespace Scripts.Ui.TaskUi
                 taskView.ShowTask();
             }
             
+            Debug.LogWarning($"task is - {task.Title}");
+            
             _taskViews.Add(taskView);
             _taskIdToViewMap[uniqueKey] = taskView;
 
@@ -100,21 +102,22 @@ namespace Scripts.Ui.TaskUi
         public async Task ClearTasks()
         {
             _isBuisy = true;
-            _taskViews.Reverse();
-
-            foreach (var taskView in _taskViews)
+            try
             {
-                await taskView.HideTaskAsync();  
-            }
+                _taskViews.Reverse();
+                foreach (var taskView in _taskViews)
+                    await taskView.HideTaskAsync();
 
-            foreach (var taskView in _taskViews)
+                foreach (var taskView in _taskViews)
+                    Destroy(taskView.gameObject);
+
+                _taskViews.Clear();
+                _taskIdToViewMap.Clear();
+            }
+            finally
             {
-                Destroy(taskView.gameObject);
+                _isBuisy = false;
             }
-
-            _isBuisy = false;
-            _taskViews.Clear();
-            _taskIdToViewMap.Clear();
         }
         
         public bool IsBuisy => _isBuisy;

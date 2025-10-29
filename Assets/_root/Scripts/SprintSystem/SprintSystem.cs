@@ -94,13 +94,14 @@ namespace Scripts.Tasks
             _localEvents.OnHeroWalkToIO += ExitSprint;
             _localEvents.OnHeroGetRootIO += HeroGetRootIOListener;
 
-            _sprints[SprintType.Dev] = new DevSprint(24, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Pc));
-            _sprints[SprintType.Chill] = new ChillSprint(1, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Chair));
-            _sprints[SprintType.Eat] = new EatSprint(1, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Fridge));
-            _sprints[SprintType.Read] = new ReadSprint(10, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Books));
-            _sprints[SprintType.Play] = new PlaySprint(1, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.TV));
-            _sprints[SprintType.Toilet] = new ToiletSprint(1, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Toilet));
-            _sprints[SprintType.Shower] = new BathSprint(1, _interactiveObjectRegisterer.GetRootByIOType(InteractiveObjectType.Bath)); 
+            _sprints[SprintType.Dev] = new DevSprint(24, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Pc));
+            _sprints[SprintType.Chill] = new ChillSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Sofa));
+            _sprints[SprintType.Eat] = new EatSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Fridge));
+            _sprints[SprintType.Read] = new ReadSprint(10, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Books));
+            _sprints[SprintType.Play] = new PlaySprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.TV));
+            _sprints[SprintType.Toilet] = new ToiletSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Toilet));
+            _sprints[SprintType.Shower] = new BathSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Bath));
+            _sprints[SprintType.CleanPc] = new CleanSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Pc));
         }
 
         private void HeroGetRootIOListener(SprintType type)
@@ -117,19 +118,31 @@ namespace Scripts.Tasks
         private async void CreateAutoSprint(SprintType type)
         {
             _currentSprintType = type;
-            
+
+            var proto = _taskLibrary.GetAutoTasks(type);
+            if (proto == null)
+            {
+                Debug.LogError($"[SprintSystem] No auto task set for {type}. Did you add it to TaskLibrary?");
+                _localEvents.TriggerSprintCreated(type); // чтобы цепочка не зависла
+                return;
+            }
+
             for (int i = 0; i < _currentSprint.Capacity; i++)
             {
-                var clone = _taskLibrary.GetAutoTasks(type).Clone();
-                
+                var clone = proto.Clone();
+
                 if (_currentSprint.TryAddTask(clone))
                 {
+                    Debug.Log($"[SprintSystem] Adding task '{clone.Title}' to view for {type}");
                     await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform), type);
-                    
                     _pendingTasks.Add(clone);
                 }
+                else
+                {
+                    Debug.LogWarning($"[SprintSystem] TryAddTask returned false for {type}");
+                }
             }
-            
+
             _localEvents.TriggerSprintCreated(type);
         }
 
@@ -314,36 +327,17 @@ namespace Scripts.Tasks
             
             if (_currentSprintType == SprintType.Dev)
                 _devSave.Clear();
+
+            if (_currentSprintType == SprintType.CleanPc)
+            {
+                _localEvents.TriggerIODirty(InteractiveObjectType.Pc, false);
+            }
             
             await Task.Delay(500);
             await _sprintView.ClearTasks();
             _pendingTasks.Clear();
             _activeTasks.Clear();
             _currentSprint.ClearSprint();
-        }
-
-
-        public void UpdateStats()
-        {
-            string result = "";
-            
-            foreach (var key in _sprints.Keys)
-            {
-                result += $"{key}: {_sprints[key].GetTasks().Count}\n";
-            }
-            
-            result += "\n";
-            
-            foreach (var key in _savedTasks.Keys)
-            {
-                result += $" saved tasks = {key}: {_savedTasks[key].Count}\n";
-            }
-            
-            result += $"Active tasks: {_activeTasks.Count}\n";
-            result += $"is SprintView buisy: {_sprintView.IsBuisy}\n";
-            result += $"_isActiveState = {_isActiveState}\n";
-            result += $"Health = {_progressDataAdapter.GetStats(MetaType.Health)}\n";
-            _tempStat.text = result;
         }
 
         private async void ExitSprint()
@@ -398,7 +392,6 @@ namespace Scripts.Tasks
         public void Execute(float deltatime)
         {
             if(_isActiveState) ApplyProgressToCurrentTask();
-            UpdateStats();
         }
     }
 }

@@ -1024,9 +1024,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 6
-  _spriteRenderer: {fileID: 4634504666543168504}
+  _spriteRenderer: {fileID: 3016875397104827282}
+  _outLine: {fileID: 4634504666543168504}
   _rootObject: {fileID: 2317524197962254463}
-  _ioType: 7
+  _ioType: 8
 --- !u!61 &6759962711031432528
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1857,9 +1858,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 4
-  _spriteRenderer: {fileID: 401257228098294145}
+  _spriteRenderer: {fileID: 1266180554900857723}
+  _outLine: {fileID: 401257228098294145}
   _rootObject: {fileID: 2317524197962254463}
-  _ioType: 6
+  _ioType: 7
 --- !u!60 &9169418376372776664
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2302,8 +2304,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sprintType: 10
   _spriteRenderer: {fileID: 2126612276672799449}
+  _outLine: {fileID: 2126612276672799449}
   _rootObject: {fileID: 0}
-  _ioType: 9
+  _ioType: 10
 --- !u!61 &6106184344828268618
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2453,7 +2456,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 3
-  _spriteRenderer: {fileID: 596126472043394967}
+  _spriteRenderer: {fileID: 3910575586747114686}
+  _outLine: {fileID: 596126472043394967}
   _rootObject: {fileID: 3748908615833059574}
   _ioType: 1
 --- !u!61 &776913785214723387
@@ -2605,9 +2609,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 0
-  _spriteRenderer: {fileID: 2546809657545017229}
+  _spriteRenderer: {fileID: 1288103207277860144}
+  _outLine: {fileID: 2546809657545017229}
   _rootObject: {fileID: 0}
-  _ioType: 5
+  _ioType: 6
 --- !u!61 &149976180285255281
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2927,7 +2932,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9192729953090352762}
   - component: {fileID: 8893282545520616406}
-  - component: {fileID: 4497607669749036095}
+  - component: {fileID: 1907366207249744085}
   m_Layer: 7
   m_Name: Chair
   m_TagString: Untagged
@@ -3005,7 +3010,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4497607669749036095
+--- !u!114 &1907366207249744085
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3014,13 +3019,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4983949267735009713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 065dff1788584548b5acbd8a16ba357b, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ca10d192cf64c6f9799fac7542afc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprites:
-  - {fileID: 1022842692, guid: 71977a2907e994699ba45972d75a629a, type: 3}
-  - {fileID: -1039978742, guid: 71977a2907e994699ba45972d75a629a, type: 3}
-  _renderer: {fileID: 8893282545520616406}
+  _sprintType: 0
+  _spriteRenderer: {fileID: 8893282545520616406}
+  _outLine: {fileID: 8893282545520616406}
+  _rootObject: {fileID: 9192729953090352762}
+  _ioType: 4
 --- !u!1 &5070694273308381780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3157,6 +3163,7 @@ MonoBehaviour:
   - {fileID: 3640931414868803149}
   - {fileID: 1500930653441423933}
   - {fileID: 5679629228601742239}
+  - {fileID: 1907366207249744085}
   _sideRooms:
   - {fileID: 2400088540216305255}
   - {fileID: 2810787656516898749}
@@ -3484,7 +3491,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 1
-  _spriteRenderer: {fileID: 3662396347508926812}
+  _spriteRenderer: {fileID: 7611470610672750331}
+  _outLine: {fileID: 3662396347508926812}
   _rootObject: {fileID: 9192729953090352762}
   _ioType: 0
 --- !u!60 &1653726051295370573
@@ -4211,9 +4219,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 9
-  _spriteRenderer: {fileID: 7246885717347783685}
+  _spriteRenderer: {fileID: 785533740804706598}
+  _outLine: {fileID: 7246885717347783685}
   _rootObject: {fileID: 8254680959150826853}
-  _ioType: 10
+  _ioType: 11
 --- !u!60 &353884219858563483
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -4844,7 +4853,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 0
-  _spriteRenderer: {fileID: 5518738853030688434}
+  _spriteRenderer: {fileID: 1174262771367464472}
+  _outLine: {fileID: 5518738853030688434}
   _rootObject: {fileID: 0}
   _ioType: 4
 --- !u!61 &7369353239161481932
@@ -4996,7 +5006,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 7
-  _spriteRenderer: {fileID: 7716763475168029164}
+  _spriteRenderer: {fileID: 1967486181342885439}
+  _outLine: {fileID: 7716763475168029164}
   _rootObject: {fileID: 0}
   _ioType: 3
 --- !u!60 &2124973481639506759
@@ -5381,9 +5392,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprintType: 8
-  _spriteRenderer: {fileID: 8438990377441538499}
+  _spriteRenderer: {fileID: 9009024696548229840}
+  _outLine: {fileID: 8438990377441538499}
   _rootObject: {fileID: 529661383279290655}
-  _ioType: 8
+  _ioType: 9
 --- !u!60 &3251223453491047931
 PolygonCollider2D:
   m_ObjectHideFlags: 0

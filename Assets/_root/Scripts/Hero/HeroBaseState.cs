@@ -19,7 +19,7 @@ namespace Scripts.Hero
 
         public virtual void Update(float deltaTime)
         {  
-            //Debug.Log(GetType());
+            Debug.Log(GetType());
         }
 
         public virtual void Exit()

@@ -43,6 +43,7 @@ namespace Scripts.Tasks
             _autoSprints[SprintType.Toilet] = new ToiletTask(_progressDataAdapter, "Is it necessary to watch here?", 100f);
             _autoSprints[SprintType.Shower] = new BathTask(_progressDataAdapter, "Bath", 100f);
             _autoSprints[SprintType.Eat] = new EatTask(_progressDataAdapter, EatTaskType.cake, "Nice cake", 25f);
+            _autoSprints[SprintType.CleanPc]   = new CleanTask(_progressDataAdapter, "Clean up", 100f);
         }
 
         private void LoadAllDevTasks()

@@ -89,10 +89,7 @@ namespace _root.Notification
             var parent = _root.parent as RectTransform;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, screenPosition, camera, out var localPoint))
             {
-                // можно оставить localPosition, как у панели,
-                // но обычно для UI лучше anchoredPosition:
                 _root.anchoredPosition = ClampTo(parent, localPoint);
-                // или _bubble.localPosition = ClampTo(parent, localPoint);
             }
         }
         

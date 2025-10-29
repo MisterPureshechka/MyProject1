@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using Core;
+using Scripts.ClickLogic;
 using Scripts.GlobalStateMachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Scripts
 {
@@ -13,16 +12,18 @@ namespace Scripts
         private readonly LocalEvents _localEvents;
 
         private readonly List<RaycastResult> _uiHits = new List<RaycastResult>(8);
-        private PointerEventData _ped;
+        
+        private ClickState _clickState = ClickState.Room;
+
 
         private bool _isGameState;
-        
-        public InputController(LocalEvents localEvents)
+
+        public InputController(Canvas canvas, LocalEvents localEvents)
         {
             _localEvents = localEvents;
             _isGameState = true;
             
-            _localEvents.OnExitEvent += _ => _isGameState = false;
+            _localEvents.OnClickStateChange += s => _clickState = s;
         }
 
         public void Execute(float deltatime)
@@ -51,28 +52,28 @@ namespace Scripts
 
         private void HandlePointerDown(Vector2 screenPos, int pointerId)
         {
-            if (IsPointerOverUI(screenPos, pointerId))
-                _localEvents.TriggerMouseClickedUI(screenPos);
-            else
-                _localEvents.TriggerMouseClickedWorld(screenPos);
-        }
+            bool overUI = IsPointerOverUI(pointerId);
 
-        private bool IsPointerOverUI(Vector2 screenPos, int pointerId)
+            if (overUI || _clickState == ClickState.UI)
+            {
+                _localEvents.TriggerMouseClickedUI(screenPos);
+            }
+            else
+            {
+                _localEvents.TriggerMouseClickedWorld(screenPos);
+            }
+        }
+        
+        private bool IsPointerOverUI(int pointerId)
         {
             if (EventSystem.current == null) return false;
 
-            _uiHits.Clear();
-            _ped ??= new PointerEventData(EventSystem.current);
-            _ped.Reset();
-            _ped.position = screenPos;
+            if (pointerId >= 0)
+                return EventSystem.current.IsPointerOverGameObject(pointerId);
 
-            EventSystem.current.RaycastAll(_ped, _uiHits);
-            for (int i = 0; i < _uiHits.Count; i++)
-            {
-                if (_uiHits[i].module is GraphicRaycaster)
-                    return true; // точно UI
-            }
-            return false;
+            // мышь
+            return EventSystem.current.IsPointerOverGameObject();
         }
+
     }
 }

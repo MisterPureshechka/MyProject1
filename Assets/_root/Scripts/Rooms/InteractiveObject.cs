@@ -2,6 +2,7 @@ using System;
 using Scripts.Tasks;
 using Scripts.Utils;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scripts.Rooms
 {
@@ -9,10 +10,12 @@ namespace Scripts.Rooms
     {
         [SerializeField] private SprintType _sprintType;
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [FormerlySerializedAs("_spriteRenderer")] [SerializeField] private SpriteRenderer _outLine;
         [SerializeField] private Transform _rootObject;
         [SerializeField] private InteractiveObjectType _ioType;
 
-        public SpriteRenderer spriteRenderer => _spriteRenderer;
+        public SpriteRenderer SpriteRenderer => _spriteRenderer;
+        public SpriteRenderer OutLine => _outLine;
         public SprintType SprintType => _sprintType;
         public Vector3 Position => GetComponent<Transform>().position;
         public Transform RootObjectPosition => _rootObject;
@@ -23,7 +26,7 @@ namespace Scripts.Rooms
 
         public void SetSortingOrder()
         {
-            _spriteRenderer.sortingOrder = Consts.DafaultSortingOrder;
+            _outLine.sortingOrder = Consts.DafaultSortingOrder;
         }
     }
 }

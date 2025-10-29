@@ -39,7 +39,7 @@ namespace Scripts.Rooms
             
             _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
 
-            _gameStateMachine.EnterState<LoadProgressState>();
+            _gameStateMachine.EnterState<HomeState>();
         }
 
         private void ChangeStatOnExit(ExitEvent exitEvent)

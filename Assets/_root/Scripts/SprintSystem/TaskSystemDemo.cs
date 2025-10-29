@@ -33,7 +33,7 @@ namespace Scripts.Tasks
 
         private void Update()
         {
-            _sprintSystemOld.UpdateStats();
+            //_sprintSystemOld.UpdateStats();
         }
         
     }

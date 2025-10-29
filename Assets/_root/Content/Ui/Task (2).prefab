@@ -217,6 +217,7 @@ MonoBehaviour:
   - {fileID: -490667570, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}
   - {fileID: -1637628170, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}
   - {fileID: -942438910, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}
+  - {fileID: 1079229310, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}
   _fxSprites:
   - {fileID: -1505845831, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}
   - {fileID: -1260349053, guid: bb0026b61b6bd426c8a15d78a26aeb93, type: 3}

@@ -19,6 +19,15 @@ namespace Scripts.Rooms
             _interactiveObjectConfig = interactiveObjectConfig;
 
             _localEvents.OnNewNotificatiom += ShakeRoom;
+            _localEvents.OnPurchaseUpgradeResult += TryShakeRoom;
+        }
+
+        private void TryShakeRoom(InteractiveObjectType iOType, bool succeed)
+        {
+            if (!succeed)
+            {
+                ShakeRoom();
+            }
         }
 
         private void ShakeRoom()
@@ -35,6 +44,7 @@ namespace Scripts.Rooms
         public void CleanUp()
         {
             _localEvents.OnNewNotificatiom -= ShakeRoom;
+            _localEvents.OnPurchaseUpgradeResult -= TryShakeRoom;
         }
     }
 }

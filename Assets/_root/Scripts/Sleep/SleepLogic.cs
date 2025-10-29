@@ -14,7 +14,6 @@ namespace Scripts.Sleep
     public class SleepLogic : ICleanUp
     {
         private readonly AlarmClockCatalogue _alarmClockCatalogue;
-        private CalendarLogic _calendarLogic;
 
         private bool _clockButtonsWired;
         private readonly GameProgress _gameProgress;
@@ -26,14 +25,13 @@ namespace Scripts.Sleep
         private readonly TimeLogic _timeLogic;
 
         public SleepLogic(GameStateMachine gameStateMachine, LocalEvents localEvents,
-            ProgressDataAdapter progressDataAdapter, GameProgress gameProgress, CalendarLogic calendarLogic,
+            ProgressDataAdapter progressDataAdapter, GameProgress gameProgress,
             TimeLogic timeLogic)
         {
             _gameStateMachine = gameStateMachine;
             _localEvents = localEvents;
             _progressDataAdapter = progressDataAdapter;
             _gameProgress = gameProgress;
-            _calendarLogic = calendarLogic;
             _timeLogic = timeLogic;
 
             _alarmClockCatalogue = Object.FindAnyObjectByType<AlarmClockCatalogue>(FindObjectsInactive.Include);
@@ -122,7 +120,7 @@ namespace Scripts.Sleep
             SaveTime(_sleepHours, _sleepMinutes);
 
             _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
-            _gameStateMachine.EnterState<LoadProgressState>();
+            _gameStateMachine.EnterState<HomeState>();
         }
 
         private void CreateChangeStatValue(int durationMinutes)
@@ -192,12 +190,6 @@ namespace Scripts.Sleep
         {
             _alarmClockCatalogue.ChangeClockHour(_sleepHours);
             _alarmClockCatalogue.ChangeClockMinute(_sleepMinutes);
-        }
-
-        private void SetSleepTime(int hours, int minutes)
-        {
-            _sleepHours = hours;
-            _sleepMinutes = minutes;
         }
     }
 }

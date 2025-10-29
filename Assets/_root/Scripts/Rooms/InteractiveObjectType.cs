@@ -5,6 +5,7 @@ namespace Scripts.Rooms
         Pc,
         Fridge,
         Shower,
+        Sofa,
         Chair,
         Bed,
         Door,

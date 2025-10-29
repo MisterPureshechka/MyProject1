@@ -11,7 +11,7 @@ namespace Scripts.Rooms
                 case SprintType.Dev:
                     return InteractiveObjectType.Pc;
                 case SprintType.Chill:
-                    return InteractiveObjectType.Chair;
+                    return InteractiveObjectType.Sofa;
                 case SprintType.Eat:
                     return InteractiveObjectType.Fridge;
                 default:

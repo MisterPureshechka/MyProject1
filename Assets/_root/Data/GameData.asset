@@ -18,3 +18,4 @@ MonoBehaviour:
   <MetadataConfig>k__BackingField: {fileID: 11400000, guid: 6f014129631a44e34a32386e0a7569a6, type: 2}
   <MessengerConfig>k__BackingField: {fileID: 11400000, guid: 694f0b82c68bd42fbb3f700d0f91210c, type: 2}
   <CatConfig>k__BackingField: {fileID: 11400000, guid: aafad62b72fd6472e816f6452557c912, type: 2}
+  <UpgradableConfig>k__BackingField: {fileID: 11400000, guid: 0342c0b0301b0438c97c48aa5da47cce, type: 2}

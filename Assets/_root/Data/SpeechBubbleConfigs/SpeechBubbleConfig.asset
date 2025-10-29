@@ -9,17 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 552db22f3de24a5683378068560675fd, type: 3}
   m_Name: SpeechBubbleConfig
-  m_EditorClassIdentifier: Assembly-CSharp:_root.Notification:TextBubbleConfig
+  m_EditorClassIdentifier: 
   BubbleVibrato: 50
   BubbleStartSize: 0.5
   GrowDuration: 0.1
   HideDuration: 0.1
-  YOffset: 170
+  YOffset: 100
   AutoHideDelay: 10
   CharacterDelay: 0.03
   RandomDelay: 0.01
-  CharMoveY: 2
-  CharAnimDuration: 0.05
+  CharMoveY: 10
+  CharAnimDuration: 0.15
   StartAlpha: 0
