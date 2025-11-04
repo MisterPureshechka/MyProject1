@@ -38,12 +38,12 @@ namespace Scripts.Rooms
 
         private void ClickStateChangeListener(ClickState state)
         {
-            //_isRoomState = state == ClickState.Room;
+            _isRoomState = state == ClickState.Room;
         }
 
         private void OnMouseOverIO(Vector2 mousePosition)
         {
-            //if(!_isRoomState) return;
+            if(!_isRoomState) return;
             
             Vector2 worldPosition = _camera.ScreenToWorldPoint(mousePosition);
 
@@ -82,15 +82,17 @@ namespace Scripts.Rooms
 
         private void OnMouseClickIO(Vector2 mousePosition)
         {
+            Debug.Log("ShouldBeEmptyCLick");
             Vector2 worldPosition = _camera.ScreenToWorldPoint(mousePosition);
 
             RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero);
 
             if (hit.collider == null)
             {
-                //if(!_isRoomState) _localEvents.TriggerEmptyClick();
-                _localEvents.TriggerEmptyClick();
-
+                Debug.Log($"isRoomState: {_isRoomState}");
+                if(!_isRoomState) _localEvents.TriggerEmptyClick();
+                //_localEvents.TriggerEmptyClick();
+            
                 if (_currentInteractiveObject != null)
                 {
                     _currentInteractiveObject.OnCursorExit?.Invoke();
@@ -110,6 +112,7 @@ namespace Scripts.Rooms
             }
             else
             {
+                Debug.Log($"IO not registered on. EmptyClick");
                 _localEvents.TriggerEmptyClick();
                 
                 if (_currentInteractiveObject != null)

@@ -44,9 +44,9 @@ namespace Scripts.EcoSystem
                 _positionKeys[i] = new Vector2(_interactiveObjectConfig.CameraSideMomePositionKeys[i].x, _cameraDefaultPosition.y);
             
             
-            _localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
-            _localEvents.OnMouseOverToilet += MoveCameraToToilet;
-            _localEvents.OnClickStateChange += ChangeClickState;
+            // _localEvents.OnMouseOverKitchen += MoveCameraToKitchen;
+            // _localEvents.OnMouseOverToilet += MoveCameraToToilet;
+            // _localEvents.OnClickStateChange += ChangeClickState;
         }
 
         private void ChangeClickState(ClickState state)
@@ -116,12 +116,6 @@ namespace Scripts.EcoSystem
         public void Execute(float deltaTime)
         {
             HandleCameraReturnByCursor();
-
-            float x = Input.GetAxisRaw("Horizontal");
-            float y = Input.GetAxisRaw("Vertical");
-            
-            _camera.transform.position += new Vector3(x, y, 0) * 0.1f;
-            
         }
         
         public void UpdateStats()
@@ -150,9 +144,9 @@ namespace Scripts.EcoSystem
 
         public void CleanUp()
         {
-            _localEvents.OnMouseOverKitchen -= MoveCameraToKitchen;
-            _localEvents.OnMouseOverToilet -= MoveCameraToToilet;
-            _localEvents.OnMouseOverMainRoom -= ResetCameraPos;
+            // _localEvents.OnMouseOverKitchen -= MoveCameraToKitchen;
+            // _localEvents.OnMouseOverToilet -= MoveCameraToToilet;
+            // _localEvents.OnMouseOverMainRoom -= ResetCameraPos;
         }
     }
 }

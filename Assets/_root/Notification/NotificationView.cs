@@ -102,7 +102,7 @@ namespace _root.Notification
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             
-            _animator.Dispose();
+            _animator?.Dispose();
             _animator = new DOTweenTMPAnimator(_text);
             
             var delay = _letterDelay + _letterHideDuration;

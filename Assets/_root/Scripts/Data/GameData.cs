@@ -1,5 +1,6 @@
 using Scripts.Cat;
 using Scripts.Messenger;
+using Scripts.Sounds;
 using Scripts.Upgrade;
 using UnityEngine;
 
@@ -15,5 +16,6 @@ namespace Scripts.Data
         [field: SerializeField] public MessengerConfig MessengerConfig { get; private set; }
         [field: SerializeField] public CatConfig CatConfig { get; private set; }
         [field: SerializeField] public UpgradableConfig UpgradableConfig { get; private set; }
+        [field: SerializeField] public SoundConfig SoundConfig { get; private set; }
     }
 }

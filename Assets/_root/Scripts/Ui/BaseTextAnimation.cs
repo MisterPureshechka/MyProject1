@@ -24,7 +24,7 @@ namespace Scripts.Ui
             var cfg = _animationConfig;
 
             _seq?.Kill();
-            _seq = DOTween.Sequence().SetUpdate(true); // вне timeScale, чтобы исключить паузу
+            _seq = DOTween.Sequence().SetUpdate(true); 
 
             _textToAnimate.DOPunchRotation(new Vector3(0, 0, cfg.RotatateToValue), cfg.Duration, cfg.Vibrato, 0.5f)
                 .OnComplete(() => { ResetText(); });
@@ -39,7 +39,6 @@ namespace Scripts.Ui
         {
             var rotation = _textToAnimate.localRotation.eulerAngles;
             rotation.z = 0;
-            Debug.LogError("rotastio = " + _textToAnimate.localRotation.eulerAngles);
         }
 
         private void Reset()

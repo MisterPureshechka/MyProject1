@@ -46,14 +46,12 @@ namespace Scripts.Tasks
         {
             if (success) return;
 
-            // если покупка не удалась, найдём кнопку нужного типа и обновим текст
             var host = GetPurchaseHost(type);
             if (!PurchaseCommands.TryGetValue(host, out var list)) return;
 
             var command = list.Find(c => c.IoType == type);
             if (command == null) return;
 
-            // триггерим обновление UI (на примере события — CommandSystem/CommandPanelView)
             _localEvents.TriggerPurchaseFailed(type, price);
         }
 

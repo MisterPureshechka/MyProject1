@@ -24,7 +24,7 @@ namespace Scripts.GlobalStateMachine
         public Action<ClickState> OnClickStateChange { get; set; }
         public void TriggerClickStateChange(ClickState state)
         {
-            //OnClickStateChange?.Invoke(state);
+            OnClickStateChange?.Invoke(state);
         }
 
         public Action OnOpenPanel { get; set; }
@@ -67,6 +67,7 @@ namespace Scripts.GlobalStateMachine
         public Action OnClickEmpty {get; set;}
         public void TriggerEmptyClick()
         {
+            Debug.Log("Click Empty");
             OnClickEmpty?.Invoke();
         }
         
@@ -281,5 +282,10 @@ namespace Scripts.GlobalStateMachine
         public void TriggerPurchaseFailed(InteractiveObjectType type, int price)
             => OnPurchaseFailed?.Invoke(type, price);
 
+        public Action<bool> OnHeroWalking { get; set; }
+        public void TriggerHeroWalking(bool isWalking) => OnHeroWalking?.Invoke(isWalking);
+
+        public Action OnBugCreated { get; set; }
+        public void TriggerBugCreated() => OnBugCreated?.Invoke();
     }
 }

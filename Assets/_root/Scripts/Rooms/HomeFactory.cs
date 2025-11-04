@@ -1,4 +1,5 @@
 using Scripts.Data;
+using Scripts.EcoSystem;
 using UnityEngine;
 
 namespace Scripts.Rooms
@@ -15,6 +16,11 @@ namespace Scripts.Rooms
         public HomeView CreateRoom()
         {
             return Object.Instantiate(_prefabDataBase.Home).GetComponent<HomeView>();
+        }
+
+        public SkyView CreateSky()
+        {
+            return Object.Instantiate(_prefabDataBase.Sky).GetComponent<SkyView>();
         }
     }
 }

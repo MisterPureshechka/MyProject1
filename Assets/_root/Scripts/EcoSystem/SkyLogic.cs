@@ -44,8 +44,6 @@ namespace Scripts.EcoSystem
             _localEvents.OnNormalizeNightTimeChange -= ChangeStars;
             _localEvents.OnActiveSprint -= SpeedUp;
             _localEvents.OnSprintExit -= SpeedDown;
-            
-            if(_skyView != null) Object.Destroy(_skyView.gameObject);
         }
 
         public void Execute(float deltatime)

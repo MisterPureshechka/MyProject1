@@ -9,29 +9,40 @@ namespace Scripts.Tasks
     public class DevSprintSaveService
     {
         private const string Key = "Sprints.Dev.Tasks";
+
         private readonly ProgressDataAdapter _adapter;
         private readonly TaskLibrary _taskLibrary;
 
         public DevSprintSaveService(ProgressDataAdapter adapter, TaskLibrary taskLibrary)
         {
-            _adapter = adapter;
-            _taskLibrary = taskLibrary;
+            _adapter      = adapter;
+            _taskLibrary  = taskLibrary;
         }
 
+        /// <summary>
+        /// Сохранение всех текущих Dev-задач (только Dev).
+        /// </summary>
         public void Save(List<ITask> tasks)
         {
             var data = new DevSprintSaveData();
 
             foreach (var t in tasks)
             {
-                if (t is IDevTask dev)
+                // сохраняем только DevTask, чтобы забирать полный снапшот
+                if (t is DevTask dt)
+                {
+                    data.Tasks.Add(dt.ToSnapshot());
+                }
+                else if (t is IDevTask dev) // на всякий случай — минимальный фолбэк
                 {
                     data.Tasks.Add(new DevTaskSnapshot
                     {
-                        DevType = dev.Type.ToString(),
-                        Title   = t.Title,
-                        Progress = t.Progress,
-                        IsCompleted = t.IsCompleted
+                        DevType       = dev.Type.ToString(),
+                        Title         = t.Title,
+                        Progress      = t.Progress,
+                        MaxProgress   = t.MaxProgress,
+                        IsCompleted   = t.IsCompleted,
+                        // bug-поля не известны, если это не DevTask
                     });
                 }
             }
@@ -40,37 +51,62 @@ namespace Scripts.Tasks
             _adapter.SaveCustomJson(Key, json);
         }
 
-        // Загрузить Dev задачи, восстановив их через TaskLibrary
+        /// <summary>
+        /// Загрузка Dev-задач: клонируем из TaskLibrary и накатываем снапшот БЕЗ событий.
+        /// </summary>
         public List<ITask> Load()
         {
             var result = new List<ITask>();
-            var json = _adapter.LoadCustomJson(Key);
+            var json   = _adapter.LoadCustomJson(Key);
             if (string.IsNullOrEmpty(json)) return result;
 
             DevSprintSaveData data;
-            try { data = JsonConvert.DeserializeObject<DevSprintSaveData>(json); }
+            try
+            {
+                data = JsonConvert.DeserializeObject<DevSprintSaveData>(json);
+            }
             catch (Exception e)
             {
                 Debug.LogError($"DevSprintSaveService.Load error: {e.Message}");
                 return result;
             }
 
-            if (data?.Tasks == null) return result;
+            if (data?.Tasks == null || data.Tasks.Count == 0)
+                return result;
 
-            var allDev = _taskLibrary.GetAlLDevTasks(); // DevTaskType -> List<IDevTask> 
+            // TaskLibrary: DevTaskType -> List<IDevTask> (прототипы)
+            var allDev = _taskLibrary.GetAlLDevTasks();
 
             foreach (var s in data.Tasks)
             {
-                if (!Enum.TryParse(s.DevType, out DevTaskType type)) continue;
-                if (!allDev.TryGetValue(type, out var list)) continue;
+                if (string.IsNullOrEmpty(s.DevType) || string.IsNullOrEmpty(s.Title))
+                    continue;
 
+                if (!Enum.TryParse(s.DevType, out DevTaskType type))
+                    continue;
+
+                if (!allDev.TryGetValue(type, out var list) || list == null)
+                    continue;
+
+                // Находим прототип по Title
                 var proto = list.Find(t => t.Title == s.Title);
                 if (proto == null) continue;
 
-                var clone = proto.Clone();                 // у DevTask клон переносит Id, это ок для рантайма 
-                clone.Progress = s.Progress;
-                if (s.IsCompleted && !clone.IsCompleted)
-                    clone.ApplyProgress(float.MaxValue);   // добить до completed без эвентов, если ок для тебя
+                // Клонируем, чтобы получить реальную задачу текущего рантайма
+                var clone = proto.Clone();
+
+                // Восстановление: только прямые присваивания (без событий)
+                if (clone is DevTask dt)
+                {
+                    dt.RestoreFromSnapshot(s);
+                }
+                else
+                {
+                    // минимальное восстановление для других реализаций IDevTask
+                    clone.Progress    = s.Progress;
+                    // clone.IsCompleted — менять корректно можно только в конкретной реализации
+                    // поэтому оставляем как есть (или доведёшь вручную в своей реализации)
+                }
 
                 result.Add(clone);
             }

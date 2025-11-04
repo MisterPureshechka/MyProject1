@@ -41,6 +41,7 @@ namespace Scripts.Messenger
             _comeBackStore = comeBackStore;
             _jobLogic = jobLogic;
 
+            ScheguleTime();
             _localEvents.OnNewDay += ScheguleTime;
             _localEvents.OnNewMinute += TryToGenerate;
             _localEvents.OnMessageReaded += RemoveMessageFromMap;
@@ -200,7 +201,7 @@ namespace Scripts.Messenger
 
         private void ScheguleTime()
         {
-            _hourToGenerate = Random.Range(12, 18);
+            _hourToGenerate = Random.Range(9, 12);
             _minuteToGenerate = Random.Range(0, 60);
         }
 

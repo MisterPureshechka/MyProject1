@@ -1,5 +1,6 @@
 using Core;
 using Scripts.GlobalStateMachine;
+using UnityEngine;
 
 namespace Scripts.ClickLogic
 {
@@ -15,19 +16,20 @@ namespace Scripts.ClickLogic
             _localEvents.OnOpenPanel += ChangeStateToUi;
             
             _localEvents.TriggerClickStateChange(_clickState);
-            
         }
 
         private void ChangeStateToUi()
         {
             _clickState = ClickState.UI;
             _localEvents.TriggerClickStateChange(_clickState);
+            Debug.Log($"Click state changed to {_clickState}");
         }
         
         private void ChangeStateToRoom()
         {
             _clickState = ClickState.Room;
             _localEvents.TriggerClickStateChange(_clickState);
+            Debug.Log($"Click state changed to {_clickState}");
         }
 
         public void CleanUp()

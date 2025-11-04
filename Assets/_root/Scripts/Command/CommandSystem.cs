@@ -54,7 +54,6 @@ namespace Scripts.Tasks
             _commandPanelView.gameObject.SetActive(true);
             _commandPanelView.ShowAllCommands(_commandManager.GetCommandsForSprint(type), _commandManager.GetPurchasesForSprint(type), _localEvents);
             UpdatePanelPosition(position);
-            _localEvents.TriggerClickStateChange(ClickState.UI);
             _localEvents.TriggerOpenPanel();
         }
         
@@ -67,7 +66,6 @@ namespace Scripts.Tasks
         private void ClosePanel(SprintType type)
         {
             _localEvents.TriggerClosePanel();
-            _localEvents.TriggerClickStateChange(ClickState.Room);
             _commandPanelView.gameObject.SetActive(false);
         }
         

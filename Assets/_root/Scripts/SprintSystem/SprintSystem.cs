@@ -61,6 +61,8 @@ namespace Scripts.Tasks
             _progressDataAdapter = progressDataAdapter;
             _perkService = perkService;
             _taskLibrary = taskLibrary;
+            
+            _sprintView.Init(_localEvents);
 
             _gameDevProgress = gameDevProgress;
             _gameDevProgress.CreateOrSelectGame(currentGameName);
@@ -123,7 +125,7 @@ namespace Scripts.Tasks
             if (proto == null)
             {
                 Debug.LogError($"[SprintSystem] No auto task set for {type}. Did you add it to TaskLibrary?");
-                _localEvents.TriggerSprintCreated(type); // чтобы цепочка не зависла
+                _localEvents.TriggerSprintCreated(type); 
                 return;
             }
 
@@ -235,16 +237,15 @@ namespace Scripts.Tasks
         {
             while (_sprintView.IsBuisy)
                 await Task.Yield();
-            
+
             ITask clone = task.Clone();
-                        
+
             if (_currentSprint.TryAddTask(clone))
             {
                 await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform), _currentSprintType);
                 _pendingTasks.Add(clone);
-            }   
-        } 
-        
+            }  
+        }
 
         private void ApplyProgressToCurrentTask()
         {
@@ -286,6 +287,7 @@ namespace Scripts.Tasks
                         _gameDevProgress.CompleteTask(currentGameName, dev);
                         _localEvents.TriggerDevTaskComplete(dev.Type);
                     }
+                    
                     CheckSprintCompletion();
                     _activeTasks.RemoveAt(i);
                     _localEvents.TriggerPassionIncrease(PassionIncreaseType.TaskComplete);

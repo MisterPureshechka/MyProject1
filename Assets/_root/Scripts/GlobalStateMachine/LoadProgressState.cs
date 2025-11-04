@@ -13,7 +13,7 @@ namespace Scripts.GlobalStateMachine
         public override void Enter()
         {
             LoadProgressOrInitNew();
-            _gameStateMachine.EnterState<MenuState>();
+            _gameStateMachine.EnterState<HomeState>();
         }
 
         public override void Update(float deltaTime) { }

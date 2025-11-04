@@ -53,8 +53,8 @@ namespace Scripts
         private void HandlePointerDown(Vector2 screenPos, int pointerId)
         {
             bool overUI = IsPointerOverUI(pointerId);
-
-            if (overUI || _clickState == ClickState.UI)
+            
+            if (overUI)
             {
                 _localEvents.TriggerMouseClickedUI(screenPos);
             }
@@ -71,7 +71,6 @@ namespace Scripts
             if (pointerId >= 0)
                 return EventSystem.current.IsPointerOverGameObject(pointerId);
 
-            // мышь
             return EventSystem.current.IsPointerOverGameObject();
         }
 

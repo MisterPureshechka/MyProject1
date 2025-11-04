@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
+using Scripts.GlobalStateMachine;
 using Scripts.Tasks;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,9 @@ namespace Scripts.Ui.TaskUi
         private Sequence _fxTextSequence;
         private Sequence _imageSequence;
         private bool _isDestroyed;
+
+        [SerializeField] private Image[] _extraSprites;
+        [SerializeField] private TextMeshProUGUI _extraSpriteText;
         
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private TextMeshProUGUI _progressInfo;
@@ -43,19 +47,73 @@ namespace Scripts.Ui.TaskUi
         private Vector3 _imageStartScale;
         private SprintType _currentSprintType;
         private bool _isAppearing;
+        private LocalEvents _localEvents;
+        
+        private Sequence _extraSpriteSequence;
 
         private void Start()
         {
             GetStartSize();
+        }
+        
+        private Sequence _extraHideSequence;
+
+        private Sequence BuildHideExtrasSequence()
+        {
+            _extraHideSequence?.Kill();
+            _extraHideSequence = DOTween.Sequence();
+
+            var active = new List<Image>();
+            foreach (var img in _extraSprites)
+                if (img != null && img.gameObject.activeSelf)
+                    active.Add(img);
+
+            if (active.Count == 0)
+            {
+                return _extraHideSequence;
+            }
+
+            float step = _showDuration * 2;
+
+            int idx = 0;
+            for (int i = active.Count - 1; i >= 0; i--)
+            {
+                var img = active[i];
+                img.transform.DOKill();
+
+                _extraHideSequence.Insert(
+                    step * idx++,
+                    img.transform.DOScale(Vector3.zero, step)
+                        .OnComplete(() => img.gameObject.SetActive(false))
+                );
+            }
+
+            if (_extraSpriteText != null && _extraSpriteText.gameObject.activeSelf)
+            {
+                _extraHideSequence.Insert(0f,
+                    _extraSpriteText.transform
+                        .DOScale(Vector3.zero, step * 0.8f)
+                        .OnComplete(() =>
+                        {
+                            _extraSpriteText.gameObject.SetActive(false);
+                            _extraSpriteText.transform.localScale = Vector3.one;
+                        })
+                );
+            }
+
+            return _extraHideSequence;
         }
 
         private void GetStartSize()
         {
             _imageStartScale = _spriteImage.transform.localScale;
         }
-        public void SetInfo(string titleText, float progressText, SprintType sprintType)
+        public void SetInfo(string titleText, float progressText, SprintType sprintType, LocalEvents localEvents)
         {
+            HideAllExtras();
+            
             _currentSprintType = sprintType;
+            _localEvents = localEvents;
             
             switch (sprintType)
             {
@@ -88,8 +146,9 @@ namespace Scripts.Ui.TaskUi
             _spriteImage.color = Color.white;
         }
 
-        public void SetInfoIfDev(string titleText, float progressText, DevTaskType taskType)
+        public void SetInfoIfDev(string titleText, float progressText, DevTaskType taskType, LocalEvents localEvents)
         {
+            _localEvents = localEvents;
             _isOnStart = true;
             _spriteImage.sprite = _paperSprite[Random.Range(0, _paperSprite.Length)];
             _spriteImage.color = DevTypeToColor(taskType);
@@ -102,19 +161,19 @@ namespace Scripts.Ui.TaskUi
                 onComplete?.Invoke();
                 return;
             }
-        
-            _imageSequence?.Kill();
 
-            if (_fxText == null || _fxText.transform == null)
-            {
-                onComplete?.Invoke();
-                return;
-            }
-        
+            _imageSequence?.Kill();
+            _extraSpriteSequence?.Kill();
+            _fxTextSequence?.Kill();
+
+            var extras = BuildHideExtrasSequence();
+
             _imageSequence = DOTween.Sequence();
-            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.zero, _hideDuration)
-                .OnComplete(() => onComplete?.Invoke()));
+            _imageSequence.Append(extras); 
+            _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.zero, _hideDuration))
+                .OnComplete(() => onComplete?.Invoke());
         }
+
         
         public async Task HideTaskAsync()
         {
@@ -122,17 +181,18 @@ namespace Scripts.Ui.TaskUi
                 return;
 
             _imageSequence?.Kill();
+            _extraSpriteSequence?.Kill();
+            _fxTextSequence?.Kill();
 
-            if (_fxText == null)
-                return;
+            var extras = BuildHideExtrasSequence();
+            await extras.AsyncWaitForCompletion();
 
             _imageSequence = DOTween.Sequence();
-
             var tween = _spriteImage.transform.DOScale(Vector3.zero, _hideDuration);
             _imageSequence.Append(tween);
-
             await tween.AsyncWaitForCompletion();
         }
+
         
         public void ShowTask()
         {
@@ -148,6 +208,58 @@ namespace Scripts.Ui.TaskUi
                     _isOnStart = false;
                     _isAppearing = false;
                 })); 
+        }
+
+        public void ShowExtraSprite(int extraSpriteCount)
+        {
+            HideAllExtras(); // на всякий, чтобы начать из чистого состояния
+
+            _extraSpriteSequence?.Kill();
+            _extraSpriteSequence = DOTween.Sequence();
+
+            _extraSpriteText.gameObject.SetActive(true);
+
+            int icons = Mathf.Max(0, extraSpriteCount - 1);
+            float duration = _showDuration;
+
+            for (int i = 0; i < icons && i < _extraSprites.Length; i++)
+            {
+                var img = _extraSprites[i];
+                img.transform.localScale = Vector3.zero;
+                img.gameObject.SetActive(true);
+
+                int capturedIndex = i; // чтобы корректно обновлять текст
+                _extraSpriteSequence.Insert(duration * i,
+                    img.transform.DOScale(Vector3.one, duration).OnComplete(() =>
+                    {
+                        _extraSpriteText.transform.DOPunchRotation(new Vector3(0, 0, 15f), duration, 50);
+                        _extraSpriteText.text = "x" + extraSpriteCount; // показывай итоговый множитель (напр., x3, x4, x5)
+                    })
+                );
+            }
+        }
+        
+        private void HideAllExtras()
+        {
+            _extraSpriteSequence?.Kill();
+
+            if (_extraSprites != null)
+            {
+                foreach (var img in _extraSprites)
+                {
+                    if (img == null) continue;
+                    img.transform.localScale = Vector3.zero; // чтобы появлялись с 0 при показе
+                    img.gameObject.SetActive(false);
+                }
+            }
+
+            if (_extraSpriteText != null)
+            {
+                _extraSpriteText.gameObject.SetActive(false);
+                _extraSpriteText.text = string.Empty;
+                _extraSpriteText.transform.localScale = Vector3.one;
+                _extraSpriteText.transform.localRotation = Quaternion.identity;
+            }
         }
 
         private void OnDestroy()
@@ -266,6 +378,8 @@ namespace Scripts.Ui.TaskUi
 
         public void StopFx()
         {
+            if(_isDestroyed) return;
+            
             if (_fxImage)
             {
                 _fxImage.gameObject.SetActive(false);
@@ -273,7 +387,26 @@ namespace Scripts.Ui.TaskUi
             }
            
             _fxTextSequence?.Kill();
-            _fxText.gameObject.SetActive(false);
+            if(_fxImage) _fxText.gameObject.SetActive(false);
+        }
+
+        public void SetBugVisual(bool isBug)
+        {
+            if (_spriteImage == null) return;
+
+            if (isBug)
+            {
+                _localEvents?.TriggerBugCreated();
+                _spriteImage.color = Color.red;
+            }
+        }
+
+        public void SetUnsuccessTask()
+        {
+            if (_spriteImage != null)
+            {
+                _spriteImage.color = Color.black;   
+            }
         }
     }
 }

@@ -16,8 +16,8 @@ namespace Scripts.EcoSystem
 
         public void UpdateSkyColor(float value)
         {
+            if (!_skyRenderer) Debug.LogError("SkyView is missing sky renderer");
             _skyRenderer.color = Color.Lerp(_nightColor, _dayColor, value);
-            
         }
 
         public void UpdateStars(float value)

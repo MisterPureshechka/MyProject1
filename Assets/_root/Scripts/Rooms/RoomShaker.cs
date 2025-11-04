@@ -2,6 +2,7 @@ using Core;
 using DG.Tweening;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
+using UnityEngine;
 
 namespace Scripts.Rooms
 {
@@ -20,6 +21,7 @@ namespace Scripts.Rooms
 
             _localEvents.OnNewNotificatiom += ShakeRoom;
             _localEvents.OnPurchaseUpgradeResult += TryShakeRoom;
+            _localEvents.OnBugCreated += ShakeRoom;
         }
 
         private void TryShakeRoom(InteractiveObjectType iOType, bool succeed)
@@ -45,6 +47,7 @@ namespace Scripts.Rooms
         {
             _localEvents.OnNewNotificatiom -= ShakeRoom;
             _localEvents.OnPurchaseUpgradeResult -= TryShakeRoom;
+            _localEvents.OnBugCreated -= ShakeRoom;
         }
     }
 }

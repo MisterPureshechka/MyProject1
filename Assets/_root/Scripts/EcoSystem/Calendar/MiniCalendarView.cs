@@ -33,19 +33,19 @@ namespace Scripts.EcoSystem.Calendar
 
         private void Awake()
         {
-           // _openCalendarButton.onClick.AddListener(ButtonListener);
+            _openCalendarButton.onClick.AddListener(ButtonListener);
         }
 
         private void Start()
         {
-        //     _iconStartPosition = _miniCalendarIcon.transform.position;
-        //     _textStartPosition = _currentDay.transform.position;
-        //     
-        //     _openCalendarButton.gameObject.SetActive(true);
-        //     _openCalendarButton.targetGraphic.raycastTarget = true;
-        //     _miniCalendarIcon.raycastTarget = false;
-        //     _currentDay.raycastTarget = false;
-        //     _currentMonth.raycastTarget = false;
+            _iconStartPosition = _miniCalendarIcon.transform.position;
+            _textStartPosition = _currentDay.transform.position;
+            
+            _openCalendarButton.gameObject.SetActive(true);
+            _openCalendarButton.targetGraphic.raycastTarget = true;
+            _miniCalendarIcon.raycastTarget = false;
+            _currentDay.raycastTarget = false;
+            _currentMonth.raycastTarget = false;
          }
 
         private void ButtonListener()

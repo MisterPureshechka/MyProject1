@@ -18,6 +18,7 @@ using Scripts.Perks;
 using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Sleep;
+using Scripts.Sounds;
 using Scripts.Stat;
 using Scripts.Tasks;
 using Scripts.Ui;
@@ -81,9 +82,9 @@ namespace Scripts.GlobalStateMachine
                 new InteractiveObjectGlobalAnimator(_gameData.InteractiveObjectConfig, interactiveObjectRegister);
 
             var bloomLogic = new WindowBloomLogic(localEvents);
-            var sky = Object.FindAnyObjectByType<SkyView>(FindObjectsInactive.Include);
-            var loopingMover = new LoopingMoverGroup(sky.StarsPrefabs, 3f, 5f);
-            var skyLogic = new SkyLogic(loopingMover, localEvents, Object.FindAnyObjectByType<SkyView>());
+            var skyView = homeFactory.CreateSky();
+            var loopingMover = new LoopingMoverGroup(skyView.StarsPrefabs, 3f, 5f);
+            var skyLogic = new SkyLogic(loopingMover, localEvents, skyView);
             var volumeLogic = new VolumeLogic(localEvents, _gameData.InteractiveObjectConfig);
             var calendarLogic = new CalendarLogic(localEvents, Object.FindAnyObjectByType<MiniCalendarView>(FindObjectsInactive.Include), Object.FindAnyObjectByType<CalendarCatalogue>(FindObjectsInactive.Include), progressDataAdapter);
 
@@ -146,6 +147,8 @@ namespace Scripts.GlobalStateMachine
             var catFactory = new CatFactory(_gameData.PrefabDataBase);
             var catPositionRegisterer = new CatPositionRegisterer();
             var catLogic = new CatLogic(localEvents, initialPos, catFactory.CreateCat(), catPositionRegisterer, _gameData.CatConfig);
+            
+            var soundService = new SoundService(localEvents, _gameData.SoundConfig);
 
             statController.RegisterView(hud.HealthBar);
             statController.RegisterView(hud.KnowledgeBar);
@@ -202,6 +205,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(coffeeLogic);
             _controllers.Add(speechBubble);
             _controllers.Add(upgradeAndCleanLogic);
+            _controllers.Add(soundService);
         }
 
         public override void Update(float deltaTime)

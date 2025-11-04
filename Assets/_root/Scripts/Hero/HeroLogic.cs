@@ -359,6 +359,7 @@ namespace Scripts.Hero
 
         public void SetWalking(bool isWalking)
         {
+            _localEvents.TriggerHeroWalking(isWalking);
             _isWalking = isWalking;
         }
 

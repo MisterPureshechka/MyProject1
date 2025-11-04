@@ -37,7 +37,7 @@ namespace Scripts.Tasks
 
             _defaultText = label;
             _text.text = label;
-            _priceText.text = price.ToString();
+            _priceText.text = price + "$";
             _defaultColor = _text.color;
 
             _awaitingResult = false;

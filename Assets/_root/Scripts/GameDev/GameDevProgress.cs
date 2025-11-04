@@ -37,12 +37,12 @@ namespace Scripts.GameDev
             if (countByTitle)
             {
                 if (gameData.CompletedByTitle.ContainsKey(task.Title))
-                    gameData.CompletedByTitle[task.Title]++;
+                    gameData.CompletedByTitle[task.Title] += task.Result;
                 else
-                    gameData.CompletedByTitle[task.Title] = 1;
+                    gameData.CompletedByTitle[task.Title] = task.Result;
             }
 
-            gameData.CompletedByType[task.Type]++;
+            gameData.CompletedByType[task.Type] += task.Result;
 
             Save(); // сразу сохраняем снапшот в Custom
         }

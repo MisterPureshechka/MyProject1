@@ -4,17 +4,27 @@ using System.Collections.Generic;
 namespace Scripts.Tasks
 {
     [Serializable]
-    public class DevSprintSaveData
+    public class DevTaskSnapshot
     {
-        public List<DevTaskSnapshot> Tasks = new(); 
+        public string DevType;
+        public string Title;
+        public float  Progress;
+        public bool   IsCompleted;
+
+        public bool   IsBug;
+        public bool   HasChanceForBug;
+        public float  ProgressToEmitBug;
+        public int    Result;
+
+        public bool   HasProgressChanged;
+
+        public string Id;
+        public float  MaxProgress;
     }
 
     [Serializable]
-    public class DevTaskSnapshot
+    public class DevSprintSaveData
     {
-        public string DevType;   
-        public string Title;     
-        public float Progress;
-        public bool IsCompleted;
+        public List<DevTaskSnapshot> Tasks = new();
     }
 }
