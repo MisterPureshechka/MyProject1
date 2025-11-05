@@ -110,7 +110,7 @@ namespace Scripts.Ui.TaskUi
         }
         public void SetInfo(string titleText, float progressText, SprintType sprintType, LocalEvents localEvents)
         {
-            HideAllExtras();
+            if(sprintType != SprintType.Dev) HideAllExtras();
             
             _currentSprintType = sprintType;
             _localEvents = localEvents;
@@ -212,7 +212,7 @@ namespace Scripts.Ui.TaskUi
 
         public void ShowExtraSprite(int extraSpriteCount)
         {
-            HideAllExtras(); // на всякий, чтобы начать из чистого состояния
+            HideAllExtras(); 
 
             _extraSpriteSequence?.Kill();
             _extraSpriteSequence = DOTween.Sequence();
@@ -248,7 +248,7 @@ namespace Scripts.Ui.TaskUi
                 foreach (var img in _extraSprites)
                 {
                     if (img == null) continue;
-                    img.transform.localScale = Vector3.zero; // чтобы появлялись с 0 при показе
+                    img.transform.localScale = Vector3.zero; 
                     img.gameObject.SetActive(false);
                 }
             }

@@ -261,7 +261,6 @@ namespace Scripts.Hero
                 if (sequence == null)
                 {
                     _heroView.HeadSprite.gameObject.SetActive(false);
-                    Debug.LogWarning($"No Head sequence found for {animationState} / {cleanState}");
                     return;
                 }
             }
@@ -273,7 +272,6 @@ namespace Scripts.Hero
         {
             if (_heroConfig == null || _heroConfig.BodySequences == null || _heroConfig.BodySequences.Count == 0)
             {
-                Debug.LogWarning("No Head sequences configured.");
                 return;
             }
 
@@ -291,7 +289,6 @@ namespace Scripts.Hero
 
                 if (sequence == null)
                 {
-                    Debug.LogWarning($"No Head sequence found for {animationState} / {bodyState}");
                     return;
                 }
             }
@@ -334,7 +331,6 @@ namespace Scripts.Hero
                 if (sequence == null)
                 {
                     _heroView.BackHandSprite.gameObject.SetActive(false);
-                    Debug.LogWarning($"No BackHand sequence found for {animationState} / {mood}");
                     return;
                 }
             }

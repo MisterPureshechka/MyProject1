@@ -2,6 +2,7 @@ using _root.Notification;
 using _root.RealEstate;
 using _root.Scripts.Ui.Stats;
 using Scripts.Animator;
+using Scripts.Bugs;
 using Scripts.Cat;
 using Scripts.Catalogues;
 using Scripts.Data;
@@ -106,8 +107,9 @@ namespace Scripts.GlobalStateMachine
                 new SkillStatLogic(Object.FindAnyObjectByType<SkillStatPanel>(FindObjectsInactive.Include),
                     progressDataAdapter, localEvents);
 
+            var bugLogic = new BugLogic(progressDataAdapter);
             var gameDevProgress = new GameDevProgress(progressDataAdapter); //надо диспозить
-            var taskLibrary = new TaskLibrary(progressDataAdapter, localEvents);
+            var taskLibrary = new TaskLibrary(progressDataAdapter, bugLogic, localEvents);
             var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter, perkService, gameDevProgress);
             var gameDevProgressPanelLogic = new GameDevProgressPanelLogic(Object.FindAnyObjectByType<GameDevProgressPanel>(FindObjectsInactive.Include), gameDevProgress, taskLibrary, localEvents);
 

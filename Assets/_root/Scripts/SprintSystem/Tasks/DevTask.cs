@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Scripts.Bugs;
 using Scripts.Progress;
 using Scripts.Utils;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Scripts.Tasks
     public class DevTask : IDevTask
     {
         private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly BugLogic _bugLogic;
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         
@@ -36,9 +38,10 @@ namespace Scripts.Tasks
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
-        public DevTask(ProgressDataAdapter progressDataAdapter, DevTaskType taskType, string title, float progress)
+        public DevTask(ProgressDataAdapter progressDataAdapter, BugLogic bugLogic, DevTaskType taskType, string title, float progress)
         {
             _progressDataAdapter = progressDataAdapter;
+            _bugLogic = bugLogic;
             Type = taskType;
             Title = title;
             Progress = progress;
@@ -48,7 +51,7 @@ namespace Scripts.Tasks
 
         public ITask Clone()
         {
-            return new DevTask(this._progressDataAdapter, this.Type, this.Title, this.Progress)
+            return new DevTask(this._progressDataAdapter, this._bugLogic, this.Type, this.Title, this.Progress)
             {
                 Id = this.Id  
             };
@@ -69,9 +72,9 @@ namespace Scripts.Tasks
             {
                 if (!_hasProgressChanged)
                 {
-                    HasChanceForBug = TryEmitBug();
-                    if (HasChanceForBug)
-                        ProgressToEmitBug = Random.Range(0f, MaxProgress * 0.5f);
+                    //HasChanceForBug = _bugLogic.TryRollBugStart(MaxProgress, out var emitAt);
+                    HasChanceForBug = true;
+                    if (HasChanceForBug) ProgressToEmitBug = 50f;
 
                     _hasProgressChanged = true;
                     OnProgressChangedFirstTime?.Invoke(this);
@@ -94,13 +97,16 @@ namespace Scripts.Tasks
 
                 if (IsBug)
                 {
-                    bool success;
-                    int resultValue = GetBugResult(out success);
-                    Debug.Log("Bug result - " + resultValue);
-                    Result = resultValue;
-                    OnBugResult?.Invoke(this, resultValue, success);
+                    //_bugLogic.RollBugResult(out var resultValue, out var success);
+                    Result = 4;                          
+                    //OnBugResult?.Invoke(this, resultValue, success);
+                    OnBugResult?.Invoke(this, Result, true);
                 }
-
+                else
+                {
+                    Result = 1;
+                }
+                
                 SetBug(false);
                 OnTaskCompleted?.Invoke(this);
             }
@@ -108,8 +114,8 @@ namespace Scripts.Tasks
         
         private int GetBugResult(out bool success)
         {
-            success = Random.value >= 0.5f;       // 50% на успех
-            return success ? Random.Range(3, 6)   // 3..5
+            success = Random.value >= 0.5f;       
+            return success ? Random.Range(3, 6)   
                 : 1;
         }
 
@@ -146,21 +152,15 @@ namespace Scripts.Tasks
                 HasProgressChanged= this._hasProgressChanged
             };
         }
-
-// ВАЖНО: только прямые присваивания, никаких событий, никаких SetBug(true)!
         public void RestoreFromSnapshot(DevTaskSnapshot s)
         {
             if (!string.IsNullOrEmpty(s.Id)) this.Id = s.Id;
 
             this.Progress          = s.Progress;
-            // MaxProgress/Title/Type уже соответствуют прототипу; если хочешь — доверься сейву:
-            // this.MaxProgress    = s.MaxProgress;
-            // this.Title          = s.Title;
-            // this.Type           = Enum.Parse<DevTaskType>(s.DevType);
 
             this.IsCompleted       = s.IsCompleted;
 
-            this.IsBug             = s.IsBug;              // без SetBug — чтобы не умножать прогресс и не шлёпать события
+            this.IsBug             = s.IsBug;              
             this.HasChanceForBug   = s.HasChanceForBug;
             this.ProgressToEmitBug = s.ProgressToEmitBug;
             this.Result            = s.Result;
