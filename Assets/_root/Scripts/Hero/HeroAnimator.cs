@@ -128,32 +128,32 @@ namespace Scripts.Hero
                 Debug.Log($"_isWith coffee changed to = {_isWithCoffee}");
             }
 
-            // if (Input.GetKeyDown(KeyCode.L))
-            // {
-            //     if (_moodState == MoodState.Sad)
-            //     {
-            //         _moodState = MoodState.Normal;
-            //         Debug.Log($"_moodState changed to = {_moodState}");
-            //         StartAnimation(HeroAnimationState.Walk, true);
-            //         return;
-            //     }
-            //
-            //     if (_moodState == MoodState.Normal)
-            //     {
-            //         _moodState = MoodState.Happy;
-            //         Debug.Log($"_moodState changed to = {_moodState}");
-            //         StartAnimation(HeroAnimationState.Walk, true);
-            //         return;
-            //     }
-            //
-            //     if (_moodState == MoodState.Happy)
-            //     {
-            //         _moodState = MoodState.Sad;
-            //         Debug.Log($"_moodState changed to = {_moodState}");
-            //         StartAnimation(HeroAnimationState.Walk, true);
-            //     }
-            //     
-            // }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                if (_bodyState == MoodState.Sad)
+                {
+                    _bodyState = MoodState.Normal;
+                    Debug.Log($"_moodState changed to = {_bodyState}");
+                    StartAnimation(HeroAnimationState.Walk, true);
+                    return;
+                }
+            
+                if (_bodyState == MoodState.Normal)
+                {
+                    _bodyState = MoodState.Happy;
+                    Debug.Log($"_moodState changed to = {_bodyState}");
+                    StartAnimation(HeroAnimationState.Walk, true);
+                    return;
+                }
+            
+                if (_bodyState == MoodState.Happy)
+                {
+                    _bodyState = MoodState.Sad;
+                    Debug.Log($"_moodState changed to = {_bodyState}");
+                    StartAnimation(HeroAnimationState.Walk, true);
+                }
+                
+            }
 
            
         }

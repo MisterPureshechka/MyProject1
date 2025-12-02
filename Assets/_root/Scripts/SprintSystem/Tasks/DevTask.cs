@@ -126,6 +126,9 @@ namespace Scripts.Tasks
 
         private void SetBug(bool isBug)
         {
+            IsBug = false; 
+            BugStateChanged?.Invoke(IsBug);
+            return;
             if (IsBug == isBug) return;
             IsBug = isBug;
 

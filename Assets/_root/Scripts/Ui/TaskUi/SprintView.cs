@@ -44,16 +44,8 @@ namespace Scripts.Ui.TaskUi
                 if (task.IsCompleted && devTask is DevTask dt && dt.Result > 0)
                 {
                     taskView.SetBugVisual(false);
-
-                    if (dt.Result > 1)
-                    {
-                        taskView.ShowExtraSprite(Mathf.Clamp(dt.Result, 1, 5));
-                    }
-                    else
-                    {
-                        Debug.Log($"Should be black card");
-                        taskView.SetUnsuccessTask();
-                    }
+                    if (dt.Result > 1) taskView.ShowExtraSprite(Mathf.Clamp(dt.Result, 1, 5));
+                    else taskView.SetUnsuccessTask(); 
                 }
                 else
                 {
@@ -89,31 +81,37 @@ namespace Scripts.Ui.TaskUi
                 devTask.OnBugResult += onBugResult;
                 _bugResultHandlers[task] = onBugResult;
 
-                task.OnTaskCompleted += _ =>
+                task.OnTaskCompleted += async _ =>
                 {
-                    if (_bugHandlers.TryGetValue(task, out var h))
+                    if (_taskIdToViewMap.TryGetValue(uniqueKey, out var tv))
                     {
-                        devTask.BugStateChanged -= h;
-                        _bugHandlers.Remove(task);
-                    }
-                    if (_bugResultHandlers.TryGetValue(task, out var r))
-                    {
-                        devTask.OnBugResult -= r;
-                        _bugResultHandlers.Remove(task);
+                        // var delay = tv.GetExtrasShowDuration();
+                        // if (delay > 0f) await Task.Delay(TimeSpan.FromSeconds(delay));
+
+                        MoveTask(tv, _done);
+                        tv.StopFx();
                     }
                 };
+
             }
             else
             {
-                // Недева задачи: стандартная инициализация
                 taskView.SetInfo(task.Title, task.Progress, sprintType, _localEvents);
                 taskView.ShowTask();
+
+                task.OnTaskCompleted += _ =>
+                {
+                    if (_taskIdToViewMap.TryGetValue(uniqueKey, out var tv))
+                    {
+                        MoveTask(tv, _done);
+                        tv.StopFx();
+                    }
+                };
             }
 
             _taskViews.Add(taskView);
             _taskIdToViewMap[uniqueKey] = taskView;
 
-            // Первичное расположение по колонкам
             if (task.Progress < task.MaxProgress)
             {
                 taskView.transform.SetParent(task.Progress <= 0 ? _done : _inProgress);

@@ -153,6 +153,30 @@ namespace Scripts.Ui.TaskUi
             _spriteImage.sprite = _paperSprite[Random.Range(0, _paperSprite.Length)];
             _spriteImage.color = DevTypeToColor(taskType);
         }
+        
+        public float GetExtrasShowDuration()
+        {
+            // сколько времени "минимально красиво" держать карточку на месте после OnBugResult
+            // если текста/иконок нет — 0
+            // иконки показываются ступенчато: duration * icons
+            int currentExtrasShown = CountActiveExtras(); // посчитай активные _extraSprites
+            if (currentExtrasShown <= 0 && !_extraSpriteText.gameObject.activeSelf)
+                return 0f;
+
+            // у тебя ShowExtraSprite даёт ступенчатую анимацию: duration * icons
+            int icons = Mathf.Clamp(currentExtrasShown, 0, _extraSprites.Length);
+            float duration = _showDuration;
+            // Возьмём небольшой запас (например +0.1s) на завершение текста
+            return icons * duration + 0.1f;
+        }
+
+        private int CountActiveExtras()
+        {
+            int c = 0;
+            foreach (var img in _extraSprites)
+                if (img != null && img.gameObject.activeSelf) c++;
+            return c;
+        }
 
         public void HideTask(Action onComplete = null)
         {
@@ -166,10 +190,10 @@ namespace Scripts.Ui.TaskUi
             _extraSpriteSequence?.Kill();
             _fxTextSequence?.Kill();
 
-            var extras = BuildHideExtrasSequence();
+            //var extras = BuildHideExtrasSequence();
 
             _imageSequence = DOTween.Sequence();
-            _imageSequence.Append(extras); 
+            //_imageSequence.Append(extras); 
             _imageSequence.Append(_spriteImage.transform.DOScale(Vector3.zero, _hideDuration))
                 .OnComplete(() => onComplete?.Invoke());
         }
@@ -228,12 +252,12 @@ namespace Scripts.Ui.TaskUi
                 img.transform.localScale = Vector3.zero;
                 img.gameObject.SetActive(true);
 
-                int capturedIndex = i; // чтобы корректно обновлять текст
+                int capturedIndex = i; 
                 _extraSpriteSequence.Insert(duration * i,
                     img.transform.DOScale(Vector3.one, duration).OnComplete(() =>
                     {
                         _extraSpriteText.transform.DOPunchRotation(new Vector3(0, 0, 15f), duration, 50);
-                        _extraSpriteText.text = "x" + extraSpriteCount; // показывай итоговый множитель (напр., x3, x4, x5)
+                        _extraSpriteText.text = "x" + extraSpriteCount; 
                     })
                 );
             }
