@@ -15,6 +15,8 @@ MonoBehaviour:
   Sky: {fileID: 6214598077790573776, guid: 0650ac9b9c9ec439282e6764a43fe239, type: 3}
   <CatPrefab>k__BackingField: {fileID: 8619167069927732892, guid: cad70792368b546359f4dcd42b690ed0, type: 3}
   <TaskPanelButton>k__BackingField: {fileID: 312371767978753470, guid: a7ec14ac354db4de09ce21985f5b7217, type: 3}
+  <RoadMapPrefab>k__BackingField: {fileID: 8729539186453723416, guid: 0fa8216889a364c50b047de331711976, type: 3}
+  <LevelNodePrefab>k__BackingField: {fileID: 8382596133382690340, guid: e766c7fd92e5e4c6b976d4242ac1f21b, type: 3}
   <Hero>k__BackingField: {fileID: 43456105368433275, guid: 12896e55c276742a0a80955d2fd42443, type: 3}
   <Menu>k__BackingField: {fileID: 982093011933107053, guid: e0e34e5326d5d411cac392602ddcc1c9, type: 3}
   <Home>k__BackingField: {fileID: 2389769002547125902, guid: bd39dad7a181d4b6d85971ae698ab9a8, type: 3}
@@ -32,3 +34,4 @@ MonoBehaviour:
   - {fileID: 1022842692, guid: 71977a2907e994699ba45972d75a629a, type: 3}
   - {fileID: -1039978742, guid: 71977a2907e994699ba45972d75a629a, type: 3}
   <PerksCatalogue>k__BackingField: {fileID: 3046452568117150549, guid: 5b683c5bc0fc14341bb97b7793d28cb1, type: 3}
+  <ConnectorPrefab>k__BackingField: {fileID: 3746236021692541244, guid: ace88d78739c445d18673d292034159c, type: 3}

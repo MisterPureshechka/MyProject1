@@ -1,4 +1,5 @@
 using System;
+using _root.Planning;
 using Scripts.Data;
 using Scripts.Perks;
 using Scripts.Tasks;
@@ -66,6 +67,23 @@ namespace Scripts.Ui
             var instance = Object.Instantiate(_gameData.PrefabDataBase.TaskPanelButton, to);
 
             return instance.GetComponent<TaskPanelButtonView>();
+        }
+        
+        public RoadMapView GetRoadMapView(Transform to)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.RoadMapPrefab, to);
+
+            return instance;
+        }
+
+        public LevelNodeView GetLevelNodePrefab()
+        {
+            return _gameData.PrefabDataBase.LevelNodePrefab;
+        }
+        
+        public ConnectorView GetConnectorPrefab()
+        {
+            return _gameData.PrefabDataBase.ConnectorPrefab;
         }
 
         public SprintView GetSprintView(Transform canvasTransform)

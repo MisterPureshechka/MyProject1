@@ -1,12 +1,14 @@
 namespace _root.Planning
 {
-    public enum RoadMapState
+    public enum NodeType
     {
         Planning,
         Work,
         Build,
         Hire,
         Upgrade,
-        OfficeUpgrade
+        OfficeUpgrade,
+        Release,
+        Perks
     }
 }

@@ -1,3 +1,4 @@
+using _root.Planning;
 using Scripts.Cat;
 using Scripts.EcoSystem;
 using Scripts.Hero;
@@ -16,6 +17,8 @@ namespace Scripts.Data
         [field: SerializeField] public SkyView Sky;
         [field: SerializeField] public CatView CatPrefab { get; private set; }
         [field: SerializeField] public TaskPanelButtonView TaskPanelButton { get; private set; }
+        [field: SerializeField] public RoadMapView RoadMapPrefab { get; private set; }
+        [field: SerializeField] public LevelNodeView LevelNodePrefab { get; private set; }
         [field: SerializeField] public GameObject Hero { get; private set; }
         [field: SerializeField] public GameObject Menu { get; private set; }
         [field: SerializeField] public HomeView Home { get; private set; }
@@ -32,5 +35,7 @@ namespace Scripts.Data
         [field: SerializeField] public ShopItemView ShopItemView { get; private set; }
         [field: SerializeField] public Sprite[] ChairSprites { get; private set; }
         [field: SerializeField] public PerksCatalogue PerksCatalogue { get; private set; }
+        
+        [field: SerializeField] public ConnectorView ConnectorPrefab { get; private set; }
     }
 }

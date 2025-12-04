@@ -1,3 +1,4 @@
+using _root.Planning;
 using Scripts.Cat;
 using Scripts.Messenger;
 using Scripts.Sounds;
@@ -17,5 +18,7 @@ namespace Scripts.Data
         [field: SerializeField] public CatConfig CatConfig { get; private set; }
         [field: SerializeField] public UpgradableConfig UpgradableConfig { get; private set; }
         [field: SerializeField] public SoundConfig SoundConfig { get; private set; }
+        [field: SerializeField] public LevelMapConfig LevelMapConfig { get; private set; }
+        
     }
 }
