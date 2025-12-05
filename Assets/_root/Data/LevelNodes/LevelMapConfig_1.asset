@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0da0872b7904bc8866a79604d629dd2, type: 3}
   m_Name: LevelMapConfig_1
   m_EditorClassIdentifier: 
-  StartNodeId: Work_1
+  StartNodeId: StartNode
   LevelNodes:
   - {fileID: 11400000, guid: d8b5ec21cd32a4d369bf7c6d946e4005, type: 2}
   - {fileID: 11400000, guid: 45f81e340431049cdae92ee308d5b970, type: 2}

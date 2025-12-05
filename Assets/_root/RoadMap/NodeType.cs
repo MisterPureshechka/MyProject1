@@ -9,6 +9,7 @@ namespace _root.Planning
         Upgrade,
         OfficeUpgrade,
         Release,
-        Perks
+        Perks,
+        StartNode
     }
 }

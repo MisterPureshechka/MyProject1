@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4421513780613711915}
   - component: {fileID: 8382596133382690340}
+  - component: {fileID: -4941925989012333530}
   m_Layer: 5
   m_Name: NodePrefab
   m_TagString: Untagged
@@ -52,6 +53,20 @@ MonoBehaviour:
   _button: {fileID: 1039208729394545997}
   _background: {fileID: 8420701069125495001}
   _text: {fileID: 8862821245321956356}
+--- !u!114 &-4941925989012333530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3478511543854399817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e801c938b24fcd989aa3b23c80d0ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 1039208729394545997}
+  _config: {fileID: 11400000, guid: 5458fc84facac4a07aea5b7fc620f11b, type: 2}
 --- !u!1 &5668503875327157050
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,7 +36,10 @@ namespace _root.Planning
             
             string startNodeId = LoadCurrentLevelNodeId();
             
-            if (startNodeId == null) startNodeId = _config.StartNodeId;   
+            if (string.IsNullOrEmpty(startNodeId) || !_nodeById.ContainsKey(startNodeId))
+            {
+                startNodeId = _config.StartNodeId;
+            } 
 
             SetCurrentNode(startNodeId);
         }
@@ -73,7 +76,6 @@ namespace _root.Planning
             _nodeVisitIndex = new Dictionary<string, int>();
             _nodeUiPosition = new Dictionary<string, Vector2>();
 
-            // ---------- 1. BFS: depth + порядок обхода ----------
             var queue = new Queue<string>();
             string startId = _config.StartNodeId;
 
@@ -87,7 +89,6 @@ namespace _root.Planning
                 string nodeId = queue.Dequeue();
                 int depth = _nodeDepth[nodeId];
 
-                // запоминаем порядок, в котором мы достали ноду из очереди
                 if (!_nodeVisitIndex.ContainsKey(nodeId))
                     _nodeVisitIndex[nodeId] = visitIndex++;
 
@@ -106,10 +107,9 @@ namespace _root.Planning
                 }
             }
 
-            // ---------- 2. Группируем по колонкам и сортируем по visitIndex ----------
             var groupsByDepth = _nodeDepth
                 .GroupBy(pair => pair.Value)
-                .OrderBy(group => group.Key); // depth слева направо
+                .OrderBy(group => group.Key); 
 
             float xSpacing = 100f;
             float ySpacing = 75f;
@@ -118,8 +118,6 @@ namespace _root.Planning
             {
                 int depth = group.Key;
 
-                // сортируем ноды в колонке по тому,
-                // в каком порядке они были посещены в BFS
                 var nodeIdsInColumn = group
                     .Select(pair => pair.Key)
                     .OrderBy(id => _nodeVisitIndex[id])
@@ -133,7 +131,6 @@ namespace _root.Planning
 
                     float x = depth * xSpacing;
 
-                    // равномерно раскидываем по вертикали вокруг центра
                     float y = (i - (count - 1) * 0.5f) * -ySpacing;
 
                     _nodeUiPosition[id] = new Vector2(x, y);

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,9 +31,23 @@ namespace _root.Planning
             _levelNodeController.OnNodeClicked(this);
         }
 
-        public void SetInteractable(bool value)
+        public void SetInteractable(bool isInteractable)
         {
-            _button.interactable = value;
+            _button.interactable = isInteractable;
+            
+            if (isInteractable)
+            {
+                _background.DOFade(1f, 0);
+            }
+            else
+            {
+                _background.DOFade(0.5f, 0);
+            }
+        }
+
+        public void SetDone(bool isDone)
+        {
+            _button.interactable = !isDone;
         }
 
         public void SetCurrent(bool value)
