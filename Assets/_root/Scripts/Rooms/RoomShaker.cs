@@ -8,14 +8,14 @@ namespace Scripts.Rooms
 {
     public class RoomShaker : ICleanUp
     {
-        private readonly IRoomView _roomView;
+        private readonly IRoomViewOLD _iRoomViewOld;
         private LocalEvents _localEvents;
         private InteractiveObjectConfig _interactiveObjectConfig;
         private Sequence _sequence;
 
-        public RoomShaker(IRoomView roomView, LocalEvents localEvents, InteractiveObjectConfig interactiveObjectConfig)
+        public RoomShaker(IRoomViewOLD iRoomViewOld, LocalEvents localEvents, InteractiveObjectConfig interactiveObjectConfig)
         {
-            _roomView = roomView;
+            _iRoomViewOld = iRoomViewOld;
             _localEvents = localEvents;
             _interactiveObjectConfig = interactiveObjectConfig;
 
@@ -39,7 +39,7 @@ namespace Scripts.Rooms
             
             var config = _interactiveObjectConfig;
 
-            _sequence.Append(_roomView.Transform
+            _sequence.Append(_iRoomViewOld.Transform
                 .DOShakePosition(config.RoomShakeDuration, config.RoomShakePower, 50, 90f));
         }
         

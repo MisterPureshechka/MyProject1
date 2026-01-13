@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core;
+using Scripts.GlobalStateMachine;
 using Scripts.Progress;
 using UnityEngine;
 
 namespace _root.Planning
 {
-    public class LevelMapController : IController
+    public class LevelMapController : ICleanUp
     {
+        private readonly GameStateMachine _gameStateMachine;
         private ProgressDataAdapter _progressDataAdapter;
         private LevelMapConfig _config;
         private RoadMapView _roadMapView;
@@ -22,10 +24,20 @@ namespace _root.Planning
         private Dictionary<string, int> _nodeVisitIndex;
         private Dictionary<string, Vector2> _nodeUiPosition;
         
+        private class Connection
+        {
+            public string fromId;
+            public string toId;
+            public ConnectorView view;
+        }
+
+        private readonly List<Connection> _connections = new List<Connection>();
+        
         private LevelNode _currentNode;
 
-        public LevelMapController(ProgressDataAdapter progressDataAdapter, LevelMapConfig config, RoadMapView roadMapView, LevelNodeView levelNodePrefab, ConnectorView connectorPrefab)
+        public LevelMapController(GameStateMachine gameStateMachine, ProgressDataAdapter progressDataAdapter, LevelMapConfig config, RoadMapView roadMapView, LevelNodeView levelNodePrefab, ConnectorView connectorPrefab)
         {
+            _gameStateMachine = gameStateMachine;
             _progressDataAdapter = progressDataAdapter;
             _config = config;
             _roadMapView = roadMapView;
@@ -39,9 +51,10 @@ namespace _root.Planning
             if (string.IsNullOrEmpty(startNodeId) || !_nodeById.ContainsKey(startNodeId))
             {
                 startNodeId = _config.StartNodeId;
-            } 
+            }
 
-            SetCurrentNode(startNodeId);
+            SetCurrentNodeOnStart(startNodeId);
+            MarkCurrentNodeCompleted();
         }
 
         private string LoadCurrentLevelNodeId()
@@ -137,19 +150,42 @@ namespace _root.Planning
                 }
             }
         }
-
         
         public void OnNodeClicked(LevelNodeView view)
         {
             if (!IsNodeAvailable(view.LevelNodeData)) 
                 return;
 
-            SetCurrentNode(view.LevelNodeData.Id);
-            
-            PlayerPrefs.SetString("currentRoadmapNodeId", view.LevelNodeData.Id);
-            PlayerPrefs.Save();
+            LevelNode targetNode = view.LevelNodeData;
 
-            RunNodeLogic(view.LevelNodeData);
+            Connection connection = _connections.FirstOrDefault(c =>
+                c.fromId == _currentNode.Id &&
+                c.toId == targetNode.Id);
+
+            void FinishTransition()
+            {
+                _progressDataAdapter.MarkRoadMapNodeCompleted(_currentNode.Id);
+
+                PlayerPrefs.SetString("currentRoadmapNodeId", targetNode.Id);
+                PlayerPrefs.Save();
+
+                _gameStateMachine.EnterState<RoadMapState>(); //
+            }
+
+            if (connection != null)
+            {
+                connection.view.PlaySelectAnimation(FinishTransition);
+            }
+            else
+            {
+                FinishTransition();
+            }
+        }
+        
+        public void MarkCurrentNodeCompleted()
+        {
+            _progressDataAdapter.MarkRoadMapNodeCompleted(_currentNode.Id);
+            UpdateNodeVisualState();
         }
         
         private bool IsNodeAvailable(LevelNode node)
@@ -167,24 +203,64 @@ namespace _root.Planning
                 pair.Value.SetCurrent(isCurrent);
             }
 
-            UpdateNodeInteractivity();
+            UpdateNodeVisualState();
         }
         
-        private void UpdateNodeInteractivity()
+        private void SetCurrentNodeOnStart(string nodeId)
+        {
+            _currentNode = _nodeById[nodeId];
+
+            foreach (var pair in _nodeViewById)
+            {
+                var isCurrent = pair.Key == nodeId;
+                pair.Value.SetCurrent(isCurrent);
+            }
+
+            UpdateNodeVisualState();
+        }
+        
+        private void UpdateNodeVisualState()
         {
             foreach (var pair in _nodeViewById)
-                pair.Value.SetInteractable(false);
-
-            _nodeViewById[_currentNode.Id].SetInteractable(false); 
-
-            foreach (string nextId in _currentNode.NextNodeIds)
             {
-                if (_nodeViewById.TryGetValue(nextId, out var view))
+                string nodeId = pair.Key;
+                LevelNodeView view = pair.Value;
+                LevelNode node = _nodeById[nodeId];
+
+                bool isCurrent   = nodeId == _currentNode.Id;
+                bool isCompleted = _progressDataAdapter.IsRoadMapNodeCompleted(nodeId);
+                bool isNext      = _currentNode.NextNodeIds.Contains(nodeId);
+
+                NodeViewState state;
+
+                if (isCurrent && isCompleted)
                 {
-                    view.SetInteractable(true);
+                    state = NodeViewState.Completed;
                 }
+                else if (isCurrent)
+                {
+                    state = NodeViewState.Current;
+                }
+                else if (isCompleted)
+                {
+                    state = NodeViewState.Completed;
+                }
+                else if (isNext)
+                {
+                    state = NodeViewState.Available;
+                }
+                else
+                {
+                    state = NodeViewState.Locked;
+                }
+
+                view.SetState(state);
             }
+
+            UpdateConnectionsVisualState();
         }
+
+
         
         private void CreateConnections()
         {
@@ -198,15 +274,16 @@ namespace _root.Planning
                     var from = (RectTransform)_nodeViewById[node.Id].transform;
                     var to   = (RectTransform)_nodeViewById[nextId].transform;
 
-                    CreateLineBetween(from, to);
+                    CreateLineBetween(node.Id, nextId, from, to);
                 }
             }
         }
-        
-        private void CreateLineBetween(RectTransform fromNode, RectTransform toNode)
+
+        private void CreateLineBetween(string fromId, string toId, RectTransform fromNode, RectTransform toNode)
         {
             var line = Object.Instantiate(_connectorPrefab, _roadMapView.Root);
             line.transform.SetAsFirstSibling();
+
             Vector2 start = fromNode.anchoredPosition;
             Vector2 end = toNode.anchoredPosition;
 
@@ -215,14 +292,53 @@ namespace _root.Planning
 
             var rect = line.Image.rectTransform;
             rect.anchoredPosition = (start + end) * 0.5f; 
-
             rect.sizeDelta = new Vector2(length, 3);
 
-            
             float angle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
             rect.localRotation = Quaternion.Euler(0, 0, angle);
-        }
 
+            // сохраняем коннектор
+            _connections.Add(new Connection
+            {
+                fromId = fromId,
+                toId = toId,
+                view = line
+            });
+        }
+        
+        private void UpdateConnectionsVisualState()
+        {
+            foreach (var connection in _connections)
+            {
+                bool toCompleted = _progressDataAdapter.IsRoadMapNodeCompleted(connection.toId);
+                bool fromCompleted = _progressDataAdapter.IsRoadMapNodeCompleted(connection.fromId);
+
+                bool isNextFromCurrent =
+                    connection.fromId == _currentNode.Id &&
+                    _currentNode.NextNodeIds.Contains(connection.toId);
+
+                bool isOnPassedPath =
+                    fromCompleted &&
+                    (toCompleted || connection.toId == _currentNode.Id);
+
+                ConnectorView.ConnectionState state;
+
+                if (isOnPassedPath)
+                {
+                    state = ConnectorView.ConnectionState.Completed;
+                }
+                else if (isNextFromCurrent)
+                {
+                    state = ConnectorView.ConnectionState.Available;
+                }
+                else
+                {
+                    state = ConnectorView.ConnectionState.Inactive;
+                }
+
+                connection.view.SetState(state);
+            }
+        }
         
         private void RunNodeLogic(LevelNode node)
         {
@@ -250,6 +366,11 @@ namespace _root.Planning
                     Debug.Log("Run OfficeUpgrade node");
                     break;
             }
+        }
+
+        public void CleanUp()
+        {
+            Object.Destroy(_roadMapView.gameObject);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using _root.Planning;
+using _root.Scripts.Ui.Stats;
 using Scripts.Data;
 using Scripts.Perks;
 using Scripts.Tasks;
@@ -26,6 +27,13 @@ namespace Scripts.Ui
             return instance.GetComponent<TaskView>();
         }
 
+        public EmployeeStats GetEmployeeStats(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.EmployeeStats, canvasTransform);
+            
+            return instance.GetComponent<EmployeeStats>();
+        }
+        
         public TooltipView GetTooltip(Transform canvasTransform)
         {
             var instance = Object.Instantiate(_gameData.PrefabDataBase.TooltipPrefab, canvasTransform);

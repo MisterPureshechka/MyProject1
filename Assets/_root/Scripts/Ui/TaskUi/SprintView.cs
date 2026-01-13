@@ -13,7 +13,6 @@ namespace Scripts.Ui.TaskUi
         private readonly List<TaskView> _taskViews = new();
         private readonly Dictionary<string, TaskView> _taskIdToViewMap = new();
 
-        // Храним обработчики, чтобы корректно отписываться
         private readonly Dictionary<ITask, Action<bool>> _bugHandlers = new();
         private readonly Dictionary<ITask, Action<ITask,int,bool>> _bugResultHandlers = new();
 

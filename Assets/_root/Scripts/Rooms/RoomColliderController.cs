@@ -6,12 +6,12 @@ namespace Scripts.Rooms
 {
     public class RoomColliderController : ICleanUp
     {
-        private readonly IRoomView _roomView;
+        private readonly IRoomViewOLD _iRoomViewOld;
         private readonly LocalEvents _localEvents;
 
-        public RoomColliderController(IRoomView roomView, LocalEvents localEvents)
+        public RoomColliderController(IRoomViewOLD iRoomViewOld, LocalEvents localEvents)
         {
-            _roomView = roomView;
+            _iRoomViewOld = iRoomViewOld;
             _localEvents = localEvents;
 
             _localEvents.OnClickStateChange += ClickStateChangeListener;
@@ -31,8 +31,8 @@ namespace Scripts.Rooms
 
         private void EnableColliders(bool enable)
         {
-            _roomView.Collider.enabled = enable;
-            foreach (var collider in _roomView.SideRooms)
+            _iRoomViewOld.Collider.enabled = enable;
+            foreach (var collider in _iRoomViewOld.SideRooms)
             {
                 collider.Collider.enabled = enable;
             }

@@ -33,5 +33,14 @@ namespace _root.Scripts.Ui.Stats
             _valueText.text = Mathf.RoundToInt(norm * 100f) + "%";
             _progressBar.UpdateProgressBar(norm);
         }
+        
+        public void UpdateInfo(float value, float maxValue)
+        {
+            float max = Mathf.Max(1f, maxValue);
+            float norm = Mathf.Clamp01(value / max);
+            
+            _valueText.text = Mathf.RoundToInt(norm * 100f) + "%";
+            _progressBar.UpdateProgressBar(norm);
+        }
     }
 }

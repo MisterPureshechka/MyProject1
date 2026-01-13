@@ -5,26 +5,26 @@ namespace Scripts.Rooms
 {
     public class HomeInitializer : IRoomInitializer
     {
-        private readonly IRoomView _roomView;
+        private readonly IRoomViewOLD _iRoomViewOld;
 
-        public HomeInitializer(IRoomView roomView)
+        public HomeInitializer(IRoomViewOLD iRoomViewOld)
         {
-            _roomView = roomView;
+            _iRoomViewOld = iRoomViewOld;
         }
 
         public List<IInteractiveObject> GetAllInteravtiveObjects()
         {
-            return _roomView.InteractiveObjects;
+            return _iRoomViewOld.InteractiveObjects;
         }
 
         public Vector3 GetInitialPosition()
         {
-            return _roomView.InitialPosition;
+            return _iRoomViewOld.InitialPosition;
         }
 
         public float GetRoomSize()
         {
-            return _roomView.RoomSize;
+            return _iRoomViewOld.RoomSize;
         }
     }
 }

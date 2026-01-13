@@ -61,7 +61,7 @@ namespace Scripts.GlobalStateMachine
 
             var interactiveObjectRegister = new InteractiveObjectRegisterer(home.InteractiveObjects);
             var camera = Camera.main;
-            var cameraLogic = new CameraLogic(camera, localEvents, _gameData.InteractiveObjectConfig);
+            var cameraLogic = new CameraLogicOLD(camera, localEvents, _gameData.InteractiveObjectConfig);
             
             var canvas = Object.FindAnyObjectByType<Canvas>();
             
@@ -110,7 +110,7 @@ namespace Scripts.GlobalStateMachine
             var bugLogic = new BugLogic(progressDataAdapter);
             var gameDevProgress = new GameDevProgress(progressDataAdapter); //надо диспозить
             var taskLibrary = new TaskLibrary(progressDataAdapter, bugLogic, localEvents);
-            var sprintSystem = new SprintSystem(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter, perkService, gameDevProgress);
+            var sprintSystem = new SprintSystemOLD(taskLibrary, canvas, _gameData, hud.SprintView, uiFactory, localEvents, interactiveObjectRegister, progressDataAdapter, perkService, gameDevProgress);
             var gameDevProgressPanelLogic = new GameDevProgressPanelLogic(Object.FindAnyObjectByType<GameDevProgressPanel>(FindObjectsInactive.Include), gameDevProgress, taskLibrary, localEvents);
 
             var fader = new FaderLogic(localEvents);

@@ -9,6 +9,8 @@ namespace _root.Planning
     {
         [SerializeField] Button _button;
         [SerializeField] Image _background;
+        [SerializeField] Image _completeMark;
+        [SerializeField] Image _currentMark;
         [SerializeField] TextMeshProUGUI _text;
         private NodeType _nodeType;
         private LevelNode _levelNodeData;
@@ -23,6 +25,9 @@ namespace _root.Planning
 
             _nodeType = nodeData.Type;
             UpdateVisual(nodeData);
+            
+            _completeMark.gameObject.SetActive(false);
+            
             _button.onClick.AddListener(OnClick);
         }
 
@@ -30,24 +35,32 @@ namespace _root.Planning
         {
             _levelNodeController.OnNodeClicked(this);
         }
-
-        public void SetInteractable(bool isInteractable)
+        
+        public void SetState(NodeViewState state)
         {
-            _button.interactable = isInteractable;
-            
-            if (isInteractable)
+            switch (state)
             {
-                _background.DOFade(1f, 0);
-            }
-            else
-            {
-                _background.DOFade(0.5f, 0);
-            }
-        }
+                case NodeViewState.Locked:
+                    _button.interactable = false;
+                    //_background.DOFade(0.5f, 0f);
+                    break;
 
-        public void SetDone(bool isDone)
-        {
-            _button.interactable = !isDone;
+                case NodeViewState.Available:
+                    _button.interactable = true;
+                    _background.DOFade(1f, 0f);
+                    break;
+
+                case NodeViewState.Current:
+                    _button.interactable = false;
+                    _background.DOFade(1f, 0f);
+                    break;
+
+                case NodeViewState.Completed:
+                    _button.interactable = false;
+                    _completeMark.gameObject.SetActive(true);
+                    _background.DOFade(1f, 0f);
+                    break;
+            }
         }
 
         public void SetCurrent(bool value)
@@ -56,7 +69,7 @@ namespace _root.Planning
         
         private void UpdateVisual(LevelNode nodeData)
         {
-            _text.text = nodeData.Id.ToString();
+            _text.text = nodeData.Id;
             
             switch (nodeData.Type)
             {

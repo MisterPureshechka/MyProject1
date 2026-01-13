@@ -14,17 +14,17 @@ namespace Scripts.Rooms
         
         private readonly GameStateMachine _gameStateMachine;
         private LocalEvents _localEvents;
-        private readonly IRoomView _roomView;
+        private readonly IRoomViewOLD _iRoomViewOld;
         private readonly ProgressDataAdapter _progressDataAdapter;
 
         private List<CalendarEvent> _events;
         private GameProgress _gameProgress;
 
-        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents, IRoomView roomView, ProgressDataAdapter progressDataAdapter, GameProgress gameProgress)
+        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents, IRoomViewOLD iRoomViewOld, ProgressDataAdapter progressDataAdapter, GameProgress gameProgress)
         {
             _gameStateMachine = gameStateMachine;
             _localEvents = localEvents;
-            _roomView = roomView;
+            _iRoomViewOld = iRoomViewOld;
             _progressDataAdapter = progressDataAdapter;
             _gameProgress = gameProgress;
 
@@ -73,7 +73,7 @@ namespace Scripts.Rooms
         public void CleanUp()
         {
             _localEvents.OnExitEventWhenExit -= TryExitRoom;
-            Object.Destroy(_roomView.Transform.gameObject);
+            Object.Destroy(_iRoomViewOld.Transform.gameObject);
         }
     }
 }

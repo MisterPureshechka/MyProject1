@@ -21,3 +21,4 @@ MonoBehaviour:
   <UpgradableConfig>k__BackingField: {fileID: 11400000, guid: 0342c0b0301b0438c97c48aa5da47cce, type: 2}
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: bf829846895644e9d973bbc6de7c7ae3, type: 2}
   <LevelMapConfig>k__BackingField: {fileID: 11400000, guid: 893a1363c86da47488e74e4f01baff04, type: 2}
+  <RoomItemDatabase>k__BackingField: {fileID: 11400000, guid: 59a0bdd34aede45c68669f9a2d43acdf, type: 2}

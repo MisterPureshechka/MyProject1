@@ -125,3 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 7269123143591211289}
+  _inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.29803923}
+  _completedColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+  _availableColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}

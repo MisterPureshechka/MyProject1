@@ -2,12 +2,21 @@ using System;
 using System.Collections.Generic;
 using Scripts.Meta;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scripts.Progress
 {
     public class ProgressDataAdapter
     {
         private readonly ProgressData _progressData;
+        
+        private const string RoadMapProgressKey = "roadmapProgress"; 
+
+        [Serializable]                  
+        private class RoadMapProgress   
+        {                               
+            public List<string> СompletedNodeIds = new List<string>(); 
+        }    
 
         public Action OnStatUpdated { get; set; }
 
@@ -95,5 +104,60 @@ namespace Scripts.Progress
         }
 
         public ProgressData GetProgressData() => _progressData;
+        
+        private RoadMapProgress LoadRoadMapProgress()
+        {
+            // читаем из PlayerPrefs
+            string json = PlayerPrefs.GetString(RoadMapProgressKey, null);
+
+            if (string.IsNullOrEmpty(json))
+                return new RoadMapProgress();
+
+            try
+            {
+                var data = JsonUtility.FromJson<RoadMapProgress>(json);
+                return data ?? new RoadMapProgress();
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[ProgressDataAdapter] Failed to parse roadmap progress json: {e.Message}");
+                return new RoadMapProgress();
+            }
+        }
+
+        private void SaveRoadMapProgress(RoadMapProgress progress)
+        {
+            string json = JsonUtility.ToJson(progress);
+            PlayerPrefs.SetString(RoadMapProgressKey, json);
+            PlayerPrefs.Save();
+        }
+
+        public bool IsRoadMapNodeCompleted(string nodeId)
+        {
+            if (string.IsNullOrEmpty(nodeId))
+                return false;
+
+            var progress = LoadRoadMapProgress();
+            return progress.СompletedNodeIds.Contains(nodeId);
+        }
+
+        public void MarkRoadMapNodeCompleted(string nodeId)
+        {
+            if (string.IsNullOrEmpty(nodeId))
+                return;
+
+            var progress = LoadRoadMapProgress();
+
+            if (!progress.СompletedNodeIds.Contains(nodeId))
+            {
+                progress.СompletedNodeIds.Add(nodeId);
+                SaveRoadMapProgress(progress);
+            }
+        }
+
+        public void ClearRoadMapProgress()
+        {
+            SaveRoadMapProgress(new RoadMapProgress());
+        }
     }
 }

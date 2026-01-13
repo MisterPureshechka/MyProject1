@@ -1,10 +1,12 @@
 using System;
 using _root;
 using _root.Notification;
+using _root.Scripts.Rooms.RoomItems;
 using Core;
 using Scripts.Catalogues;
 using Scripts.ClickLogic;
 using Scripts.Data;
+using Scripts.EmployeeLogic;
 using Scripts.Job;
 using Scripts.Messenger;
 using Scripts.Meta;
@@ -287,5 +289,17 @@ namespace Scripts.GlobalStateMachine
 
         public Action OnBugCreated { get; set; }
         public void TriggerBugCreated() => OnBugCreated?.Invoke();
+        
+        public Action OnApplyProgressToSprint { get; set; }
+        public void TriggerApplyProgressToSprint() => OnApplyProgressToSprint?.Invoke();
+        
+        public Action<RoomItem> OnRoomItemClicked { get; set; }
+        public void TriggerRoomItemClicked(RoomItem roomItem) => OnRoomItemClicked?.Invoke(roomItem);
+        
+        public Action<Employee> OnEmployeeClicked { get; set; }
+        public void TriggerEmployeeClicked(Employee employee) => OnEmployeeClicked?.Invoke(employee);
+        
+        public Action<Employee, RoomItem> OnEmployeeWalkToItem { get; set; }
+        public void TriggerEmployeeWalkToItem(Employee employee, RoomItem roomItem) => OnEmployeeWalkToItem?.Invoke(employee, roomItem);
     }
 }

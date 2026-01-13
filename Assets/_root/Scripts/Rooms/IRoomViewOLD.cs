@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Scripts.Rooms
 {
-    public interface IRoomView : ISortedLayer
+    public interface IRoomViewOLD : ISortedLayer
     {
         Transform Transform { get; }
         List<IInteractiveObject> InteractiveObjects { get; }

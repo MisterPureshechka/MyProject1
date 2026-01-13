@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bae0698c6f74fdba9923ac4c4eaee65, type: 3}
   m_Name: StartNode
   m_EditorClassIdentifier: 
-  Id: StartNode
-  Type: 0
+  Id: Start
+  Type: 8
   NextNodeIds:
   - Work_1

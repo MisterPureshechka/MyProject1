@@ -1,5 +1,6 @@
 using Scripts.Data;
 using Scripts.EcoSystem;
+using Scripts.Rooms.SlotLogic;
 using UnityEngine;
 
 namespace Scripts.Rooms
@@ -13,14 +14,19 @@ namespace Scripts.Rooms
             _prefabDataBase = prefabDataBase;
         }
 
-        public HomeView CreateRoom()
+        public HomeViewOld CreateRoom()
         {
-            return Object.Instantiate(_prefabDataBase.Home).GetComponent<HomeView>();
+            return Object.Instantiate(_prefabDataBase.Home).GetComponent<HomeViewOld>();
         }
 
         public SkyView CreateSky()
         {
             return Object.Instantiate(_prefabDataBase.Sky).GetComponent<SkyView>();
+        }
+
+        public RoomView CreateRoomView()
+        {
+            return Object.Instantiate(_prefabDataBase.RoomPrefab).GetComponent<RoomView>();
         }
     }
 }

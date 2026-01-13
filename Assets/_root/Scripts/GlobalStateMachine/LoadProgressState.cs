@@ -13,7 +13,7 @@ namespace Scripts.GlobalStateMachine
         public override void Enter()
         {
             LoadProgressOrInitNew();
-            _gameStateMachine.EnterState<RoadMapState>();
+            _gameStateMachine.EnterState<WorkState>();
         }
 
         public override void Update(float deltaTime) { }

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Scripts.EcoSystem
 {
-    public class CameraLogic : ICleanUp, IExecute
+    public class CameraLogicOLD : ICleanUp, IExecute
     {
         private Camera _camera;
         private readonly LocalEvents _localEvents;
@@ -30,7 +30,7 @@ namespace Scripts.EcoSystem
             Toilet
         }
 
-        public CameraLogic(Camera camera, LocalEvents localEvents, InteractiveObjectConfig interactiveObjectConfig)
+        public CameraLogicOLD(Camera camera, LocalEvents localEvents, InteractiveObjectConfig interactiveObjectConfig)
         {
             _camera = camera;
             _localEvents = localEvents;

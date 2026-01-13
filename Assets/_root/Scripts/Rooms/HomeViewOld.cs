@@ -7,7 +7,7 @@ using SpriteRenderer = UnityEngine.SpriteRenderer;
 
 namespace Scripts.Rooms
 {
-    public class HomeView : MonoBehaviour, IRoomView
+    public class HomeViewOld : MonoBehaviour, IRoomViewOLD
     {
         [SerializeField] private Transform _initialTransform;
         [SerializeField] private Collider2D _roomCollider;

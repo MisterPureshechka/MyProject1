@@ -15,7 +15,7 @@ namespace Scripts.Rooms
         private float _lastUpdateTime;
         private const float UpdateInterval = 0.1f;
         
-        public SideRoomChecker(IRoomView roomView, LocalEvents localEvents)
+        public SideRoomChecker(IRoomViewOLD iRoomViewOld, LocalEvents localEvents)
         {
             _localEvents = localEvents;
             
