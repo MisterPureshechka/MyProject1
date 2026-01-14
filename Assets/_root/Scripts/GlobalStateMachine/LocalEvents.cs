@@ -290,8 +290,8 @@ namespace Scripts.GlobalStateMachine
         public Action OnBugCreated { get; set; }
         public void TriggerBugCreated() => OnBugCreated?.Invoke();
         
-        public Action OnApplyProgressToSprint { get; set; }
-        public void TriggerApplyProgressToSprint() => OnApplyProgressToSprint?.Invoke();
+        public Action<Employee> OnApplyProgressToSprint { get; set; }
+        public void TriggerApplyProgressToSprint(Employee employee) => OnApplyProgressToSprint?.Invoke(employee);
         
         public Action<RoomItem> OnRoomItemClicked { get; set; }
         public void TriggerRoomItemClicked(RoomItem roomItem) => OnRoomItemClicked?.Invoke(roomItem);

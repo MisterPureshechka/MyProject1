@@ -39,7 +39,7 @@ namespace Scripts.GlobalStateMachine
 
             var sprintUi = Object.FindAnyObjectByType<SprintUI>(FindObjectsInactive.Include);
             var sprintView = uiFactory.GetSprintView(canvas.transform);
-            var sprintSystem = new SprintSystem(sprintView, sprintUi, localEvents);
+            var sprintSystem = new SprintSystem(sprintView, sprintUi, localEvents, progressDataAdapter, uiFactory);
             
             var employeeFactory = new EmployeeFactory(_gameData.PrefabDataBase.employeeItemPrefab);
             var company = new Company(employeeFactory, sprintSystem);

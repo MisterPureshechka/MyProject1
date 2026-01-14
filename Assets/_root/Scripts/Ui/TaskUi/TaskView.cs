@@ -366,6 +366,7 @@ namespace Scripts.Ui.TaskUi
                     .OnComplete(() =>
                     {
                         _spriteImage.transform.localScale = Vector3.one;
+                        _spriteImage.transform.localRotation = Quaternion.identity;
                     });
             }));
             

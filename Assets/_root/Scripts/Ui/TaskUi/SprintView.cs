@@ -48,7 +48,6 @@ namespace Scripts.Ui.TaskUi
                 }
                 else
                 {
-                    // живой кейс — можно подсветить баг-состояние
                     taskView.SetBugVisual(devTask.IsBug);
                 }
 

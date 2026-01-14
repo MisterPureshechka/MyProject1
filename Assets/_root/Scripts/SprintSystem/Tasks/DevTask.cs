@@ -11,7 +11,6 @@ namespace Scripts.Tasks
     public class DevTask : IDevTask
     {
         private readonly ProgressDataAdapter _progressDataAdapter;
-        private readonly BugLogic _bugLogic;
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         
@@ -25,8 +24,32 @@ namespace Scripts.Tasks
         public bool HasChanceForBug;
         public int Result { get; private set; }
         public event Action<bool> BugStateChanged;
-        public bool IsBug { get; private set; }       
-        
+        public bool IsBug { get; private set; }
+        private bool _started;
+
+        public void ApplyWork(float amount)
+        {
+            if (IsCompleted) return;
+
+            if (!_started)
+            {
+                _started = true;
+                OnProgressChangedFirstTime?.Invoke(this);
+            }
+
+            var old = Progress;
+            Progress = Mathf.Max(0f, Progress - amount);
+
+            if (!Mathf.Approximately(old, Progress))
+                OnProgressChanged?.Invoke(this, amount, 1); 
+
+            if (Progress <= 0f && !IsCompleted)
+            {
+                IsCompleted = true;
+                OnTaskCompleted?.Invoke(this);
+            }
+        }
+
         public float ProgressToEmitBug;                      
 
         public DevTaskType Type { get; set; }
@@ -38,10 +61,9 @@ namespace Scripts.Tasks
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
-        public DevTask(ProgressDataAdapter progressDataAdapter, BugLogic bugLogic, DevTaskType taskType, string title, float progress)
+        public DevTask(ProgressDataAdapter progressDataAdapter, DevTaskType taskType, string title, float progress)
         {
             _progressDataAdapter = progressDataAdapter;
-            _bugLogic = bugLogic;
             Type = taskType;
             Title = title;
             Progress = progress;
@@ -51,7 +73,7 @@ namespace Scripts.Tasks
 
         public ITask Clone()
         {
-            return new DevTask(this._progressDataAdapter, this._bugLogic, this.Type, this.Title, this.Progress)
+            return new DevTask(this._progressDataAdapter, this.Type, this.Title, this.Progress)
             {
                 Id = this.Id  
             };

@@ -58,27 +58,17 @@ namespace Scripts.Tasks
                 _allDevTasks[type] = new List<IDevTask>();
             }
 
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, _bugLogic, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Programming, "Base Mechanics", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Programming, "Project Architecture", 100f));
-
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "Character Design", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "Environment Art", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "UI Assets", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "Character Design", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "Environment Art", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "UI Assets", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "Character Design", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "Environment Art", 100f));
-            _allDevTasks[DevTaskType.Art].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Art, "UI Assets", 100f));
-
-            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.GameDesign, "Core Mechanics", 100f));
-            _allDevTasks[DevTaskType.GameDesign].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.GameDesign, "Level Design", 100f));
-
-            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.SoundDesign, "Background Music", 100f));
-            _allDevTasks[DevTaskType.SoundDesign].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.SoundDesign, "SFX", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
             
-            _allDevTasks[DevTaskType.Marketing].Add(new DevTask(_progressDataAdapter, _bugLogic,DevTaskType.Marketing, "Blog", 100f));
+            
         }
 
         public Dictionary<DevTaskType, List<IDevTask>> GetAlLDevTasks()
@@ -88,16 +78,6 @@ namespace Scripts.Tasks
 
         private void LoadAllAvailableTasks()
         {
-            _allTasks.Add(new DevTask(_progressDataAdapter, _bugLogic, DevTaskType.Programming, "Saving System", 100f), true);
-            _allTasks.Add(new DevTask(_progressDataAdapter, _bugLogic, DevTaskType.Programming, "Base Mechanics", 100f), true);
-            _allTasks.Add(new DevTask(_progressDataAdapter, _bugLogic, DevTaskType.Programming, "Project Architecture", 100f), true);
-            
-            _allTasks.Add(new DevTask(_progressDataAdapter, _bugLogic, DevTaskType.Art, "CharacterDesign", 100f), true);
-            
-            _allTaskTypes.Add(DevTaskType.Programming, true);
-            _allTaskTypes.Add(DevTaskType.Art, true);
-            _allTaskTypes.Add(DevTaskType.GameDesign, true);
-            _allTaskTypes.Add(DevTaskType.SoundDesign, false);
         }
 
         private void LoadAllEatTasks()

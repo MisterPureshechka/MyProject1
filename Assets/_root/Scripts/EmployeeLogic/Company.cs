@@ -36,7 +36,7 @@ namespace Scripts.EmployeeLogic
 
         private void OnEmployeeWorkTick(Employee employee)
         {
-            _sprintSystem.ApplyProgressToSprint();
+            _sprintSystem.ApplyProgressToSprint(employee);
         }
 
         public void CleanUp()

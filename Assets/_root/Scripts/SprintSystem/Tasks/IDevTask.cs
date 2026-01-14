@@ -11,5 +11,7 @@ namespace Scripts.Tasks
 
         event Action<bool> BugStateChanged;
         bool IsBug { get; }
+
+        void ApplyWork(float progress);
     }
 }

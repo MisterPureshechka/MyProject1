@@ -22,9 +22,11 @@ namespace Scripts.Tasks
 
         public override bool TryAddTask(ITask task)
         {
-            if (task is not T typedTask || FreeSlots <= 0) 
-                return false;
-        
+            if (task is not T typedTask || FreeSlots <= 0)
+            {
+                return false; 
+            }
+               
             Tasks.Add(typedTask);
             return true;
         }

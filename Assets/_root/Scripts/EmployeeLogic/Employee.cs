@@ -13,8 +13,10 @@ namespace Scripts.EmployeeLogic
         private const float HungerDrainPerSecond = 0.5f;
         private const float MoodDrainPerSecond   = 0.7f;
         //Вынести в конфиг
-        private const float MinWorkInterval = 0.1f;  
+        private const float MinWorkInterval = 0.5f;  
         private const float MaxWorkInterval = 2.5f;  
+        
+        private float _curvePower = 2.0f;
         
         private float _workTimer;
         
@@ -38,7 +40,6 @@ namespace Scripts.EmployeeLogic
         private bool _isWorking;
         private bool _isInteracting;
         public bool IsBusy => _isInteracting;
-        public float WorkSpeed => (Energy + Hunger + Mood) / 10.0f; 
 
         public Employee(string id, string name)
         {
@@ -67,11 +68,15 @@ namespace Scripts.EmployeeLogic
                 onWorkTick?.Invoke(this);
             }
         }
-        
+
         private float CalculateWorkInterval()
         {
-            float normalized = Mathf.Clamp01(WorkSpeed / 100f);
-            return Mathf.Lerp(MaxWorkInterval, MinWorkInterval, normalized);
+            float normalized = Mathf.Clamp01((Energy + Hunger + Mood) / (3f * MaxValue));
+
+            // делаем кривую: низкие значения становятся ещё ниже
+            float curved = Mathf.Pow(normalized, _curvePower);
+
+            return Mathf.Lerp(MaxWorkInterval, MinWorkInterval, curved);
         }
         
         private void ConsumeStats(float deltaTime)
