@@ -7,7 +7,6 @@ using Scripts.Catalogues;
 using Scripts.ClickLogic;
 using Scripts.Data;
 using Scripts.EmployeeLogic;
-using Scripts.Job;
 using Scripts.Messenger;
 using Scripts.Meta;
 using Scripts.Passion;
@@ -28,6 +27,9 @@ namespace Scripts.GlobalStateMachine
         {
             OnClickStateChange?.Invoke(state);
         }
+        
+        public event Action<SprintType> OnSprintCompleted;
+        public void TriggerSprintCompleted(SprintType type) => OnSprintCompleted?.Invoke(type);
 
         public Action OnOpenPanel { get; set; }
         public void TriggerOpenPanel() => OnOpenPanel?.Invoke();
@@ -202,8 +204,7 @@ namespace Scripts.GlobalStateMachine
         public void TriggerCalendarEventCreated(CalendarEvent calendarEvent) => OnCalendarEventCreated?.Invoke(calendarEvent);
         public  Action<Notification> OnNewNotificationCreated { get; set; }
         public void TriggerNewNotificationCreated(Notification notification) => OnNewNotificationCreated?.Invoke(notification);
-        public Action<IDevJob> OnNewJobFound { get; set; }
-        public void TriggerNewJobFound(IDevJob job) => OnNewJobFound?.Invoke(job);
+       
         public Action<IMessageSender> OnNewMessageAddToMessenger { get; set; }
         public void TriggerNewMessageAddToMassanger(IMessageSender sender) => OnNewMessageAddToMessenger?.Invoke(sender);
         public Action<IScheduleMessageSender> OnScheduleMessageAdded { get; set; }
@@ -222,17 +223,9 @@ namespace Scripts.GlobalStateMachine
         public Action<Transaction> OnNewTransaction { get; set; }
         public void TriggerNewTransaction(Transaction transaction) => OnNewTransaction?.Invoke(transaction);
 
-        public Action<ExitEvent> OnExitEvent { get; set; }
-        public void TriggerExitEvent(ExitEvent jobExitEvent) => OnExitEvent?.Invoke(jobExitEvent);
-
-        public Action<ExitEvent> OnExitEventWhenExit { get; set; }
-        public void TriggerExitEventWhenExit(ExitEvent exitEvent) => OnExitEventWhenExit?.Invoke(exitEvent);
 
         public Action OnNewHour { get; set; }
         public void TriggerNewHour() => OnNewHour?.Invoke();
-        
-        public Action<ExitEvent> OnExitEventCreated { get; set; }
-        public void TriggerExitEventCreated(ExitEvent exitEvent) => OnExitEventCreated?.Invoke(exitEvent);
 
         public Action OnHeroGoToBed { get; set; }
         public void TriggerHeroGoToBed() => OnHeroGoToBed?.Invoke();

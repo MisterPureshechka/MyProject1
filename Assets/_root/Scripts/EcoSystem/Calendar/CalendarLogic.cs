@@ -43,11 +43,6 @@ namespace Scripts.EcoSystem.Calendar
 
         private void LoadOrCreateNewDay()
         {
-            var metadata = _progressDataAdapter.GetProgressData().Metadata;
-            
-            _currentDate.Day = (int)metadata.GetValue(Consts.CurrentDayKey);
-            _currentDate.Month = (int)metadata.GetValue(Consts.CurrentMonthKey);
-            _currentDate.Year = (int)metadata.GetValue(Consts.CurrentYearKey);
 
             if (_currentDate.Day == 0)
             {
@@ -87,20 +82,7 @@ namespace Scripts.EcoSystem.Calendar
 
         private void SaveDate(GameDate date)
         {
-            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue(Consts.CurrentDayKey, out var dayData))
-            {
-                dayData.Value = date.Day;
-            }
-
-            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue(Consts.CurrentMonthKey, out var monthData))
-            {
-                monthData.Value = date.Month;
-            }
             
-            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue(Consts.CurrentYearKey, out var yearData))
-            {
-                yearData.Value = date.Year;
-            }
         }
 
         public bool IsWeekend()

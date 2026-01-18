@@ -20,8 +20,8 @@ namespace Scripts.GlobalStateMachine
 
         public override void Enter()
         {
-            var progressStat = _gameProgress.LoadProgress();
-            var progressDataAdapter = new ProgressDataAdapter(progressStat);
+            var progress = _gameProgress.LoadProgress();
+            var progressDataAdapter = new ProgressDataAdapter(progress);
             var localEvents = new LocalEvents();
             var camera = Camera.main;
             var homeFactory = new HomeFactory(_gameData.PrefabDataBase);
@@ -35,21 +35,17 @@ namespace Scripts.GlobalStateMachine
             var employeeViewFactory = new EmployeeViewFactory(_gameData.PrefabDataBase.employeeItemPrefab);
             var roomVisuals = new RoomVisuals(roomView, roomLogic, roomItemViewFactory, employeeViewFactory, localEvents);
             var cameraLogic = new CameraLogic(camera, roomVisuals.GetAverageSlotPosition());
-            var roomFiller = new RoomSlotFiller();
+            var roomFiller = new RoomSlotFiller(roomLogic, _gameData.RoomItemDatabase, progress);
 
             var sprintUi = Object.FindAnyObjectByType<SprintUI>(FindObjectsInactive.Include);
             var sprintView = uiFactory.GetSprintView(canvas.transform);
             var sprintSystem = new SprintSystem(sprintView, sprintUi, localEvents, progressDataAdapter, uiFactory);
             
             var employeeFactory = new EmployeeFactory(_gameData.PrefabDataBase.employeeItemPrefab);
-            var company = new Company(employeeFactory, sprintSystem);
+            var company = new Company(employeeFactory, sprintSystem, roomLogic, _gameProgress);
             
             var employeeStats = uiFactory.GetEmployeeStats(canvas.transform);
             employeeStats.Init(company);
-            
-            roomFiller.FillDemoLayout(roomLogic, _gameData.RoomItemDatabase);
-            roomFiller.AddEmployeeToSlot(roomLogic, employeeFactory.CreateEmployee("Mike"), 3);
-            roomFiller.AddEmployeeToSlot(roomLogic, employeeFactory.CreateEmployee("Andrew"), 4);
 
             var slotSelector = new SlotSelector(localEvents);
             var employeeMovement = new EmployeeMovement(localEvents);
@@ -62,6 +58,7 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(slotSelector);
             _controllers.Add(employeeMovement);
             _controllers.Add(company);
+            _controllers.Add(roomFiller);
         }
 
         public override void Update(float deltaTime)

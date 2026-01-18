@@ -84,7 +84,7 @@ namespace Scripts.Tasks
             if (Time.time - _lastUpdateTime < interval) 
                 return;
             
-            float delta = _progressDataAdapter.GetProgressData().Metadata.GetValue(Type.ToString());
+            float delta = 0;
             
             float oldProgress = Progress;
             Progress = Math.Max(0, Progress - delta);

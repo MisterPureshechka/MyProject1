@@ -24,14 +24,6 @@ namespace _root.Scripts.Ui.Stats
         
         private void InitPanel()
         {
-            var skillStat = new Dictionary<string, Metadata>();
-            foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
-            {
-                if (kvp.Value.MetaType == MetaType.Knowledge)
-                    skillStat[kvp.Key] = kvp.Value; 
-            }
-
-            _skillPanel.InitPanel(skillStat, _progressDataAdapter);
         }
 
         private void UpdateStats()

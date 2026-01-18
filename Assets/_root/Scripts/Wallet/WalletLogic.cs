@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Core;
 using Scripts.GlobalStateMachine;
-using Scripts.Job;
 using Scripts.Progress;
 using Scripts.Rooms;
 using Scripts.Utils;
@@ -45,8 +44,6 @@ namespace Scripts.Wallet
             
             _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
             _localEvents.OnWalletUpdate += UpdateWallet;
-            _localEvents.OnNewJobFound += AddOrSwitchIncome;
-            _localEvents.OnWalletAmountIncrease += IncreaseWalletAmount;
             _localEvents.OnPayDay += DecreaseWalletAmount;
             _localEvents.OnNewTransaction += ApplyTransaction;
             _localEvents.OnPurchaseUpgradeRequested += OnPurchaseUpgradeRequested;
@@ -64,37 +61,6 @@ namespace Scripts.Wallet
             
             _progressDataAdapter.TryUpdateValue(WalletKey, -value);
             
-            UpdateWallet();
-        }
-
-        private void IncreaseWalletAmount(int amount)
-        {
-            _walletAmount += amount;
-            
-            _progressDataAdapter.TryUpdateValue(WalletKey, amount);
-            
-            Debug.Log($"[Salary] +{amount}. Баланс = " +
-                      _progressDataAdapter.GetProgressData().Metadata.GetValue(WalletKey));
-
-            UpdateWallet();
-        }
-        
-        private void AddOrSwitchIncome(IDevJob job)
-        {
-            if (_currentJobIncome != null)
-                RemoveIncomeTransaction(_currentJobIncome);
-
-            var transaction = new Transaction
-            {
-                Amount = job.Salary,
-                Description = job.Description,
-                Name = job.JobTitle,
-                DaysForTransaction = job.SalaryDays
-            };
-
-            _currentJobIncome = transaction;
-            ApplyTransaction(transaction);
-
             UpdateWallet();
         }
         
@@ -147,8 +113,6 @@ namespace Scripts.Wallet
         {
             _localEvents.OnWalletUpdate -= UpdateWallet;
             _walletButtonView.Button.onClick.RemoveAllListeners();
-            _localEvents.OnNewJobFound -= AddOrSwitchIncome;
-            _localEvents.OnWalletAmountIncrease -= IncreaseWalletAmount;
             _localEvents.OnPayDay -= DecreaseWalletAmount;
             _localEvents.OnNewTransaction -= ApplyTransaction;
             _localEvents.OnPurchaseUpgradeRequested -= OnPurchaseUpgradeRequested;

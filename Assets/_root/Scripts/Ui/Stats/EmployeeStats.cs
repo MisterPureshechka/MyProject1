@@ -17,6 +17,18 @@ namespace _root.Scripts.Ui.Stats
         {
             _company = company;
             _company.OnEmployeeAdded += AddStat;
+            Debug.LogError($"init");
+            LoadStats();
+        }
+
+        private void LoadStats()
+        {
+            Debug.LogError($"Has to work here" + _company.Employees.Count + "- count");
+            foreach (var employee in _company.Employees)
+            {
+                Debug.LogError($"{employee.Name} added");
+                AddStat(employee);
+            }
         }
 
         private void AddStat(Employee employee)
@@ -28,6 +40,7 @@ namespace _root.Scripts.Ui.Stats
         
         private void OnDestroy()
         {
+            _company.OnEmployeeAdded -= AddStat;
             _stats?.Clear();
         }
     }

@@ -151,13 +151,13 @@ namespace Scripts.Sleep
 
         private void SaveTime(int hour, int minute)
         {
-            var meta = _progressDataAdapter.GetProgressData().Metadata;
-
-            if (meta.TryGetValue(Consts.GameHourKey, out var hourData))
-                hourData.Value = hour;
-
-            if (meta.TryGetValue(Consts.GameMinuteKey, out var minuteData))
-                minuteData.Value = minute;
+            // var meta = _progressDataAdapter.GetProgressData().Metadata;
+            //
+            // if (meta.TryGetValue(Consts.GameHourKey, out var hourData))
+            //     hourData.Value = hour;
+            //
+            // if (meta.TryGetValue(Consts.GameMinuteKey, out var minuteData))
+            //     minuteData.Value = minute;
         }
 
 

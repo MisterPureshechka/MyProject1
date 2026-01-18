@@ -25,11 +25,11 @@ namespace _root.Scripts.Ui.Stats
         private void InitPanel()
         {
             var healthStats = new Dictionary<string, Metadata>();
-            foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
-            {
-                if (kvp.Value.MetaType == MetaType.Health)
-                    healthStats[kvp.Key] = kvp.Value; 
-            }
+            // foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
+            // {
+            //     if (kvp.Value.MetaType == MetaType.Health)
+            //         healthStats[kvp.Key] = kvp.Value; 
+            // }
 
             _healthPanel.InitPanel(healthStats, _progressDataAdapter);
         }

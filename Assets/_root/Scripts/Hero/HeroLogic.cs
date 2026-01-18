@@ -4,7 +4,6 @@ using DG.Tweening;
 using Scripts.Animator;
 using Scripts.Data;
 using Scripts.GlobalStateMachine;
-using Scripts.Job;
 using Scripts.Meta;
 using Scripts.Progress;
 using Scripts.Rooms;
@@ -136,7 +135,6 @@ namespace Scripts.Hero
             _localEvents.OnSprintComplete += SprintCompleteListener;
             _localEvents.OnHeroGetRootIO += ChangeStateBySprintType;
             _localEvents.OnWalkToIO += WalkToIO;
-            _localEvents.OnExitEvent += WalkToExit;
             _localEvents.OnHeroGoToBed += WalkToBed;
             _localEvents.OnTakeCoffee += TakeCoffee;
             
@@ -182,29 +180,29 @@ namespace Scripts.Hero
 
         private Vector3 LoadInitPos()
         {
-            var meta = _progressData.GetProgressData().Metadata;
-            meta.TryGetValue(Consts.InitialPosX, out var data);
-
-            if (data != null)
-            {
-                return NormalizeVector(new Vector3(data.Value, 0, 0));
-            }
-
-            Debug.LogError("InitialPos is null!");
-            
+            // var meta = _progressData.GetProgressData().Metadata;
+            // meta.TryGetValue(Consts.InitialPosX, out var data);
+            //
+            // if (data != null)
+            // {
+            //     return NormalizeVector(new Vector3(data.Value, 0, 0));
+            // }
+            //
+            // Debug.LogError("InitialPos is null!");
+            //
             return NormalizeVector(_interactiveObjectRegister.GetIOByType(InteractiveObjectType.Door).Position);
         }
 
         public void SaveInitPos(InteractiveObjectType iOType = InteractiveObjectType.None)
         {
-            var meta = _progressData.GetProgressData().Metadata;
-            
-            meta.TryGetValue(Consts.InitialPosX, out var data);
-
-            if (data != null)
-            {
-                data.Value = _interactiveObjectRegister.GetIOByType(iOType).Position.x;
-            }
+            // var meta = _progressData.GetProgressData().Metadata;
+            //
+            // meta.TryGetValue(Consts.InitialPosX, out var data);
+            //
+            // if (data != null)
+            // {
+            //     data.Value = _interactiveObjectRegister.GetIOByType(iOType).Position.x;
+            // }
         }
 
         private void BuildStateMap()
@@ -262,17 +260,17 @@ namespace Scripts.Hero
 
         private void SetMeta(string key, float value)
         {
-            var meta = _progressData.GetProgressData().Metadata;
-            if (meta.TryGetValue(key, out var data))
-                data.Value = value;
-            else
-                meta.Add(key, new Meta.Metadata
-                {
-                    MetaType = MetaType.System,
-                    Value = value, MaxValue = 100,
-                    DisplayName = key, Tooltip = "",
-                    ProgressDelta = 0
-                });
+            // var meta = _progressData.GetProgressData().Metadata;
+            // if (meta.TryGetValue(key, out var data))
+            //     data.Value = value;
+            // else
+            //     meta.Add(key, new Meta.Metadata
+            //     {
+            //         MetaType = MetaType.System,
+            //         Value = value, MaxValue = 100,
+            //         DisplayName = key, Tooltip = "",
+            //         ProgressDelta = 0
+            //     });
         }
 
         public void SaveHeroState(HeroBaseState state, int? payload = null)
@@ -285,28 +283,23 @@ namespace Scripts.Hero
 
         private HeroBaseState LoadLastState()
         {
-            BuildStateMap();
-
-            var meta = _progressData.GetProgressData().Metadata;
-
-            if (meta.TryGetValue(Consts.HeroStateKey, out var stateData))
-            {
-                var id = Mathf.RoundToInt(stateData.Value);
-                if (_stateFromId != null && _stateFromId.TryGetValue((HeroStateId)id, out var state))
-                {
-                    return state;
-                }
-            }
+            // BuildStateMap();
+            //
+            // var meta = _progressData.GetProgressData().Metadata;
+            //
+            // if (meta.TryGetValue(Consts.HeroStateKey, out var stateData))
+            // {
+            //     var id = Mathf.RoundToInt(stateData.Value);
+            //     if (_stateFromId != null && _stateFromId.TryGetValue((HeroStateId)id, out var state))
+            //     {
+            //         return state;
+            //     }
+            // }
 
             return IdleState;
         }
 
-        private void WalkToExit(ExitEvent exitEvent)
-        {
-            ChangeState(WalkToExitState);
-            WalkToExitState.SetEventType(exitEvent);
-            _localEvents.TriggerHeroWalkToIO();
-        }
+        
 
         private void WalkToBed()
         {

@@ -25,6 +25,8 @@ namespace Scripts.Tasks
         private ProgressDataAdapter _progressDataAdapter;
         private ISprint _currentSprint;
         private UiFactory _uiFactory;
+        
+        private bool _sprintCompleted;
 
         public SprintSystem(SprintView sprintView, SprintUI sprintUI, LocalEvents localEvents, ProgressDataAdapter progressDataAdapter, UiFactory uiFactory)
         {
@@ -65,54 +67,62 @@ namespace Scripts.Tasks
         
         public void ApplyProgressToSprint(Employee employee)
         {
-            ApplyProgressToCurrentTask(employee, 5.0f);
+            ApplyProgressToCurrentTask(employee);
         }
 
-        private void ApplyProgressToCurrentTask(Employee employee, float workDelta = 1.0f)
+        private void ApplyProgressToCurrentTask(Employee employee)
         {
             if (employee == null) return;
-            if (employee.IsBusy) return;                
+            if (employee.IsBusy) return;
             if (employee._currentState != EmployeeState.Work) return;
+            if (_sprintCompleted) return;
 
-            // 1) получить текущую задачу сотрудника
             _assigned.TryGetValue(employee.Id, out var task);
 
-            // 2) если задачи нет — назначить новую из очереди
             if (task == null || task.IsCompleted || task.Progress <= 0f)
             {
                 task = TryAssignNextTask(employee);
                 if (task == null)
                 {
-                    // нечего делать — сотрудник ждёт
                     employee.PauseWork();
-                    // при желании: TriggerEmployeeIdle(employee);
+                    TryCompleteSprint();
                     return;
                 }
             }
 
-            // 3) применить прогресс (фиксированное списание)
-            // РЕКОМЕНДАЦИЯ: иметь у DevTask метод ApplyWork(amount), который уменьшает Progress.
-            task.ApplyWork(workDelta);
+            task.ApplyWork(employee.GetSkill(task.Type));
 
-        // 4) если задача завершилась — освободить сотрудника
-        if (task.IsCompleted || task.Progress <= 0f)
-        {
-            _assigned.Remove(employee.Id);
-
-                // тут твои события "таск завершён"
-                // _localEvents.TriggerDevTaskComplete(task.Type);
-                // _gameDevProgress.CompleteTask(...)
-
-                // 5) опционально: сразу выдать следующую задачу (если хочешь, чтобы он не простаивал до следующего тика)
-            var next = TryAssignNextTask(employee);
-            if (next == null)
+            if (task.IsCompleted || task.Progress <= 0f)
             {
+                _assigned.Remove(employee.Id);
+
+                var next = TryAssignNextTask(employee);
+                if (next == null)
                     employee.PauseWork();
+
+                TryCompleteSprint();
+            }
+        }
+
+        
+        private void TryCompleteSprint()
+        {
+            if (_sprintCompleted)
+                return;
+
+            if (_pendingTasks.Count > 0) return;
+            if (_assigned.Count > 0) return;
+
+            var all = _currentSprint.GetTasks();
+            for (int i = 0; i < all.Count; i++)
+            {
+                if (!all[i].IsCompleted)
+                    return;
             }
 
-                // 6) если задач нигде не осталось — завершить “спринт/пул”
-                CheckAllWorkCompleted();
-            }
+            _sprintCompleted = true;
+
+            _localEvents.TriggerSprintCompleted(SprintType.Dev);
         }
 
         private IDevTask TryAssignNextTask(Employee employee)
@@ -120,16 +130,11 @@ namespace Scripts.Tasks
             if (_pendingTasks.Count == 0)
                 return null;
 
-            // Берём с конца (как у тебя раньше) или с начала — как удобнее
             var next = _pendingTasks[^1];
             _pendingTasks.RemoveAt(_pendingTasks.Count - 1);
 
             _assigned[employee.Id] = next;
 
-            // если нужно — события/UI: задача стала InProgress у конкретного employee
-            // _localEvents.TriggerTaskAssigned(employee.Id, next);
-
-            // убедиться, что сотрудник в Work (если он был на паузе)
             employee.ResumeWork();
 
             return next;

@@ -33,24 +33,6 @@ namespace _root.RealEstate
 
         public void TryLoadApartment() 
         {
-            _flats = FlatLoader.LoadAll();
-            if (_flats == null || _flats.Count == 0)
-            {
-                Debug.LogWarning("[Rent] No flats found");
-                return;
-            }
-
-            int index = 0;
-            if (_progress.GetProgressData().Metadata.TryGetValue(CurrentFlatIndexKey, out var meta))
-            {
-                index = Mathf.Clamp((int)meta.Value, 0, _flats.Count - 1);
-            }
-            else
-            {
-                TrySaveCurrentFlatIndex(0);
-            }
-
-            SetCurrentFlatByIndex(index);
         }
 
         public void SetCurrentFlatByIndex(int index)
@@ -75,14 +57,6 @@ namespace _root.RealEstate
 
         private void TrySaveCurrentFlatIndex(int index)
         {
-            if (_progress.GetProgressData().Metadata.TryGetValue(CurrentFlatIndexKey, out var meta))
-            {
-                meta.Value = index; 
-            }
-            else
-            {
-                Debug.LogWarning($"[Rent] Meta key '{CurrentFlatIndexKey}' not found. Add it to meta_config.json");
-            }
         }
 
         private void CheckDayToPay()

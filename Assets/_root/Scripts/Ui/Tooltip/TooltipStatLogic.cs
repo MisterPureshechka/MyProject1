@@ -40,29 +40,29 @@ namespace Scripts.Ui.TaskUi
         
         public void ShowToolTip(MetaType metaType)
         {
-            if (_isTooltipVisible && _currentMetaType == metaType)
-                return;
-
-            HideToolTip();
-
-            _currentMetaType = metaType;
-            _isTooltipVisible = true;
-            _tooltipView.gameObject.SetActive(true);
-
-            foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
-            {
-                if (kvp.Value.MetaType != _currentMetaType) continue;
-
-                var statView = Object.Instantiate(_prefabData.TooltipItem, _tooltipView.StatHolder)
-                    .GetComponent<TooltipStatItem>();
-                statView.SetInfo(kvp.Key, kvp.Value.Value);
-                _activeItems.Add(statView);
-            }
-
-            Canvas.ForceUpdateCanvases();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_tooltipView.StatHolder as RectTransform);
-
-            UpdateTooltipPos();
+            // if (_isTooltipVisible && _currentMetaType == metaType)
+            //     return;
+            //
+            // HideToolTip();
+            //
+            // _currentMetaType = metaType;
+            // _isTooltipVisible = true;
+            // _tooltipView.gameObject.SetActive(true);
+            //
+            // foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
+            // {
+            //     if (kvp.Value.MetaType != _currentMetaType) continue;
+            //
+            //     var statView = Object.Instantiate(_prefabData.TooltipItem, _tooltipView.StatHolder)
+            //         .GetComponent<TooltipStatItem>();
+            //     statView.SetInfo(kvp.Key, kvp.Value.Value);
+            //     _activeItems.Add(statView);
+            // }
+            //
+            // Canvas.ForceUpdateCanvases();
+            // LayoutRebuilder.ForceRebuildLayoutImmediate(_tooltipView.StatHolder as RectTransform);
+            //
+            // UpdateTooltipPos();
         }
 
         public void HideToolTip()
@@ -86,7 +86,6 @@ namespace Scripts.Ui.TaskUi
 
         public void Execute(float deltatime)
         {
-            UpdateTooltipInfo();
             UpdateTooltipPos();
         }
         
@@ -94,25 +93,6 @@ namespace Scripts.Ui.TaskUi
         {
             _mousePos = position;
             UpdateTooltipPos();
-        }
-
-        private void UpdateTooltipInfo()
-        {
-            if (!_isTooltipVisible)
-                return;
-            
-            int i = 0;
-            foreach (var kvp in _progressDataAdapter.GetProgressData().Metadata)
-            {
-                if (kvp.Value.MetaType != _currentMetaType)
-                    continue;
-
-                if (i < _activeItems.Count)
-                {
-                    _activeItems[i].SetInfo(kvp.Key, kvp.Value.Value);
-                    i++;
-                }
-            }
         }
 
         public void UpdateTooltipPos()

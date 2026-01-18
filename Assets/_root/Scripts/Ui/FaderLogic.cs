@@ -1,7 +1,6 @@
 using Core;
 using Scripts.Catalogues;
 using Scripts.GlobalStateMachine;
-using Scripts.Job;
 using Scripts.Tasks;
 using UnityEngine;
 
@@ -18,16 +17,10 @@ namespace Scripts.Ui
             _events = events;
             _events.OnCatalogueShow += ShowFader;
             _events.OnCatalogueHide += HideFader;
-            _events.OnExitEvent += HideFader;
             _faderView = Object.FindObjectOfType<FaderView>();
         }
 
         private void HideFader(ICatalogue catalogue)
-        {
-            _faderView.Hide();
-        }
-
-        private void HideFader(ExitEvent exitEvent)
         {
             _faderView.Hide();
         }
@@ -41,7 +34,6 @@ namespace Scripts.Ui
         {
             _events.OnCatalogueShow -= ShowFader;
             _events.OnCatalogueHide -= HideFader;
-            _events.OnExitEvent -= HideFader;
         }
     }
 }

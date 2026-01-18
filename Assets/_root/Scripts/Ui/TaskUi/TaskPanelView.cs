@@ -29,29 +29,6 @@ namespace Scripts.Ui.TaskUi
         {
             _panelRectTransform = GetComponent<RectTransform>();
         }
-        
-        public void ShowTasksForSprint(SprintType sprintType, Vector3 screenPosition, Action<bool> isSupportedTypeOnComplete = null)
-        {
-            ClearCurrentButtons();
-            gameObject.SetActive(true);
-            SetPositionOnCanvas(screenPosition);
-            switch (sprintType)
-            {
-                case SprintType.Dev:
-                    AddTasksToPanel(_taskLibrary.GetTasks<IDevTask>());
-                    isSupportedTypeOnComplete?.Invoke(true);
-                    break;
-                case SprintType.Eat:
-                    AddTasksToPanel(_taskLibrary.GetTasks<EatTask>());
-                    isSupportedTypeOnComplete?.Invoke(true);
-                    break;
-                default:
-                    isSupportedTypeOnComplete?.Invoke(false);
-                    Debug.LogWarning($"Unsupported sprint type: {sprintType}");
-                    break;
-            }
-            
-        }
 
         public void ShowCurrentCommand(SprintType sprintType)
         {

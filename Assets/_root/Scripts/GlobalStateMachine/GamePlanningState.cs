@@ -10,7 +10,6 @@ using Scripts.EcoSystem;
 using Scripts.EcoSystem.Calendar;
 using Scripts.GameDev;
 using Scripts.Hero;
-using Scripts.Job;
 using Scripts.Messenger;
 using Scripts.Messenger.ComeBackLogic;
 using Scripts.OnlineShop;

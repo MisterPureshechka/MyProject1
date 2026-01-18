@@ -1,36 +1,54 @@
 using System;
 using _root.Scripts.Rooms.RoomItems;
-using Scripts.EmployeeLogic;
+using Core;
+using Scripts.Progress;
 using Scripts.Rooms.RoomItems;
 using UnityEngine;
 
 namespace Scripts.Rooms.SlotLogic
 {
-    public class RoomSlotFiller
+    public sealed class RoomSlotFiller : IController
     {
-        public void FillDemoLayout(RoomLogic logic, RoomItemDatabase db)
+        private readonly RoomLogic _logic;
+        private readonly RoomItemDatabase _dataBase;
+        private readonly ProgressData _progressData;
+
+        public RoomSlotFiller(RoomLogic logic, RoomItemDatabase dataBase, ProgressData progressData)
         {
-            var consoleData = db.GetById("GamingConsole");
-            var fridgeData  = db.GetById("Fridge");
-
-            if (consoleData != null)
-                logic.PlaceItem(0, new RoomItem(consoleData));
-
-            if (fridgeData != null)
-                logic.PlaceItem(1, new RoomItem(fridgeData));
+            _logic = logic;
+            _dataBase = dataBase;
+            _progressData = progressData;
+            
+            LoadProgress();
         }
-        
-        public void AddEmployeeToSlot(RoomLogic logic, Employee employee, int column)
+
+        public void LoadProgress()
         {
-            if (employee == null)
+            var progress = _progressData;
+            
+            if (progress == null)
             {
-                Debug.LogError($"Employee = null");
+                Debug.LogWarning("ProgressFiller: progress is null");
                 return;
             }
 
-            logic.PlaceItem(column, employee);
+            if (progress.Items == null || progress.Items.Count == 0)
+                return;
+
+            foreach (var p in progress.Items)
+            {
+                if (string.IsNullOrEmpty(p.ItemId))
+                    continue;
+
+                var itemData = _dataBase.GetById(p.ItemId);
+                if (itemData == null)
+                {
+                    Debug.LogWarning($"ProgressFiller: ItemId '{p.ItemId}' not found in database");
+                    continue;
+                }
+
+                _logic.PlaceItem(p.Column, new RoomItem(itemData));
+            }
         }
     }
-
-
 }

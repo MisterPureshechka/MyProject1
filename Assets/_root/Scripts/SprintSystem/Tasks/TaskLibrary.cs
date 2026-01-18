@@ -9,12 +9,8 @@ namespace Scripts.Tasks
 {
     public class TaskLibrary : ICleanUp
     {
-        private readonly Dictionary<ITask, bool> _allTasks = new();
         private readonly Dictionary<System.Enum, bool> _allTaskTypes = new();
         private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
-        private readonly Dictionary<EatTaskType, List<IEatTask>> _allEatTasks = new();
-        private readonly Dictionary<SprintType, ITask> _autoSprints = new();
-        private readonly List<IReadTask> _allReadTasks = new();
         private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly BugLogic _bugLogic;
         private LocalEvents _localEvents;
@@ -24,30 +20,10 @@ namespace Scripts.Tasks
             _progressDataAdapter = progressDataAdapter;
             _bugLogic = bugLogic;
             _localEvents = localEvents;
-            LoadAllAvailableTasks();
             LoadAllDevTasks();
-            LoadAllEatTasks();
-            LoadAutoSprintTasks();
-            LoadReadSprints();
         }
 
-        private void LoadReadSprints()
-        {
-            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents, DevTaskType.Programming,"CleanCode", 100f));
-            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents,DevTaskType.Art,"Art", 100f));
-            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents,DevTaskType.GameDesign,"Good Game Design", 100f));
-            _allReadTasks.Add(new ReadTask(_progressDataAdapter, _localEvents,DevTaskType.Marketing,"How to publish game", 100f));
-        }
-
-        private void LoadAutoSprintTasks()
-        {
-            _autoSprints[SprintType.Chill] = new ChillTask(_progressDataAdapter, "Just Chill", 100f);
-            _autoSprints[SprintType.Play] = new PlayTask(_progressDataAdapter, "Play", 100f);
-            _autoSprints[SprintType.Toilet] = new ToiletTask(_progressDataAdapter, "Is it necessary to watch here?", 100f);
-            _autoSprints[SprintType.Shower] = new BathTask(_progressDataAdapter, "Bath", 100f);
-            _autoSprints[SprintType.Eat] = new EatTask(_progressDataAdapter, EatTaskType.cake, "Nice cake", 25f);
-            _autoSprints[SprintType.CleanPc]   = new CleanTask(_progressDataAdapter, "Clean up", 100f);
-        }
+        
 
         private void LoadAllDevTasks()
         {
@@ -76,66 +52,9 @@ namespace Scripts.Tasks
             return _allDevTasks;
         }
 
-        private void LoadAllAvailableTasks()
-        {
-        }
-
-        private void LoadAllEatTasks()
-        {
-            foreach (EatTaskType type in Enum.GetValues(typeof(EatTaskType)))
-            {
-                _allEatTasks[type] = new List<IEatTask>();
-            }
-            
-            _allEatTasks[EatTaskType.cake].Add(new EatTask(_progressDataAdapter, EatTaskType.cake, "Nice cake", 100f));
-            _allEatTasks[EatTaskType.coffee].Add(new EatTask(_progressDataAdapter, EatTaskType.coffee, "Coffee", 100f));
-        }
-
-        public ITask GetRandomEatTask()
-        {
-            return _allEatTasks[EatTaskType.cake][0];
-        }
-
-        public List<ITask> GetTasks<T>() where T : ITask
-        {
-            var tasks = new List<ITask>();
-            
-            foreach (var task in _allTasks)
-            {
-                if (task.Key is T && task.Value)
-                {
-                    tasks.Add(task.Key);
-                }
-            }
-            
-            return tasks;
-        }
-
-        public List<IReadTask> GetReadTasks()
-        {
-            return _allReadTasks;
-        }
-
-        public List<TEnum> GetAvailableTaskTypes<TEnum>() where TEnum : System.Enum
-        {
-            var types = new List<TEnum>();
-            
-            foreach (var type in _allTaskTypes)
-            {
-                if (type.Key is TEnum enumValue && type.Value)
-                {
-                    types.Add(enumValue);
-                }
-            }
-            
-            return types;
-        }
-        
-        public ITask GetAutoTasks(SprintType sprintType) => _autoSprints[sprintType];
 
         public void CleanUp()
         {
-            _allTasks.Clear();
             _allTaskTypes.Clear();
         }
 

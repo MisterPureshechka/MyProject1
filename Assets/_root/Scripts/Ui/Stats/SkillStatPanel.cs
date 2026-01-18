@@ -2,15 +2,16 @@ using System.Collections.Generic;
 using Scripts.Meta;
 using Scripts.Progress;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _root.Scripts.Ui.Stats
 {
     public class SkillStatPanel : MonoBehaviour
     {
         [SerializeField] private Transform _skillContainer;
-        [SerializeField] private SkillInfo _skillInfoPrefab;
+        [FormerlySerializedAs("_skillInfoPrefab")] [SerializeField] private SkillInfoOld skillInfoOldPrefab;
         
-        private List<SkillInfo> _skills = new();
+        private List<SkillInfoOld> _skills = new();
         
         public void InitPanel(Dictionary<string, Metadata> stats, ProgressDataAdapter progressDataAdapter)
         {
@@ -22,7 +23,7 @@ namespace _root.Scripts.Ui.Stats
             {
                 var key = kvp.Key;                      
                 var meta = kvp.Value;                   
-                var item = Instantiate(_skillInfoPrefab, _skillContainer);
+                var item = Instantiate(skillInfoOldPrefab, _skillContainer);
                 item.Init(key,  progressDataAdapter);
                 item.UpdateInfo();                     
                 _skills.Add(item);

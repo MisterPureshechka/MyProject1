@@ -26,16 +26,9 @@ namespace Scripts.EcoSystem
             _progressDataAdapter = progressDataAdapter;
             _timeView = timeView;
             _localEvents = localEvents;
-            
-            var meta = _progressDataAdapter.GetProgressData().Metadata;
-            
-            int hour   = meta.TryGetValue(Consts.GameHourKey, out var h)   ? Convert.ToInt32(h.Value) : 0;
-            int minute = meta.TryGetValue(Consts.GameMinuteKey, out var m) ? Convert.ToInt32(m.Value) : 0;
 
-            hour   = Mathf.Clamp(hour, 0, 23);
-            minute = Mathf.Clamp(minute, 0, 59);
 
-            _currentHour = hour + minute / 60f;
+            _currentHour = 60f;
 
             _lastHour   = Mathf.FloorToInt(_currentHour);
             _lastMinute = Mathf.FloorToInt((_currentHour % 1f) * 60);
@@ -53,14 +46,10 @@ namespace Scripts.EcoSystem
 
         private void SaveHour()
         {
-            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue(Consts.GameHourKey, out var hourData))
-                hourData.Value = CurrentHour;
         }
 
         private void SaveMinute()
         {
-            if (_progressDataAdapter.GetProgressData().Metadata.TryGetValue(Consts.GameMinuteKey, out var minuteData))
-                minuteData.Value = CurrentMinute;
         }
 
         private void SetTimeSpeed()

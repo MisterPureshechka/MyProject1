@@ -34,7 +34,6 @@ namespace Scripts.Data
         [field: SerializeField] public CommandPanelView CommandPanelView { get; private set; }
         [field: SerializeField] public TooltipView TooltipPrefab { get; private set; }
         [field: SerializeField] public TooltipStatItem TooltipItem { get; private set; }
-        [field: SerializeField] public ReadTaskCatalogue ReadTaskCatalogue { get; private set; }
         [field: SerializeField] public TopPanelButtonView OnlineShopTopPanelButton { get; private set; }
         [field: SerializeField] public ShopItemView ShopItemView { get; private set; }
         [field: SerializeField] public Sprite[] ChairSprites { get; private set; }

@@ -8,9 +8,9 @@ namespace Scripts.Perks
 
         int ModifyMaxActiveTasks(SprintType sprint, int baseValue);
         float ModifyInterval(SprintType sprint, float baseInterval);     
-        float ModifyTaskInterval(ITask task, float interval);           
+        //float ModifyTaskInterval(ITask task, float interval);           
         void OnSprintStart(SprintType sprint);
         void OnSprintEnd(SprintType sprint);
-        void OnTaskCompleted(SprintType sprint, ITask task);
+        //void OnTaskCompleted(SprintType sprint, ITask task);
     }
 }

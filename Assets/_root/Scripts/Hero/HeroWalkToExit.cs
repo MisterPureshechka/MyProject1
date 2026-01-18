@@ -1,7 +1,6 @@
 using System;
 using _root.Notification;
 using Scripts.GlobalStateMachine;
-using Scripts.Job;
 using Scripts.Rooms;
 using UnityEngine;
 
@@ -13,8 +12,6 @@ namespace Scripts.Hero
         private IInteractiveObject _targetIO;
         private Vector3 _playerPosition;
         private Vector3 _targetPosition;
-        
-        private ExitEvent _event;
 
         public HeroWalkToExit(HeroLogic heroLogic, LocalEvents localEvents) : base(heroLogic)
         {
@@ -43,13 +40,7 @@ namespace Scripts.Hero
             if (Vector3.Distance(_playerPosition, _targetPosition) < 0.25f)
             {
                 _heroLogic.ChangeState(_heroLogic.ExitState);
-                _localEvents.TriggerExitEventWhenExit(_event);
             }
-        }
-
-        public void SetEventType(ExitEvent exitEvent)
-        {
-            _event = exitEvent;
         }
 
         public override void Exit()

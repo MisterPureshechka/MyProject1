@@ -1,18 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using _root.Scripts.Rooms.RoomItems;
+using Scripts.EmployeeLogic.Scripts.EmployeeLogic;
 using Scripts.Rooms.SlotLogic;
 using Scripts.Tasks;
 using UnityEngine;
 
 namespace Scripts.EmployeeLogic
 {
-    public sealed class Employee
+    public sealed class Employee : ISkillOwner
     {
         private const float EnergyDrainPerSecond = 0.9f;
         private const float HungerDrainPerSecond = 0.5f;
         private const float MoodDrainPerSecond   = 0.7f;
-        //Вынести в конфиг
+        
         private const float MinWorkInterval = 0.5f;  
         private const float MaxWorkInterval = 2.5f;  
         
@@ -27,13 +29,17 @@ namespace Scripts.EmployeeLogic
         public float Hunger { get; private set; }
         public float Mood { get; private set; }
         
+        private readonly Dictionary<DevTaskType, float> _skills = new();
+        public IReadOnlyDictionary<DevTaskType, float> Skills => _skills;
+        
         public float MaxValue => 100f;
 
         public EmployeeState _currentState;
-
         public event Action OnStatUpdate; 
 
         public EmployeeItemView View { get; set; }
+        
+        private SkillModifier _skillModifier;
 
         private ITask _currentTask;
 
@@ -48,6 +54,21 @@ namespace Scripts.EmployeeLogic
             Energy = 100;
             Hunger = 100;
             Mood = 100;
+            
+            _skillModifier = new SkillModifier();
+            
+            InitSkills();
+        }
+        
+        public void ImportSkills(Dictionary<string, float> skills)
+        {
+            if (skills == null) return;
+
+            foreach (var kv in skills)
+            {
+                if (Enum.TryParse<DevTaskType>(kv.Key, out var type))
+                    SetSkill(type, kv.Value);
+            }
         }
         
         public void Update(float deltaTime, Action<Employee> onWorkTick)
@@ -159,6 +180,18 @@ namespace Scripts.EmployeeLogic
         {
             Debug.Log($"{Name} больше не может продолжать.");
             _isWorking = false;
+        }
+        
+        public float GetSkill(DevTaskType type)
+            => _skills.TryGetValue(type, out var v) ? v : 0f;
+
+        public void SetSkill(DevTaskType type, float value)
+            => _skills[type] = Mathf.Clamp(value, 0f, MaxValue);
+
+        private void InitSkills()
+        {
+            foreach (DevTaskType type in Enum.GetValues(typeof(DevTaskType)))
+                _skills[type] = 0;
         }
     }
 

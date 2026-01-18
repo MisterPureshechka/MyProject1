@@ -108,13 +108,6 @@ namespace Scripts.Ui
 
             return instance.GetComponent<CommandPanelView>(); 
         }
-
-        public ReadTaskCatalogue GetReadTaskCatalogue(Transform canvasTransform)
-        {
-            var instance = Object.Instantiate(_gameData.PrefabDataBase.ReadTaskCatalogue, canvasTransform);
-
-            return instance.GetComponent<ReadTaskCatalogue>(); 
-        }
     }
 
     public class GameObjectFabric<T>

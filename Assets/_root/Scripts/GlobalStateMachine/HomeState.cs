@@ -10,7 +10,6 @@ using Scripts.EcoSystem;
 using Scripts.EcoSystem.Calendar;
 using Scripts.GameDev;
 using Scripts.Hero;
-using Scripts.Job;
 using Scripts.Messenger;
 using Scripts.Messenger.ComeBackLogic;
 using Scripts.OnlineShop;
@@ -126,9 +125,8 @@ namespace Scripts.GlobalStateMachine
             var notificationSystem = new NotificationSystem(new NotificationLibrary(), calendarLogic, localEvents, timeLogic);
             var roomShaker = new RoomShaker(home, localEvents, _gameData.InteractiveObjectConfig);
 
-            var jobLogic = new JobLogic(progressDataAdapter, new JobLibrary(), localEvents, calendarLogic, timeLogic);
             var comeBackStore = new ComeBackStore();
-            var jobMessageGenerator = new JobMessageGenerator(calendarLogic, localEvents, _gameData.MessengerConfig, timeLogic, comeBackStore, jobLogic);
+            var jobMessageGenerator = new JobMessageGenerator(calendarLogic, localEvents, _gameData.MessengerConfig, timeLogic, comeBackStore);
             var messenger = new MessengerLogic(localEvents, _gameData.MessengerConfig, calendarLogic, timeLogic);
             var clickLogic = new ClickLogic.ClickLogic(localEvents);
             var roomColliderController = new RoomColliderController(home, localEvents);
@@ -187,7 +185,6 @@ namespace Scripts.GlobalStateMachine
             _controllers.Add(upgradeLogic);
             _controllers.Add(notificationSystem);
             _controllers.Add(roomShaker);
-            _controllers.Add(jobLogic);
             _controllers.Add(roomExitLogic);
             _controllers.Add(jobMessageGenerator);
             _controllers.Add(messenger);

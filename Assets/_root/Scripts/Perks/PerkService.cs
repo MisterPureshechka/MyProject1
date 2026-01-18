@@ -86,28 +86,8 @@ namespace Scripts.Perks
             return baseInterval * multiplier;
         }
 
-        public float ModifyTaskInterval(ITask task, float interval)
-        {
-            string key = task switch
-            {
-                IReadTask   => "TaskInterval.Read",
-                IDevTask    => "TaskInterval.Dev",
-                IEatTask    => "TaskInterval.Eat",
-                IChillTask  => "TaskInterval.Chill",
-                IToiletTask => "TaskInterval.Toilet",
-                IBathTask   => "TaskInterval.Bath",
-                IPlayTask   => "TaskInterval.Play",
-                _           => null
-            };
-
-            if (key == null) return interval;
-            float m = GetEffectMultiplier(key);
-            return interval * m;
-        }
-
         public void OnSprintStart(SprintType sprint) { }
         public void OnSprintEnd(SprintType sprint) { }
-        public void OnTaskCompleted(SprintType sprint, ITask task) { }
 
         private void ApplyCatalogueSelection(List<string> selectedIds)
         {

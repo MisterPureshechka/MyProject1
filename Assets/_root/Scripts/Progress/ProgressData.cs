@@ -1,21 +1,33 @@
 using System;
 using System.Collections.Generic;
-using AYellowpaper.SerializedCollections;
-using Scripts.Data;
-using Scripts.Utils;
 
 namespace Scripts.Progress
 {
     [Serializable]
-    public class ProgressData
+    public sealed class ProgressData
     {
-        public SerializedDictionary<string, Meta.Metadata> Metadata = new();
-        public List<string> ActivePerkIds = new();
-        public Dictionary<string, string> Custom = new();
-        
-        public ProgressData(SerializedDictionary<string, Meta.Metadata> metadata) 
-        {
-            Metadata = metadata;
-        }
+        public string CompanyName;
+        public int Money;
+        public int Experience;
+
+        public List<ItemProgressData> Items = new();
+        public List<EmployeeProgressData> Employees = new();
+    }
+
+    [Serializable]
+    public sealed class ItemProgressData
+    {
+        public int Column;
+        public string ItemId; 
+    }
+
+    [Serializable]
+    public sealed class EmployeeProgressData
+    {
+        public string Id;
+        public string Name;
+        public int Column;
+
+        public Dictionary<string, float> Skills = new();
     }
 }

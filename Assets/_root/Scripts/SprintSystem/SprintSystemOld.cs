@@ -35,7 +35,6 @@ namespace Scripts.Tasks
         private readonly PerkService _perkService;
         private readonly TaskLibrary _taskLibrary;
         private readonly DevTaskCatalogue _devTaskCatalogue;
-        private readonly ReadTaskCatalogue _readTaskCatalogue;
         
         private readonly DevSprintSaveService _devSave;
         
@@ -81,29 +80,13 @@ namespace Scripts.Tasks
             _devTaskCatalogue.OnCloseButtonClicked += CloseCatalogButtonClickedListener;
             _devTaskCatalogue.OnApplyButtonClicked += CatalogueApplyButtonClickListener;
             
-            _readTaskCatalogue = _uiFactory.GetReadTaskCatalogue(canvas.transform);
-            _readTaskCatalogue.Init(_localEvents);
-            _readTaskCatalogue.SetReadTask(taskLibrary.GetReadTasks());
-            _readTaskCatalogue.OnCloseButtonClicked += CloseCatalogButtonClickedListener;
-            _readTaskCatalogue.OnApplyButtonClicked += CatalogueApplyButtonClickListener;
-            
             _devTaskCatalogue.OnTaskClicked += AddTask;
-            _readTaskCatalogue.OnTaskClicked += AddTask;
             
             _localEvents.OnSprintClosed += ExitSprint;
             _localEvents.OnHeroGetSprint += StartOrCreateSprint;
             _localEvents.OnHeroWalkToSprint += ExitSprint;
             _localEvents.OnHeroWalkToIO += ExitSprint;
             _localEvents.OnHeroGetRootIO += HeroGetRootIOListener;
-
-            _sprints[SprintType.Dev] = new DevSprint(24, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Pc));
-            _sprints[SprintType.Chill] = new ChillSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Sofa));
-            _sprints[SprintType.Eat] = new EatSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Fridge));
-            _sprints[SprintType.Read] = new ReadSprint(10, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Books));
-            _sprints[SprintType.Play] = new PlaySprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.TV));
-            _sprints[SprintType.Toilet] = new ToiletSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Toilet));
-            _sprints[SprintType.Shower] = new BathSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Bath));
-            _sprints[SprintType.CleanPc] = new CleanSprint(1, _interactiveObjectRegisterer.GetIOByType(InteractiveObjectType.Pc));
         }
 
         private void HeroGetRootIOListener(SprintType type)
@@ -119,33 +102,33 @@ namespace Scripts.Tasks
 
         private async void CreateAutoSprint(SprintType type)
         {
-            _currentSprintType = type;
-
-            var proto = _taskLibrary.GetAutoTasks(type);
-            if (proto == null)
-            {
-                Debug.LogError($"[SprintSystem] No auto task set for {type}. Did you add it to TaskLibrary?");
-                _localEvents.TriggerSprintCreated(type); 
-                return;
-            }
-
-            for (int i = 0; i < _currentSprint.Capacity; i++)
-            {
-                var clone = proto.Clone();
-
-                if (_currentSprint.TryAddTask(clone))
-                {
-                    Debug.Log($"[SprintSystem] Adding task '{clone.Title}' to view for {type}");
-                    await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform), type);
-                    _pendingTasks.Add(clone);
-                }
-                else
-                {
-                    Debug.LogWarning($"[SprintSystem] TryAddTask returned false for {type}");
-                }
-            }
-
-            _localEvents.TriggerSprintCreated(type);
+            // _currentSprintType = type;
+            //
+            // var proto = _taskLibrary.GetAutoTasks(type);
+            // if (proto == null)
+            // {
+            //     Debug.LogError($"[SprintSystem] No auto task set for {type}. Did you add it to TaskLibrary?");
+            //     _localEvents.TriggerSprintCreated(type); 
+            //     return;
+            // }
+            //
+            // for (int i = 0; i < _currentSprint.Capacity; i++)
+            // {
+            //     var clone = proto.Clone();
+            //
+            //     if (_currentSprint.TryAddTask(clone))
+            //     {
+            //         Debug.Log($"[SprintSystem] Adding task '{clone.Title}' to view for {type}");
+            //         await _sprintView.AddTask(clone, _uiFactory.GetTaskView(_sprintView.ToDoField.transform), type);
+            //         _pendingTasks.Add(clone);
+            //     }
+            //     else
+            //     {
+            //         Debug.LogWarning($"[SprintSystem] TryAddTask returned false for {type}");
+            //     }
+            // }
+            //
+            // _localEvents.TriggerSprintCreated(type);
         }
 
         private async void StartOrCreateSprint(SprintType sprintType)
@@ -183,9 +166,6 @@ namespace Scripts.Tasks
             {
                 case SprintType.Dev:
                     _localEvents.TriggerShowCatalogue(_devTaskCatalogue);
-                    break;
-                case SprintType.Read:
-                    _localEvents.TriggerShowCatalogue(_readTaskCatalogue);
                     break;
                 default:
                     Debug.LogError($"{nameof(SprintType)} doesn't have catalogue");
@@ -276,8 +256,7 @@ namespace Scripts.Tasks
             {
                 var task = _activeTasks[i];
                 
-                float taskInterval = _perkService.ModifyTaskInterval(task, interval);
-                task.ApplyProgress(taskInterval);
+                task.ApplyProgress(0);
                 
                 if (task.Progress <= 0f)
                 {
@@ -290,7 +269,6 @@ namespace Scripts.Tasks
                     CheckSprintCompletion();
                     _activeTasks.RemoveAt(i);
                     _localEvents.TriggerPassionIncrease(PassionIncreaseType.TaskComplete);
-                    _perkService.OnTaskCompleted(_currentSprint.Type, task);
                 }
             }
         }
@@ -381,9 +359,6 @@ namespace Scripts.Tasks
             _devTaskCatalogue.OnCloseButtonClicked -= ExitSprint;
             _devTaskCatalogue.OnApplyButtonClicked -= CatalogueApplyButtonClickListener;
             _devTaskCatalogue.OnTaskClicked -= AddTask;
-            _readTaskCatalogue.OnTaskClicked -= AddTask;
-            _readTaskCatalogue.OnCloseButtonClicked -= CloseCatalogButtonClickedListener;
-            _readTaskCatalogue.OnApplyButtonClicked -= CatalogueApplyButtonClickListener;
             _localEvents.OnHeroGetSprint -= StartOrCreateSprint;
             _localEvents.OnSprintClosed -= ExitSprint;
             _localEvents.OnHeroGetRootIO -= HeroGetRootIOListener;

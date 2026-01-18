@@ -17,20 +17,20 @@ namespace Scripts.Ui
             _progressData = progressData;
         }
 
-        private void UpdateStats()
-        {
-            string result = "";
-            foreach (var key in _progressData.Metadata.Keys)
-            {
-                result += $"{key}: {_progressData.Metadata[key].Value}\n";
-            }
-            
-            AllStats.text = result;
-        }
+        // private void UpdateStats()
+        // {
+        //     string result = "";
+        //     foreach (var key in _progressData.Metadata.Keys)
+        //     {
+        //         result += $"{key}: {_progressData.Metadata[key].Value}\n";
+        //     }
+        //     
+        //     AllStats.text = result;
+        // }
 
         public void Execute(float deltatime)
         {
-            UpdateStats();
+            //UpdateStats();
         }
     }
 }

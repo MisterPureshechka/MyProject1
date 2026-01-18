@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Scripts.GlobalStateMachine;
-using Scripts.Job;
 using Scripts.Rooms;
 using UnityEngine;
 
@@ -24,7 +23,6 @@ namespace Scripts.Tasks
             _localEvents = localEvents;
             LoadAllCommands();
             _localEvents.OnSprintClosed += SprintCloseListener;
-            _localEvents.OnExitEventCreated += AddCommand;
             _localEvents.OnIODirty += AddOrRemoveCleanCommand;
             _localEvents.OnUpgradeOffer += UpgradeAvailableListener;
         }
@@ -123,20 +121,6 @@ namespace Scripts.Tasks
                     });
                     break;
             }
-        }
-
-        private void AddCommand(ExitEvent exitEvent)
-        {
-            var eventCommand = new Command
-            {
-                CommandName = $"Go to {exitEvent.EventTitle}",
-                OnExecute = () =>
-                {
-                    _localEvents.TriggerExitEvent(exitEvent);
-                },
-            };
-            
-            Commands[InteractiveObjectType.Door].Add(eventCommand);
         }
 
         private void SprintCloseListener(SprintType obj)
@@ -295,7 +279,6 @@ namespace Scripts.Tasks
         public void CleanUp()
         {
             _localEvents.OnSprintClosed -= SprintCloseListener;
-            _localEvents.OnExitEventCreated -= AddCommand;
             _localEvents.OnIODirty -= AddOrRemoveCleanCommand;
             _localEvents.OnUpgradeOffer -= UpgradeAvailableListener;
         }

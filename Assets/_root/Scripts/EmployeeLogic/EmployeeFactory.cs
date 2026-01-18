@@ -7,8 +7,6 @@ namespace Scripts.EmployeeLogic
     {
         private EmployeeItemView _employeeItemPrefab;
 
-        public event Action<Employee> OnEmployeeCreated; 
-
         public EmployeeFactory(EmployeeItemView employeeItemPrefab)
         {
             _employeeItemPrefab = employeeItemPrefab;
@@ -19,11 +17,9 @@ namespace Scripts.EmployeeLogic
             
         }
 
-        public Employee CreateEmployee(string name)
+        public Employee CreateEmployee(string id, string name)
         {
-            var employee = new Employee(Guid.NewGuid().ToString(), name);
-            
-            OnEmployeeCreated?.Invoke(employee);
+            var employee = new Employee(id, name);
 
             return employee;
         }

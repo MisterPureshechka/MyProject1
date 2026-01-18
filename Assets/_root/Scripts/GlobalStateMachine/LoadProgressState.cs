@@ -36,8 +36,7 @@ namespace Scripts.GlobalStateMachine
 
         private ProgressData NewProgress()
         {
-            var metadata = MetaConfigLoader.LoadFromResources();
-            return new ProgressData(metadata);
+            return new ProgressData();
         }
     }
 }
