@@ -10,7 +10,7 @@ namespace Scripts.Tasks
 {
     public class DevTask : IDevTask
     {
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private float _lastUpdateTime;
         private bool _hasProgressChanged;
         
@@ -61,9 +61,9 @@ namespace Scripts.Tasks
         public float MaxProgress { get; }
         public bool IsCompleted { get; private set; }
 
-        public DevTask(ProgressDataAdapter progressDataAdapter, DevTaskType taskType, string title, float progress)
+        public DevTask(ProgressDataAdapterOLD progressDataAdapterOld, DevTaskType taskType, string title, float progress)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             Type = taskType;
             Title = title;
             Progress = progress;
@@ -73,7 +73,7 @@ namespace Scripts.Tasks
 
         public ITask Clone()
         {
-            return new DevTask(this._progressDataAdapter, this.Type, this.Title, this.Progress)
+            return new DevTask(this._progressDataAdapterOld, this.Type, this.Title, this.Progress)
             {
                 Id = this.Id  
             };

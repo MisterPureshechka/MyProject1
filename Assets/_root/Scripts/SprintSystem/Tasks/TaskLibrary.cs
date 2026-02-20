@@ -11,13 +11,13 @@ namespace Scripts.Tasks
     {
         private readonly Dictionary<System.Enum, bool> _allTaskTypes = new();
         private readonly Dictionary<DevTaskType, List<IDevTask>> _allDevTasks = new();
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly BugLogic _bugLogic;
         private LocalEvents _localEvents;
 
-        public TaskLibrary(ProgressDataAdapter progressDataAdapter, BugLogic bugLogic, LocalEvents localEvents)
+        public TaskLibrary(ProgressDataAdapterOLD progressDataAdapterOld, BugLogic bugLogic, LocalEvents localEvents)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _bugLogic = bugLogic;
             _localEvents = localEvents;
             LoadAllDevTasks();
@@ -34,15 +34,15 @@ namespace Scripts.Tasks
                 _allDevTasks[type] = new List<IDevTask>();
             }
 
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
-            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapter, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
+            _allDevTasks[DevTaskType.Programming].Add(new DevTask(_progressDataAdapterOld, DevTaskType.Programming, "Saving System", 100f));
             
             
         }

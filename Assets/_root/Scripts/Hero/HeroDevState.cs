@@ -6,12 +6,12 @@ namespace Scripts.Hero
 {
     public class HeroDevState : HeroBaseState
     {
-        private ProgressDataAdapter _progressData;
+        private ProgressDataAdapterOLD _progressData;
         private readonly LocalEvents _localEvents;
 
-        public HeroDevState(HeroLogic heroLogic, ProgressDataAdapter progressDataAdapter, LocalEvents localEvents) : base(heroLogic)
+        public HeroDevState(HeroLogic heroLogic, ProgressDataAdapterOLD progressDataAdapterOld, LocalEvents localEvents) : base(heroLogic)
         {
-            _progressData = progressDataAdapter;
+            _progressData = progressDataAdapterOld;
             _localEvents = localEvents;
         }
         

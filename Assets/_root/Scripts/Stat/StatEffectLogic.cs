@@ -12,7 +12,7 @@ namespace Scripts.Stat
 {
     public class StatEffectLogic : ICleanUp
     {
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly LocalEvents _localEvents;
         private readonly Dictionary<string, Dictionary<string, float>> _effects;
         private IPerkService _perkService;
@@ -28,9 +28,9 @@ namespace Scripts.Stat
         private const float LowEnergyMoodNegMult  = 10.0f; 
         private const float LowEnergyMoodPosMult  = 0.75f;
 
-        public StatEffectLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents, IPerkService perkService)
+        public StatEffectLogic(ProgressDataAdapterOLD progressDataAdapterOld, LocalEvents localEvents, IPerkService perkService)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _localEvents = localEvents;
             _perkService = perkService;
 
@@ -67,7 +67,7 @@ namespace Scripts.Stat
                     effectDict.TryGetValue(knowledgeKey, out float baseDelta))
                 {
                     float mult = _perkService.GetEffectMultiplier("ReadKnowledgeEffect");
-                    _progressDataAdapter.TryUpdateValue(knowledgeKey, baseDelta * mult);
+                    _progressDataAdapterOld.TryUpdateValue(knowledgeKey, baseDelta * mult);
                 }
                 else
                 {
@@ -104,7 +104,7 @@ namespace Scripts.Stat
                         finalDelta *= LowEnergyMoodPosMult;  
                 }
 
-                _progressDataAdapter.TryUpdateValue(statKey, finalDelta * perkMult);
+                _progressDataAdapterOld.TryUpdateValue(statKey, finalDelta * perkMult);
             }
         }
 

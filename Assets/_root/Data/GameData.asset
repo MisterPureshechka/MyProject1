@@ -22,3 +22,5 @@ MonoBehaviour:
   <SoundConfig>k__BackingField: {fileID: 11400000, guid: bf829846895644e9d973bbc6de7c7ae3, type: 2}
   <LevelMapConfig>k__BackingField: {fileID: 11400000, guid: 893a1363c86da47488e74e4f01baff04, type: 2}
   <RoomItemDatabase>k__BackingField: {fileID: 11400000, guid: 59a0bdd34aede45c68669f9a2d43acdf, type: 2}
+  <GameMetaConfig>k__BackingField: {fileID: 11400000, guid: 35a1c21701d2e45959396de079351193, type: 2}
+  <MilestoneRulesConfig>k__BackingField: {fileID: 11400000, guid: c0a9761cc54374bbfb9938ec52e37fb0, type: 2}

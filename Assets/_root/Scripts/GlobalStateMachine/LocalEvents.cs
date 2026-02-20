@@ -182,8 +182,8 @@ namespace Scripts.GlobalStateMachine
         public void TriggerShowCatalogue(ICatalogue catalogue) => OnCatalogueShow?.Invoke(catalogue);
 
         public Action<ICatalogue> OnCatalogueHide {get; set;}
-        public Action OnWalletUpdate { get; set; }
-        public void TriggerWalletUpdate() => OnWalletUpdate?.Invoke();
+        public Action<int> OnWalletUpdate { get; set; }
+        public void TriggerWalletUpdate(int amount) => OnWalletUpdate?.Invoke(amount);
         public Action OnNewMinute {get; set;}
         public void TriggerNewMinute() => OnNewMinute?.Invoke();
         public void TriggerHideCatalogue(ICatalogue catalogue) => OnCatalogueHide?.Invoke(catalogue);
@@ -294,5 +294,29 @@ namespace Scripts.GlobalStateMachine
         
         public Action<Employee, RoomItem> OnEmployeeWalkToItem { get; set; }
         public void TriggerEmployeeWalkToItem(Employee employee, RoomItem roomItem) => OnEmployeeWalkToItem?.Invoke(employee, roomItem);
+
+        public event Action OnMilestoneProgressChanged;
+        public void TriggerMilestoneProgressChanged() => OnMilestoneProgressChanged?.Invoke();
+
+        public event Action OnDayPassed;
+        public void TriggerDayPassed() => OnDayPassed?.Invoke();
+
+        public event Action<float> OnTimeUpdated;
+        public void TriggerTimeUpdated(float day01) => OnTimeUpdated?.Invoke(day01);
+
+        public event Action OnTaskComplete;
+        public void TriggerTaskComplete() => OnTaskComplete?.Invoke();
+
+        public event Action<ProjectStage> OnStageChanged;
+        public void TriggerStageChanged(ProjectStage stage) => OnStageChanged?.Invoke(stage);
+
+        public event Action OnGameReleased;
+        public void TriggerGameReleased() => OnGameReleased?.Invoke();
+
+        public event Action OnMilestoneResultWindow;
+        public void TriggerMilestoneResultWindow() => OnMilestoneResultWindow?.Invoke();
+        
+        public event Action OnReleaseWindow;
+        public void TriggerReleaseWindow() => OnReleaseWindow?.Invoke();
     }
 }

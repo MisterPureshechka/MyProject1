@@ -10,7 +10,7 @@ namespace _root.Planning
     public class LevelMapController : ICleanUp
     {
         private readonly GameStateMachine _gameStateMachine;
-        private ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapter _progressDataAdapter;
         private LevelMapConfig _config;
         private RoadMapView _roadMapView;
 
@@ -35,7 +35,15 @@ namespace _root.Planning
         
         private LevelNode _currentNode;
 
-        public LevelMapController(GameStateMachine gameStateMachine, ProgressDataAdapter progressDataAdapter, LevelMapConfig config, RoadMapView roadMapView, LevelNodeView levelNodePrefab, ConnectorView connectorPrefab)
+        
+
+        public LevelMapController(
+            GameStateMachine gameStateMachine,
+            ProgressDataAdapter progressDataAdapter,
+            LevelMapConfig config,
+            RoadMapView roadMapView,
+            LevelNodeView levelNodePrefab,
+            ConnectorView connectorPrefab)
         {
             _gameStateMachine = gameStateMachine;
             _progressDataAdapter = progressDataAdapter;
@@ -45,13 +53,11 @@ namespace _root.Planning
             _connectorPrefab = connectorPrefab;
 
             BuildMap();
-            
+
             string startNodeId = LoadCurrentLevelNodeId();
-            
+
             if (string.IsNullOrEmpty(startNodeId) || !_nodeById.ContainsKey(startNodeId))
-            {
                 startNodeId = _config.StartNodeId;
-            }
 
             SetCurrentNodeOnStart(startNodeId);
             MarkCurrentNodeCompleted();
@@ -59,7 +65,7 @@ namespace _root.Planning
 
         private string LoadCurrentLevelNodeId()
         {
-            return PlayerPrefs.GetString("currentRoadmapNodeId", null);
+            return _progressDataAdapter.GetCurrentRoadmapNodeId();
         }
 
         private void BuildMap()
@@ -164,12 +170,11 @@ namespace _root.Planning
 
             void FinishTransition()
             {
-                _progressDataAdapter.MarkRoadMapNodeCompleted(_currentNode.Id);
+                _progressDataAdapter.MarkRoadmapNodeCompleted(_currentNode.Id);
 
-                PlayerPrefs.SetString("currentRoadmapNodeId", targetNode.Id);
-                PlayerPrefs.Save();
+                _progressDataAdapter.SetCurrentRoadmapNodeId(targetNode.Id);
 
-                _gameStateMachine.EnterState<RoadMapState>(); //
+                EnterState(targetNode.Type);
             }
 
             if (connection != null)
@@ -181,10 +186,32 @@ namespace _root.Planning
                 FinishTransition();
             }
         }
+
+        private void EnterState(NodeType type)
+        {
+            switch (type)
+            {
+                case NodeType.Work:
+                    _gameStateMachine.EnterState<WorkState>();
+                    break;
+                case NodeType.Build:
+                    _gameStateMachine.EnterState<ShopState>();
+                    break;
+                case NodeType.Hire:
+                    _gameStateMachine.EnterState<EmployeeHireState>();
+                    break;
+                case NodeType.Upgrade:
+                    _gameStateMachine.EnterState<UpgradeState>();
+                    break;
+                default:
+                    _gameStateMachine.EnterState<RoadMapState>();
+                    break;
+            }
+        }
         
         public void MarkCurrentNodeCompleted()
         {
-            _progressDataAdapter.MarkRoadMapNodeCompleted(_currentNode.Id);
+            _progressDataAdapter.MarkRoadmapNodeCompleted(_currentNode.Id);
             UpdateNodeVisualState();
         }
         
@@ -228,7 +255,7 @@ namespace _root.Planning
                 LevelNode node = _nodeById[nodeId];
 
                 bool isCurrent   = nodeId == _currentNode.Id;
-                bool isCompleted = _progressDataAdapter.IsRoadMapNodeCompleted(nodeId);
+                bool isCompleted = _progressDataAdapter.IsRoadmapNodeCompleted(nodeId);
                 bool isNext      = _currentNode.NextNodeIds.Contains(nodeId);
 
                 NodeViewState state;
@@ -310,8 +337,8 @@ namespace _root.Planning
         {
             foreach (var connection in _connections)
             {
-                bool toCompleted = _progressDataAdapter.IsRoadMapNodeCompleted(connection.toId);
-                bool fromCompleted = _progressDataAdapter.IsRoadMapNodeCompleted(connection.fromId);
+                bool toCompleted = _progressDataAdapter.IsRoadmapNodeCompleted(connection.toId);
+                bool fromCompleted = _progressDataAdapter.IsRoadmapNodeCompleted(connection.fromId);
 
                 bool isNextFromCurrent =
                     connection.fromId == _currentNode.Id &&

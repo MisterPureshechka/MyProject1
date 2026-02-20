@@ -9,22 +9,22 @@ namespace Scripts.GlobalStateMachine
     public class RoadMapState : BaseState
     {
 
-        public RoadMapState(GameStateMachine gameStateMachine, Controllers controllers, GameProgress gameProgress, GameData gameData) : base(gameStateMachine, controllers, gameProgress, gameData)
+        public RoadMapState(GameStateMachine gameStateMachine, Controllers controllers, SaveService saveService, GameData gameData, Canvas canvas) : base(gameStateMachine, controllers, saveService, gameData, canvas)
         {
         }
 
         public override void Enter()
         {
-            var progressStat = _gameProgress.LoadProgress();
-            var progressDataAdapter = new ProgressDataAdapter(progressStat);
+            var progressDataAdapter = new ProgressDataAdapter(_saveService);
             var localEvents = new LocalEvents();
 
             var uiFactory = new UiFactory(_gameData);
-            var canvas = Object.FindAnyObjectByType<Canvas>();
+            var canvas = _canvas;
             var roadMapView = uiFactory.GetRoadMapView(canvas.transform);
             roadMapView.transform.SetAsFirstSibling();
             var levelNodePrefab = uiFactory.GetLevelNodePrefab();
             var connectorPrefab = uiFactory.GetConnectorPrefab();
+            
             var levelMapController = new LevelMapController(_gameStateMachine, progressDataAdapter, _gameData.LevelMapConfig, roadMapView, levelNodePrefab, connectorPrefab);
 
             _controllers.Add(levelMapController);

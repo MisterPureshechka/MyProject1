@@ -11,7 +11,7 @@ namespace Scripts.GlobalStateMachine
         private Button _newGameButton;
 
 
-        public MenuState(GameStateMachine gameStateMachine, Controllers controllers, GameProgress gameProgress, GameData gameData) : base(gameStateMachine, controllers, gameProgress, gameData)
+        public MenuState(GameStateMachine gameStateMachine, Controllers controllers, SaveService saveService, GameData gameData, Canvas canvas) : base(gameStateMachine, controllers, saveService, gameData, canvas)
         {
             
         }

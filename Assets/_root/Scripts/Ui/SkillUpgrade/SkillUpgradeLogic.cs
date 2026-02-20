@@ -1,0 +1,201 @@
+using System;
+using System.Collections.Generic;
+using _root.Scripts.Rooms.RoomItems;
+using Core;
+using Scripts.EmployeeLogic;
+using Scripts.GlobalStateMachine;
+using Scripts.Progress;
+using Scripts.Tasks;
+using Scripts.Ui.ItemShop;
+using UnityEngine;
+using Object = UnityEngine.Object;
+
+namespace Scripts.Ui.SkillUpgrade
+{
+    public class SkillUpgradeLogic : ICleanUp
+    {
+        private readonly SkillUpgradeShopView _skillUpgradeShopView;
+        private readonly LocalEvents _localEvents;
+        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly SaveService _saveService;
+
+        private int _experience;
+
+        public SkillUpgradeLogic(SkillUpgradeShopView skillUpgradeShopView, LocalEvents localEvents,
+            ProgressDataAdapter progressDataAdapter, SaveService saveService)
+        {
+            _skillUpgradeShopView = skillUpgradeShopView;
+            _localEvents = localEvents;
+            _progressDataAdapter = progressDataAdapter;
+            _saveService = saveService;
+
+            _skillUpgradeShopView.Init(_localEvents);
+            _experience = _progressDataAdapter.Data.Experience;
+
+            LoadOffers();
+        }
+
+        private void UpgradePurchasedListener(SkillUpgradeOffer offer, Employee employee)
+        {
+            _experience = _progressDataAdapter.Data.Experience;
+
+            if (offer.SkillUpgradeCost > _experience)
+                return;
+
+            foreach (var type in offer.SkillUpgradeMap.Keys)
+                employee.AddSkill(type, offer.SkillUpgradeMap[type]);
+
+            _experience -= offer.SkillUpgradeCost;
+            _progressDataAdapter.Data.Experience = _experience;
+
+            _skillUpgradeShopView.RemoveItem(offer);
+
+            var offers = _progressDataAdapter.Data.SkillUpgradeShop.Offers;
+            offers.RemoveAll(o => o.Id == offer.Id);
+
+            _saveService.SaveProgress(_progressDataAdapter.Data);
+        }
+
+
+        private void LoadOffers()
+        {
+            var shopData = _progressDataAdapter.Data.SkillUpgradeShop;
+
+            if (shopData.Offers != null && shopData.Offers.Count > 0)
+            {
+                foreach (var saved in shopData.Offers)
+                {
+                    var offer = RestoreOffer(saved);
+                    _skillUpgradeShopView.AddOffer(offer);
+                }
+
+                _skillUpgradeShopView.OnItemPurchased += UpgradePurchasedListener;
+                return;
+            }
+
+            // 2) иначе генерим, сохраняем, рисуем
+            var allTypes = (DevTaskType[])Enum.GetValues(typeof(DevTaskType));
+            int offerCount = 3;
+
+            shopData.Offers = new List<SkillUpgradeOfferSave>(offerCount);
+
+            for (int i = 0; i < offerCount; i++)
+            {
+                int directionsCount = UnityEngine.Random.Range(1, 2);
+                directionsCount = Mathf.Min(directionsCount, allTypes.Length);
+
+                var upgradeMap = new Dictionary<DevTaskType, float>(directionsCount);
+                var used = new HashSet<int>();
+
+                while (upgradeMap.Count < directionsCount)
+                {
+                    int index = UnityEngine.Random.Range(0, allTypes.Length);
+                    if (!used.Add(index)) continue;
+
+                    var type = allTypes[index];
+                    float value = UnityEngine.Random.Range(1, 3);
+
+                    upgradeMap[type] = value;
+                }
+
+                var offer = new SkillUpgradeOffer
+                {
+                    Id = Guid.NewGuid().ToString("N"),
+                    SkillUpgradeMap = upgradeMap,
+                    SkillUpgradeCost = Calculate(upgradeMap, 1, 1)
+                };
+
+                _skillUpgradeShopView.AddOffer(offer);
+                shopData.Offers.Add(ToSave(offer));
+            }
+
+            _saveService.SaveProgress(_progressDataAdapter.Data);
+
+            _skillUpgradeShopView.OnItemPurchased += UpgradePurchasedListener;
+        }
+
+        private SkillUpgradeOfferSave ToSave(SkillUpgradeOffer offer)
+        {
+            var save = new SkillUpgradeOfferSave
+            {
+                Id = offer.Id,
+                Cost = offer.SkillUpgradeCost,
+                Upgrades = new List<SkillSave>(offer.SkillUpgradeMap.Count)
+            };
+
+            foreach (var kv in offer.SkillUpgradeMap)
+            {
+                save.Upgrades.Add(new SkillSave
+                {
+                    Key = kv.Key.ToString(),
+                    Value = kv.Value
+                });
+            }
+
+            return save;
+        }
+
+        private SkillUpgradeOffer RestoreOffer(SkillUpgradeOfferSave saved)
+        {
+            var map = new Dictionary<DevTaskType, float>(saved.Upgrades.Count);
+
+            for (int i = 0; i < saved.Upgrades.Count; i++)
+            {
+                var keyStr = saved.Upgrades[i].Key;
+                var value = saved.Upgrades[i].Value;
+
+                if (Enum.TryParse(keyStr, out DevTaskType type))
+                    map[type] = value;
+            }
+
+            return new SkillUpgradeOffer
+            {
+                Id = saved.Id,
+                SkillUpgradeMap = map,
+                SkillUpgradeCost = saved.Cost
+            };
+        }
+
+
+        public static int Calculate(
+            Dictionary<DevTaskType, float> upgradeMap,
+            int basePrice,
+            int pricePerPoint,
+            bool roundUp = true,
+            float randomSpread01 = 0f,
+            int minPrice = 1)
+        {
+            if (upgradeMap == null || upgradeMap.Count == 0)
+                return Mathf.Max(minPrice, basePrice);
+
+            float total = 0f;
+
+            foreach (var kv in upgradeMap)
+            {
+                var value = Mathf.Max(0f, kv.Value);
+
+                float points = roundUp ? Mathf.Ceil(value) : value;
+
+
+                total += points * pricePerPoint;
+            }
+
+            float price = basePrice + total;
+
+            if (randomSpread01 > 0f)
+            {
+                float r = UnityEngine.Random.Range(-1f, 1f);
+                price *= 1f + r * randomSpread01;
+            }
+
+            return Mathf.Max(minPrice, Mathf.RoundToInt(price));
+        }
+
+
+        public void CleanUp()
+        {
+            _skillUpgradeShopView.OnItemPurchased -= UpgradePurchasedListener;
+            Object.Destroy(_skillUpgradeShopView.gameObject);
+        }
+    }
+}

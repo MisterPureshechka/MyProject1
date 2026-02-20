@@ -9,17 +9,17 @@ namespace _root.Scripts.Ui.Stats
     public class SkillStatLogic : ICleanUp
     {
         private SkillStatPanel _skillPanel;
-        private ProgressDataAdapter _progressDataAdapter;
+        private ProgressDataAdapterOLD _progressDataAdapterOld;
         private LocalEvents _localEvents;
 
-        public SkillStatLogic(SkillStatPanel skillPanel, ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
+        public SkillStatLogic(SkillStatPanel skillPanel, ProgressDataAdapterOLD progressDataAdapterOld, LocalEvents localEvents)
         {
             _skillPanel = skillPanel;
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _localEvents = localEvents;
             
             InitPanel();
-            _progressDataAdapter.OnStatUpdated += UpdateStats;
+            _progressDataAdapterOld.OnStatUpdated += UpdateStats;
         }
         
         private void InitPanel()
@@ -33,7 +33,7 @@ namespace _root.Scripts.Ui.Stats
 
         public void CleanUp()
         {
-            _progressDataAdapter.OnStatUpdated -= UpdateStats;
+            _progressDataAdapterOld.OnStatUpdated -= UpdateStats;
         }
     }
 }

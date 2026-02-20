@@ -6,7 +6,7 @@ namespace Scripts.Rooms.SlotLogic
     {
         private readonly Dictionary<int, Slot> _slots = new();
         public IReadOnlyDictionary<int, Slot> Slots => _slots;
-        
+
         public Room(int initialWidth)
         {
             for (int i = 0; i < initialWidth; i++)
@@ -35,7 +35,7 @@ namespace Scripts.Rooms.SlotLogic
             _slots.Add(column, slot);
             return slot;
         }
-        
+
         public Slot GetLeftNeighbour(Slot slot)
         {
             var col = slot.Column - 1;
@@ -62,11 +62,39 @@ namespace Scripts.Rooms.SlotLogic
                 if (col > max) max = col;
             }
 
-            var left  = AddSlot(min - 1);
+            var left = AddSlot(min - 1);
             var right = AddSlot(max + 1);
 
             return (left, right);
         }
-    }
 
+        public bool IsSlotFree(int column)
+        {
+            if (!_slots.TryGetValue(column, out var slot))
+                return false;
+
+            return slot.IsEmpty;
+        }
+
+        public bool TryGetRandomFreeSlotIndex(out int column)
+        {
+            column = default;
+
+            var freeSlots = new List<Slot>();
+
+            foreach (var slot in _slots.Values)
+            {
+                if (slot.IsEmpty)
+                    freeSlots.Add(slot);
+            }
+
+            if (freeSlots.Count == 0)
+                return false;
+
+            int index = UnityEngine.Random.Range(0, freeSlots.Count);
+            column = freeSlots[index].Column;
+            return true;
+        }
+
+    }
 }

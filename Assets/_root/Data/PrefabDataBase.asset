@@ -28,7 +28,6 @@ MonoBehaviour:
   <CommandPanelView>k__BackingField: {fileID: 8574929721281965812, guid: d9249f285bde34185aa29c536038f54e, type: 3}
   <TooltipPrefab>k__BackingField: {fileID: 5025724360896003362, guid: a013a5d6d74974f46b2f56b999152f2b, type: 3}
   <TooltipItem>k__BackingField: {fileID: 2795018050956126632, guid: 78cd9f3a30db94d55b2534182ca747fa, type: 3}
-  <ReadTaskCatalogue>k__BackingField: {fileID: 6611442615963128792, guid: 7ebb4e1336a7541afab0e4d721c14daf, type: 3}
   <OnlineShopTopPanelButton>k__BackingField: {fileID: 2188132548049356872, guid: 23073ddfbad8d452fa691ae19fffcb55, type: 3}
   <ShopItemView>k__BackingField: {fileID: 7843614357375134291, guid: fb272c7e4c7a84288a3d2b10073b2a94, type: 3}
   <ChairSprites>k__BackingField:
@@ -38,3 +37,11 @@ MonoBehaviour:
   <ConnectorPrefab>k__BackingField: {fileID: 3746236021692541244, guid: ace88d78739c445d18673d292034159c, type: 3}
   <employeeItemPrefab>k__BackingField: {fileID: 7923355271816800085, guid: cbb05199eb3974285aa253d596e6e286, type: 3}
   <EmployeeStats>k__BackingField: {fileID: 5134021817774285303, guid: f5c878ebb54424240865f46f12caedb5, type: 3}
+  <ItemShopView>k__BackingField: {fileID: 8315505800075190547, guid: 64ff7d90f59b64450bbeb6d196fe98a1, type: 3}
+  <EmployeeShopView>k__BackingField: {fileID: 4251127663520005263, guid: 0a783fe1d6b374056867033adb676eb8, type: 3}
+  <UpgradeShopView>k__BackingField: {fileID: 555539911971958299, guid: 73d2b866f5f854bfab71b7d2232647e2, type: 3}
+  <NextStateButton>k__BackingField: {fileID: 3190842478260406059, guid: 947e2a522719f4d04929b09ee7b56979, type: 3}
+  <Hud>k__BackingField: {fileID: 3265717294374009298, guid: a8ee8f88cafdc47769b76264b41e1362, type: 3}
+  <MainShop>k__BackingField: {fileID: 6436056340835205268, guid: 038f97fba03f64433ae274705241a935, type: 3}
+  <ResultWindow>k__BackingField: {fileID: 2829582624341209013, guid: 7b21017fb3bec475c99139df4ed0d389, type: 3}
+  <ReleaseResult>k__BackingField: {fileID: 1528358500880805814, guid: 00374c78bb7f34d0db950ae00b0bbda1, type: 3}

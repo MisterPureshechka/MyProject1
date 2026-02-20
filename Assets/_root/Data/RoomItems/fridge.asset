@@ -15,9 +15,10 @@ MonoBehaviour:
   Id: Fridge
   Name: Fridge
   Cost: 150
+  Description: 
   FoodValue: 25
   EnergyValue: 15
   MoodValue: 20
   TimeToUpdateEmployeeStat: 5
-  Sprite: {fileID: 0}
+  Preview: {fileID: 9119855072278895591, guid: ad767008cf9ea40de865601d2737e24e, type: 3}
   Prefab: {fileID: 723939362492997789, guid: 44248059a62c64cb9879b8294ce7b7d6, type: 3}

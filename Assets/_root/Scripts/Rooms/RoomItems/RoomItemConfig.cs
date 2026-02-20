@@ -1,5 +1,6 @@
 using Scripts.Rooms.RoomItems;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _root.Scripts.Rooms.RoomItems
 {
@@ -10,6 +11,7 @@ namespace _root.Scripts.Rooms.RoomItems
         public string Id;
         public string Name;
         public int Cost;
+        public string Description;
         
         public int FoodValue;
         public int EnergyValue;
@@ -18,7 +20,7 @@ namespace _root.Scripts.Rooms.RoomItems
         public float TimeToUpdateEmployeeStat;
 
         [Header("Visual")]
-        public Sprite Sprite;
+        public GameObject Preview;
         public RoomItemView Prefab;
     }
 

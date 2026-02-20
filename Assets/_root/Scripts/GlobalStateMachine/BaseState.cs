@@ -1,6 +1,7 @@
 using System;
 using Scripts.Data;
 using Scripts.Progress;
+using UnityEngine;
 
 namespace Scripts.GlobalStateMachine
 {
@@ -8,15 +9,17 @@ namespace Scripts.GlobalStateMachine
     {
         protected readonly GameStateMachine _gameStateMachine;
         protected readonly Controllers _controllers;
-        protected readonly GameProgress _gameProgress;
+        protected readonly SaveService _saveService;
         protected readonly GameData _gameData;
+        protected readonly Canvas _canvas;
 
-        protected BaseState(GameStateMachine gsm, Controllers controllers, GameProgress progress, GameData data)
+        protected BaseState(GameStateMachine gsm, Controllers controllers, SaveService progress, GameData data, Canvas canvas)
         {
             _gameStateMachine = gsm;
             _controllers = controllers;
-            _gameProgress = progress;
+            _saveService = progress;
             _gameData = data;
+            _canvas = canvas;
         }
 
         public abstract void Enter();

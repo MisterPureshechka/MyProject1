@@ -16,22 +16,22 @@ namespace Scripts.Sleep
         private readonly AlarmClockCatalogue _alarmClockCatalogue;
 
         private bool _clockButtonsWired;
-        private readonly GameProgress _gameProgress;
+        private readonly SaveService _saveService;
         private readonly GameStateMachine _gameStateMachine;
         private readonly LocalEvents _localEvents;
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private int _sleepHours;
         private int _sleepMinutes;
         private readonly TimeLogic _timeLogic;
 
         public SleepLogic(GameStateMachine gameStateMachine, LocalEvents localEvents,
-            ProgressDataAdapter progressDataAdapter, GameProgress gameProgress,
+            ProgressDataAdapterOLD progressDataAdapterOld, SaveService saveService,
             TimeLogic timeLogic)
         {
             _gameStateMachine = gameStateMachine;
             _localEvents = localEvents;
-            _progressDataAdapter = progressDataAdapter;
-            _gameProgress = gameProgress;
+            _progressDataAdapterOld = progressDataAdapterOld;
+            _saveService = saveService;
             _timeLogic = timeLogic;
 
             _alarmClockCatalogue = Object.FindAnyObjectByType<AlarmClockCatalogue>(FindObjectsInactive.Include);
@@ -111,7 +111,7 @@ namespace Scripts.Sleep
             if (durationMinutes <= 0)
             {
                 durationMinutes += 24 * 60;
-                _progressDataAdapter.TryUpdateValue(Consts.CurrentDayKey, 1);
+                _progressDataAdapterOld.TryUpdateValue(Consts.CurrentDayKey, 1);
             }
 
             CreateChangeStatValue(durationMinutes);
@@ -119,7 +119,7 @@ namespace Scripts.Sleep
             _localEvents.TriggerHideCatalogue(_alarmClockCatalogue);
             SaveTime(_sleepHours, _sleepMinutes);
 
-            _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
+            _saveService.SaveProgress(_progressDataAdapterOld.GetProgressData());
             _gameStateMachine.EnterState<HomeState>();
         }
 
@@ -129,7 +129,7 @@ namespace Scripts.Sleep
 
             var energyPerHour = Random.Range(8f, 12f);
             var energyDelta = hoursSlept * energyPerHour;
-            _progressDataAdapter.TryUpdateValue(Consts.Energy, energyDelta);
+            _progressDataAdapterOld.TryUpdateValue(Consts.Energy, energyDelta);
 
             float moodDelta;
             if (hoursSlept < 5f)
@@ -141,11 +141,11 @@ namespace Scripts.Sleep
             else
                 moodDelta = -Random.Range(5f, 12f); 
 
-            _progressDataAdapter.TryUpdateValue(Consts.Mood, moodDelta);
+            _progressDataAdapterOld.TryUpdateValue(Consts.Mood, moodDelta);
 
             var hungerPerHour = Random.Range(4.5f, 6.0f);
             var foodDelta = -(hoursSlept * hungerPerHour + Random.Range(0f, 5f));
-            _progressDataAdapter.TryUpdateValue(Consts.Food, foodDelta);
+            _progressDataAdapterOld.TryUpdateValue(Consts.Food, foodDelta);
         }
 
 

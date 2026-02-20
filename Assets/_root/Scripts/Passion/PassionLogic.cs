@@ -8,18 +8,18 @@ namespace Scripts.Passion
     public class PassionLogic : IExecute, ICleanUp
     {
         private LocalEvents _localEvents;
-        private ProgressDataAdapter _progressDataAdapter;
-        private GameProgress _gameProgress;
+        private ProgressDataAdapterOLD _progressDataAdapterOld;
+        private SaveService _saveService;
 
         private IStatBarView _view;
         private float _timeSinceLastUpdate;
         private float _updateInterval = 0.5f;
 
-        public PassionLogic(LocalEvents localEvents, ProgressDataAdapter progressDataAdapter, GameProgress gameProgress, IStatBarView view)
+        public PassionLogic(LocalEvents localEvents, ProgressDataAdapterOLD progressDataAdapterOld, SaveService saveService, IStatBarView view)
         {
             _localEvents = localEvents;
-            _progressDataAdapter = progressDataAdapter;
-            _gameProgress = gameProgress;
+            _progressDataAdapterOld = progressDataAdapterOld;
+            _saveService = saveService;
             _view = view;
 
             _localEvents.OnPassionIncrease += IncreasePassion;
@@ -30,8 +30,8 @@ namespace Scripts.Passion
         {
             _view = barView;
             _view.Init(_localEvents);
-            var value = _progressDataAdapter.GetStats(barView.MetaType);
-            var maxValue = _progressDataAdapter.GetMaxStats(barView.MetaType);
+            var value = _progressDataAdapterOld.GetStats(barView.MetaType);
+            var maxValue = _progressDataAdapterOld.GetMaxStats(barView.MetaType);
             _view.UpdateView(value, maxValue);
         }
         
@@ -40,8 +40,8 @@ namespace Scripts.Passion
             _timeSinceLastUpdate += deltaTime;
             if (_timeSinceLastUpdate >= _updateInterval) 
             {
-                var value = _progressDataAdapter.GetStats(_view.MetaType);
-                var maxValue = _progressDataAdapter.GetMaxStats(_view.MetaType);
+                var value = _progressDataAdapterOld.GetStats(_view.MetaType);
+                var maxValue = _progressDataAdapterOld.GetMaxStats(_view.MetaType);
 
                 _view.UpdateView(value, maxValue);
                 _timeSinceLastUpdate = 0;

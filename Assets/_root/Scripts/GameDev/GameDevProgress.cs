@@ -10,12 +10,12 @@ namespace Scripts.GameDev
     {
         private const string Key = "Dev.Progress";
 
-        private readonly ProgressDataAdapter _adapter;                 
+        private readonly ProgressDataAdapterOLD _adapterOld;                 
         private readonly Dictionary<string, GameProgressData> _games = new();
 
-        public GameDevProgress(ProgressDataAdapter adapter)
+        public GameDevProgress(ProgressDataAdapterOLD adapterOld)
         {
-            _adapter = adapter;
+            _adapterOld = adapterOld;
             Load(); 
         }
 
@@ -77,12 +77,12 @@ namespace Scripts.GameDev
             }
 
             string json = JsonConvert.SerializeObject(snap, Formatting.Indented);
-            _adapter.SaveCustomJson(Key, json);
+            _adapterOld.SaveCustomJson(Key, json);
         }
 
         private void Load()
         {
-            string json = _adapter.LoadCustomJson(Key);
+            string json = _adapterOld.LoadCustomJson(Key);
             if (string.IsNullOrEmpty(json)) return;
 
             GameDevProgressSnapshot snap;

@@ -9,24 +9,24 @@ namespace Scripts.Hero
     public class BodyStateLogic : ICleanUp
     {
         private const string Energy = "Energy";
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly LocalEvents _localEvents;
 
         private float _energyValue;
         private MoodState _currentMoodState;
 
-        public BodyStateLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
+        public BodyStateLogic(ProgressDataAdapterOLD progressDataAdapterOld, LocalEvents localEvents)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _localEvents = localEvents;
             
-            _progressDataAdapter.OnStatUpdated += UpdateMood;
+            _progressDataAdapterOld.OnStatUpdated += UpdateMood;
             UpdateMood();
         }
         
         private void UpdateMood()
         {
-            var energyData = _progressDataAdapter.GetMetadata(Energy);
+            var energyData = _progressDataAdapterOld.GetMetadata(Energy);
             _energyValue = energyData.Value;
             
             float maxMood = energyData.MaxValue;
@@ -60,7 +60,7 @@ namespace Scripts.Hero
 
         public void CleanUp()
         {
-            _progressDataAdapter.OnStatUpdated -= UpdateMood;
+            _progressDataAdapterOld.OnStatUpdated -= UpdateMood;
         }
     }
 }

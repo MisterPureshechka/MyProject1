@@ -13,7 +13,7 @@ namespace Scripts.EcoSystem.Calendar
         private LocalEvents _localEvents;
         private readonly MiniCalendarView _miniCalendarView;
         private readonly CalendarCatalogue _calendarCatalogue;
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         
         private List<CalendarEvent> _allEvents = new();
         private List<List<CalendarEvent>> _permanentEvents = new();
@@ -21,12 +21,12 @@ namespace Scripts.EcoSystem.Calendar
         private GameDate _currentDate;
 
 
-        public CalendarLogic(LocalEvents localEvents, MiniCalendarView miniCalendarView, CalendarCatalogue calendarCatalogue, ProgressDataAdapter progressDataAdapter)
+        public CalendarLogic(LocalEvents localEvents, MiniCalendarView miniCalendarView, CalendarCatalogue calendarCatalogue, ProgressDataAdapterOLD progressDataAdapterOld)
         {
             _localEvents = localEvents;
             _miniCalendarView = miniCalendarView;
             _calendarCatalogue = calendarCatalogue;
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
 
             _calendarCatalogue.Init(_localEvents, _allEvents, _permanentEvents);
             _miniCalendarView.Init(_localEvents, _calendarCatalogue);

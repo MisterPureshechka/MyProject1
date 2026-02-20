@@ -11,6 +11,7 @@ namespace Scripts
     {
         [SerializeField] private GameData _gameData;
         [SerializeField] private LoadingCurtain _loadingCurtain;
+        [SerializeField] private Canvas _canvas;
 
         private GameStateMachine _stateMachine;
 
@@ -18,8 +19,8 @@ namespace Scripts
 
         private void Start()
         {
-            var gameProgress = new GameProgress();
-            _stateMachine = new GameStateMachine(this, _gameData, gameProgress, _loadingCurtain);
+            var gameProgress = new SaveService();
+            _stateMachine = new GameStateMachine(this, _gameData, gameProgress, _loadingCurtain, _canvas);
 
             _stateMachine.EnterState<LoadProgressState>(); 
         }

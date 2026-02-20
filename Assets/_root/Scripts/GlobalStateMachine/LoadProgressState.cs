@@ -7,13 +7,13 @@ namespace Scripts.GlobalStateMachine
 {
     public class LoadProgressState : BaseState
     {
-        public LoadProgressState(GameStateMachine gameStateMachine, Controllers controllers, GameProgress gameProgress, GameData gameData)
-            : base(gameStateMachine, controllers, gameProgress, gameData) { }
+        public LoadProgressState(GameStateMachine gameStateMachine, Controllers controllers, SaveService saveService, GameData gameData, Canvas canvas)
+            : base(gameStateMachine, controllers, saveService, gameData, canvas) { }
 
         public override void Enter()
         {
             LoadProgressOrInitNew();
-            _gameStateMachine.EnterState<WorkState>();
+            _gameStateMachine.EnterState<ShopState>();
         }
 
         public override void Update(float deltaTime) { }
@@ -22,13 +22,13 @@ namespace Scripts.GlobalStateMachine
 
         private void LoadProgressOrInitNew()
         {
-            var progress = _gameProgress.LoadProgress();
+            var progress = _saveService.LoadProgress();
             
             if (progress == null)
             {
                 Debug.Log("Progress is null, creating new progress from meta_config.json.");
                 progress = NewProgress();
-                _gameProgress.SaveProgress(progress);
+                _saveService.SaveProgress(progress);
             }
 
             Tools.SaveToJson(progress, Application.dataPath + "/meta_config_backup.json");

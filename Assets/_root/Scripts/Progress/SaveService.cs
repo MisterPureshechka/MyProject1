@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Scripts.Tasks;
 using UnityEngine;
 
 namespace Scripts.Progress
 {
-    public class GameProgress
+    public class SaveService
     {
         private const string ProgressKey = "GameProgress";
 
@@ -18,27 +19,25 @@ namespace Scripts.Progress
 
         public ProgressData LoadProgress()
         {
-            // НЕТ СОХРАНЕНИЯ -> ВОЗВРАЩАЕМ ДЕФОЛТ
             if (!PlayerPrefs.HasKey(ProgressKey))
             {
                 var created = CreateDefaultProgress();
-                SaveProgress(created); // чтобы дальше уже было сохранение
+                SaveProgress(created); 
                 return created;
             }
-
+            
             try
             {
                 string json = PlayerPrefs.GetString(ProgressKey);
                 var loaded = JsonConvert.DeserializeObject<ProgressData>(json);
-
-                // если вдруг json битый или пустой — тоже откатываемся к дефолту
+            
                 if (loaded == null)
                 {
                     var created = CreateDefaultProgress();
                     SaveProgress(created);
                     return created;
                 }
-
+            
                 return loaded;
             }
             catch (System.Exception e)
@@ -48,6 +47,9 @@ namespace Scripts.Progress
                 SaveProgress(created);
                 return created;
             }
+            // var created = CreateDefaultProgress();
+            // SaveProgress(created); 
+            // return created;
         }
 
         public void Clear()
@@ -57,8 +59,39 @@ namespace Scripts.Progress
 
         private ProgressData CreateDefaultProgress()
         {
-            var progress = new ProgressData();
+            var progress = new ProgressData
+            {
+                CompanyName = "New Studio",
+                Money = 100,
+                Experience = 0,
+                OfficeCells = 4,
+                
+                Stage = ProjectStage.Prototype,
 
+                GameIndex = 0,
+                CurrentMilestoneIndex = 0,
+                CurrentMilestoneCount = 0,
+
+                CurrentRoadmapNodeId = null,
+                CompletedRoadmapNodeIds = new HashSet<string>(),
+
+                MilestoneProgress = new MilestoneProgressData
+                {
+                    IsActive = false,
+                    MilestoneIndex = 0,
+                    DaysLimit = 0,
+                    DaysSpent = 0,
+                    TotalTasks = 0,
+                    DoneTasks = 0,
+                },
+
+                LastMilestoneResult = new MilestoneResultData
+                {
+                    HasValue = false
+                }
+            };
+
+            // --- Default employee ---
             progress.Employees.Add(new EmployeeProgressData
             {
                 Id = "emp_mike",
@@ -66,10 +99,12 @@ namespace Scripts.Progress
                 Column = 1,
                 Skills = new Dictionary<string, float>
                 {
-                    { "Programming", 5f }
+                    { "Programming", 3f },
+                    { "Art", 2f },
                 }
             });
 
+            // --- Default item ---
             progress.Items.Add(new ItemProgressData
             {
                 Column = 2,
@@ -78,5 +113,6 @@ namespace Scripts.Progress
 
             return progress;
         }
+
     }
 }

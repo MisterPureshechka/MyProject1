@@ -31,7 +31,7 @@ namespace Scripts.Tasks
         private readonly UiFactory _uiFactory;
         private readonly LocalEvents _localEvents;
         private readonly InteractiveObjectRegisterer _interactiveObjectRegisterer;
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly PerkService _perkService;
         private readonly TaskLibrary _taskLibrary;
         private readonly DevTaskCatalogue _devTaskCatalogue;
@@ -50,14 +50,14 @@ namespace Scripts.Tasks
         private const string currentGameName = "New Game";
 
 
-        public SprintSystemOLD(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer, ProgressDataAdapter progressDataAdapter, PerkService perkService, GameDevProgress gameDevProgress)
+        public SprintSystemOLD(TaskLibrary taskLibrary, Canvas canvas, GameData gameData, SprintView sprintView, UiFactory uiFactory, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegisterer, ProgressDataAdapterOLD progressDataAdapterOld, PerkService perkService, GameDevProgress gameDevProgress)
         {
             _tempStat = canvas.transform.Find("TempStat").GetComponent<TextMeshProUGUI>();
             _sprintView = sprintView;
             _uiFactory = uiFactory;
             _localEvents = localEvents;
             _interactiveObjectRegisterer = interactiveObjectRegisterer;
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _perkService = perkService;
             _taskLibrary = taskLibrary;
             
@@ -66,7 +66,7 @@ namespace Scripts.Tasks
             _gameDevProgress = gameDevProgress;
             _gameDevProgress.CreateOrSelectGame(currentGameName);
             
-            _devSave = new DevSprintSaveService(_progressDataAdapter, _taskLibrary);
+            _devSave = new DevSprintSaveService(_progressDataAdapterOld, _taskLibrary);
             
             var devRestored = _devSave.Load();
             if (devRestored.Count > 0)
@@ -239,8 +239,8 @@ namespace Scripts.Tasks
                 _activeTasks.Add(nextTask);
             }
             
-            float health = _progressDataAdapter.GetStats(MetaType.Health);
-            float maxHealth = _progressDataAdapter.GetMaxStats(MetaType.Health);
+            float health = _progressDataAdapterOld.GetStats(MetaType.Health);
+            float maxHealth = _progressDataAdapterOld.GetMaxStats(MetaType.Health);
 
             float healthPercent = Mathf.Clamp01(health / maxHealth);
                 

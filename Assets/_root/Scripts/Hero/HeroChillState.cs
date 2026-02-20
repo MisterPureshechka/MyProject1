@@ -6,10 +6,10 @@ namespace Scripts.Hero
 {
     public class HeroChillState : HeroBaseState
     {
-        private readonly ProgressDataAdapter _progressData;
+        private readonly ProgressDataAdapterOLD _progressData;
         private readonly LocalEvents _localEvents;
 
-        public HeroChillState(HeroLogic heroLogic, ProgressDataAdapter progressData, LocalEvents localEvents) : base(heroLogic)
+        public HeroChillState(HeroLogic heroLogic, ProgressDataAdapterOLD progressData, LocalEvents localEvents) : base(heroLogic)
         {
             _progressData = progressData;
             _localEvents = localEvents;

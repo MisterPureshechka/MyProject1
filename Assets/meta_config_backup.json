@@ -1,7 +1,10 @@
 {
-    "CompanyName": "",
-    "Money": 0,
+    "Stage": 0,
+    "CompanyName": "New Studio",
+    "Money": 100,
     "Experience": 0,
+    "OfficeCells": 4,
+    "CurrentRoadmapNodeId": "",
     "Items": [
         {
             "Column": 2,
@@ -14,5 +17,61 @@
             "Name": "Mike",
             "Column": 1
         }
-    ]
+    ],
+    "GameIndex": 0,
+    "CurrentMilestoneIndex": 0,
+    "CurrentMilestoneCount": 0,
+    "MilestoneProgress": {
+        "IsActive": false,
+        "MilestoneIndex": 0,
+        "DaysLimit": 0,
+        "DaysSpent": 0,
+        "TotalTasks": 0,
+        "DoneTasks": 0,
+        "IsCompleted": false,
+        "IsFailed": false
+    },
+    "LastMilestoneResult": {
+        "HasValue": false,
+        "GameIndex": 0,
+        "MilestoneIndex": 0,
+        "Completed": false,
+        "Failed": false,
+        "DaysSpent": 0,
+        "DaysLimit": 0,
+        "DoneTasks": 0,
+        "TotalTasks": 0,
+        "MoneyReward": 0,
+        "SalaryCost": 0,
+        "NetProfit": 0,
+        "MoneyTotalAfter": 0,
+        "ExperienceReward": 0,
+        "ExperienceTotalAfter": 0
+    },
+    "CurrentShopFurniture": {
+        "OfferIds": []
+    },
+    "EmployeeShop": {
+        "Offers": []
+    },
+    "SkillUpgradeShop": {
+        "Offers": []
+    },
+    "LastReleaseResult": {
+        "HasValue": false,
+        "GameIndex": 0,
+        "ProgrammingScore": 0,
+        "ArtScore": 0,
+        "GameplayScore": 0,
+        "SoundScore": 0,
+        "UnitsSold": 0,
+        "Revenue": 0,
+        "PublisherCut": 0,
+        "NetProfit": 0,
+        "AwardArt": false,
+        "AwardGameplay": false,
+        "AwardSound": false,
+        "GameOfTheYear": false
+    },
+    "PendingReleaseWindow": false
 }

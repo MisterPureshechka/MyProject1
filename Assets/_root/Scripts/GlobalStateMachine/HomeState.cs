@@ -32,14 +32,14 @@ namespace Scripts.GlobalStateMachine
     public class HomeState : BaseState
     {
 
-        public HomeState(GameStateMachine gameStateMachine, Controllers controllers, GameProgress gameProgress, GameData gameData) : base(gameStateMachine, controllers, gameProgress, gameData)
+        public HomeState(GameStateMachine gameStateMachine, Controllers controllers, SaveService saveService, GameData gameData, Canvas canvas) : base(gameStateMachine, controllers, saveService, gameData, canvas)
         {
         }
 
         public override void Enter()
         {
-            var progressStat = _gameProgress.LoadProgress();
-            var progressDataAdapter = new ProgressDataAdapter(progressStat);
+            var progressStat = _saveService.LoadProgress();
+            var progressDataAdapter = new ProgressDataAdapterOLD(progressStat);
             var localEvents = new LocalEvents();
             
             var uiFactory = new UiFactory(_gameData);
@@ -74,7 +74,7 @@ namespace Scripts.GlobalStateMachine
             var roomSize = homeInitializer.GetRoomSize();
             var heroMovementLogic =
                 new HeroMovementLogic(camera, interactiveObjectRegister, inputController, localEvents);
-            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroAnimator, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _gameProgress, localEvents, interactiveObjectRegister);
+            var heroLogic = new HeroLogic(_gameData.HeroConfig, heroAnimator, heroMovementLogic, hero, initialPos, roomSize, spriteAnimator, progressDataAdapter, _saveService, localEvents, interactiveObjectRegister);
 
             var interactiveObjectSelector = new InteractiveObjectSelector(camera, inputController, interactiveObjectRegister, localEvents);
 
@@ -90,9 +90,9 @@ namespace Scripts.GlobalStateMachine
 
             var commandSystem = new CommandSystem(canvas, camera, uiFactory, localEvents);
 
-            var perkService = new PerkService(uiFactory, canvas, localEvents, progressDataAdapter, _gameProgress);
+            var perkService = new PerkService(uiFactory, canvas, localEvents, progressDataAdapter, _saveService);
             
-            var hud = Object.FindAnyObjectByType<HUDView>(FindObjectsInactive.Include);
+            var hud = Object.FindAnyObjectByType<HUDViewOld>(FindObjectsInactive.Include);
             hud.gameObject.SetActive(true);
             var statController = new StatsController(progressDataAdapter, localEvents);
             var statEffectLogic = new StatEffectLogic(progressDataAdapter, localEvents, perkService);
@@ -114,7 +114,7 @@ namespace Scripts.GlobalStateMachine
 
             var fader = new FaderLogic(localEvents);
 
-            var wallet = new WalletLogic(progressDataAdapter, _gameProgress, localEvents);
+            var wallet = new WalletLogic(progressDataAdapter, _saveService, localEvents);
             var onlineShopController = new OnlineShopController(Object.FindAnyObjectByType<OnlineShopView>(FindObjectsInactive.Include),
                 localEvents, _gameData.PrefabDataBase, new ShopItemsLibrary(), wallet);
             var upgradeLogic = new UpgradeLogicOLD(localEvents, progressDataAdapter);
@@ -141,8 +141,8 @@ namespace Scripts.GlobalStateMachine
 
             var rentLogic = new RentLogic(localEvents, calendarLogic, progressDataAdapter);
 
-            var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home, progressDataAdapter, _gameProgress);
-            var sleepLogic = new SleepLogic(_gameStateMachine, localEvents, progressDataAdapter, _gameProgress, timeLogic);
+            var roomExitLogic = new RoomExitLogic(_gameStateMachine, localEvents, home, progressDataAdapter, _saveService);
+            var sleepLogic = new SleepLogic(_gameStateMachine, localEvents, progressDataAdapter, _saveService, timeLogic);
 
             var catFactory = new CatFactory(_gameData.PrefabDataBase);
             var catPositionRegisterer = new CatPositionRegisterer();
@@ -154,7 +154,7 @@ namespace Scripts.GlobalStateMachine
             statController.RegisterView(hud.KnowledgeBar);
             statController.UpdateAllViews();
 
-            var passionLogic = new PassionLogic(localEvents, progressDataAdapter, _gameProgress, hud.PassionBar);
+            var passionLogic = new PassionLogic(localEvents, progressDataAdapter, _saveService, hud.PassionBar);
             
 
             _controllers.Add(inputController);

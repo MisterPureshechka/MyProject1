@@ -3,23 +3,24 @@ using Core;
 using Scripts.GlobalStateMachine;
 using Scripts.Meta;
 using Scripts.Progress;
+using UnityEngine;
 
 namespace _root.Scripts.Ui.Stats
 {
     public class HealthStatLogic : ICleanUp
     {
         private HealthStatPanel _healthPanel;
-        private ProgressDataAdapter _progressDataAdapter;
+        private ProgressDataAdapterOLD _progressDataAdapterOld;
         private LocalEvents _localEvents;
 
-        public HealthStatLogic(HealthStatPanel healthPanel, ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
+        public HealthStatLogic(HealthStatPanel healthPanel, ProgressDataAdapterOLD progressDataAdapterOld, LocalEvents localEvents)
         {
             _healthPanel = healthPanel;
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _localEvents = localEvents;
 
             InitPanel();
-            _progressDataAdapter.OnStatUpdated += UpdateStats;
+            _progressDataAdapterOld.OnStatUpdated += UpdateStats;
         }
 
         private void InitPanel()
@@ -31,7 +32,7 @@ namespace _root.Scripts.Ui.Stats
             //         healthStats[kvp.Key] = kvp.Value; 
             // }
 
-            _healthPanel.InitPanel(healthStats, _progressDataAdapter);
+            _healthPanel.InitPanel(healthStats, _progressDataAdapterOld);
         }
 
         private void UpdateStats()
@@ -41,7 +42,8 @@ namespace _root.Scripts.Ui.Stats
 
         public void CleanUp()
         {
-            _progressDataAdapter.OnStatUpdated -= UpdateStats;
+            Object.Destroy(_healthPanel.gameObject);
+            _progressDataAdapterOld.OnStatUpdated -= UpdateStats;
         }
     }
 }

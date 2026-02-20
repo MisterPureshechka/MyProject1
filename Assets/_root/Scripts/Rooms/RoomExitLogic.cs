@@ -14,18 +14,18 @@ namespace Scripts.Rooms
         private readonly GameStateMachine _gameStateMachine;
         private LocalEvents _localEvents;
         private readonly IRoomViewOLD _iRoomViewOld;
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
 
         private List<CalendarEvent> _events;
-        private GameProgress _gameProgress;
+        private SaveService _saveService;
 
-        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents, IRoomViewOLD iRoomViewOld, ProgressDataAdapter progressDataAdapter, GameProgress gameProgress)
+        public RoomExitLogic(GameStateMachine gameStateMachine, LocalEvents localEvents, IRoomViewOLD iRoomViewOld, ProgressDataAdapterOLD progressDataAdapterOld, SaveService saveService)
         {
             _gameStateMachine = gameStateMachine;
             _localEvents = localEvents;
             _iRoomViewOld = iRoomViewOld;
-            _progressDataAdapter = progressDataAdapter;
-            _gameProgress = gameProgress;
+            _progressDataAdapterOld = progressDataAdapterOld;
+            _saveService = saveService;
 
         }
 

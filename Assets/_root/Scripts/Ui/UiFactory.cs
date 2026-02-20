@@ -2,8 +2,12 @@ using System;
 using _root.Planning;
 using _root.Scripts.Ui.Stats;
 using Scripts.Data;
+using Scripts.OnlineShop;
 using Scripts.Perks;
 using Scripts.Tasks;
+using Scripts.Ui.EmployeeShop;
+using Scripts.Ui.ItemShop;
+using Scripts.Ui.SkillUpgrade;
 using Scripts.Ui.TaskUi;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -30,6 +34,7 @@ namespace Scripts.Ui
         public EmployeeStats GetEmployeeStats(Transform canvasTransform)
         {
             var instance = Object.Instantiate(_gameData.PrefabDataBase.EmployeeStats, canvasTransform);
+            instance.transform.SetAsFirstSibling();
             
             return instance.GetComponent<EmployeeStats>();
         }
@@ -97,7 +102,8 @@ namespace Scripts.Ui
         public SprintView GetSprintView(Transform canvasTransform)
         {
             var instance = Object.Instantiate(_gameData.PrefabDataBase.SprintPrefab, canvasTransform);
-
+            instance.transform.SetAsFirstSibling();
+            
             return instance.GetComponent<SprintView>();
         }
 
@@ -107,6 +113,72 @@ namespace Scripts.Ui
             var instance = Object.Instantiate(_gameData.PrefabDataBase.CommandPanelView, canvasTransform);
 
             return instance.GetComponent<CommandPanelView>(); 
+        }
+
+        public ItemShopView GetItemShopView(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.ItemShopView, canvasTransform);
+            instance.transform.SetAsFirstSibling();
+
+            return instance.GetComponent<ItemShopView>(); 
+        }
+        
+        public EmployeeShopView GetEmployeeShopView(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.EmployeeShopView, canvasTransform);
+            instance.transform.SetAsFirstSibling();
+
+            return instance.GetComponent<EmployeeShopView>(); 
+        }
+
+        public SkillUpgradeShopView GetUpgradeShop(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.UpgradeShopView, canvasTransform);
+            instance.transform.SetAsFirstSibling();
+
+            return instance.GetComponent<SkillUpgradeShopView>(); 
+        }
+        
+        public HudView GetHud(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.Hud, canvasTransform);
+            instance.transform.SetAsFirstSibling();
+
+            return instance.GetComponent<HudView>(); 
+        }
+        
+        public MainShopView GetShop(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.MainShop, canvasTransform);
+            instance.transform.SetAsFirstSibling();
+
+            return instance.GetComponent<MainShopView>(); 
+        }
+        
+        public NextStateButton GetNextStateButton(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.NextStateButton, canvasTransform);
+            instance.transform.SetAsFirstSibling();
+
+            return instance.GetComponent<NextStateButton>(); 
+        }
+
+        public MilestoneResultView GetResultWindow(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.ResultWindow, canvasTransform);
+            instance.transform.SetAsLastSibling();
+            instance.gameObject.SetActive(false);
+
+            return instance.GetComponent<MilestoneResultView>(); 
+        }
+
+        public ReleaseResultView GetReleaseWindow(Transform canvasTransform)
+        {
+            var instance = Object.Instantiate(_gameData.PrefabDataBase.ReleaseResult, canvasTransform);
+            instance.transform.SetAsLastSibling();
+            instance.gameObject.SetActive(false);
+
+            return instance.GetComponent<ReleaseResultView>(); 
         }
     }
 

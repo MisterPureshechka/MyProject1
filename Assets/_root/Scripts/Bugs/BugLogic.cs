@@ -8,7 +8,7 @@ namespace Scripts.Bugs
 {
     public class BugLogic : ICleanUp
     {
-        private readonly ProgressDataAdapter _progress;
+        private readonly ProgressDataAdapterOLD _progress;
 
         private const float MinBugChance   = 0.05f;  // 5%
         private const float MaxBugChance   = 0.35f;  // 35%
@@ -21,7 +21,7 @@ namespace Scripts.Bugs
         private const int SuccessMin = 3;
         private const int SuccessMaxInclusive = 5;
 
-        public BugLogic(ProgressDataAdapter progress)
+        public BugLogic(ProgressDataAdapterOLD progress)
         {
             _progress = progress;
         }

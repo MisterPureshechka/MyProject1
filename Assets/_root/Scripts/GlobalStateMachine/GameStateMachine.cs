@@ -12,18 +12,20 @@ namespace Scripts.GlobalStateMachine
     {
         private BaseState _currentBaseState;
         private readonly GameData _gameData;
-        private readonly GameProgress _gameProgress;
+        private readonly SaveService _saveService;
         private readonly LoadingCurtain _loadingCurtain;
         private readonly ICoroutineRunner _runner;
+        private readonly Canvas _canvas;
 
         private readonly Dictionary<Type, BaseState> _cachedStates = new();
 
-        public GameStateMachine(ICoroutineRunner runner, GameData gameData, GameProgress gameProgress, LoadingCurtain loadingCurtain)
+        public GameStateMachine(ICoroutineRunner runner, GameData gameData, SaveService saveService, LoadingCurtain loadingCurtain, Canvas canvas)
         {
             _runner = runner;
             _gameData = gameData;
-            _gameProgress = gameProgress;
+            _saveService = saveService;
             _loadingCurtain = loadingCurtain;
+            _canvas = canvas;
         }
 
         public void EnterState<T>() where T : BaseState
@@ -41,7 +43,7 @@ namespace Scripts.GlobalStateMachine
             if (!_cachedStates.TryGetValue(typeof(T), out var state))
             {
                 var controllers = new Controllers();
-                state = Activator.CreateInstance(typeof(T), this, controllers, _gameProgress, _gameData) as BaseState;
+                state = Activator.CreateInstance(typeof(T), this, controllers, _saveService, _gameData, _canvas) as BaseState;
                 _cachedStates[typeof(T)] = state;
             }
 

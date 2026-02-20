@@ -10,12 +10,12 @@ namespace Scripts.Tasks
     {
         private const string Key = "Sprints.Dev.Tasks";
 
-        private readonly ProgressDataAdapter _adapter;
+        private readonly ProgressDataAdapterOLD _adapterOld;
         private readonly TaskLibrary _taskLibrary;
 
-        public DevSprintSaveService(ProgressDataAdapter adapter, TaskLibrary taskLibrary)
+        public DevSprintSaveService(ProgressDataAdapterOLD adapterOld, TaskLibrary taskLibrary)
         {
-            _adapter      = adapter;
+            _adapterOld      = adapterOld;
             _taskLibrary  = taskLibrary;
         }
 
@@ -48,7 +48,7 @@ namespace Scripts.Tasks
             }
 
             var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-            _adapter.SaveCustomJson(Key, json);
+            _adapterOld.SaveCustomJson(Key, json);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Scripts.Tasks
         public List<ITask> Load()
         {
             var result = new List<ITask>();
-            var json   = _adapter.LoadCustomJson(Key);
+            var json   = _adapterOld.LoadCustomJson(Key);
             if (string.IsNullOrEmpty(json)) return result;
 
             DevSprintSaveData data;
@@ -116,7 +116,7 @@ namespace Scripts.Tasks
 
         public void Clear()
         {
-            _adapter.SaveCustomJson(Key, "{}");
+            _adapterOld.SaveCustomJson(Key, "{}");
         }
     }
 }

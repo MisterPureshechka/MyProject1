@@ -23,15 +23,15 @@ namespace Scripts.Perks
         private readonly Dictionary<string, float> _multipliers = new();  
         private readonly Dictionary<SprintType, int> _maxTasksAdd = new(); 
         
-        private readonly ProgressDataAdapter _progressDataAdapter;    
-        private readonly GameProgress _gameProgress;   
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;    
+        private readonly SaveService _saveService;   
 
-        public PerkService(UiFactory uiFactory, Canvas canvas, LocalEvents localEvents, ProgressDataAdapter progressDataAdapter, GameProgress gameProgress)
+        public PerkService(UiFactory uiFactory, Canvas canvas, LocalEvents localEvents, ProgressDataAdapterOLD progressDataAdapterOld, SaveService saveService)
         {
-            _gameProgress = gameProgress;
+            _saveService = saveService;
             _uiFactory = uiFactory;
             _localEvents = localEvents;
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _allPerks = PerkLoader.Load();
             _perksCatalogue = _uiFactory.GetPerksCatalogue(canvas.transform);
             _perksCatalogue.OnApplySelectedPerks += ApplyCatalogueSelection;
@@ -43,7 +43,7 @@ namespace Scripts.Perks
 
         private void LoadPerks()
         {
-            var loadedIds = _progressDataAdapter.GetActivePerkIds();
+            var loadedIds = _progressDataAdapterOld.GetActivePerkIds();
             foreach (var id in loadedIds)
             {
                 if (_allPerks.ContainsKey(id))
@@ -155,8 +155,8 @@ namespace Scripts.Perks
                 }
             }
             
-            _progressDataAdapter.SetActivePerkIds(_activePerks);
-            _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
+            _progressDataAdapterOld.SetActivePerkIds(_activePerks);
+            _saveService.SaveProgress(_progressDataAdapterOld.GetProgressData());
         }
 
         public void CleanUp()

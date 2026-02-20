@@ -7,7 +7,7 @@ namespace Scripts.Hero
 {
     public class InitialPosLoader
     {
-        private ProgressDataAdapter _progressDataAdapter;
+        private ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly InteractiveObjectRegisterer _registerer;
 
 
@@ -15,9 +15,9 @@ namespace Scripts.Hero
 
         private Vector3 _initialPosition;
         
-        public InitialPosLoader(ProgressDataAdapter progressDataAdapter, InteractiveObjectRegisterer registerer)
+        public InitialPosLoader(ProgressDataAdapterOLD progressDataAdapterOld, InteractiveObjectRegisterer registerer)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _registerer = registerer;
         }
 

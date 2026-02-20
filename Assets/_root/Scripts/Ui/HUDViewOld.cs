@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Scripts.Ui
 {
-    public class HUDView : MonoBehaviour
+    public class HUDViewOld : MonoBehaviour
     {
         public HealthBarView HealthBar;
         public KnowledgeBarView KnowledgeBar;

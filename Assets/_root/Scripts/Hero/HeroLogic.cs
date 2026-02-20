@@ -17,7 +17,7 @@ namespace Scripts.Hero
     public class HeroLogic : IExecute, ICleanUp
     {
         private const float Offset = 1f;
-        private readonly GameProgress _gameProgress;
+        private readonly SaveService _saveService;
 
         private readonly HeroConfig _heroConfig;
         private readonly HeroMovementLogic _heroMovementLogic;
@@ -25,7 +25,7 @@ namespace Scripts.Hero
         private readonly HeroView _heroView;
         private readonly InteractiveObjectRegisterer _interactiveObjectRegister;
         private readonly LocalEvents _localEvents;
-        private readonly ProgressDataAdapter _progressData;
+        private readonly ProgressDataAdapterOLD _progressData;
 
         private readonly float _roomSize;
         private readonly SpriteAnimator _spriteAnimator;
@@ -77,8 +77,8 @@ namespace Scripts.Hero
         
 
         public HeroLogic(HeroConfig heroConfig, HeroAnimator heroAnimator, HeroMovementLogic heroMovementLogic, HeroView heroView,
-            Vector3 initialPosition, float roomSize, SpriteAnimator spriteAnimator, ProgressDataAdapter progressData,
-            GameProgress gameProgress, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegister)
+            Vector3 initialPosition, float roomSize, SpriteAnimator spriteAnimator, ProgressDataAdapterOLD progressData,
+            SaveService saveService, LocalEvents localEvents, InteractiveObjectRegisterer interactiveObjectRegister)
         {
             _heroConfig = heroConfig;
             _heroAnimator = heroAnimator;
@@ -92,7 +92,7 @@ namespace Scripts.Hero
             _roomSize = roomSize;
             _spriteAnimator = spriteAnimator;
             _progressData = progressData;
-            _gameProgress = gameProgress;
+            _saveService = saveService;
             _localEvents = localEvents;
             _interactiveObjectRegister = interactiveObjectRegister;
             _yPos = initialPosition.y;
@@ -278,7 +278,7 @@ namespace Scripts.Hero
             SetMeta(Consts.HeroStateKey, (int)IdOf(state));
             if (payload.HasValue)
                 SetMeta(Consts.HeroStatePayloadKey, payload.Value);
-            _gameProgress.SaveProgress(_progressData.GetProgressData());
+            _saveService.SaveProgress(_progressData.GetProgressData());
         }
 
         private HeroBaseState LoadLastState()
@@ -529,7 +529,7 @@ namespace Scripts.Hero
 
         public void SaveProgress()
         {
-            _gameProgress.SaveProgress(_progressData.GetProgressData());
+            _saveService.SaveProgress(_progressData.GetProgressData());
         }
 
         public void PlaceHero(Vector3 targetPosition)

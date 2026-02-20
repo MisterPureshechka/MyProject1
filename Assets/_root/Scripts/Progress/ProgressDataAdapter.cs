@@ -1,166 +1,49 @@
-using System;
-using System.Collections.Generic;
-using Scripts.Meta;
-using UnityEngine;
-using UnityEngine.Serialization;
-
 namespace Scripts.Progress
 {
-    public class ProgressDataAdapter
+    public sealed class ProgressDataAdapter
     {
-        private readonly ProgressData _progressData;
-        
-        private const string RoadMapProgressKey = "roadmapProgress"; 
+        private readonly SaveService _storage;
+        private ProgressData _data;
 
-        [Serializable]                  
-        private class RoadMapProgress   
-        {                               
-            public List<string> СompletedNodeIds = new List<string>(); 
-        }    
-
-        public Action OnStatUpdated { get; set; }
-
-        public ProgressDataAdapter(ProgressData progressData)
+        public ProgressDataAdapter(SaveService storage)
         {
-            // _progressData = progressData;
-            // if (_progressData.ActivePerkIds == null)
-            //     _progressData.ActivePerkIds = new List<string>();
-            //
-            // _progressData.Custom ??= new Dictionary<string, string>();
+            _storage = storage;
+            Load();
         }
         
-        public List<string> GetActivePerkIds()
+        public string GetCurrentRoadmapNodeId() => _data.CurrentRoadmapNodeId;
+
+        public void SetCurrentRoadmapNodeId(string nodeId, bool save = true)
         {
-            //eturn new List<string>(_progressData.ActivePerkIds ?? new List<string>());
-            return null;
+            _data.CurrentRoadmapNodeId = nodeId;
+            if (save) Save();
         }
 
-        public void SetActivePerkIds(IEnumerable<string> ids)
+        public bool IsRoadmapNodeCompleted(string nodeId)
         {
-            // _progressData.ActivePerkIds ??= new List<string>();
-            // _progressData.ActivePerkIds.Clear();
-            // if (ids == null) return;
-            // _progressData.ActivePerkIds.AddRange(ids);
+            return _data.CompletedRoadmapNodeIds != null &&
+                   _data.CompletedRoadmapNodeIds.Contains(nodeId);
         }
 
-        public float GetStats(MetaType metaType)
+        public void MarkRoadmapNodeCompleted(string nodeId, bool save = true)
         {
-            float total = 0f;
+            if (_data.CompletedRoadmapNodeIds == null)
+                _data.CompletedRoadmapNodeIds = new System.Collections.Generic.HashSet<string>();
 
-            // foreach (var metadata in _progressData.Metadata.Values)
-            // {
-            //     if (metadata.MetaType == metaType)
-            //         total += metadata.Value;
-            // }
-
-            return total;
+            if (_data.CompletedRoadmapNodeIds.Add(nodeId) && save)
+                Save();
         }
 
-        public float GetMaxStats(MetaType metaType)
+        public void Load()
         {
-            float total = 0f;
-
-            // foreach (var metadata in _progressData.Metadata.Values)
-            // {
-            //     if (metadata.MetaType == metaType)
-            //         total += metadata.MaxValue;
-            // }
-
-            return total;
+            _data = _storage.LoadProgress();
         }
 
-        public Meta.Metadata GetMetadata(string key)
+        public void Save()
         {
-            // if (_progressData.Metadata.TryGetValue(key, out var metadata))
-            //     return metadata;
-            //
-            // Debug.LogError($"[ProgressDataAdapter] Metadata key not found: '{key}'");
-            return null;
+            _storage.SaveProgress(_data);
         }
 
-        public bool TryUpdateValue(string key, float delta)
-        {
-            // if (!_progressData.Metadata.TryGetValue(key, out var metadata))
-            // {
-            //     Debug.LogWarning($"[ProgressDataAdapter] Cannot update unknown key: '{key}'");
-            //     return false;
-            // }
-            //
-            // metadata.ChangeValue(delta); 
-            // OnStatUpdated?.Invoke();
-
-            return true;
-        }
-        
-        public void SaveCustomJson(string key, string json)
-        {
-            //_progressData.Custom[key] = json;
-        }
-
-        public string LoadCustomJson(string key)
-        {
-            // return _progressData.Custom != null && _progressData.Custom.TryGetValue(key, out var json)
-            //     ? json
-            //     : null;
-
-            return null;
-        }
-
-        public ProgressData GetProgressData() => _progressData;
-        
-        private RoadMapProgress LoadRoadMapProgress()
-        {
-            // читаем из PlayerPrefs
-            string json = PlayerPrefs.GetString(RoadMapProgressKey, null);
-
-            if (string.IsNullOrEmpty(json))
-                return new RoadMapProgress();
-
-            try
-            {
-                var data = JsonUtility.FromJson<RoadMapProgress>(json);
-                return data ?? new RoadMapProgress();
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"[ProgressDataAdapter] Failed to parse roadmap progress json: {e.Message}");
-                return new RoadMapProgress();
-            }
-        }
-
-        private void SaveRoadMapProgress(RoadMapProgress progress)
-        {
-            string json = JsonUtility.ToJson(progress);
-            PlayerPrefs.SetString(RoadMapProgressKey, json);
-            PlayerPrefs.Save();
-        }
-
-        public bool IsRoadMapNodeCompleted(string nodeId)
-        {
-            if (string.IsNullOrEmpty(nodeId))
-                return false;
-
-            var progress = LoadRoadMapProgress();
-            return progress.СompletedNodeIds.Contains(nodeId);
-        }
-
-        public void MarkRoadMapNodeCompleted(string nodeId)
-        {
-            if (string.IsNullOrEmpty(nodeId))
-                return;
-
-            var progress = LoadRoadMapProgress();
-
-            if (!progress.СompletedNodeIds.Contains(nodeId))
-            {
-                progress.СompletedNodeIds.Add(nodeId);
-                SaveRoadMapProgress(progress);
-            }
-        }
-
-        public void ClearRoadMapProgress()
-        {
-            SaveRoadMapProgress(new RoadMapProgress());
-        }
+        public ProgressData Data => _data;
     }
 }

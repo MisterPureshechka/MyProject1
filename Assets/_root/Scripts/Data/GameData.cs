@@ -3,6 +3,7 @@ using Scripts.Cat;
 using Scripts.Messenger;
 using Scripts.Rooms.RoomItems;
 using Scripts.Sounds;
+using Scripts.Tasks;
 using Scripts.Upgrade;
 using UnityEngine;
 
@@ -21,6 +22,9 @@ namespace Scripts.Data
         [field: SerializeField] public SoundConfig SoundConfig { get; private set; }
         [field: SerializeField] public LevelMapConfig LevelMapConfig { get; private set; }
         [field: SerializeField] public RoomItemDatabase RoomItemDatabase { get; private set;}
+        
+        [field: SerializeField] public GameMetaConfig GameMetaConfig { get; private set; }
+        [field: SerializeField] public MilestoneRulesConfig MilestoneRulesConfig { get; private set; }
         
     }
 }

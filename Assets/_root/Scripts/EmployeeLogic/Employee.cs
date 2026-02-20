@@ -15,7 +15,7 @@ namespace Scripts.EmployeeLogic
         private const float HungerDrainPerSecond = 0.5f;
         private const float MoodDrainPerSecond   = 0.7f;
         
-        private const float MinWorkInterval = 0.5f;  
+        private const float MinWorkInterval = 0.2f;  
         private const float MaxWorkInterval = 2.5f;  
         
         private float _curvePower = 2.0f;
@@ -24,6 +24,8 @@ namespace Scripts.EmployeeLogic
         
         public string Id { get; }
         public string Name { get; }
+        
+        public event Action<Employee> OnSkillsChanged;
 
         public float Energy { get; private set; }
         public float Hunger { get; private set; }
@@ -38,8 +40,6 @@ namespace Scripts.EmployeeLogic
         public event Action OnStatUpdate; 
 
         public EmployeeItemView View { get; set; }
-        
-        private SkillModifier _skillModifier;
 
         private ITask _currentTask;
 
@@ -55,8 +55,6 @@ namespace Scripts.EmployeeLogic
             Hunger = 100;
             Mood = 100;
             
-            _skillModifier = new SkillModifier();
-            
             InitSkills();
         }
         
@@ -69,6 +67,14 @@ namespace Scripts.EmployeeLogic
                 if (Enum.TryParse<DevTaskType>(kv.Key, out var type))
                     SetSkill(type, kv.Value);
             }
+        }
+        
+        public Dictionary<string, float> ExportSkills()
+        {
+            var result = new Dictionary<string, float>(_skills.Count);
+            foreach (var kv in _skills)
+                result[kv.Key.ToString()] = kv.Value;
+            return result;
         }
         
         public void Update(float deltaTime, Action<Employee> onWorkTick)
@@ -90,14 +96,33 @@ namespace Scripts.EmployeeLogic
             }
         }
 
+        private static readonly float[] IntervalByLevel = { 2.5f, 1.8f, 1.0f, 0.2f };
+        
+        private const float T0 = 0.25f;
+        private const float T1 = 0.50f;
+        private const float T2 = 0.75f;
+
+        
+        private static int GetLevel(float value01)
+        {
+            if (value01 < T0) return 0;
+            if (value01 < T1) return 1;
+            if (value01 < T2) return 2;
+            return 3;
+        }
+
         private float CalculateWorkInterval()
         {
-            float normalized = Mathf.Clamp01((Energy + Hunger + Mood) / (3f * MaxValue));
+            float e01 = Mathf.Clamp01(Energy / MaxValue);
+            float h01 = Mathf.Clamp01(Hunger / MaxValue);
+            float m01 = Mathf.Clamp01(Mood / MaxValue);
 
-            // делаем кривую: низкие значения становятся ещё ниже
-            float curved = Mathf.Pow(normalized, _curvePower);
+            float eInt = IntervalByLevel[GetLevel(e01)];
+            float hInt = IntervalByLevel[GetLevel(h01)];
+            float mInt = IntervalByLevel[GetLevel(m01)];
 
-            return Mathf.Lerp(MaxWorkInterval, MinWorkInterval, curved);
+            float avgInterval = (eInt + hInt + mInt) / 3f;
+            return Mathf.Clamp(avgInterval, MinWorkInterval, MaxWorkInterval);
         }
         
         private void ConsumeStats(float deltaTime)
@@ -186,7 +211,19 @@ namespace Scripts.EmployeeLogic
             => _skills.TryGetValue(type, out var v) ? v : 0f;
 
         public void SetSkill(DevTaskType type, float value)
-            => _skills[type] = Mathf.Clamp(value, 0f, MaxValue);
+        {
+            _skills[type] = Mathf.Clamp(value, 0f, MaxValue);
+            OnSkillsChanged?.Invoke(this);
+            OnStatUpdate?.Invoke();
+        }
+
+        public void AddSkill(DevTaskType type, float delta)
+        {
+            _skills.TryGetValue(type, out var current);
+            _skills[type] = Mathf.Clamp(current + delta, 0f, MaxValue);
+            OnSkillsChanged?.Invoke(this);
+            OnStatUpdate?.Invoke();
+        }
 
         private void InitSkills()
         {

@@ -4,9 +4,9 @@ namespace Scripts.Hero
 {
     public class HeroPlayState : HeroBaseState
     {
-        private readonly ProgressDataAdapter _progressData;
+        private readonly ProgressDataAdapterOLD _progressData;
 
-        public HeroPlayState(HeroLogic heroLogic, ProgressDataAdapter progressData) : base(heroLogic)
+        public HeroPlayState(HeroLogic heroLogic, ProgressDataAdapterOLD progressData) : base(heroLogic)
         {
             _progressData = progressData;
         }

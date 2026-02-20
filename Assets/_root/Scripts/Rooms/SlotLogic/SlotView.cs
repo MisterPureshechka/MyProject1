@@ -33,12 +33,10 @@ namespace Scripts.Rooms.SlotLogic
 
             if (Slot.Employee != null)
             {
-                Debug.Log($"Refreshing SlotView with Employee: {Slot.Employee.Name}");
                 _employeeItemView = _employeeViewFactory.Create(Slot.Employee, _contentRoot);
             }
             else if (Slot.Item != null)
             {
-                Debug.Log($"Refreshing SlotView with Room Item: {Slot.Item.GetType().Name}");
                 _currentItemView = _itemViewFactory.Create(Slot.Item, _contentRoot);
             }
             else

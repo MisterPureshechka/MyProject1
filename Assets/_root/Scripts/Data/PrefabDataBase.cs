@@ -9,6 +9,10 @@ using Scripts.Perks;
 using Scripts.Rooms;
 using Scripts.Rooms.SlotLogic;
 using Scripts.Tasks;
+using Scripts.Ui;
+using Scripts.Ui.EmployeeShop;
+using Scripts.Ui.ItemShop;
+using Scripts.Ui.SkillUpgrade;
 using Scripts.Ui.TaskUi;
 using UnityEngine;
 
@@ -38,9 +42,16 @@ namespace Scripts.Data
         [field: SerializeField] public ShopItemView ShopItemView { get; private set; }
         [field: SerializeField] public Sprite[] ChairSprites { get; private set; }
         [field: SerializeField] public PerksCatalogue PerksCatalogue { get; private set; }
-        
         [field: SerializeField] public ConnectorView ConnectorPrefab { get; private set; }
         [field: SerializeField] public EmployeeItemView employeeItemPrefab { get; private set; }
         [field: SerializeField] public EmployeeStats EmployeeStats { get; private set; }
+        [field: SerializeField] public ItemShopView ItemShopView { get; private set; }
+        [field: SerializeField] public EmployeeShopView EmployeeShopView { get; private set; }
+        [field: SerializeField] public SkillUpgradeShopView UpgradeShopView { get; private set; }
+        [field: SerializeField] public NextStateButton NextStateButton { get; private set; }
+        [field: SerializeField] public HudView Hud { get; private set; }
+        [field: SerializeField] public MainShopView MainShop { get; private set; }
+        [field: SerializeField] public MilestoneResultView ResultWindow { get; private set; }
+        [field: SerializeField] public ReleaseResultView ReleaseResult { get; private set; }
     }
 }

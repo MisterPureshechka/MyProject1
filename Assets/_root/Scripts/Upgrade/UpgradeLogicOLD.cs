@@ -10,7 +10,7 @@ namespace Scripts.Upgrade
     public class UpgradeLogicOLD : ICleanUp
     {
         private readonly LocalEvents _localEvents;
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private ChairView _chairView;
         private WorkspaceView _workspaceView;
         
@@ -22,10 +22,10 @@ namespace Scripts.Upgrade
             { 3,  0f }       
         };
 
-        public UpgradeLogicOLD(LocalEvents localEvents, ProgressDataAdapter progressDataAdapter)
+        public UpgradeLogicOLD(LocalEvents localEvents, ProgressDataAdapterOLD progressDataAdapterOld)
         {
             _localEvents = localEvents;
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
 
             _chairView = Object.FindObjectOfType<ChairView>();
             _localEvents.OnUpgradeItem += UpgradeItem;

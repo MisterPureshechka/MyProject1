@@ -10,18 +10,18 @@ namespace Scripts.Hero
     public class EyesMoodLogic : ICleanUp
     {
         private const string Mood = "Mood";
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly LocalEvents _localEvents;
 
         private float _moodValue;
         private MoodState _currentMoodState;
 
-        public EyesMoodLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents)
+        public EyesMoodLogic(ProgressDataAdapterOLD progressDataAdapterOld, LocalEvents localEvents)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _localEvents = localEvents;
             
-            _progressDataAdapter.OnStatUpdated += UpdateMood;
+            _progressDataAdapterOld.OnStatUpdated += UpdateMood;
             UpdateMood();
             
            
@@ -29,7 +29,7 @@ namespace Scripts.Hero
 
         private void UpdateMood()
         {
-            var moodData = _progressDataAdapter.GetMetadata(Mood);
+            var moodData = _progressDataAdapterOld.GetMetadata(Mood);
             
             _moodValue = moodData.Value;
             float maxMood = moodData.MaxValue;
@@ -63,7 +63,7 @@ namespace Scripts.Hero
 
         public void CleanUp()
         {
-            _progressDataAdapter.OnStatUpdated -= UpdateMood;
+            _progressDataAdapterOld.OnStatUpdated -= UpdateMood;
         }
     }
 }

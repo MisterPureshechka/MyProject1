@@ -13,7 +13,7 @@ namespace _root.Scripts.Ui.Stats
         
         private List<SkillInfoOld> _skills = new();
         
-        public void InitPanel(Dictionary<string, Metadata> stats, ProgressDataAdapter progressDataAdapter)
+        public void InitPanel(Dictionary<string, Metadata> stats, ProgressDataAdapterOLD progressDataAdapterOld)
         {
             for (int i = _skillContainer.childCount - 1; i > 0; i--)
                 Destroy(_skillContainer.GetChild(i).gameObject);
@@ -24,7 +24,7 @@ namespace _root.Scripts.Ui.Stats
                 var key = kvp.Key;                      
                 var meta = kvp.Value;                   
                 var item = Instantiate(skillInfoOldPrefab, _skillContainer);
-                item.Init(key,  progressDataAdapter);
+                item.Init(key,  progressDataAdapterOld);
                 item.UpdateInfo();                     
                 _skills.Add(item);
             }

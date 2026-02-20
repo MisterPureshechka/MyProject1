@@ -9,26 +9,26 @@ namespace Scripts.Hero
     public class ShowerStateLogic : ICleanUp
     {
         private const string Shower = "Shower";
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly LocalEvents _localEvents;
         private readonly HeroView _heroView;
 
         private float _showerValue;
         private CleanState _currentCleanState;
 
-        public ShowerStateLogic(ProgressDataAdapter progressDataAdapter, LocalEvents localEvents, HeroView heroView)
+        public ShowerStateLogic(ProgressDataAdapterOLD progressDataAdapterOld, LocalEvents localEvents, HeroView heroView)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _localEvents = localEvents;
             _heroView = heroView;
 
-            _progressDataAdapter.OnStatUpdated += UpdateCleanState;
+            _progressDataAdapterOld.OnStatUpdated += UpdateCleanState;
             UpdateCleanState();
         }
         
         private void UpdateCleanState()
         {
-            var moodData = _progressDataAdapter.GetMetadata(Shower);
+            var moodData = _progressDataAdapterOld.GetMetadata(Shower);
             _showerValue = moodData.Value;
             float maxMood = moodData.MaxValue;
             float normalized = Mathf.Clamp01(_showerValue / maxMood);
@@ -66,7 +66,7 @@ namespace Scripts.Hero
 
         public void CleanUp()
         {
-            _progressDataAdapter.OnStatUpdated -= UpdateCleanState;
+            _progressDataAdapterOld.OnStatUpdated -= UpdateCleanState;
         }
     }
 }

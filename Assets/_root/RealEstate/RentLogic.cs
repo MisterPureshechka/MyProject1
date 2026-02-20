@@ -16,12 +16,12 @@ namespace _root.RealEstate
 
         private readonly LocalEvents _localEvents;
         private readonly CalendarLogic _calendarLogic;
-        private readonly ProgressDataAdapter _progress;
+        private readonly ProgressDataAdapterOLD _progress;
 
         private List<Flat> _flats;
         private IFlat _currentFlat;
 
-        public RentLogic(LocalEvents localEvents, CalendarLogic calendarLogic, ProgressDataAdapter progress)
+        public RentLogic(LocalEvents localEvents, CalendarLogic calendarLogic, ProgressDataAdapterOLD progress)
         {
             _localEvents   = localEvents;
             _calendarLogic = calendarLogic;

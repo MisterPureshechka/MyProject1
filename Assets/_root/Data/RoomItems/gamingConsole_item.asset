@@ -15,9 +15,10 @@ MonoBehaviour:
   Id: GamingConsole
   Name: Gaming Console
   Cost: 300
+  Description: 
   FoodValue: 0
   EnergyValue: 10
   MoodValue: 40
   TimeToUpdateEmployeeStat: 7
-  Sprite: {fileID: 0}
+  Preview: {fileID: 9119855072278895591, guid: e823ddc38b1ee49b5accaa09b64bbe5e, type: 3}
   Prefab: {fileID: 3275742975267215234, guid: 5498efc7b28924338967f84a95eeda9e, type: 3}

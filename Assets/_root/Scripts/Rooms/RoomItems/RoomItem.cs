@@ -9,6 +9,7 @@ namespace _root.Scripts.Rooms.RoomItems
         public string Id => Config.Id;
         public string Name => Config.Name;
         public int Cost => Config.Cost;
+        public string Description => Config.Description;
         
         public RoomItemView View { get; set; }
 

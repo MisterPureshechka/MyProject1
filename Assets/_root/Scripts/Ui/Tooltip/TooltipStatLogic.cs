@@ -13,7 +13,7 @@ namespace Scripts.Ui.TaskUi
     {
         const float OFFSET = 50f;
         
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly TooltipView _tooltipView;
         private readonly PrefabDataBase _prefabData;
         private readonly LocalEvents _localEvents;
@@ -24,9 +24,9 @@ namespace Scripts.Ui.TaskUi
         private MetaType _currentMetaType;
         private bool _isTooltipVisible;
 
-        public TooltipStatLogic(ProgressDataAdapter progressDataAdapter, TooltipView tooltipView, PrefabDataBase prefabData, LocalEvents localEvents, Canvas canvas)
+        public TooltipStatLogic(ProgressDataAdapterOLD progressDataAdapterOld, TooltipView tooltipView, PrefabDataBase prefabData, LocalEvents localEvents, Canvas canvas)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _tooltipView = tooltipView;
             _prefabData = prefabData;
             _localEvents = localEvents;

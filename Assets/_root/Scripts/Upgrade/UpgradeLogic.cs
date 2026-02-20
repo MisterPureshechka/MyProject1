@@ -13,7 +13,7 @@ namespace Scripts.Upgrade
     {
         private const float DirtThreshold = 0.5f;
 
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly LocalEvents _localEvents;
         private readonly UpgradableConfig _upgradableConfig;
 
@@ -22,13 +22,13 @@ namespace Scripts.Upgrade
         private readonly Dictionary<InteractiveObjectType, bool> _lastDirtyNotified = new();
 
         public UpgradeLogic(
-            ProgressDataAdapter progressDataAdapter,
+            ProgressDataAdapterOLD progressDataAdapterOld,
             LocalEvents localEvents,
             UpgradableConfig upgradableConfig,
             SpriteRenderer pcSprite,
             SpriteRenderer chairSprite)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _localEvents = localEvents;
             _upgradableConfig = upgradableConfig;
 
@@ -203,13 +203,13 @@ namespace Scripts.Upgrade
         {
             string key = BuildKey(type);
             string json = JsonUtility.ToJson(state);
-            _progressDataAdapter.SaveCustomJson(key, json);
+            _progressDataAdapterOld.SaveCustomJson(key, json);
         }
 
         private UpgradableItemState LoadItemState(InteractiveObjectType type)
         {
             string key = BuildKey(type);
-            string json = _progressDataAdapter.LoadCustomJson(key);
+            string json = _progressDataAdapterOld.LoadCustomJson(key);
             return string.IsNullOrEmpty(json)
                 ? new UpgradableItemState { Level = 0, Dirt = 0f }
                 : JsonUtility.FromJson<UpgradableItemState>(json);

@@ -13,8 +13,8 @@ namespace Scripts.Wallet
     public class WalletLogic : ICleanUp
     {
         private WalletButtonView _walletButtonView;
-        private readonly ProgressDataAdapter _progressDataAdapter;
-        private readonly GameProgress _gameProgress;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
+        private readonly SaveService _saveService;
         private readonly LocalEvents _localEvents;
         private readonly WalletCatalogue _walletCatalogue;
         private int _walletAmount;
@@ -27,13 +27,13 @@ namespace Scripts.Wallet
         private List<Transaction> _icomeAndExpenses = new();
         private Transaction _currentJobIncome;
 
-        public WalletLogic(ProgressDataAdapter progressDataAdapter, GameProgress gameProgress, LocalEvents localEvents)
+        public WalletLogic(ProgressDataAdapterOLD progressDataAdapterOld, SaveService saveService, LocalEvents localEvents)
         {
-            _progressDataAdapter = progressDataAdapter;
-            _gameProgress = gameProgress;
+            _progressDataAdapterOld = progressDataAdapterOld;
+            _saveService = saveService;
             _localEvents = localEvents;
             _walletButtonView = Object.FindAnyObjectByType<WalletButtonView>();
-            _walletAmount = (int)_progressDataAdapter.GetMetadata(WalletKey).Value;
+            _walletAmount = (int)_progressDataAdapterOld.GetMetadata(WalletKey).Value;
             _walletCatalogue = Object.FindAnyObjectByType<WalletCatalogue>(FindObjectsInactive.Include);
             _walletCatalogue.Init(_localEvents);
             
@@ -43,7 +43,6 @@ namespace Scripts.Wallet
             UpdateWallet();
             
             _walletButtonView.Button.onClick.AddListener(() => _localEvents.TriggerShowCatalogue(_walletCatalogue));
-            _localEvents.OnWalletUpdate += UpdateWallet;
             _localEvents.OnPayDay += DecreaseWalletAmount;
             _localEvents.OnNewTransaction += ApplyTransaction;
             _localEvents.OnPurchaseUpgradeRequested += OnPurchaseUpgradeRequested;
@@ -59,7 +58,7 @@ namespace Scripts.Wallet
         {
             _walletAmount -= value;
             
-            _progressDataAdapter.TryUpdateValue(WalletKey, -value);
+            _progressDataAdapterOld.TryUpdateValue(WalletKey, -value);
             
             UpdateWallet();
         }
@@ -100,8 +99,8 @@ namespace Scripts.Wallet
             if (_walletAmount < value) return false;
 
             _walletAmount -= value;
-            _progressDataAdapter.TryUpdateValue(WalletKey, -value);
-            _gameProgress.SaveProgress(_progressDataAdapter.GetProgressData());
+            _progressDataAdapterOld.TryUpdateValue(WalletKey, -value);
+            _saveService.SaveProgress(_progressDataAdapterOld.GetProgressData());
 
             UpdateMiniWallet();
             UpdateWallet();
@@ -111,7 +110,6 @@ namespace Scripts.Wallet
         
         public void CleanUp()
         {
-            _localEvents.OnWalletUpdate -= UpdateWallet;
             _walletButtonView.Button.onClick.RemoveAllListeners();
             _localEvents.OnPayDay -= DecreaseWalletAmount;
             _localEvents.OnNewTransaction -= ApplyTransaction;

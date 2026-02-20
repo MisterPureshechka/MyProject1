@@ -9,7 +9,7 @@ namespace Scripts.EcoSystem
 {
     public class TimeLogic : IExecute, ICleanUp
     {
-        private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly ProgressDataAdapterOLD _progressDataAdapterOld;
         private readonly TimeView _timeView;
         private readonly LocalEvents _localEvents;
 
@@ -21,9 +21,9 @@ namespace Scripts.EcoSystem
         private int _lastMinute = -1;
         private int _lastHour = -1;
 
-        public TimeLogic(ProgressDataAdapter progressDataAdapter, TimeView timeView, LocalEvents localEvents)
+        public TimeLogic(ProgressDataAdapterOLD progressDataAdapterOld, TimeView timeView, LocalEvents localEvents)
         {
-            _progressDataAdapter = progressDataAdapter;
+            _progressDataAdapterOld = progressDataAdapterOld;
             _timeView = timeView;
             _localEvents = localEvents;
 
