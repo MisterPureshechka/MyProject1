@@ -51,7 +51,7 @@ namespace Scripts.GlobalStateMachine
             var employeeMovement = new EmployeeMovement(localEvents);
             
             var shop = uiFactory.GetUpgradeShop(canvas.transform);
-            var shopLogic = new SkillUpgradeLogic(shop, localEvents, progressDataAdapter, _saveService);
+            var shopLogic = new SkillUpgradeLogic(shop, localEvents, progressDataAdapter, _saveService, company);
             
             var nextStateButton = uiFactory.GetNextStateButton(canvas.transform);
             var nextStateController =

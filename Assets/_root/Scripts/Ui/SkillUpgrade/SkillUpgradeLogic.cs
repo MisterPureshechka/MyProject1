@@ -18,16 +18,18 @@ namespace Scripts.Ui.SkillUpgrade
         private readonly LocalEvents _localEvents;
         private readonly ProgressDataAdapter _progressDataAdapter;
         private readonly SaveService _saveService;
+        private readonly Company _company;
 
         private int _experience;
 
         public SkillUpgradeLogic(SkillUpgradeShopView skillUpgradeShopView, LocalEvents localEvents,
-            ProgressDataAdapter progressDataAdapter, SaveService saveService)
+            ProgressDataAdapter progressDataAdapter, SaveService saveService, Company company)
         {
             _skillUpgradeShopView = skillUpgradeShopView;
             _localEvents = localEvents;
             _progressDataAdapter = progressDataAdapter;
             _saveService = saveService;
+            _company = company;
 
             _skillUpgradeShopView.Init(_localEvents);
             _experience = _progressDataAdapter.Data.Experience;
@@ -47,6 +49,13 @@ namespace Scripts.Ui.SkillUpgrade
 
             _experience -= offer.SkillUpgradeCost;
             _progressDataAdapter.Data.Experience = _experience;
+
+            // Update employee skills in ProgressData
+            var employeeData = _progressDataAdapter.Data.Employees.Find(e => e.Id == employee.Id);
+            if (employeeData != null)
+            {
+                employeeData.Skills = employee.ExportSkills();
+            }
 
             _skillUpgradeShopView.RemoveItem(offer);
 
