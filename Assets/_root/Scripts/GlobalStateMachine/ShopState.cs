@@ -62,15 +62,15 @@ namespace Scripts.GlobalStateMachine
             
             var employees = new EmployeeShopLogic(company, shop.Employees, roomLogic, progressDataAdapter, _saveService, localEvents);
             var skills = new SkillUpgradeLogic(shop.Skills, localEvents, progressDataAdapter, _saveService, company);
-            var offices = new OfficeShopLogic(shop.Offices, progressDataAdapter, _gameStateMachine, _saveService, localEvents);
             var furniture = new ItemShopLogic(_gameData.RoomItemDatabase, shop.OfficeFurniture, roomLogic,progressDataAdapter, _saveService, localEvents);
+            var offices = new OfficeShopLogic(shop.Offices, progressDataAdapter, _gameStateMachine, _saveService, localEvents, employees, skills, furniture);
             
             var mainShopController = new MainShopController(shop);
             
             var nextStateButton = uiFactory.GetNextStateButton(canvas.transform);
             var nextStateController =
                 new NextStateController(nextStateButton, _gameStateMachine, progressDataAdapter,
-                    _gameData.LevelMapConfig);
+                    _gameData.LevelMapConfig, _saveService);
 
             _controllers.Add(roomLogic);
             _controllers.Add(cameraLogic);

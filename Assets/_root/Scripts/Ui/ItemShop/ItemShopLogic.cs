@@ -20,6 +20,9 @@ namespace Scripts.Ui.ItemShop
         private readonly LocalEvents _localEvents;
 
         private IReadOnlyList<RoomItemConfig> _roomItemConfigs;
+        
+        // Храним текущий оффер мебели для возможности сохранения
+        private RoomItemConfig _currentOffer;
 
         public ItemShopLogic(RoomItemDatabase roomItemData, ItemShopView shopView, RoomLogic roomLogic, ProgressDataAdapter progressDataAdapter, SaveService saveService, LocalEvents localEvents)
         {
@@ -41,27 +44,27 @@ namespace Scripts.Ui.ItemShop
 
             var shopData = _progressDataAdapter.Data.CurrentShopFurniture;
 
-            // 1) Если уже сохранён оффер — показываем его
+            // 1) Если есть сохраненный оффер - загружаем его
             if (shopData.OfferIds != null && shopData.OfferIds.Count > 0)
             {
-                // гарантируем ровно 1 (на случай старых сохранений)
                 var id = shopData.OfferIds[0];
                 var cfg = _roomItemData.GetById(id);
                 if (cfg != null)
+                {
                     _shopView.AddItem(cfg);
+                    _currentOffer = cfg;
+                }
 
                 _shopView.OnItemPurchased += ItemPurchaseListener;
                 return;
             }
 
-            // 2) Иначе выбираем один случайный и сохраняем
+            // 2) Иначе выбираем случайный предмет мебели (но НЕ сохраняем его)
             int index = Random.Range(0, _roomItemConfigs.Count);
             var randomItem = _roomItemConfigs[index];
 
             _shopView.AddItem(randomItem);
-
-            shopData.OfferIds = new List<string>(1) { randomItem.Id };
-            _saveService.SaveProgress(_progressDataAdapter.Data);
+            _currentOffer = randomItem;
 
             _shopView.OnItemPurchased += ItemPurchaseListener;
         }
@@ -80,6 +83,7 @@ namespace Scripts.Ui.ItemShop
             {
                 _roomLogic.PlaceItem(roomItemSlot, new RoomItem(config));
                 _shopView.Destroy(id);
+                _currentOffer = null; // Обнуляем купленный оффер
                 _progressDataAdapter.Data.Money -= config.Cost;
                 _localEvents.TriggerWalletUpdate(_progressDataAdapter.Data.Money);
             }
@@ -88,6 +92,20 @@ namespace Scripts.Ui.ItemShop
                 Debug.LogError($"No free space");  
             }
         }
+        public void SaveCurrentOffer()
+        {
+            var shopData = _progressDataAdapter.Data.CurrentShopFurniture;
+            
+            if (_currentOffer != null)
+            {
+                shopData.OfferIds = new List<string>(1) { _currentOffer.Id };
+            }
+            else
+            {
+                shopData.OfferIds?.Clear();
+            }
+        }
+        
         
         public void CleanUp()
         {

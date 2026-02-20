@@ -21,6 +21,9 @@ namespace Scripts.Ui.SkillUpgrade
         private readonly Company _company;
 
         private int _experience;
+        
+        // Храним текущие офферы для сохранения порядка и пустых слотов
+        private readonly List<SkillUpgradeOffer> _currentOffers = new();
 
         public SkillUpgradeLogic(SkillUpgradeShopView skillUpgradeShopView, LocalEvents localEvents,
             ProgressDataAdapter progressDataAdapter, SaveService saveService, Company company)
@@ -58,9 +61,16 @@ namespace Scripts.Ui.SkillUpgrade
             }
 
             _skillUpgradeShopView.RemoveItem(offer);
-
-            var offers = _progressDataAdapter.Data.SkillUpgradeShop.Offers;
-            offers.RemoveAll(o => o.Id == offer.Id);
+            
+            // Находим индекс купленного оффера и заменяем на null (пустой слот)
+            for (int i = 0; i < _currentOffers.Count; i++)
+            {
+                if (_currentOffers[i] != null && _currentOffers[i].Id == offer.Id)
+                {
+                    _currentOffers[i] = null;
+                    break;
+                }
+            }
 
             _saveService.SaveProgress(_progressDataAdapter.Data);
         }
@@ -70,11 +80,20 @@ namespace Scripts.Ui.SkillUpgrade
         {
             var shopData = _progressDataAdapter.Data.SkillUpgradeShop;
 
+            // 1) Если есть сохраненные офферы - загружаем их
             if (shopData.Offers != null && shopData.Offers.Count > 0)
             {
                 foreach (var saved in shopData.Offers)
                 {
+                    // Пропускаем пустые слоты (null)
+                    if (saved == null)
+                    {
+                        _currentOffers.Add(null);
+                        continue;
+                    }
+                    
                     var offer = RestoreOffer(saved);
+                    _currentOffers.Add(offer);
                     _skillUpgradeShopView.AddOffer(offer);
                 }
 
@@ -82,11 +101,9 @@ namespace Scripts.Ui.SkillUpgrade
                 return;
             }
 
-            // 2) иначе генерим, сохраняем, рисуем
+            // 2) Иначе генерируем новые офферы (но НЕ сохраняем их)
             var allTypes = (DevTaskType[])Enum.GetValues(typeof(DevTaskType));
             int offerCount = 3;
-
-            shopData.Offers = new List<SkillUpgradeOfferSave>(offerCount);
 
             for (int i = 0; i < offerCount; i++)
             {
@@ -114,11 +131,9 @@ namespace Scripts.Ui.SkillUpgrade
                     SkillUpgradeCost = Calculate(upgradeMap, 1, 1)
                 };
 
+                _currentOffers.Add(offer);
                 _skillUpgradeShopView.AddOffer(offer);
-                shopData.Offers.Add(ToSave(offer));
             }
-
-            _saveService.SaveProgress(_progressDataAdapter.Data);
 
             _skillUpgradeShopView.OnItemPurchased += UpgradePurchasedListener;
         }
@@ -200,6 +215,26 @@ namespace Scripts.Ui.SkillUpgrade
             return Mathf.Max(minPrice, Mathf.RoundToInt(price));
         }
 
+
+        public void SaveCurrentOffers()
+        {
+            var shopData = _progressDataAdapter.Data.SkillUpgradeShop;
+            shopData.Offers = new List<SkillUpgradeOfferSave>();
+
+            // Сохраняем все слоты, включая пустые (null)
+            foreach (var offer in _currentOffers)
+            {
+                if (offer != null)
+                {
+                    shopData.Offers.Add(ToSave(offer));
+                }
+                else
+                {
+                    // Пустой слот - добавляем null
+                    shopData.Offers.Add(null);
+                }
+            }
+        }
 
         public void CleanUp()
         {

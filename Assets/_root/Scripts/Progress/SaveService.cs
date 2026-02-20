@@ -62,7 +62,7 @@ namespace Scripts.Progress
             var progress = new ProgressData
             {
                 CompanyName = "New Studio",
-                Money = 100,
+                Money = 2500,
                 Experience = 0,
                 OfficeCells = 4,
                 

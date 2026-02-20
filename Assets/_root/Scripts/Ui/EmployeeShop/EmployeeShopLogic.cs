@@ -22,6 +22,10 @@ namespace Scripts.Ui.EmployeeShop
 
         private int _shopItemCount = 2;
         private readonly SaveService _saveService;
+        
+        // Храним текущих сотрудников и их цены для возможности сохранения
+        // Используем List для сохранения порядка и пустых слотов
+        private readonly List<(Employee employee, int price)?> _currentOffers = new();
 
         public EmployeeShopLogic(
             Company company,
@@ -45,34 +49,37 @@ namespace Scripts.Ui.EmployeeShop
         {
             var shopData = _progressDataAdapter.Data.EmployeeShop;
 
-            // 1) Если уже есть сохранённые офферы — рисуем их
+            // 1) Если есть сохраненные офферы - загружаем их
             if (shopData.Offers != null && shopData.Offers.Count > 0)
             {
                 foreach (var offer in shopData.Offers)
                 {
+                    // Пропускаем пустые слоты (null)
+                    if (offer == null)
+                    {
+                        _currentOffers.Add(null);
+                        continue;
+                    }
+                    
                     var employee = RestoreEmployeeFromOffer(offer);
                     _employeeShop.AddItem(employee, offer.Price);
+                    _currentOffers.Add((employee, offer.Price));
                 }
 
                 _employeeShop.OnEmployeePurchased += EmployeePurchaseListener;
                 return;
             }
 
-            // 2) Иначе генерим, сохраняем и рисуем
-            shopData.Offers = new List<EmployeeOfferSave>(_shopItemCount);
-
+            // 2) Иначе генерируем новых сотрудников (но НЕ сохраняем их)
             for (int i = 0; i < _shopItemCount; i++)
             {
-                float power01 = 0f; // позже можешь брать из прогресса/майлстоуна
+                float power01 = 0f;
                 var employee = GenerateEmployee(power01);
                 var price = Calculate(employee.ExportSkills(), 100);
 
                 _employeeShop.AddItem(employee, price);
-
-                shopData.Offers.Add(ToOfferSave(employee, price));
+                _currentOffers.Add((employee, price));
             }
-
-            _saveService.SaveProgress(_progressDataAdapter.Data);
 
             _employeeShop.OnEmployeePurchased += EmployeePurchaseListener;
         }
@@ -86,12 +93,22 @@ namespace Scripts.Ui.EmployeeShop
             {
                 _roomLogic.PlaceItem(roomItemSlot, employee);
                 _employeeShop.Destroy(employee.Id);
+                // Находим индекс купленного сотрудника и заменяем на null (пустой слот)
+                for (int i = 0; i < _currentOffers.Count; i++)
+                {
+                    if (_currentOffers[i].HasValue && _currentOffers[i].Value.employee.Id == employee.Id)
+                    {
+                        _currentOffers[i] = null;
+                        break;
+                    }
+                }
+
                 _company.AddEmployee(employee, roomItemSlot);
 
-                // ✅ удалить из сохранённых офферов
-                var offers = _progressDataAdapter.Data.EmployeeShop.Offers;
-                offers.RemoveAll(o => o.Id == employee.Id);
-
+                currentAmount -= price;
+                _progressDataAdapter.Data.Money = currentAmount;
+                _localEvents.TriggerWalletUpdate(currentAmount);
+                
                 _saveService.SaveProgress(_progressDataAdapter.Data);
             }
             else
@@ -99,10 +116,6 @@ namespace Scripts.Ui.EmployeeShop
                 Debug.LogError("No free space");
                 return;
             }
-
-            currentAmount -= price;
-            _progressDataAdapter.Data.Money = currentAmount;
-            _localEvents.TriggerWalletUpdate(currentAmount);
         }
         
         private EmployeeOfferSave ToOfferSave(Employee employee, int price)
@@ -225,6 +238,27 @@ namespace Scripts.Ui.EmployeeShop
             }
 
             return Math.Max(minPrice, (int)MathF.Round(price));
+        }
+
+        public void SaveCurrentOffers()
+        {
+            var shopData = _progressDataAdapter.Data.EmployeeShop;
+            shopData.Offers = new List<EmployeeOfferSave>();
+
+            // Сохраняем все слоты, включая пустые (null)
+            foreach (var offer in _currentOffers)
+            {
+                if (offer.HasValue)
+                {
+                    var (employee, price) = offer.Value;
+                    shopData.Offers.Add(ToOfferSave(employee, price));
+                }
+                else
+                {
+                    // Пустой слот - добавляем null
+                    shopData.Offers.Add(null);
+                }
+            }
         }
 
         public void CleanUp()

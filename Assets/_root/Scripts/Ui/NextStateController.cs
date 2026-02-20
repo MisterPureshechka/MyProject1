@@ -12,18 +12,21 @@ namespace Scripts.Ui
         private readonly NextStateButton _nextStateButton;
         private readonly GameStateMachine _gameStateMachine;
         private readonly ProgressDataAdapter _progressDataAdapter;
+        private readonly SaveService _saveService;
         private readonly LevelMapConfig _config;
 
         public NextStateController(
             NextStateButton nextStateButton,
             GameStateMachine gameStateMachine,
             ProgressDataAdapter progressDataAdapter,
-            LevelMapConfig config)
+            LevelMapConfig config,
+            SaveService saveService)
         {
             _nextStateButton = nextStateButton;
             _gameStateMachine = gameStateMachine;
             _progressDataAdapter = progressDataAdapter;
             _config = config;
+            _saveService = saveService;
 
             _nextStateButton.Button.onClick.AddListener(OnClick);
             RefreshButtonState();
@@ -99,6 +102,16 @@ namespace Scripts.Ui
         private void EnterState(NodeType type)
         {
             Object.Destroy(_nextStateButton.gameObject);
+            // Очищаем офферы магазина при переходе в другие стейты (не ShopState)
+            if (type != NodeType.Build)
+            {
+                var progressData = _saveService.LoadProgress();
+                progressData.CurrentShopFurniture.OfferIds?.Clear();
+                progressData.EmployeeShop.Offers?.Clear();
+                progressData.SkillUpgradeShop.Offers?.Clear();
+                _saveService.SaveProgress(progressData);
+            }
+            
             
             switch (type)
             {

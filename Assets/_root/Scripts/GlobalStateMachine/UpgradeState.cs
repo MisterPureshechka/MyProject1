@@ -56,7 +56,7 @@ namespace Scripts.GlobalStateMachine
             var nextStateButton = uiFactory.GetNextStateButton(canvas.transform);
             var nextStateController =
                 new NextStateController(nextStateButton, _gameStateMachine, progressDataAdapter,
-                    _gameData.LevelMapConfig);
+                    _gameData.LevelMapConfig, _saveService);
             _controllers.Add(roomLogic);
             _controllers.Add(cameraLogic);
             _controllers.Add(roomVisuals);
