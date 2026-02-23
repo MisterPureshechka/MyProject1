@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Scripts.Config;
 using Scripts.Tasks;
 using UnityEngine;
 
@@ -12,7 +13,6 @@ namespace Scripts.Progress
         public void SaveProgress(ProgressData progress)
         {
             string json = JsonConvert.SerializeObject(progress, Formatting.Indented);
-
             PlayerPrefs.SetString(ProgressKey, json);
             PlayerPrefs.Save();
         }
@@ -22,7 +22,7 @@ namespace Scripts.Progress
             if (!PlayerPrefs.HasKey(ProgressKey))
             {
                 var created = CreateDefaultProgress();
-                SaveProgress(created); 
+                SaveProgress(created);
                 return created;
             }
             
@@ -49,21 +49,27 @@ namespace Scripts.Progress
             }
         }
 
+        public void Clear()
+        {
+            PlayerPrefs.DeleteKey(ProgressKey);
+        }
+
         private ProgressData CreateDefaultProgress()
         {
+            var settings = GameSettingsLoader.LoadSettings();
+            var newGame = settings.NewGame;
+            
             var progress = new ProgressData
             {
-                CompanyName = "New Studio",
-                Money = 2500,
-                Experience = 0,
-                OfficeCells = 4,
+                CompanyName = newGame.CompanyName,
+                Money = newGame.StartMoney,
+                Experience = newGame.StartExperience,
+                OfficeCells = newGame.StartOfficeCells,
                 
                 Stage = ProjectStage.Prototype,
-
                 GameIndex = 0,
                 CurrentMilestoneIndex = 0,
                 CurrentMilestoneCount = 0,
-
                 CurrentRoadmapNodeId = null,
                 CompletedRoadmapNodeIds = new HashSet<string>(),
 
@@ -83,27 +89,27 @@ namespace Scripts.Progress
                 }
             };
 
-            progress.Employees.Add(new EmployeeProgressData
+            foreach (var emp in newGame.StartEmployees)
             {
-                Id = "emp_mike",
-                Name = "Mike",
-                Column = 1,
-                Skills = new Dictionary<string, float>
+                progress.Employees.Add(new EmployeeProgressData
                 {
-                    { "Programming", 3f },
-                    { "Art", 2f },
-                }
-            });
+                    Id = emp.Id,
+                    Name = emp.Name,
+                    Column = emp.Column,
+                    Skills = new Dictionary<string, float>(emp.Skills)
+                });
+            }
 
-            // --- Default item ---
-            progress.Items.Add(new ItemProgressData
+            foreach (var item in newGame.StartItems)
             {
-                Column = 2,
-                ItemId = "Fridge"
-            });
+                progress.Items.Add(new ItemProgressData
+                {
+                    Column = item.Column,
+                    ItemId = item.ItemId
+                });
+            }
 
             return progress;
         }
-
     }
 }

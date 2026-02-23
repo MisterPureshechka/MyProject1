@@ -1,17 +1,26 @@
 {
     "Stage": 0,
-    "CompanyName": "New Studio",
-    "Money": 2500,
-    "Experience": 0,
+    "CompanyName": "UbiHard",
+    "Money": 50,
+    "Experience": 2,
     "OfficeCells": 4,
     "CurrentRoadmapNodeId": "",
     "Items": [
         {
             "Column": 2,
             "ItemId": "Fridge"
+        },
+        {
+            "Column": 2,
+            "ItemId": "Fridge"
         }
     ],
     "Employees": [
+        {
+            "Id": "emp_mike",
+            "Name": "Mike",
+            "Column": 1
+        },
         {
             "Id": "emp_mike",
             "Name": "Mike",

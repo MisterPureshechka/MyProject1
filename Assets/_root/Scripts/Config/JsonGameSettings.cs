@@ -12,6 +12,7 @@ namespace Scripts.Config
     {
         public GameMetaSettings GameMeta;
         public MilestoneRulesSettings MilestoneRules;
+        public NewGameSettings NewGame;
     }
 
     [Serializable]
@@ -60,5 +61,54 @@ namespace Scripts.Config
         public bool UseAutoReward = true;
         public float CompletionPower = 1.6f;
         public float MinPartialFactor = 0.10f;
+    }
+
+    [Serializable]
+    public class NewGameSettings
+    {
+        public string CompanyName = "New Studio";
+        public int StartMoney = 2500;
+        public int StartExperience = 0;
+        public int StartOfficeCells = 4;
+        
+        public List<StartEmployeeData> StartEmployees = new List<StartEmployeeData>
+        {
+            new StartEmployeeData
+            {
+                Id = "emp_mike",
+                Name = "Mike",
+                Column = 1,
+                Skills = new Dictionary<string, float>
+                {
+                    { "Programming", 3f },
+                    { "Art", 2f }
+                }
+            }
+        };
+        
+        public List<StartItemData> StartItems = new List<StartItemData>
+        {
+            new StartItemData
+            {
+                Column = 2,
+                ItemId = "Fridge"
+            }
+        };
+    }
+
+    [Serializable]
+    public class StartEmployeeData
+    {
+        public string Id;
+        public string Name;
+        public int Column;
+        public Dictionary<string, float> Skills;
+    }
+
+    [Serializable]
+    public class StartItemData
+    {
+        public int Column;
+        public string ItemId;
     }
 }

@@ -28,5 +28,28 @@
     "UseAutoReward": true,
     "CompletionPower": 1.6,
     "MinPartialFactor": 0.1
+  },
+  "NewGame": {
+    "CompanyName": "UbiHard",
+    "StartMoney": 50,
+    "StartExperience": 2,
+    "StartOfficeCells": 4,
+    "StartEmployees": [
+      {
+        "Id": "emp_mike",
+        "Name": "Mike",
+        "Column": 1,
+        "Skills": {
+          "Programming": 3.0,
+          "Art": 2.0
+        }
+      }
+    ],
+    "StartItems": [
+      {
+        "Column": 2,
+        "ItemId": "Fridge"
+      }
+    ]
   }
 }

@@ -111,7 +111,8 @@ namespace Scripts.Config
                     UseAutoReward = true,
                     CompletionPower = 1.6f,
                     MinPartialFactor = 0.10f
-                }
+                },
+                NewGame = new NewGameSettings()
             };
         }
         
