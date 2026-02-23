@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core;
+using Scripts.Config;
 using Scripts.EmployeeLogic;
 using Scripts.GlobalStateMachine;
 using Scripts.Progress;
@@ -19,8 +20,8 @@ namespace Scripts.Tasks
         private readonly SprintView _sprintView;
         private readonly TimeService _timeService;
 
-        private readonly GameMetaConfig _gameMetaConfig;
-        private readonly MilestoneRulesConfig _milestoneRulesConfig;
+        private readonly GameMetaConfigAdapter _gameMetaConfig;
+        private readonly MilestoneRulesConfigAdapter _milestoneRulesConfig;
         private readonly Company _company;
         private readonly SaveService _saveService;
 
@@ -39,7 +40,7 @@ namespace Scripts.Tasks
         private EconomyService _economyService;
         private int _milestoneReward;
 
-        public SprintSystem(SprintView sprintView, TimeService timeService, SprintUI sprintUI, LocalEvents localEvents, ProgressDataAdapter progressDataAdapter, UiFactory uiFactory, GameStateMachine gameStateMachine, GameMetaConfig gameStatMetaConfig, MilestoneRulesConfig milestoneRulesConfig, Company company, SaveService saveService, ProjectProgressService projectProgressService, EconomyService economyService)
+        public SprintSystem(SprintView sprintView, TimeService timeService, SprintUI sprintUI, LocalEvents localEvents, ProgressDataAdapter progressDataAdapter, UiFactory uiFactory, GameStateMachine gameStateMachine, GameMetaConfigAdapter gameStatMetaConfig, MilestoneRulesConfigAdapter milestoneRulesConfig, Company company, SaveService saveService, ProjectProgressService projectProgressService, EconomyService economyService)
         {
             _sprintView = sprintView;
             _timeService = timeService;

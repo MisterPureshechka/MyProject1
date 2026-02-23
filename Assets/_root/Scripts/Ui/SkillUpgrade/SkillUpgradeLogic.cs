@@ -22,7 +22,6 @@ namespace Scripts.Ui.SkillUpgrade
 
         private int _experience;
         
-        // Храним текущие офферы для сохранения порядка и пустых слотов
         private readonly List<SkillUpgradeOffer> _currentOffers = new();
 
         public SkillUpgradeLogic(SkillUpgradeShopView skillUpgradeShopView, LocalEvents localEvents,

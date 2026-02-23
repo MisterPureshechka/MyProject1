@@ -47,14 +47,6 @@ namespace Scripts.Progress
                 SaveProgress(created);
                 return created;
             }
-            // var created = CreateDefaultProgress();
-            // SaveProgress(created); 
-            // return created;
-        }
-
-        public void Clear()
-        {
-            PlayerPrefs.DeleteKey(ProgressKey);
         }
 
         private ProgressData CreateDefaultProgress()
@@ -91,7 +83,6 @@ namespace Scripts.Progress
                 }
             };
 
-            // --- Default employee ---
             progress.Employees.Add(new EmployeeProgressData
             {
                 Id = "emp_mike",

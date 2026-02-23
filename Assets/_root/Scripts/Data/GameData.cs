@@ -1,5 +1,6 @@
 using _root.Planning;
 using Scripts.Cat;
+using Scripts.Config;
 using Scripts.Messenger;
 using Scripts.Rooms.RoomItems;
 using Scripts.Sounds;
@@ -23,8 +24,34 @@ namespace Scripts.Data
         [field: SerializeField] public LevelMapConfig LevelMapConfig { get; private set; }
         [field: SerializeField] public RoomItemDatabase RoomItemDatabase { get; private set;}
         
-        [field: SerializeField] public GameMetaConfig GameMetaConfig { get; private set; }
-        [field: SerializeField] public MilestoneRulesConfig MilestoneRulesConfig { get; private set; }
+        // JSON-based configuration adapters (lazy-loaded)
+        private GameMetaConfigAdapter _gameMetaConfig;
+        private MilestoneRulesConfigAdapter _milestoneRulesConfig;
         
+        public GameMetaConfigAdapter GameMetaConfig
+        {
+            get
+            {
+                if (_gameMetaConfig == null)
+                {
+                    var settings = GameSettingsLoader.LoadSettings();
+                    _gameMetaConfig = new GameMetaConfigAdapter(settings.GameMeta);
+                }
+                return _gameMetaConfig;
+            }
+        }
+        
+        public MilestoneRulesConfigAdapter MilestoneRulesConfig
+        {
+            get
+            {
+                if (_milestoneRulesConfig == null)
+                {
+                    var settings = GameSettingsLoader.LoadSettings();
+                    _milestoneRulesConfig = new MilestoneRulesConfigAdapter(settings.MilestoneRules);
+                }
+                return _milestoneRulesConfig;
+            }
+        }
     }
 }

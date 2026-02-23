@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.EmployeeLogic;
+using Scripts.Config;
 using UnityEngine;
 
 namespace Scripts.Tasks
@@ -19,8 +20,8 @@ namespace Scripts.Tasks
             int gameIndex,
             int milestoneIndex,
             ProjectStage stage,
-            GameMetaConfig meta,
-            MilestoneRulesConfig rules,
+            GameMetaConfigAdapter meta,
+            MilestoneRulesConfigAdapter rules,
             IReadOnlyList<Employee> employees
         )
         {
@@ -177,7 +178,7 @@ namespace Scripts.Tasks
         // -------------------------
 
         private static List<DevTaskType> ResolveTaskTypes(
-            GameMetaConfig meta,
+            GameMetaConfigAdapter meta,
             IReadOnlyList<Employee> employees,
             int milestoneIndex)
         {
@@ -231,7 +232,7 @@ namespace Scripts.Tasks
         // -------------------------
 
         private static Dictionary<DevTaskType, float> BuildWeights(
-            MilestoneRulesConfig rules,
+            MilestoneRulesConfigAdapter rules,
             List<DevTaskType> taskTypes,
             Dictionary<DevTaskType, float> teamSkill,
             out float weightSum)
@@ -273,7 +274,7 @@ namespace Scripts.Tasks
         // -------------------------
 
         private static Dictionary<DevTaskType, int> BuildCounts(
-            MilestoneRulesConfig rules,
+            MilestoneRulesConfigAdapter rules,
             List<DevTaskType> taskTypes,
             int milestoneIndex,
             int totalTasks,
@@ -293,7 +294,7 @@ namespace Scripts.Tasks
         }
 
         private static Dictionary<DevTaskType, int> InitWithMinimums(
-            MilestoneRulesConfig rules,
+            MilestoneRulesConfigAdapter rules,
             List<DevTaskType> taskTypes,
             int milestoneIndex,
             out int reserved)

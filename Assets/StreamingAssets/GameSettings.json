@@ -1,0 +1,32 @@
+{
+  "GameMeta": {
+    "StartMilestones": 4,
+    "MaxMilestones": 8,
+    "MilestonesPerGameIncrement": 1
+  },
+  "MilestoneRules": {
+    "SkillToWeight": 0.2,
+    "BaseWeights": {
+      "Programming": 1.0,
+      "Art": 1.0,
+      "SoundDesign": 1.0,
+      "GameDesign": 1.0,
+      "Marketing": 1.0
+    },
+    "BaseDays": 6,
+    "DaysPerMilestone": 1,
+    "DaysPerGame": -0.3,
+    "RewardBase": 100,
+    "RewardPerTask": 25,
+    "RewardPerGame": 40,
+    "RewardPerMilestone": 20,
+    "UseAutoDays": true,
+    "DaysPerReleasedGame": 0.08,
+    "SkillToDaysK": 0.02,
+    "MinDaysMultiplier": 0.6,
+    "MaxDaysMultiplier": 1.2,
+    "UseAutoReward": true,
+    "CompletionPower": 1.6,
+    "MinPartialFactor": 0.1
+  }
+}
