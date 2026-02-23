@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core;
+using Scripts.Config;
 using Scripts.EmployeeLogic;
 using Scripts.GlobalStateMachine;
 using UnityEngine;
@@ -8,24 +9,24 @@ namespace Scripts.Progress
 {
     public class EconomyService : IController
     {
-        private const int BaseSalary = 10;
-        private const float SkillSalaryFactor = 1.5f;
-
         private readonly Company _company;
         private readonly LocalEvents _events;
         private readonly ProgressDataAdapter _progress;
         private readonly SaveService _save;
+        private readonly MilestoneRulesConfigAdapter _rules;
 
         public EconomyService(
             ProgressDataAdapter progress,
             SaveService save,
             LocalEvents events,
-            Company company)
+            Company company,
+            MilestoneRulesConfigAdapter rules)
         {
             _progress = progress;
             _save = save;
             _events = events;
             _company = company;
+            _rules = rules;
         }
 
         public void ProcessMilestoneResult(int reward)
@@ -81,7 +82,7 @@ namespace Scripts.Progress
                 foreach (var s in employees[i].Skills)
                     skillSum += s.Value;
 
-                var salary = BaseSalary + (int)(skillSum * SkillSalaryFactor);
+                var salary = _rules.BaseSalary + (int)(skillSum * _rules.SkillSalaryFactor);
                 total += salary;
             }
 

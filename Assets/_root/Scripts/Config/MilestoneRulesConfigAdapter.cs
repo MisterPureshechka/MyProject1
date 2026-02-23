@@ -3,9 +3,6 @@ using UnityEngine;
 
 namespace Scripts.Config
 {
-    /// <summary>
-    /// Adapter that provides the same API as MilestoneRulesConfig but uses JSON settings
-    /// </summary>
     public class MilestoneRulesConfigAdapter
     {
         private readonly MilestoneRulesSettings _settings;
@@ -13,27 +10,6 @@ namespace Scripts.Config
         public MilestoneRulesConfigAdapter(MilestoneRulesSettings settings)
         {
             _settings = settings;
-        }
-        
-        public float SkillToWeight => _settings.SkillToWeight;
-        
-        public float GetBaseWeight(DevTaskType type)
-        {
-            string typeName = type.ToString();
-            if (_settings.BaseWeights.TryGetValue(typeName, out float weight))
-            {
-                return weight;
-            }
-            return 1.0f; // Default weight
-        }
-        
-        public int GetMinTasks(DevTaskType type, int milestoneIndex) => 0;
-        
-        public int GetTaskCount(int gameIndex, int milestoneIndex)
-        {
-            int baseCount = 1 + milestoneIndex * 2;
-            int growth = gameIndex * 1;
-            return Mathf.Max(1, baseCount + growth);
         }
         
         public int GetDaysLimit(int gameIndex, int milestoneIndex)
@@ -48,7 +24,7 @@ namespace Scripts.Config
         
         public int GetMoneyReward(int gameIndex, int milestoneIndex)
         {
-            int tasks = GetTaskCount(gameIndex, milestoneIndex);
+            int tasks = 3 + milestoneIndex;
             
             int reward =
                 _settings.RewardBase +
@@ -87,10 +63,44 @@ namespace Scripts.Config
             
             float reward = baseReward * factor;
             
-            // минималка за частичное выполнение
             reward = Mathf.Max(reward, baseReward * _settings.MinPartialFactor * completion);
             
             return Mathf.RoundToInt(reward);
+        }
+        
+        public int BaseSalary => _settings.BaseSalary;
+        public float SkillSalaryFactor => _settings.SkillSalaryFactor;
+        
+        public int BaseUnitsSold => _settings.BaseUnitsSold;
+        public float TaskSalesMultiplier => _settings.TaskSalesMultiplier;
+        public int CopyPrice => _settings.CopyPrice;
+        public float PublisherCutPercent => _settings.PublisherCutPercent;
+        
+        public int BaseTaskCount => _settings.BaseTaskCount;
+        public float SkillToTaskFactor => _settings.SkillToTaskFactor;
+        public float MinTeamSkillThreshold => _settings.MinTeamSkillThreshold;
+        public float PolishStageMarketBonus => _settings.PolishStageMarketBonus;
+        
+        public float GetStageMultiplier(ProjectStage stage)
+        {
+            return stage switch
+            {
+                ProjectStage.Prototype => _settings.PrototypeStageMultiplier,
+                ProjectStage.Production => _settings.ProductionStageMultiplier,
+                ProjectStage.Polish => _settings.PolishStageMultiplier,
+                _ => 1f
+            };
+        }
+        
+        public float GetTaskWork(ProjectStage stage)
+        {
+            return stage switch
+            {
+                ProjectStage.Prototype => _settings.PrototypeTaskWork,
+                ProjectStage.Production => _settings.ProductionTaskWork,
+                ProjectStage.Polish => _settings.PolishTaskWork,
+                _ => _settings.ProductionTaskWork
+            };
         }
     }
 }

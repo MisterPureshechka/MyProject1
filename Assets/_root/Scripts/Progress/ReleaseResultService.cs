@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Scripts.Config;
 using Scripts.Tasks;
 using UnityEngine;
 
@@ -6,31 +7,32 @@ namespace Scripts.Progress
 {
     public class ReleaseResultService
     {
+        private readonly MilestoneRulesConfigAdapter _rules;
         
         private const int MinScore = 1;
         private const int MaxScore = 100;
 
-        // Основной метод генерации результата
+        public ReleaseResultService(MilestoneRulesConfigAdapter rules)
+        {
+            _rules = rules;
+        }
+
         public ReleaseResultData GenerateReleaseResult(ProgressData data, Dictionary<DevTaskType, int> completedTasks)
         {
-            // Подсчет оценок на основе выполненных задач
             int programmingScore = CalculateScore(DevTaskType.Programming, completedTasks);
             int artScore = CalculateScore(DevTaskType.Art, completedTasks);
             int gameplayScore = CalculateScore(DevTaskType.GameDesign, completedTasks);
             int soundScore = CalculateScore(DevTaskType.SoundDesign, completedTasks);
 
-            // Подсчет количества выполненных типов задач
-            int typeCount = CalculateDiversity(completedTasks); // Количество уникальных типов задач
+            int typeCount = CalculateDiversity(completedTasks);
+            int totalTasks = CalculateTotalTasks(completedTasks);
+            
+            int unitsSold = CalculateUnitsSold(totalTasks, typeCount, data);
 
-            // Подсчет проданных копий
-            int unitsSold = Mathf.RoundToInt((artScore + gameplayScore + soundScore) * typeCount * GetMarketMultiplier(data));
-
-            // Подсчет доходов
-            int revenue = unitsSold * 10; // Цена копии фиксирована: $10
-            int publisherCut = Mathf.RoundToInt(revenue * 0.3f); // Издатель забирает 30%
+            int revenue = unitsSold * _rules.CopyPrice;
+            int publisherCut = Mathf.RoundToInt(revenue * _rules.PublisherCutPercent);
             int netProfit = revenue - publisherCut;
 
-            // Награды
             bool awardArt = artScore >= 8;
             bool awardGameplay = gameplayScore >= 8;
             bool awardSound = soundScore >= 8;
@@ -55,17 +57,15 @@ namespace Scripts.Progress
             };
         }
 
-        // Метод подсчета оценки по задачам одного типа
         private int CalculateScore(DevTaskType type, Dictionary<DevTaskType, int> completedTasks)
         {
             if (!completedTasks.ContainsKey(type))
-                return MinScore; // Если задачи не выполнены, минимальная оценка
+                return MinScore;
 
             int taskCount = completedTasks[type];
             return Mathf.Clamp(taskCount + Random.Range(-1, 2), MinScore, MaxScore);
         }
 
-        // Расчет количества одновременно выполненных типов задач (разнообразие)
         private int CalculateDiversity(Dictionary<DevTaskType, int> completedTasks)
         {
             int diversity = 0;
@@ -76,17 +76,34 @@ namespace Scripts.Progress
                     diversity++;
             }
 
-            return diversity; // Уникальные типы задач
+            return diversity;
         }
 
-        // Множитель рыночного интереса
+        private int CalculateTotalTasks(Dictionary<DevTaskType, int> completedTasks)
+        {
+            int total = 0;
+            foreach (var kvp in completedTasks)
+                total += kvp.Value;
+            return total;
+        }
+
+        private int CalculateUnitsSold(int totalTasks, int diversity, ProgressData data)
+        {
+            float baseUnits = _rules.BaseUnitsSold;
+            float taskMultiplier = Mathf.Pow(_rules.TaskSalesMultiplier, totalTasks);
+            float diversityBonus = 1f + (diversity * 0.1f);
+            float marketMultiplier = GetMarketMultiplier(data);
+            
+            float units = baseUnits * taskMultiplier * diversityBonus * marketMultiplier;
+            return Mathf.RoundToInt(units);
+        }
+
         private float GetMarketMultiplier(ProgressData data)
         {
             float baseMultiplier = 1.0f;
 
-            // Учитывание прогресса в разработке
             if (data.Stage == ProjectStage.Polish)
-                baseMultiplier += 0.5f;
+                baseMultiplier += _rules.PolishStageMarketBonus;
 
             return baseMultiplier;
         }

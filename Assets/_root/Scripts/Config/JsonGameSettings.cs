@@ -4,9 +4,6 @@ using Scripts.Tasks;
 
 namespace Scripts.Config
 {
-    /// <summary>
-    /// Root JSON configuration that combines GameMetaConfig and MilestoneRulesConfig
-    /// </summary>
     [Serializable]
     public class JsonGameSettings
     {
@@ -21,46 +18,52 @@ namespace Scripts.Config
         public int StartMilestones = 4;
         public int MaxMilestones = 8;
         public int MilestonesPerGameIncrement = 1;
+        public float SecondsPerDay = 240f;
     }
 
     [Serializable]
     public class MilestoneRulesSettings
     {
-        // Task distribution
-        public float SkillToWeight = 0.2f;
-        
-        // Base weights for each task type
-        public Dictionary<string, float> BaseWeights = new Dictionary<string, float>
-        {
-            { "Programming", 1.0f },
-            { "Art", 1.0f },
-            { "SoundDesign", 1.0f },
-            { "GameDesign", 1.0f },
-            { "Marketing", 1.0f }
-        };
-        
-        // Base days formula
         public int BaseDays = 6;
         public int DaysPerMilestone = 1;
         public float DaysPerGame = -0.3f;
         
-        // Base reward formula
         public int RewardBase = 50;
         public int RewardPerTask = 25;
         public int RewardPerGame = 40;
         public int RewardPerMilestone = 20;
         
-        // Days auto-tuning
         public bool UseAutoDays = true;
         public float DaysPerReleasedGame = 0.08f;
         public float SkillToDaysK = 0.02f;
         public float MinDaysMultiplier = 0.60f;
         public float MaxDaysMultiplier = 1.20f;
         
-        // Reward auto-tuning
         public bool UseAutoReward = true;
         public float CompletionPower = 1.6f;
         public float MinPartialFactor = 0.10f;
+        
+        public int BaseSalary = 10;
+        public float SkillSalaryFactor = 1.5f;
+        
+        public int BaseUnitsSold = 100;
+        public float TaskSalesMultiplier = 1.15f;
+        public int CopyPrice = 10;
+        public float PublisherCutPercent = 0.3f;
+        
+        // Task generation settings
+        public int BaseTaskCount = 3;
+        public float SkillToTaskFactor = 0.5f;
+        public float MinTeamSkillThreshold = 0.01f;
+        public float PrototypeStageMultiplier = 0.8f;
+        public float ProductionStageMultiplier = 1.2f;
+        public float PolishStageMultiplier = 1.5f;
+        public float PrototypeTaskWork = 80f;
+        public float ProductionTaskWork = 100f;
+        public float PolishTaskWork = 130f;
+        
+        // Release sales bonuses
+        public float PolishStageMarketBonus = 0.5f;
     }
 
     [Serializable]

@@ -42,10 +42,10 @@ namespace Scripts.GlobalStateMachine
             var company = new Company(employeeFactory, roomLogic, _saveService, progressDataAdapter);
             var workApplier = new CompanyWorkApplier(company);
            
-            var time = new TimeService(localEvents);
+            var time = new TimeService(localEvents, _gameData.GameMetaConfig);
             
-            var economy = new EconomyService(progressDataAdapter, _saveService, localEvents, company);
-            var projectProgress = new ProjectProgressService(progressDataAdapter, _saveService, localEvents);
+            var economy = new EconomyService(progressDataAdapter, _saveService, localEvents, company, _gameData.MilestoneRulesConfig);
+            var projectProgress = new ProjectProgressService(progressDataAdapter, _saveService, localEvents, _gameData.MilestoneRulesConfig);
 
             var sprintUi = Object.FindAnyObjectByType<SprintUI>(FindObjectsInactive.Include);
             var sprintView = uiFactory.GetSprintView(canvas.transform);

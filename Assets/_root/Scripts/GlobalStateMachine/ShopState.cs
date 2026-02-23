@@ -51,7 +51,7 @@ namespace Scripts.GlobalStateMachine
 
             var slotSelector = new SlotSelector(localEvents);
             var employeeMovement = new EmployeeMovement(localEvents);
-            var time = new TimeService(localEvents);
+            var time = new TimeService(localEvents, _gameData.GameMetaConfig);
             var shop = uiFactory.GetShop(canvas.transform);
             //var shopLogic = new ItemShopLogic(_gameData.RoomItemDatabase, shop., roomLogic);
             

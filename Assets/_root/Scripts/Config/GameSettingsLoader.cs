@@ -93,25 +93,7 @@ namespace Scripts.Config
                     MaxMilestones = 8,
                     MilestonesPerGameIncrement = 1
                 },
-                MilestoneRules = new MilestoneRulesSettings
-                {
-                    SkillToWeight = 0.2f,
-                    BaseDays = 6,
-                    DaysPerMilestone = 1,
-                    DaysPerGame = -0.3f,
-                    RewardBase = 50,
-                    RewardPerTask = 25,
-                    RewardPerGame = 40,
-                    RewardPerMilestone = 20,
-                    UseAutoDays = true,
-                    DaysPerReleasedGame = 0.08f,
-                    SkillToDaysK = 0.02f,
-                    MinDaysMultiplier = 0.60f,
-                    MaxDaysMultiplier = 1.20f,
-                    UseAutoReward = true,
-                    CompletionPower = 1.6f,
-                    MinPartialFactor = 0.10f
-                },
+                MilestoneRules = new MilestoneRulesSettings(),
                 NewGame = new NewGameSettings()
             };
         }

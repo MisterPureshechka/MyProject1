@@ -2,17 +2,10 @@
   "GameMeta": {
     "StartMilestones": 4,
     "MaxMilestones": 8,
-    "MilestonesPerGameIncrement": 1
+    "MilestonesPerGameIncrement": 1,
+    "SecondsPerDay": 30.0
   },
   "MilestoneRules": {
-    "SkillToWeight": 0.2,
-    "BaseWeights": {
-      "Programming": 1.0,
-      "Art": 1.0,
-      "SoundDesign": 1.0,
-      "GameDesign": 1.0,
-      "Marketing": 1.0
-    },
     "BaseDays": 6,
     "DaysPerMilestone": 1,
     "DaysPerGame": -0.3,
@@ -27,7 +20,23 @@
     "MaxDaysMultiplier": 1.2,
     "UseAutoReward": true,
     "CompletionPower": 1.6,
-    "MinPartialFactor": 0.1
+    "MinPartialFactor": 0.1,
+    "BaseSalary": 100,
+    "SkillSalaryFactor": 1.5,
+    "BaseUnitsSold": 100,
+    "TaskSalesMultiplier": 1.15,
+    "CopyPrice": 10,
+    "PublisherCutPercent": 0.3,
+    "BaseTaskCount": 2,
+    "SkillToTaskFactor": 0.5,
+    "MinTeamSkillThreshold": 0.01,
+    "PrototypeStageMultiplier": 0.8,
+    "ProductionStageMultiplier": 1.2,
+    "PolishStageMultiplier": 1.5,
+    "PrototypeTaskWork": 80.0,
+    "ProductionTaskWork": 100.0,
+    "PolishTaskWork": 130.0,
+    "PolishStageMarketBonus": 0.5
   },
   "NewGame": {
     "CompanyName": "UbiHard",

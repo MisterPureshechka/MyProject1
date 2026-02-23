@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core;
+using Scripts.Config;
 using Scripts.GlobalStateMachine;
 using Scripts.Tasks;
 using UnityEngine;
@@ -16,13 +17,14 @@ namespace Scripts.Progress
         public ProjectProgressService(
             ProgressDataAdapter progress,
             SaveService save,
-            LocalEvents localEvents)
+            LocalEvents localEvents,
+            MilestoneRulesConfigAdapter rules)
         {
             _progress = progress;
             _save = save;
             _localEvents = localEvents;
             
-            _releaseResultService = new ReleaseResultService();
+            _releaseResultService = new ReleaseResultService(rules);
         }
 
         public bool OnMilestoneCompleted()

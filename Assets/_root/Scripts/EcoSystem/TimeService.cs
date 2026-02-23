@@ -1,18 +1,20 @@
 using Core;
+using Scripts.Config;
 using Scripts.GlobalStateMachine;
 
 public class TimeService : IExecute
 {
-    public float Day01 { get; private set; } 
+    public float Day01 { get; private set; }
 
-    private float _secondsPerDay = 240f;
+    private readonly float _secondsPerDay;
     private readonly LocalEvents _localEvents;
     
     private bool _isRunning = true;
 
-    public TimeService(LocalEvents localEvents)
+    public TimeService(LocalEvents localEvents, GameMetaConfigAdapter gameMetaConfig)
     {
         _localEvents = localEvents;
+        _secondsPerDay = gameMetaConfig.SecondsPerDay;
         Day01 = TimeUtils.ClockToNormalized(9, 0);
 
         _localEvents.OnMilestoneResultWindow += MilestoneResultListener;

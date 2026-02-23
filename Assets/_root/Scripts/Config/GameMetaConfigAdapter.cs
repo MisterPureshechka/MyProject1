@@ -19,6 +19,7 @@ namespace Scripts.Config
         public int StartMilestones => _settings.StartMilestones;
         public int MaxMilestones => _settings.MaxMilestones;
         public int MilestonesPerGameIncrement => _settings.MilestonesPerGameIncrement;
+        public float SecondsPerDay => _settings.SecondsPerDay;
         
         public int GetMilestoneCount(int gameIndex)
         {

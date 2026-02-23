@@ -13,9 +13,22 @@
         {
             "Column": 2,
             "ItemId": "Fridge"
+        },
+        {
+            "Column": 2,
+            "ItemId": "Fridge"
+        },
+        {
+            "Column": 2,
+            "ItemId": "Fridge"
         }
     ],
     "Employees": [
+        {
+            "Id": "emp_mike",
+            "Name": "Mike",
+            "Column": 1
+        },
         {
             "Id": "emp_mike",
             "Name": "Mike",
